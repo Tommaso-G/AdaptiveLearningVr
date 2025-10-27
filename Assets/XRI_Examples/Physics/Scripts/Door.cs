@@ -8,53 +8,53 @@ namespace UnityEngine.XR.Content.Interaction
     public class Door : MonoBehaviour
     {
         [SerializeField]
-        HingeJoint m_DoorJoint;
+        public HingeJoint m_DoorJoint;
 
         [SerializeField]
         [Tooltip("Transform joint that pulls a door to follow an interactor")]
-        TransformJoint m_DoorPuller;
+        public TransformJoint m_DoorPuller;
 
         [SerializeField]
-        GameObject m_KeyKnob;
+        public GameObject m_KeyKnob;
 
         [SerializeField]
-        float m_HandleOpenValue = 0.1f;
+        public float m_HandleOpenValue = 0.1f;
 
         [SerializeField]
-        float m_HandleCloseValue = 0.5f;
+        public float m_HandleCloseValue = 0.5f;
 
         [SerializeField]
-        float m_HingeCloseAngle = 5.0f;
+        public float m_HingeCloseAngle = 5.0f;
 
         [SerializeField]
-        float m_KeyLockValue = 0.9f;
+        public float m_KeyLockValue = 0.9f;
 
         [SerializeField]
-        float m_KeyUnlockValue = 0.1f;
+        public float m_KeyUnlockValue = 0.1f;
 
         [SerializeField]
-        float m_KeyPullDistance = 0.1f;
+        public float m_KeyPullDistance = 0.1f;
 
         [SerializeField]
         [Tooltip("Events to fire when the door is locked.")]
-        UnityEvent m_OnLock = new UnityEvent();
+        public UnityEvent m_OnLock = new UnityEvent();
 
         [SerializeField]
         [Tooltip("Events to fire when the door is unlocked.")]
-        UnityEvent m_OnUnlock = new UnityEvent();
+        public UnityEvent m_OnUnlock = new UnityEvent();
 
-        JointLimits m_OpenDoorLimits;
-        JointLimits m_ClosedDoorLimits;
-        bool m_Closed = false;
-        float m_LastHandleValue = 1.0f;
+        public JointLimits m_OpenDoorLimits;
+        public JointLimits m_ClosedDoorLimits;
+        public bool m_Closed = false;
+        public float m_LastHandleValue = 1.0f;
 
-        bool m_Locked = false;
+        public bool m_Locked = false;
 
-        GameObject m_KeySocket;
-        IXRSelectInteractable m_Key;
+        public GameObject m_KeySocket;
+        public IXRSelectInteractable m_Key;
 
-        XRBaseInteractor m_KnobInteractor;
-        Transform m_KnobInteractorAttachTransform;
+        public XRBaseInteractor m_KnobInteractor;
+        public Transform m_KnobInteractorAttachTransform;
 
         /// <summary>
         /// Events to fire when the door is locked.
@@ -66,7 +66,7 @@ namespace UnityEngine.XR.Content.Interaction
         /// </summary>
         public UnityEvent onUnlock => m_OnUnlock;
 
-        void Start()
+        public virtual void Start()
         {
             m_OpenDoorLimits = m_DoorJoint.limits;
             m_ClosedDoorLimits = m_OpenDoorLimits;
@@ -77,7 +77,7 @@ namespace UnityEngine.XR.Content.Interaction
             m_Closed = true;
         }
 
-        void Update()
+        public virtual void Update()
         {
             // If the door is open, keep track of the hinge joint and see if it enters a state where it should close again
             if (!m_Closed)
