@@ -10,15 +10,12 @@ namespace UnityEngine.XR.Content.Interaction
     public class XRGrabNoY : XRGrabInteractable
     {
         [Header("Attach Transforms personalizzati")]
-        public Transform AttachTransformA;
-        public Transform AttachTransformB;
+
 
         [Header("Distanza fissa davanti al giocatore (metri)")]
         [Range(0.2f, 10f)]
         public float grabDistance = 0.6f;
 
-        private Transform primaryAttachUsed;
-        private Transform secondaryAttachUsed;
 
         private readonly List<XR.Interaction.Toolkit.Interactors.IXRSelectInteractor> grabbingHands = new();
 
@@ -43,34 +40,30 @@ namespace UnityEngine.XR.Content.Interaction
             m_OriginalRotation = transform.rotation;
         }
 
-        protected override void OnSelectEntered(SelectEnterEventArgs args)
-        {
-            base.OnSelectEntered(args);
+protected override void OnSelectEntered(SelectEnterEventArgs args)
+{
+    base.OnSelectEntered(args);
 
-            if (!grabbingHands.Contains(args.interactorObject))
-                grabbingHands.Add(args.interactorObject);
+    if (!grabbingHands.Contains(args.interactorObject))
+        grabbingHands.Add(args.interactorObject);
 
-            IsGrabbed = grabbingHands.Count > 0;
+    IsGrabbed = grabbingHands.Count > 0;
 
-            // Prima mano → decide quale attach è più vicino
-            if (grabbingHands.Count == 1)
-            {
-                var hand = args.interactorObject.transform;
-                float distA = Vector3.Distance(hand.position, AttachTransformA.position);
-                float distB = Vector3.Distance(hand.position, AttachTransformB.position);
+    if (grabbingHands.Count == 1)
+    {
+        attachTransform ??= transform; // se non impostato, usa il proprio transform
+        m_InitialY = transform.position.y;
+        m_InitialRotX = transform.localEulerAngles.x;
+    }
+    else if (grabbingHands.Count == 2)
+    {
+        if (secondaryAttachTransform != null)
+            attachTransform = secondaryAttachTransform;
+        else
+            attachTransform = grabbingHands[1].transform; // fallback: attach della seconda mano
+    }
+}
 
-                primaryAttachUsed = (distA <= distB) ? AttachTransformA : AttachTransformB;
-                secondaryAttachUsed = (primaryAttachUsed == AttachTransformA) ? AttachTransformB : AttachTransformA;
-                attachTransform = primaryAttachUsed;
-
-                m_InitialY = transform.position.y;
-                m_InitialRotX = transform.localEulerAngles.x;
-            }
-            else if (grabbingHands.Count == 2)
-            {
-                attachTransform = secondaryAttachUsed;
-            }
-        }
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
@@ -80,8 +73,6 @@ namespace UnityEngine.XR.Content.Interaction
 
             if (grabbingHands.Count == 0)
             {
-                primaryAttachUsed = null;
-                secondaryAttachUsed = null;
 
                 // Mantiene la posizione dove lasci l’oggetto ma resetta le variabili
                 m_InitialY = transform.position.y;
