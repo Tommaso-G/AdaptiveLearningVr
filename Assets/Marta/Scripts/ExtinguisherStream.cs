@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
+using UnityEngine.VFX;
 
 public class ExtinguisherStream : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ExtinguisherStream : MonoBehaviour
     private bool safetyCatch = false;
     private FireObject fire;
     private FireObject lastHit;
+    private FireLiquid fireLiquid;
+    private FireLiquid lastFireLiquid;
 
     //private  GameObject FoamStream;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,6 +27,7 @@ public class ExtinguisherStream : MonoBehaviour
     void Update()
     {
         Shooting();
+        fireSplashRayCast();
     }
 
     public void Shooting()
@@ -60,6 +64,42 @@ public class ExtinguisherStream : MonoBehaviour
                 fire.isHit = false;
                 fire = null;
             }
+    }
+
+    private void fireSplashRayCast()
+    {
+        RaycastHit hit;
+        int layerMask = LayerMask.GetMask("Fire Liquid");
+
+        if (Physics.Raycast(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward), out hit, 100, layerMask))
+        {
+            Debug.DrawRay(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+
+            fireLiquid = hit.transform.GetComponent<FireLiquid>();
+
+            if (fireLiquid != lastFireLiquid)
+            {
+                if (lastFireLiquid != null)
+                {
+                    lastFireLiquid.isHit = false;
+                }
+
+                lastFireLiquid= fireLiquid;
+            }
+            //fire hit + foam shooting
+            if (fireLiquid != null && FoamPS.isPlaying)
+            {
+                fireLiquid.isHit= true;
+            }
+        }
+        else if (fireLiquid != null) // se non sto colpendo nulla devo comunque mettere fire.isHit = false
+        {
+            fireLiquid.isHit = false;
+            //fLiquid = false;
+            fireLiquid = null;
+        }
+
+
     }
 
     public void StartFoam()
