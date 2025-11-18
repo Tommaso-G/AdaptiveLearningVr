@@ -8,6 +8,7 @@ public class UIPositionController : MonoBehaviour
 
     void Start()
     {
+        lookAtTarget = Camera.main.transform;
         rectTransform = GetComponent<RectTransform>();
     }
 

@@ -12,6 +12,7 @@ public class ExitDoor : MonoBehaviour
     private Color[] baseColors;
     private Color renderColor;
     private GameObject mapButton;
+    private Transform target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +20,8 @@ public class ExitDoor : MonoBehaviour
         rend = GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
         mapButton = transform.GetChild(0).GameObject();
+        target = transform.GetChild(1).transform;
+        target.transform.parent = null;
 
         baseColors = new Color[rend.materials.Length];
 
@@ -87,5 +90,6 @@ public class ExitDoor : MonoBehaviour
         BlockedRb.freezeRotation = blocked ? true : false;
         selected = blocked ? false : selected;
         mapButton.SetActive(blocked);
+        target.gameObject.SetActive(!blocked);
     }
 }

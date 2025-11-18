@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b34b0dc0ee9dff40bd9d7204bf7b33b, type: 3}
+  m_Name: ReportDialogue
+  m_EditorClassIdentifier: 
+  dialogueOptions:
+  - text: We are usaully 23 in class, but today 2 kids were sick. 1 is missinig right
+      now.
+    present: 21
+    evacuated: 20
+    missing: 1
+  - text: "I\u2019ve lost every single one of them. EVERY LAST ONE! All 24 present,
+      all missing! Oh God, what have I done!? Those poor kids\u2026 But I had no
+      choice! That window was the only exit, but it was far too high to reach without
+      a ladder. I have a family depending on me! And those kids were the dumbest
+      I\u2019ve ever had anyway, none of them ever got above a C-, and I teach religion!
+      You understand, don\u2019t you?"
+    present: 24
+    evacuated: 0
+    missing: 24
+  - text: "Man, I don\u2019t even know what you\u2019re talking about. I don\u2019t
+      work here. I usually just pass by after the lectures are over, watching the
+      kids leave. Normally, I don\u2019t like to be seen, you know, I\u2019m very
+      shy, so I stand right behind that wall. But this time I noticed some of my
+      favorites were missing, so I joined in. I hope they\u2019re okay."
+    present: 0
+    evacuated: 0
+    missing: 0
