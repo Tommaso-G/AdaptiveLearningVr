@@ -6,9 +6,17 @@ public class Teacher : MonoBehaviour
 {
     public bool done = false;
     private int id;
+    private string classId;
     private (int, int, int) correctInputs;
     private (int, int, int) userInputs;
-   
+    private UIPositionController[] UIs;
+    private Transform player;
+
+    private void Start()
+    {
+        UIs = GetComponentsInChildren<UIPositionController>(true);
+        player = Camera.main.transform;
+    }
     public void setId(int id)
     {
         this.id = id;
@@ -16,6 +24,12 @@ public class Teacher : MonoBehaviour
 
     public int getId() { return id; }
 
+    public void setClassId(string classId)
+    {
+        this.classId = classId;
+    }
+
+    public string getClassId() { return classId; }
     public void setCorrectInputs((int, int, int) correctInputs)
     {
         this.correctInputs = correctInputs;
@@ -79,4 +93,17 @@ public class Teacher : MonoBehaviour
     {
         done = true;
     }
+
+    public void UIposition()
+    {
+        Vector3 playerdir = (player.position - transform.position).normalized;
+        playerdir = Quaternion.AngleAxis(90, transform.up) * playerdir; ;
+        Vector3 UIpos = transform.position + playerdir * 3.5f;
+        UIpos.y = player.position.y + 1f;
+        foreach (UIPositionController u in UIs)
+        {
+            u.transform.position = UIpos;
+        }
+    }
+
 }

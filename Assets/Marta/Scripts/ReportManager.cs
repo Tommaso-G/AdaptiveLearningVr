@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,30 +7,29 @@ public class ReportManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public ReportDialogue ReportDialogue;
-    public GameObject teacherPrefab;
-    public int teacherNr;
     private Teacher[] teachers;
     private int results = 0;
 
     void Start()
     {
-        teachers = new Teacher[teacherNr];
-        for(int i = 0; i < teachers.Length; i++)
+        teachers = GetComponentsInChildren<Teacher>();
+        string lastClassId = "";
+        for (int i = 0; i < teachers.Length; i++)
         {
-            GameObject newTeacher = Instantiate(teacherPrefab);
-            newTeacher.transform.parent = transform;
-            newTeacher.transform.localPosition = new Vector3(i * 8.0f, 0.0f, 0.0f);
-            Teacher teacherInfo = newTeacher.transform.GetComponent<Teacher>();
-            teachers[i] = teacherInfo;
+            string classId = lastClassId;
+            while (classId == lastClassId)
+            {
+                classId = (UnityEngine.Random.Range(1, 5)).ToString() + (char)UnityEngine.Random.Range('A', 'C');
+            }
+            lastClassId = classId;
+            teachers[i].setClassId(classId);
+
         }
-
         assignDialogue(teachers);
-
     }
 
     private void assignDialogue(Teacher[] teacher)
     {
-        Debug.Log("Dentro");
         int lastIndex = -1;
         for (int i = 0; i < teacher.Length; i++)
         {
@@ -42,22 +42,39 @@ public class ReportManager : MonoBehaviour
                     int randomIndex = lastIndex;
                     while (randomIndex == lastIndex)
                     {
-                        randomIndex = Random.Range(0, ReportDialogue.dialogueOptions.Count);
+                        randomIndex = UnityEngine.Random.Range(0, ReportDialogue.dialogueOptions.Count);
                     }
                     lastIndex = randomIndex;
                     DialogueLine randomLine = ReportDialogue.dialogueOptions[randomIndex];
                     TextMeshProUGUI textBox = dialogueUI.GetComponent<TextMeshProUGUI>();
                     teacher[i].setCorrectInputs((randomLine.present, randomLine.evacuated, randomLine.missing));
-                    Debug.Log(i + ", correct inputs: " + teacher[i].getCorrectInputs());
+                    //Debug.Log(i + ", correct inputs: " + teacher[i].getCorrectInputs());
                     if (textBox != null)
                     {
                         textBox.text = randomLine.text;
                     }
+
                 }
                 else
                 {
                     Debug.Log("DialogueUI not found");
                 }
+
+                Transform classIdUI = informationUI.Find("ClassId");
+                if (classIdUI != null)
+                {
+                    TextMeshProUGUI textBox = classIdUI.GetComponent<TextMeshProUGUI>();
+                    if (textBox != null)
+                    {
+                        textBox.text = "Class " + teacher[i].getClassId();
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("classIdUI not found");
+                }
+
             }
             else
             {
