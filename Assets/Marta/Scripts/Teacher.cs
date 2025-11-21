@@ -6,6 +6,7 @@ public class Teacher : MonoBehaviour
 {
     public bool done = false;
     private int id;
+    private string classId;
     private (int, int, int) correctInputs;
     private (int, int, int) userInputs;
    
@@ -16,6 +17,12 @@ public class Teacher : MonoBehaviour
 
     public int getId() { return id; }
 
+    public void setClassId(string classId)
+    {
+        this.classId = classId;
+    }
+
+    public string getClassId() { return classId; }
     public void setCorrectInputs((int, int, int) correctInputs)
     {
         this.correctInputs = correctInputs;

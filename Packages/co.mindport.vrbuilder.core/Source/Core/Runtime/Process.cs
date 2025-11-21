@@ -158,6 +158,12 @@ namespace VRBuilder.Core
             return new Process(Data.Name, clonedChapters);
         }
 
+        public IProcess CloneOtherName(String otherName)
+        {
+            IEnumerable<IChapter> clonedChapters = Data.Chapters.Select(chapter => chapter.Clone());
+            return new Process(otherName, clonedChapters);
+        }
+
         protected Process() : this(null, Array.Empty<IChapter>())
         {
         }
