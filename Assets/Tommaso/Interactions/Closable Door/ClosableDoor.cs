@@ -49,7 +49,20 @@ namespace UnityEngine.XR.Content.Interaction
                 }
             }
 
+            if (m_KnobInteractor != null && m_KnobInteractorAttachTransform != null)
+            {
+                var distance = (m_KnobInteractorAttachTransform.position - m_KeyKnob.transform.position).magnitude;
 
+                // If over threshold, break and grant the key back to the interactor
+                if (distance > m_KeyPullDistance)
+                {
+                    var newKeyInteractor = m_KnobInteractor;
+                    m_KeySocket.SetActive(true);
+                    m_Key.transform.gameObject.SetActive(true);
+                    newKeyInteractor.interactionManager.SelectEnter(newKeyInteractor, m_Key);
+                    m_KeyKnob.SetActive(false);
+                }
+            }
         }
 
 
