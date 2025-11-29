@@ -8,7 +8,9 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private bool blocked = false;
     private bool selected = false;
     private Rigidbody BlockedRb;
+    private Rigidbody secondDoor;
     private Renderer rend;
+    private Renderer secondDoorRend;
     private Color[] baseColors;
     private Color renderColor;
     private GameObject mapButton;
@@ -18,6 +20,8 @@ public class ExitDoor : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
+        secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
+        secondDoorRend = secondDoor.gameObject.transform.GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
         mapButton = transform.GetChild(0).GameObject();
         target = transform.GetChild(1).transform;
@@ -60,7 +64,9 @@ public class ExitDoor : MonoBehaviour
             for (int i = 0; i < baseColors.Length; i++)
             {
                 var mat = rend.materials[i];
+                var secondmat = secondDoorRend.materials[i];
                 mat.color = baseColors[i];
+                secondmat.color = baseColors[i];
             }
             return;
         }
@@ -68,8 +74,10 @@ public class ExitDoor : MonoBehaviour
             for (int i = 0; i < baseColors.Length; i++)
             {
                 var mat = rend.materials[i];
+                var secondmat = secondDoorRend.materials[i];
                 mat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
-            }
+                secondmat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
+        }
     }
 
     public void Select()
@@ -88,6 +96,7 @@ public class ExitDoor : MonoBehaviour
     private void isBlock(bool blocked)
     {
         BlockedRb.freezeRotation = blocked ? true : false;
+        secondDoor.freezeRotation = blocked ? true : false;
         selected = blocked ? false : selected;
         mapButton.SetActive(blocked);
         target.gameObject.SetActive(!blocked);

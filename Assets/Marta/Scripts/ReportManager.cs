@@ -14,7 +14,7 @@ public class ReportManager : MonoBehaviour
     {
         teachers = GetComponentsInChildren<Teacher>();
         string lastClassId = "";
-        for(int i = 0; i < teachers.Length; i++)
+        for (int i = 0; i < teachers.Length; i++)
         {
             string classId = lastClassId;
             while (classId == lastClassId)
@@ -23,7 +23,7 @@ public class ReportManager : MonoBehaviour
             }
             lastClassId = classId;
             teachers[i].setClassId(classId);
-           
+
         }
         assignDialogue(teachers);
     }
