@@ -44,6 +44,8 @@ namespace VRBuilder.Core
         ///<inheritdoc />
         public Stage Stage { get; private set; }
 
+        public bool DeactivateAfterActivation => deactivateAfterActivation;
+
         ///<inheritdoc />
         public void Activate()
         {

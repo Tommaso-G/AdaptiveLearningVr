@@ -22,6 +22,11 @@ namespace VRBuilder.Core
         Stage Stage { get; }
 
         /// <summary>
+        /// Deactivating starting.
+        /// </summary>
+        bool DeactivateAfterActivation { get; }
+
+        /// <summary>
         /// Enters Activating stage if was deactivating.
         /// </summary>
         void Activate();

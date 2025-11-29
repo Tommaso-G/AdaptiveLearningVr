@@ -1,0 +1,341 @@
+﻿using UnityEngine;
+using System.Collections.Generic;
+using VRBuilder.Core;
+using System;
+using System.Linq;
+using System.Collections;
+
+[System.Serializable]
+public struct ChapterLink
+{
+    public string newChapter;
+    public string previousChapter;
+}
+
+public class Node
+{
+    public int Id { get; set; }
+
+    public int chapterId;
+    public Node Next { get; set; }
+    public Node OptionalNext { get; set; }
+
+    public Node(int id)
+    {
+        Id = id;
+        chapterId = id;
+        Next = null;
+        OptionalNext = null;
+    }
+}
+public class ChaptersOrderManager : MonoBehaviour
+{
+
+    private IProcess process;
+    private bool waitForChange;
+    private bool nextChapter;
+    private int currentNode;
+    private Dictionary<string, int> chapterNameToIndex = new Dictionary<string, int>();
+    public List<ChapterLink> ChaptersToAdd; // (nome_nuovo_cap, nome_cap_precedente)
+    public bool addNow;
+    public bool removeNow;
+    public int prevId;
+
+    public event Action OnListScrolled;
+
+    public List<string> OptionalChapters { get; private set; } = new List<string>();
+    public List<Node> nodes { get; private set; } = new List<Node>();
+    public Node head { get; private set; }
+    public bool empty { get; private set; }
+    public int lastNodeId { get; private set; }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        currentNode = 0;
+        nextChapter = false;
+        empty = false;
+        addNow = false;
+        removeNow = false;
+        prevId = -1;
+
+        ProcessRunner.Events.ChapterStarted += (sender, args) =>
+        {
+            nextChapter = true;
+        };
+    }   
+    public void initialize(IProcess process)
+    {
+        this.process = process;
+        Node previous = null;
+
+        foreach (IChapter chapter in process.Data.Chapters)
+        {
+            int index = process.Data.Chapters.IndexOf(chapter);
+            Node node = new Node(index);
+            nodes.Add(node);
+            chapterNameToIndex.Add(chapter.Data.Name, index);
+
+            if (chapter.Data.Name.Contains("Optional"))
+            {
+                OptionalChapters.Add(chapter.Data.Name);
+            }
+
+            if (previous != null)
+            {
+                previous.Next = node;
+            }
+
+            previous = node;
+        }
+
+        head = nodes[0];
+        lastNodeId = nodes.Count - OptionalChapters.Count - 1;
+        nodes[lastNodeId].Next = null;
+
+        while (ChaptersToAdd.Count>0)
+        {
+            AddOptional(ChaptersToAdd[0].newChapter, ChaptersToAdd[0].previousChapter);
+            ChaptersToAdd.RemoveAt(0);
+        }
+        //foreach(Node node in nodes)
+        //{
+        //    print("(" + (node.Id+1) + ", " + (node.chapterId+1) + ", " + (node.Next != null ? (node.Next.chapterId+1) : "null") + ", " + (node.OptionalNext != null ? (node.OptionalNext.chapterId+1) : "null") + ")");
+        //}
+
+        PrintNodesList();
+    }
+
+    // chiamata in inizializzazione
+    private void AddOptional(string chapterName, string prevName)
+    {
+        int newIndex = chapterNameToIndex[chapterName];
+        int prevIndex = chapterNameToIndex[prevName];
+
+        Node prevNode = nodes[prevIndex];
+        Node newNode = nodes[newIndex];
+        Node clNode = newNode;
+
+        if (prevNode.OptionalNext == null)
+        {
+            //Debug.Log("newNode.OptionalNext: " + newNode.OptionalNext != null ? newNode.OptionalNext : "null");
+            if (newNode.OptionalNext != null)
+            {
+                clNode = cloneNode(newNode);
+                Debug.Log("Creazione nodo clone: " + (clNode.Id+1));
+            }
+
+            prevNode.OptionalNext = clNode;
+            clNode.OptionalNext = prevNode.Next;
+        }
+        else
+        {
+            // se richiedo (6op, 3) e poi (7op, 3) ottengo 3 -> 6op -> 7op -> 4
+            Node last = prevNode.OptionalNext;
+
+            if (newNode.OptionalNext != null)
+            {
+                clNode = cloneNode(newNode);
+                Debug.Log("Creazione nodo clone: " + (clNode.Id+1));
+            }
+
+            while (last.OptionalNext != prevNode.Next)
+            {
+                last = last.OptionalNext;
+            }
+            last.OptionalNext = clNode;
+            clNode.OptionalNext = prevNode.Next;
+        }
+        print("Aggiunto Capitolo: (id " + (clNode.Id + 1) + " [ch " + (clNode.chapterId + 1) + "], ch " + (clNode.Next != null ? (clNode.Next.chapterId + 1) : "null") + ", " + (clNode.OptionalNext != null ? "id " + (clNode.OptionalNext.Id + 1) + "[ch " + (clNode.OptionalNext.chapterId + 1) + "]" : "null") + ")\n"
+               + " Prima di capitolo:  (id " + (prevNode.Id + 1) + " [ch " + (prevNode.chapterId + 1) + "], ch " + (prevNode.Next != null ? (prevNode.Next.chapterId + 1) : "null") + ", " + (prevNode.OptionalNext != null ? "id " + (prevNode.OptionalNext.Id + 1) + "[ch " + (prevNode.OptionalNext.chapterId + 1) + "]" : "null") + ")");
+    }
+
+    // chiamata runtime
+    private void AddChapterNow(string chapterName)
+    {
+        int newIndex = chapterNameToIndex[chapterName];
+
+        // controllo che non sia l'ultimo capitolo
+        if ((head.Id != process.Data.Chapters.Count - OptionalChapters.Count - 1) && !process.Data.Current.LifeCycle.DeactivateAfterActivation)
+        {
+            Node prevNode = head;
+            Node newNode = nodes[newIndex];
+            Node clNode = newNode;
+
+            if (prevNode.OptionalNext == null)
+            {
+                //Debug.Log("newNode.OptionalNext: " + newNode.OptionalNext != null? newNode.OptionalNext : "null");
+                if (newNode.OptionalNext != null)
+                {
+                    clNode = cloneNode(newNode);
+                    Debug.Log("Creazione nodo clone: " + (clNode.Id + 1));
+                }
+
+                prevNode.OptionalNext = clNode;
+                clNode.OptionalNext = prevNode.Next;
+            }
+            else
+            {
+                if (newNode.OptionalNext != null)
+                {
+                    clNode = cloneNode(newNode);
+                    Debug.Log("Creazione nodo clone: " + (clNode.Id + 1));
+                }
+              
+                clNode.OptionalNext = prevNode.OptionalNext;
+                prevNode.OptionalNext = clNode;
+
+            }
+            print("Aggiunto Capitolo: (id " + (clNode.Id + 1) + " [ch " + (clNode.chapterId + 1) + "], ch " + (clNode.Next != null ? (clNode.Next.chapterId + 1) : "null") + ", " + (clNode.OptionalNext != null ? "id " + (clNode.OptionalNext.Id + 1) + "[ch " + (clNode.OptionalNext.chapterId + 1) + "]" : "null") + ")\n"
+              + " Prima di capitolo:  (id " + (prevNode.Id + 1) + " [ch " + (prevNode.chapterId + 1) + "], ch " + (prevNode.Next != null ? (prevNode.Next.chapterId + 1) : "null") + ", " + (prevNode.OptionalNext != null ? "id " + (prevNode.OptionalNext.Id + 1) + "[ch " + (prevNode.OptionalNext.chapterId + 1) + "]" : "null") + ")");
+        }
+        else
+        {
+            Debug.Log("Impossibile aggiungere capitolo ora");
+        }
+    }
+
+    private void RemoveChapter(string prevName = "", int prevId = -1)
+    {
+        Node prevNode = null;
+        // se io avessi accesso ai nodi potrei avere max precisione es remove (7op, 6op, (prevId)10)
+        if (prevId != -1)
+        {
+            prevNode = nodes.FirstOrDefault(n => n.Id == prevId);
+        }
+        else if(prevName != "")// se ho una lista aggiornata dei capitoli posso fare rimozione mirata es remove prima occorrenza di (7op, 6op)
+        {
+            prevNode = nodes.FirstOrDefault(n => n.chapterId == chapterNameToIndex[prevName] && n.OptionalNext != null);
+            //if(prevNode != null)
+            //{
+            //    Debug.Log("Chapter Id: " + (prevNode.Id + 1));
+            //}
+        }
+        else
+        {
+            // in alternativa posso rimuovere il primo capitolo che ho come OptionalNext
+            prevNode = head;
+        }
+
+        if (prevNode != null && prevNode.OptionalNext != null && prevNode.OptionalNext.Id > (process.Data.Chapters.Count - OptionalChapters.Count - 1))
+        {
+            Node nodeToRemove = prevNode.OptionalNext;
+            prevNode.OptionalNext = prevNode.OptionalNext.OptionalNext;
+            nodeToRemove.OptionalNext = null;
+            if(nodeToRemove.Id >= process.Data.Chapters.Count) // solo se era un nodo clonato, lo elimino
+            {
+                nodes.Remove(nodeToRemove);
+            }
+
+            UnityEngine.Debug.Log("Nodo: " + (nodeToRemove.Id + 1) + "[capitolo " + (nodeToRemove.chapterId + 1) +"] rimosso");
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Nodo non trovato o non opzionale");
+        }
+    }
+
+    // Nel caso il capitolo Xop fosse già stato aggiunto più avanti nella lista,
+    // creo un clone per non perdere il primo inserimento
+    private Node cloneNode(Node originalNode)
+    {
+        Node cloneNode = new Node(nodes.Count);
+        cloneNode.chapterId = originalNode.chapterId;
+        nodes.Add(cloneNode);
+        cloneNode.Next = originalNode.Next;
+
+        return cloneNode;
+    }
+
+    // Lettura della lista
+    public void scrollNodesList()
+    {
+        head = nodes.FirstOrDefault(n => n.Id == currentNode);
+        print("nodo precedente: (id " + (head.Id + 1) + " [ch " + (head.chapterId + 1) + "], ch " + (head.Next != null ? (head.Next.chapterId + 1) : "null") + ", " + (head.OptionalNext != null ? "id " + (head.OptionalNext.Id + 1) + "[ch " + (head.OptionalNext.chapterId + 1) + "]" : "null") + ")");
+        if (head.OptionalNext != null)
+        {
+            Node prevHead = head;
+            head = head.OptionalNext;
+            prevHead.OptionalNext = null;
+            currentNode = head.Id;
+        }
+        else if(head.Next != null)
+        {
+            Node prevHead = head;
+            head = head.Next;
+            prevHead.OptionalNext = null;
+            currentNode = head.Id;
+        }
+        
+        if(head.chapterId == lastNodeId)
+        {
+            empty = true;
+            UnityEngine.Debug.Log("set empty = " + empty);
+            //UnityEngine.Debug.Log("head id = " + head.Id + " final node id = "+ (lastNodeId));
+        }
+        print("nodo corrente: (id " + (head.Id + 1) + " [ch " + (head.chapterId + 1) + "], ch " + (head.Next != null ? (head.Next.chapterId + 1) : "null") + ", " + (head.OptionalNext != null ? "id " + (head.OptionalNext.Id +1) + "[ch " + (head.OptionalNext.chapterId + 1) + "]" : "null") + ")");
+    }
+
+    private void UpdateList()
+    {
+        // (2) aggiorno l'head ad ogni cambio capitolo
+        if(head.chapterId != chapterNameToIndex[process.Data.Current.Data.Name] || nextChapter)
+        {
+            nextChapter = false;
+            if (waitForChange)
+            {
+                scrollNodesList();
+                OnListScrolled?.Invoke(); ;
+                waitForChange = false;
+            }
+        }
+
+        // (1) aspetto che il capitolo corrente sia == al capitolo del nodo 
+        if (head.chapterId == chapterNameToIndex[process.Data.Current.Data.Name])
+        {
+            waitForChange = true;
+        }
+    }
+    void Update()
+    {
+        if(process.Data.Current != null)
+        {
+            UpdateList();
+        }
+        // per debug, poi chiamerò direttamente AddChapterNow() da un altro script
+        if (addNow) 
+        {
+            AddChapterNow(ChaptersToAdd[0].newChapter);
+            addNow = false;
+            //PrintNodesList();
+        }
+
+        if (removeNow)
+        {
+            RemoveChapter(ChaptersToAdd.Count != 0 ? ChaptersToAdd[0].previousChapter!: "", prevId);
+            removeNow = false;
+            //PrintNodesList();
+            //StartCoroutine("DebugRemove");
+        }
+
+
+    }
+
+    private void PrintNodesList()
+    {
+        foreach (Node node in nodes)
+        {
+            print("( id " + (node.Id + 1) + "[ch  " + (node.chapterId + 1) + "], ch " + (node.Next != null ? (node.Next.chapterId + 1) : "null") + ", id " + (node.OptionalNext != null ? (node.OptionalNext.Id + 1) : "null") + " " + (node.OptionalNext != null ? "[ch " + (node.OptionalNext.chapterId + 1) + "]": "null") + ")");
+        }
+
+    }
+
+    private IEnumerator DebugRemove()
+    {
+        RemoveChapter("Chapter 3");
+        yield return new WaitForSeconds(0.2f);
+        RemoveChapter("Chapter 7 Optional");
+        yield return new WaitForSeconds(1f);
+        RemoveChapter("Chapter 4");
+    }
+}
