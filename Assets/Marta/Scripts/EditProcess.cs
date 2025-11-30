@@ -37,7 +37,7 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         ProcessRunner.Events.StepStarted += OnStepStarted;
-        co_mgr.OnListScrolled += CheckNextChapter;
+        co_mgr.OnListChanged += CheckNextChapter;
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)

@@ -41,7 +41,7 @@ public class ChaptersOrderManager : MonoBehaviour
     public bool removeNow;
     public int prevId;
 
-    public event Action OnListScrolled;
+    public event Action OnListChanged;
 
     public List<string> OptionalChapters { get; private set; } = new List<string>();
     public List<Node> nodes { get; private set; } = new List<Node>();
@@ -186,6 +186,7 @@ public class ChaptersOrderManager : MonoBehaviour
                 prevNode.OptionalNext = clNode;
 
             }
+            OnListChanged?.Invoke();
             print("Aggiunto Capitolo: (id " + (clNode.Id + 1) + " [ch " + (clNode.chapterId + 1) + "], ch " + (clNode.Next != null ? (clNode.Next.chapterId + 1) : "null") + ", " + (clNode.OptionalNext != null ? "id " + (clNode.OptionalNext.Id + 1) + "[ch " + (clNode.OptionalNext.chapterId + 1) + "]" : "null") + ")\n"
               + " Prima di capitolo:  (id " + (prevNode.Id + 1) + " [ch " + (prevNode.chapterId + 1) + "], ch " + (prevNode.Next != null ? (prevNode.Next.chapterId + 1) : "null") + ", " + (prevNode.OptionalNext != null ? "id " + (prevNode.OptionalNext.Id + 1) + "[ch " + (prevNode.OptionalNext.chapterId + 1) + "]" : "null") + ")");
         }
@@ -226,7 +227,7 @@ public class ChaptersOrderManager : MonoBehaviour
             {
                 nodes.Remove(nodeToRemove);
             }
-
+            OnListChanged?.Invoke();
             UnityEngine.Debug.Log("Nodo: " + (nodeToRemove.Id + 1) + "[capitolo " + (nodeToRemove.chapterId + 1) +"] rimosso");
         }
         else
@@ -285,7 +286,7 @@ public class ChaptersOrderManager : MonoBehaviour
             if (waitForChange)
             {
                 scrollNodesList();
-                OnListScrolled?.Invoke(); ;
+                OnListChanged?.Invoke();
                 waitForChange = false;
             }
         }
