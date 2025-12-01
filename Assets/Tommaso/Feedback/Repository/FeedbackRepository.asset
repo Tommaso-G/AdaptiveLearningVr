@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc152c4458038504eb8f1040003bb959, type: 3}
+  m_Name: FeedbackRepository
+  m_EditorClassIdentifier: 
+  chapters:
+  - chapterName: Avvisa personale + vigili del fuco/allarme
+    globale:
+      steps:
+      - stepName: Presentazione Iniziale
+        visivoPrefab: {fileID: 382227347931728081, guid: e34e117c9f1c22845ac236a81196b5ab, type: 3}
+        verbalePrefab: {fileID: 6747696160033113214, guid: ab07f9a2aef3d334c95ab304a37aa0f7, type: 3}
+    sequenziale:
+      steps:
+      - stepName: Avverti personale
+        visivoPrefab: {fileID: 382227347931728081, guid: 40ccdc63c51018943b156f4077889b49, type: 3}
+        verbalePrefab: {fileID: 6747696160033113214, guid: a6635263357d85d4f8d3971162e58310, type: 3}
+      - stepName: Attiva allarme
+        visivoPrefab: {fileID: 382227347931728081, guid: b495956da452d9f4eb81948c0be7993d, type: 3}
+        verbalePrefab: {fileID: 6747696160033113214, guid: 13ac12e8d7b522d4583b593098fb9a5c, type: 3}
+      - stepName: Avverti vigili del fuoco
+        visivoPrefab: {fileID: 382227347931728081, guid: c3cb641ac47fa804bbfdfe4ce1ff576b, type: 3}
+        verbalePrefab: {fileID: 6747696160033113214, guid: aed893b8fc919ca42a0a5134c65a301e, type: 3}

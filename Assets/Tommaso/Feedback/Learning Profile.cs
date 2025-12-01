@@ -2,25 +2,12 @@ using UnityEngine;
 
 public class LearningProfile : MonoBehaviour
 {
-    public enum AttivoRiflessivo { Attivo, Riflessivo }
-    public enum SensitivoIntuitivo { Sensitivo, Intuitivo }
-    public enum VisivoVerbale { Visivo, Verbale }
-    public enum SequenzialeGlobale { Sequenziale, Globale }
-
     [Header("Stile di Apprendimento (FSLSM)")]
 
-    [Tooltip("Attivo = pratico; Riflessivo = teorico")]
-    public AttivoRiflessivo attivoRiflessivo = AttivoRiflessivo.Attivo;
-
-    [Tooltip("Sensitivo = realistico/diegetico; Intuitivo = concettuale/astratto")]
-    public SensitivoIntuitivo sensitivoIntuitivo = SensitivoIntuitivo.Sensitivo;
-
-    [Tooltip("Visivo = immagini/schemi; Verbale = testo/voce")]
-    public VisivoVerbale visivoVerbale = VisivoVerbale.Visivo;
-
-    [Tooltip("Sequenziale = passo-passo; Globale = panoramico")]
-    public SequenzialeGlobale sequenzialeGlobale = SequenzialeGlobale.Sequenziale;
-
+    public LearningEnums.AttivoRiflessivo attivoRiflessivo = LearningEnums.AttivoRiflessivo.Attivo;
+    public LearningEnums.SensitivoIntuitivo sensitivoIntuitivo = LearningEnums.SensitivoIntuitivo.Sensitivo;
+    public LearningEnums.VisivoVerbale visivoVerbale = LearningEnums.VisivoVerbale.Visivo;
+    public LearningEnums.SequenzialeGlobale sequenzialeGlobale = LearningEnums.SequenzialeGlobale.Sequenziale;
 
     [Header("Descrizione")]
     [SerializeField, TextArea(2, 3)]

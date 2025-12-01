@@ -6,14 +6,18 @@ using VRBuilder.Core.Conditions;
 using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
 
+/// <summary>
+/// Condizione VR Builder che verifica se un determinato valore di stile di apprendimento
+/// (tra le 4 dimensioni del modello FSLSM) è presente nel profilo corrente.
+/// </summary>
 [DataContract(IsReference = true)]
 public class LearningStyleCondition : Condition<LearningStyleCondition.EntityData>
 {
     [DataContract(IsReference = true)]
     public class EntityData : IConditionData
     {
-        [DataMember]
         [DisplayName("Valore atteso (verificato su tutte le dimensioni)")]
+        [DataMember]
         public LearningValue expectedValue = LearningValue.Attivo;
 
         [DataMember]
@@ -26,6 +30,10 @@ public class LearningStyleCondition : Condition<LearningStyleCondition.EntityDat
         public string Name => "Verifica valore nello stile di apprendimento";
     }
 
+    /// <summary>
+    /// Valori possibili per la verifica.  
+    /// Corrispondono a quelli definiti in LearningEnums.
+    /// </summary>
     public enum LearningValue
     {
         Attivo,
@@ -38,11 +46,11 @@ public class LearningStyleCondition : Condition<LearningStyleCondition.EntityDat
         Globale
     }
 
-    public override IStageProcess GetActiveProcess()
-    {
-        return new LearningStyleCheckProcess(Data);
-    }
+    public override IStageProcess GetActiveProcess() => new LearningStyleCheckProcess(Data);
 
+    // =====================================================
+    // PROCESSO DI VERIFICA
+    // =====================================================
     private class LearningStyleCheckProcess : StageProcess<EntityData>
     {
         public LearningStyleCheckProcess(EntityData data) : base(data) { }
@@ -63,42 +71,50 @@ public class LearningStyleCondition : Condition<LearningStyleCondition.EntityDat
 
             bool result = false;
 
+            // ✅ Controllo usando LearningEnums
             switch (Data.expectedValue)
             {
                 case LearningValue.Attivo:
-                    result = profile.attivoRiflessivo == LearningProfile.AttivoRiflessivo.Attivo;
+                    result = profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
                     break;
+
                 case LearningValue.Riflessivo:
-                    result = profile.attivoRiflessivo == LearningProfile.AttivoRiflessivo.Riflessivo;
+                    result = profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Riflessivo;
                     break;
+
                 case LearningValue.Sensitivo:
-                    result = profile.sensitivoIntuitivo == LearningProfile.SensitivoIntuitivo.Sensitivo;
+                    result = profile.sensitivoIntuitivo == LearningEnums.SensitivoIntuitivo.Sensitivo;
                     break;
+
                 case LearningValue.Intuitivo:
-                    result = profile.sensitivoIntuitivo == LearningProfile.SensitivoIntuitivo.Intuitivo;
+                    result = profile.sensitivoIntuitivo == LearningEnums.SensitivoIntuitivo.Intuitivo;
                     break;
+
                 case LearningValue.Visivo:
-                    result = profile.visivoVerbale == LearningProfile.VisivoVerbale.Visivo;
+                    result = profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
                     break;
+
                 case LearningValue.Verbale:
-                    result = profile.visivoVerbale == LearningProfile.VisivoVerbale.Verbale;
+                    result = profile.visivoVerbale == LearningEnums.VisivoVerbale.Verbale;
                     break;
+
                 case LearningValue.Sequenziale:
-                    result = profile.sequenzialeGlobale == LearningProfile.SequenzialeGlobale.Sequenziale;
+                    result = profile.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Sequenziale;
                     break;
+
                 case LearningValue.Globale:
-                    result = profile.sequenzialeGlobale == LearningProfile.SequenzialeGlobale.Globale;
+                    result = profile.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale;
                     break;
             }
 
             if (result)
             {
-                Debug.Log($"[LearningStyleCondition] Valore {Data.expectedValue} trovato nel profilo utente.");
+                Debug.Log($"✅ [LearningStyleCondition] Valore '{Data.expectedValue}' trovato nel profilo utente.");
                 Data.IsCompleted = true;
             }
             else
             {
-                Debug.Log($"[LearningStyleCondition] Nessuna corrispondenza per {Data.expectedValue}.");
+                Debug.Log($"❌ [LearningStyleCondition] Nessuna corrispondenza per '{Data.expectedValue}'.");
             }
 
             yield return null;

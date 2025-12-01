@@ -12,10 +12,6 @@ public class DestroyFeedbackBehaviour : Behavior<DestroyFeedbackBehaviour.Entity
     [DataContract(IsReference = true)]
     public class EntityData : IBehaviorData
     {
-        [DisplayName("Feedback Holder (Scene Object)")]
-        [DataMember]
-        public SingleSceneObjectReference feedbackHolder { get; set; } = new SingleSceneObjectReference();
-
         [DataMember]
         public Metadata Metadata { get; set; } = new Metadata();
 
@@ -33,17 +29,11 @@ public class DestroyFeedbackBehaviour : Behavior<DestroyFeedbackBehaviour.Entity
 
         public override void Start()
         {
-            // Trova l’holder
-            if (Data.feedbackHolder.Value == null)
-            {
-                Debug.LogWarning("[DestroyFeedback] Nessun FeedbackSetHolder assegnato.");
-                return;
-            }
-
-            FeedbackSetHolder holder = Data.feedbackHolder.Value.GameObject.GetComponent<FeedbackSetHolder>();
+            // Trova automaticamente il FeedbackSetHolder in scena
+            FeedbackSetHolder holder = Object.FindFirstObjectByType<FeedbackSetHolder>();
             if (holder == null)
             {
-                Debug.LogWarning("[DestroyFeedback] L’oggetto assegnato non contiene un FeedbackSetHolder.");
+                Debug.LogWarning("[DestroyFeedback] Nessun FeedbackSetHolder valido trovato in scena.");
                 return;
             }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FeedbackSetHolder : MonoBehaviour
 {
-    public FeedbackSet set;
+    public FeedbackRepository Repository;
     
     [HideInInspector]
     public GameObject activeFeedbackInstance;
