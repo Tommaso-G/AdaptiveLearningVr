@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ExitDoor : MonoBehaviour
 {
-    [SerializeField] private bool blocked = false;
+    public bool blocked = false;
     private bool selected = false;
     private Rigidbody BlockedRb;
     private Rigidbody secondDoor;
@@ -17,21 +17,32 @@ public class ExitDoor : MonoBehaviour
     private Transform target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         rend = GetComponent<Renderer>();
         secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
         secondDoorRend = secondDoor.gameObject.transform.GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
         mapButton = transform.GetChild(0).GameObject();
+        RectTransform rt = mapButton.GetComponent<RectTransform>();
         target = transform.GetChild(1).transform;
         target.transform.parent = null;
+        Quaternion worldRot = rt.rotation;
+        Vector3 worldPos = rt.position;
+        rt.SetParent(null, true);
+        rt.position = worldPos;
+        rt.rotation = worldRot;
 
         baseColors = new Color[rend.materials.Length];
 
         for (int i = 0; i < rend.materials.Length; i++)
         {
             baseColors[i] = rend.materials[i].color;
+        }
+
+        if (BlockedRb != null)
+        {
+            isBlock(blocked);
         }
     }
 
@@ -43,10 +54,10 @@ public class ExitDoor : MonoBehaviour
             changeColor();
         }
 
-        if(BlockedRb != null)
-        {
-            isBlock(blocked);
-        }
+        //if(BlockedRb != null)
+        //{
+        //    isBlock(blocked);
+        //}
     }
 
     private void changeColor()
@@ -71,18 +82,18 @@ public class ExitDoor : MonoBehaviour
             return;
         }
 
-            for (int i = 0; i < baseColors.Length; i++)
-            {
-                var mat = rend.materials[i];
-                var secondmat = secondDoorRend.materials[i];
-                mat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
-                secondmat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
+        for (int i = 0; i < baseColors.Length; i++)
+        {
+            var mat = rend.materials[i];
+            var secondmat = secondDoorRend.materials[i];
+            mat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
+            secondmat.color = Color.Lerp(baseColors[i], renderColor, 0.5f);
         }
     }
 
     public void Select()
     {
-        if(!blocked)
+        if (!blocked)
         {
             selected = true;
         }
@@ -93,12 +104,16 @@ public class ExitDoor : MonoBehaviour
         selected = false;
     }
 
-    private void isBlock(bool blocked)
+    public void checkState()
+    {
+        isBlock(blocked);
+    }
+    public void isBlock(bool blocked)
     {
         BlockedRb.freezeRotation = blocked ? true : false;
         secondDoor.freezeRotation = blocked ? true : false;
         selected = blocked ? false : selected;
-        mapButton.SetActive(blocked);
+        mapButton.gameObject.GetComponentInChildren<Button>(true).gameObject.SetActive(blocked);
         target.gameObject.SetActive(!blocked);
     }
 }

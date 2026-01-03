@@ -5,10 +5,8 @@ using UnityEngine.VFX;
 
 public class ExtinguisherStream : MonoBehaviour
 {
-    [SerializeField]
-    private Transform ShootingPoint;
-    [SerializeField]
-    private ParticleSystem FoamPS;
+    public Transform ShootingPoint;
+    public ParticleSystem FoamPS;
 
     private bool safetyCatch = false;
     private FireObject fire;
@@ -20,7 +18,7 @@ public class ExtinguisherStream : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -60,10 +58,10 @@ public class ExtinguisherStream : MonoBehaviour
             }
         }
         else if (fire != null) // se non sto colpendo nulla devo comunque mettere fire.isHit = false
-            {
-                fire.isHit = false;
-                fire = null;
-            }
+        {
+            fire.isHit = false;
+            fire = null;
+        }
     }
 
     private void fireSplashRayCast()
@@ -84,12 +82,12 @@ public class ExtinguisherStream : MonoBehaviour
                     lastFireLiquid.isHit = false;
                 }
 
-                lastFireLiquid= fireLiquid;
+                lastFireLiquid = fireLiquid;
             }
             //fire hit + foam shooting
             if (fireLiquid != null && FoamPS.isPlaying)
             {
-                fireLiquid.isHit= true;
+                fireLiquid.isHit = true;
             }
         }
         else if (fireLiquid != null) // se non sto colpendo nulla devo comunque mettere fire.isHit = false
@@ -104,8 +102,9 @@ public class ExtinguisherStream : MonoBehaviour
 
     public void StartFoam()
     {
+        Debug.Log("Chiamato start foam");
         if (!FoamPS.isPlaying && safetyCatch)
-        {   
+        {
             FoamPS.Play();
         }
     }
@@ -118,7 +117,6 @@ public class ExtinguisherStream : MonoBehaviour
 
     public void setSafetyCatch()
     {
-        Debug.Log("SC removed");
         safetyCatch = true;
     }
 }

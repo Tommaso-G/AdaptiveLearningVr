@@ -43,6 +43,10 @@ namespace UnityEngine.XR.Content.Interaction
         [Tooltip("Events to fire when the door is unlocked.")]
         public UnityEvent m_OnUnlock = new UnityEvent();
 
+        [SerializeField]
+        [Tooltip("Events to fire when the door is closed.")]
+        public UnityEvent m_OnClosure = new UnityEvent();
+
         public JointLimits m_OpenDoorLimits;
         public JointLimits m_ClosedDoorLimits;
         public bool m_Closed = false;
@@ -66,6 +70,7 @@ namespace UnityEngine.XR.Content.Interaction
         /// </summary>
         public UnityEvent onUnlock => m_OnUnlock;
 
+        public UnityEvent onClosure => m_OnClosure;
         public virtual void Start()
         {
             m_OpenDoorLimits = m_DoorJoint.limits;
@@ -89,6 +94,7 @@ namespace UnityEngine.XR.Content.Interaction
                 {
                     m_DoorJoint.limits = m_ClosedDoorLimits;
                     m_Closed = true;
+                    m_OnClosure.Invoke();
                 }
             }
 

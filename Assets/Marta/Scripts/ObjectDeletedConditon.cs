@@ -53,7 +53,7 @@ public class ObjectDeletedCondition : Condition<ObjectDeletedCondition.ObjectDel
             foreach (ISceneObject target in Data.Targets.Values)
             {
                 GameObject obj = target.GameObject;
-                UnityEngine.Object.Destroy(obj);
+                obj.SetActive(false);
             }
         }
     }
@@ -62,6 +62,7 @@ public class ObjectDeletedCondition : Condition<ObjectDeletedCondition.ObjectDel
     {
         public override void Start()
         {
+            Data.IsCompleted = false;
         }
 
         public override IEnumerator Update()
@@ -69,7 +70,7 @@ public class ObjectDeletedCondition : Condition<ObjectDeletedCondition.ObjectDel
             // Get the difference between vector pointing down,
             // And the vector that comes out of the "roof" of the target.
             // Then compare it with the threshold from data.
-            while (Data.Targets.Values.Any(obj => obj?.GameObject != null))
+            while (Data.Targets.Values.Any(t => t.GameObject.activeSelf == true))
             {
                 yield return null;
             }

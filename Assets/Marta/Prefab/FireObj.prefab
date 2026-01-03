@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3305537341795558521}
   - component: {fileID: 3609830174517408568}
   - component: {fileID: 6021974372137324398}
+  - component: {fileID: 5405010037679678690}
   - component: {fileID: 6243169770320124235}
   m_Layer: 0
   m_Name: FireObj
@@ -76,6 +77,20 @@ MonoBehaviour:
   maxHealt: 1
   fireDamage: 0
   isHit: 0
+--- !u!114 &5405010037679678690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8468412902575742373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db324f99730cc345adeb0335cf2ebb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnArea: {fileID: 0}
+  spawnVolume: {fileID: 0}
 --- !u!114 &6243169770320124235
 MonoBehaviour:
   m_ObjectHideFlags: 0

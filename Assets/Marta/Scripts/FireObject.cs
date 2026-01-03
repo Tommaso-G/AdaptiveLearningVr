@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 public class FireObject : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class FireObject : MonoBehaviour
     [SerializeField] private float fireHealt = 1f;
     [SerializeField] private float maxHealt = 1f;
     [SerializeField] private float fireDamage;
-    private Vector3 initialScale; 
+    private Vector3 initialScale;
     private bool sizeChanging = false;
     private bool isExtinguishing = false;
     public bool isHit = false;
@@ -38,7 +40,7 @@ public class FireObject : MonoBehaviour
             sizeChanging = true; // evito di chiamare la coroutine di crescita più volte insieme
             StartCoroutine(GrowCoroutine());
         }
-       
+
     }
 
     public void Extinguish()
@@ -59,7 +61,10 @@ public class FireObject : MonoBehaviour
     {
         if (!isHit)
         {
-            fireHealt += 0.1f;
+            if (fireHealt < maxHealt)
+            {
+                fireHealt += 0.1f;
+            }
         }
 
         float scaleFactor = fireHealt / maxHealt;

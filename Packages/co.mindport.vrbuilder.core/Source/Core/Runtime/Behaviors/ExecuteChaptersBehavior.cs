@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using UnityEngine.Scripting;
@@ -39,6 +40,8 @@ namespace VRBuilder.Core.Behaviors
             public List<bool> IsOptionalChapter { get; set; }
 
             [IgnoreDataMember]
+
+            public int addedSubChapter = 0;
             public string Name => "Execute Chapters";
 
             public override IEnumerable<IChapter> GetChildren()
@@ -63,6 +66,35 @@ namespace VRBuilder.Core.Behaviors
 
         public ExecuteChaptersBehavior(IChapter chapter) : this(new List<SubChapter>() { new SubChapter(chapter) })
         {
+        }
+
+        public void AddSubChapterAtRuntime(IChapter chapter, bool isOptional)
+        {
+            SubChapter sc = new SubChapter(chapter, isOptional);
+
+            if (chapter.LifeCycle.Stage == Stage.Activating)
+            {
+                return;
+            }
+
+            if (LifeCycle.Stage == Stage.Activating || LifeCycle.Stage == Stage.Active)
+            {
+                if (chapter.LifeCycle.Stage == Stage.Active)
+                {
+                    chapter.LifeCycle.Deactivate();
+
+                    while (chapter.LifeCycle.Stage != Stage.Inactive)
+                    {
+                        chapter.Update();
+                    }
+
+                    sc.Chapter.LifeCycle.Activate();
+                    return;
+                }
+                sc.Chapter.LifeCycle.Activate();
+                Data.SubChapters.Add(sc);
+                Data.addedSubChapter++;
+            }
         }
 
         private class ActivatingProcess : StageProcess<EntityData>
@@ -142,6 +174,7 @@ namespace VRBuilder.Core.Behaviors
                 {
                     subChapter.Chapter.LifeCycle.Deactivate();
                 }
+
             }
 
             /// <inheritdoc />
@@ -176,6 +209,11 @@ namespace VRBuilder.Core.Behaviors
             /// <inheritdoc />
             public override void End()
             {
+                for (int i = 0; i < Data.addedSubChapter; i++)
+                {
+                    UnityEngine.Debug.Log("Removed added subchapter: " + Data.SubChapters[^1].Chapter.Data.Name);
+                    Data.SubChapters.Remove(Data.SubChapters[^1]);
+                }
             }
 
             /// <inheritdoc />

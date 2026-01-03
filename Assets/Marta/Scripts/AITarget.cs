@@ -10,25 +10,26 @@ public class AITarget : MonoBehaviour
     private Animator m_Animator;
     [SerializeField] private float m_Distance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
-        m_Agent = GetComponent<NavMeshAgent>(); 
-        m_Animator = GetComponentInChildren<Animator>();
+        m_Agent = GetComponent<NavMeshAgent>();
+        m_Animator = GetComponentInChildren<Animator>(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Target != null)
+        if (Target == null)
+            return;
+
+        if (Vector3.Distance(m_Agent.transform.position, Target.position) < m_Distance)
         {
-            if (Vector3.Distance(m_Agent.transform.position, Target.position) < m_Distance)
-            {
-                resetTarget();
-            }
-            else
-            {
-                m_Agent.destination = Target.position;
-            }
+            resetTarget();
+        }
+        else
+        {
+            m_Agent.SetDestination(Target.position);
         }
 
     }
@@ -45,12 +46,13 @@ public class AITarget : MonoBehaviour
     public void resetTarget()
     {
         Target = null;
+        m_Agent.ResetPath();
         m_Animator.SetBool("GoToRun", false);
     }
 
     private void OnAnimatorMove()
     {
-        if(m_Animator.GetBool("GoToRun") == true)
+        if (m_Animator.GetBool("GoToRun") == true)
         {
             m_Agent.speed = (m_Animator.deltaPosition / Time.deltaTime).magnitude;
         }
