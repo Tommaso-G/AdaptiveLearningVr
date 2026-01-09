@@ -7,7 +7,7 @@ namespace UnityEngine.XR.Content.Interaction
 {
     public class ClosableDoor : Door
     {
-
+       
         public bool IsClosed => m_Closed;
 
 
@@ -22,7 +22,7 @@ namespace UnityEngine.XR.Content.Interaction
             m_DoorJoint.limits = m_OpenDoorLimits;
 
 
-
+            
             m_Closed = false;
         }
 
@@ -44,7 +44,7 @@ namespace UnityEngine.XR.Content.Interaction
                 {
                     m_DoorJoint.limits = m_ClosedDoorLimits;
                     m_Closed = true;
-                    m_OnClosure.Invoke();
+
 
                 }
             }

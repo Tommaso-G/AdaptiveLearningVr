@@ -40,45 +40,52 @@ namespace UnityEngine.XR.Content.Interaction
             m_OriginalRotation = transform.rotation;
         }
 
-protected override void OnSelectEntered(SelectEnterEventArgs args)
-{
-    base.OnSelectEntered(args);
-
-    if (!grabbingHands.Contains(args.interactorObject))
-        grabbingHands.Add(args.interactorObject);
-
-    IsGrabbed = grabbingHands.Count > 0;
-
-    if (grabbingHands.Count == 1)
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        attachTransform ??= transform; // se non impostato, usa il proprio transform
-        m_InitialY = transform.position.y;
-        m_InitialRotX = transform.localEulerAngles.x;
-    }
-    else if (grabbingHands.Count == 2)
-    {
-        if (secondaryAttachTransform != null)
-            attachTransform = secondaryAttachTransform;
-        else
-            attachTransform = grabbingHands[1].transform; // fallback: attach della seconda mano
-    }
-}
+        base.OnSelectEntered(args);
 
+        if (!grabbingHands.Contains(args.interactorObject))
+            grabbingHands.Add(args.interactorObject);
 
-        protected override void OnSelectExited(SelectExitEventArgs args)
+        IsGrabbed = grabbingHands.Count > 0;
+
+        if (grabbingHands.Count == 1)
         {
-            base.OnSelectExited(args);
-            grabbingHands.Remove(args.interactorObject);
-            IsGrabbed = grabbingHands.Count > 0;
+            // Disattiva il tracking XR per gestire manualmente la posizione e rotazione
+            trackPosition = false;
+            trackRotation = false;
+            movementType = MovementType.Instantaneous;
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+                rb.isKinematic = true; // Evita che la fisica interferisca
 
-            if (grabbingHands.Count == 0)
-            {
-
-                // Mantiene la posizione dove lasci l’oggetto ma resetta le variabili
-                m_InitialY = transform.position.y;
-                m_InitialRotX = transform.localEulerAngles.x;
-            }
+            attachTransform ??= transform;
+            m_InitialY = transform.position.y;
+            m_InitialRotX = transform.localEulerAngles.x;
         }
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+        grabbingHands.Remove(args.interactorObject);
+        IsGrabbed = grabbingHands.Count > 0;
+
+        if (grabbingHands.Count == 0)
+        {
+            // Riabilita la fisica solo quando non è più grabbato
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+                rb.isKinematic = false;
+
+            // Reimposta il tracking XR (opzionale, se vuoi che torni comportarsi normalmente)
+            trackPosition = true;
+            trackRotation = true;
+
+            m_InitialY = transform.position.y;
+            m_InitialRotX = transform.localEulerAngles.x;
+        }
+    }
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
@@ -132,13 +139,12 @@ protected override void OnSelectEntered(SelectEnterEventArgs args)
             if (mainCam == null)
                 return;
 
-            // Calcola posizione davanti al visore
+            // Posizione leggermente davanti al visore
             Vector3 targetPos = mainCam.transform.position + mainCam.transform.forward * grabDistance;
 
-            // Mantiene altezza iniziale (non sale)
-            targetPos.y = m_InitialY;
-
+            // Nessun blocco sull'asse Y, resta centrato davanti agli occhi
             transform.position = targetPos;
         }
+
     }
 }

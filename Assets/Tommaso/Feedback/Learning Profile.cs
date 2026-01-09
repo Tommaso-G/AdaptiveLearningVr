@@ -9,17 +9,32 @@ public class LearningProfile : MonoBehaviour
     public LearningEnums.VisivoVerbale visivoVerbale = LearningEnums.VisivoVerbale.Visivo;
     public LearningEnums.SequenzialeGlobale sequenzialeGlobale = LearningEnums.SequenzialeGlobale.Sequenziale;
 
-    [Header("Descrizione")]
-    [SerializeField, TextArea(2, 3)]
-    private string descrizioneCorrente;
+    [Header("Comportamenti associati")]
 
-    private void OnValidate()
+    public LearningStyleFeatures riflessivoFeatures;
+
+    public LearningStyleFeatures attivoFeatures;
+    
+
+    public (LearningEnums.AttivoRiflessivo attivoRiflessivo,
+            LearningEnums.SensitivoIntuitivo sensitivoIntuitivo,
+            LearningEnums.VisivoVerbale visivoVerbale,
+            LearningEnums.SequenzialeGlobale sequenzialeGlobale)
+        GetProfileTuple()
     {
-        descrizioneCorrente =
-            $"Profilo attuale:\n" +
-            $"{attivoRiflessivo}, " +
-            $"{sensitivoIntuitivo}, " +
-            $"{visivoVerbale}, " +
-            $"{sequenzialeGlobale}";
+        return (attivoRiflessivo, sensitivoIntuitivo, visivoVerbale, sequenzialeGlobale);
     }
+
+    public LearningStyleFeatures GetCurrentBehaviour()
+    {
+        switch (attivoRiflessivo)
+        {
+            case LearningEnums.AttivoRiflessivo.Riflessivo:
+                return riflessivoFeatures;
+            case LearningEnums.AttivoRiflessivo.Attivo:
+            default:
+                return attivoFeatures;
+        }
+    }
+
 }
