@@ -26,6 +26,7 @@ public class ExecutionOrderController : MonoBehaviour
     private Camera camera;
     private int ParallelStepIndex;
     private List<IChapter> subch;
+    private GameObject prevObj;
     [SerializeField] private Canvas lockedUI;
     [SerializeField] private List<GameObject> optionalSubChapterObjs;
     [SerializeField] private List<ParallelStep> parallelStepObjs;
@@ -48,6 +49,7 @@ public class ExecutionOrderController : MonoBehaviour
         ProcessRunner.Events.StepStarted += OnStepStarted;
         //ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         co_mgr.OnSubChapterAdded += UpdateParallelStepObjs;
+        prevObj = null;
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
@@ -344,6 +346,14 @@ public class ExecutionOrderController : MonoBehaviour
     private void DifferentStepWarningHighlight(GameObject go)
     {
         Debug.Log($"Oggetto interagito: {go.name}");
+
+        if (go == prevObj)
+        {
+            return;
+        }
+
+        prevObj = go;
+
         Renderer[] renderers = go.GetComponentsInChildren<Renderer>();
 
         //if (renderers == null)
@@ -403,6 +413,8 @@ public class ExecutionOrderController : MonoBehaviour
         {
             renderers[i].materials = orgMaterials[i];
         }
+
+        prevObj = null;
     }
 
     private void DifferentStepWarningUI(GameObject go)

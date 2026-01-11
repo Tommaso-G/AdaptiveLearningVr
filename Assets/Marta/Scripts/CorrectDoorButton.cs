@@ -34,6 +34,7 @@ public class CorrectDoorButton : MonoBehaviour
     private NavMeshAgent childAgent;
     private bool cliked = false;
     private bool setting = false;
+    private Collider currentUITrigger;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,20 +43,20 @@ public class CorrectDoorButton : MonoBehaviour
         SpawnableObj.onSpawnAreaChange += UpdateAreaIcon;
         spawnPlaneGrid = new List<GameObject>();
         setBlockedDoor();
-
     }
 
-    public void CallCorrectButton(MapButton button)
+    public void CallCorrectButton(ExitDoor door)
     {
         resultImage.gameObject.SetActive(false);
         cliked = false;
-        currentBlockedDoor = button.ExitDoor.transform;
+        currentBlockedDoor = door.transform;
+        currentUITrigger = door.triggerUICollider;
         calculateCorrectButton();
     }
 
     private void calculateCorrectButton()
     {
-        if(currentBlockedDoor == null)
+        if (currentBlockedDoor == null)
         {
             return;
         }
@@ -66,7 +67,7 @@ public class CorrectDoorButton : MonoBehaviour
         float minSqrDistance = float.MaxValue;
 
         foreach (MapButton b in mapButtons)
-        {   
+        {
             Transform otherTransform = b.ExitDoor.transform;
             Image[] imageToSet = b.GetComponentsInChildren<Image>(true);
             imageToSet[1].gameObject.SetActive(false);
@@ -111,7 +112,7 @@ public class CorrectDoorButton : MonoBehaviour
     {
         if (!cliked)
         {
-            if(button.ExitDoor.transform == currentBlockedDoor)
+            if (button.ExitDoor.transform == currentBlockedDoor)
             {
                 return;
             }
@@ -126,14 +127,15 @@ public class CorrectDoorButton : MonoBehaviour
             }
 
             resultImage.gameObject.SetActive(true);
+            currentUITrigger.enabled = false;
             cliked = true;
         }
-        
+
     }
 
     private void setBlockedDoor()
     {
-        foreach(MapButton b in mapButtons)
+        foreach (MapButton b in mapButtons)
         {
             ExitDoor door = b.ExitDoor;
             door.Deselect();
@@ -142,8 +144,9 @@ public class CorrectDoorButton : MonoBehaviour
             if (blocked)
             {
                 print(b.gameObject.name);
+                b.ExitDoor.triggerUICollider.enabled = true;
                 AITarget aiTarget = childAgent.GetComponent<AITarget>();
-                if(!aiTarget.gameObject.activeSelf)
+                if (!aiTarget.gameObject.activeSelf)
                 {
                     aiTarget.gameObject.SetActive(true);
                 }

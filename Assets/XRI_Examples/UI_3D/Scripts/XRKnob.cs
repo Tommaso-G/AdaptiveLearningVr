@@ -189,6 +189,9 @@ namespace UnityEngine.XR.Content.Interaction
             set => m_PositionTrackedRadius = value;
         }
 
+        [SerializeField]
+        private Transform[] grabPoints;
+
         /// <summary>
         /// Events to trigger when the knob is rotated
         /// </summary>
@@ -381,6 +384,31 @@ namespace UnityEngine.XR.Content.Interaction
 
             return angleDelta * angleSign;
         }
+
+        public override Transform GetAttachTransform(IXRInteractor interactor)
+        {
+            if (grabPoints == null || grabPoints.Length == 0)
+                return base.GetAttachTransform(interactor);
+
+            Transform interactorTransform = interactor.GetAttachTransform(this);
+
+            Transform closest = grabPoints[0];
+            float minDist = Vector3.Distance(interactorTransform.position, closest.position);
+
+            for (int i = 1; i < grabPoints.Length; i++)
+            {
+                float d = Vector3.Distance(interactorTransform.position, grabPoints[i].position);
+                if (d < minDist)
+                {
+                    minDist = d;
+                    closest = grabPoints[i];
+                }
+            }
+
+            return closest;
+        }
+
+
 
         void OnDrawGizmosSelected()
         {

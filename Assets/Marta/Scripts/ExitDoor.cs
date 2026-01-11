@@ -1,11 +1,15 @@
+using NUnit.Framework;
 using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.UI.BodyUI;
 public class ExitDoor : MonoBehaviour
 {
     public bool blocked = false;
+    public Collider triggerUICollider;
+    public CorrectDoorButton correctDoorButton;
     private bool selected = false;
     private Rigidbody BlockedRb;
     private Rigidbody secondDoor;
@@ -23,15 +27,8 @@ public class ExitDoor : MonoBehaviour
         secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
         secondDoorRend = secondDoor.gameObject.transform.GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
-        mapButton = transform.GetChild(0).GameObject();
-        RectTransform rt = mapButton.GetComponent<RectTransform>();
-        target = transform.GetChild(1).transform;
+        target = transform.GetChild(0).transform;
         target.transform.parent = null;
-        Quaternion worldRot = rt.rotation;
-        Vector3 worldPos = rt.position;
-        rt.SetParent(null, true);
-        rt.position = worldPos;
-        rt.rotation = worldRot;
 
         baseColors = new Color[rend.materials.Length];
 
@@ -113,7 +110,24 @@ public class ExitDoor : MonoBehaviour
         BlockedRb.freezeRotation = blocked ? true : false;
         secondDoor.freezeRotation = blocked ? true : false;
         selected = blocked ? false : selected;
-        mapButton.gameObject.GetComponentInChildren<Button>(true).gameObject.SetActive(blocked);
         target.gameObject.SetActive(!blocked);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            HandMenu.OnOpenPanel?.Invoke("Mappa Vie Di Fuga", true);
+            correctDoorButton.CallCorrectButton(this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            HandMenu.OnOpenPanel?.Invoke("Mappa Vie Di Fuga", false);
+        }
+    }
+
 }
