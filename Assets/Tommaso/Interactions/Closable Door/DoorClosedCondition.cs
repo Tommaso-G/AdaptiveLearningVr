@@ -56,48 +56,66 @@ public class DoorClosed: Condition<DoorClosed.DoorClosedData>
        }
    }
    
-   public class DoorClosedActiveProcess : StageProcess<DoorClosedData>
+    public class DoorClosedActiveProcess : StageProcess<DoorClosedData>
     {
-       private ClosableDoor doorScript;
-       public override void Start()
+        private ClosableDoor doorScript;
+        private Collider corridorCollider;
+        private Camera mainCamera;
+
+        public override void Start()
         {
             doorScript = Data.Target.Value.GameObject.GetComponent<ClosableDoor>();
+            mainCamera = Camera.main;
 
             if (doorScript == null)
             {
-                Debug.LogWarning($"[Doorcondition] L'oggetto '{Data.Target.Value.GameObject.name}' non ha un componente Door!");
+                Debug.LogWarning($"[DoorCondition] L'oggetto '{Data.Target.Value.GameObject.name}' non ha un componente ClosableDoor!");
+            }
+
+            // Trova il collider del corridoio
+            GameObject corridorObject = GameObject.Find("Corridoio");
+            if (corridorObject != null)
+            {
+                corridorCollider = corridorObject.GetComponent<Collider>();
+                if (corridorCollider == null)
+                    Debug.LogWarning("[DoorCondition] L'oggetto 'corridoio' non ha un Collider!");
+            }
+            else
+            {
+                Debug.LogWarning("[DoorCondition] Nessun oggetto chiamato 'corridoio' trovato nella scena!");
             }
         }
 
-       public override IEnumerator Update()
-       {
-           // Get the difference between vector pointing down,
-           // And the vector that comes out of the "roof" of the target.
-           // Then compare it with the threshold from data.
-            while (doorScript != null && !doorScript.IsClosed)
+        public override IEnumerator Update()
+        {
+            // Continua finché la porta non è chiusa o la camera non è nel corridoio
+            while (!IsConditionSatisfied())
             {
                 yield return null;
             }
 
-        // Una volta afferrato, segna la condizione come completata
+            // Quando entrambe le condizioni sono vere
             Data.IsCompleted = true;
-       }
+        }
 
-       public override void End()
-       {
-       }
+        private bool IsConditionSatisfied()
+        {
+            if (doorScript == null || mainCamera == null || corridorCollider == null)
+                return false;
 
-       // Nothing to fast-forward.
-       // We will explain it soon.
-       public override void FastForward()
-       {
-       }
+            bool doorClosed = doorScript.IsClosed;
+            bool cameraInsideCorridor = corridorCollider.bounds.Contains(mainCamera.transform.position);
 
-       // Declare the constructor. It calls the base method to bind the data object with the process.
-       public DoorClosedActiveProcess(DoorClosedData data) : base(data)
-       {
-       }
-   }
+            return doorClosed && cameraInsideCorridor;
+        }
+
+        public override void End() { }
+
+        public override void FastForward() { }
+
+        public DoorClosedActiveProcess(DoorClosedData data) : base(data) { }
+    }
+
 
    public DoorClosed()
    {
