@@ -171,19 +171,23 @@ public class HandMenu : MonoBehaviour
         dotShowThreshold = Mathf.Cos((90f - UIshowAngle) * Mathf.Deg2Rad);
         dotHideThreshold = Mathf.Cos((90f - UIhideAngle) * Mathf.Deg2Rad);
 
-        Vector3 controllerForword = controller.transform.forward;
+        Vector3 controllerForward = controller.transform.forward;
         Vector3 headForward = Camera.main.transform.forward;
+        Vector3 headRight = Camera.main.transform.right;
 
-        float dot = Vector3.Dot(controllerForword.normalized, -headForward.normalized);
+        float dot = Vector3.Dot(controllerForward.normalized, -headForward.normalized);
 
         float upDot = Vector3.Dot(controller.transform.up.normalized, Vector3.up);
 
-        if (!isVisible && Mathf.Abs(dot) < dotShowThreshold && upDot > upThreshold)
+        float sideDot = Vector3.Dot(controllerForward, headRight);
+
+
+        if (!isVisible && dot < dotShowThreshold && sideDot > 0f && upDot > upThreshold)
         {
             isVisible = true;
             ShowUI();
         }
-        else if (isVisible && (Mathf.Abs(dot) > dotHideThreshold || upDot < upThreshold))
+        else if (isVisible && (Mathf.Abs(dot) > dotHideThreshold || upDot < upThreshold || sideDot < 0f))
         {
             isVisible = false;
             HideUI();
