@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public class Teacher : MonoBehaviour
@@ -50,7 +49,7 @@ public class Teacher : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Input non valido, non è un numero!");
+            Debug.LogWarning("Input non valido, non ï¿½ un numero!");
         }
     }
 
@@ -65,7 +64,7 @@ public class Teacher : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Input non valido, non è un numero!");
+            Debug.LogWarning("Input non valido, non ï¿½ un numero!");
         }
     }
 
@@ -80,7 +79,7 @@ public class Teacher : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Input non valido, non è un numero!");
+            Debug.LogWarning("Input non valido, non ï¿½ un numero!");
         }
     }
 

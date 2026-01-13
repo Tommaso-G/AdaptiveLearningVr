@@ -11,7 +11,7 @@ using static UnityEngine.Rendering.GPUSort;
 using JetBrains.Annotations;
 using UnityEngine.Rendering;
 using VRBuilder.Core.Behaviors;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+
 
 public enum AddChapter
 {
@@ -50,7 +50,7 @@ public class EditProcess : MonoBehaviour
     {
         UnityEngine.Debug.Log("Capitolo iniziato: " + args.Process.Data.Current.Data.Name);
 
-        // se il capitolo è opzionale e non stai aggiungendo capitoli, saltalo
+        // se il capitolo ï¿½ opzionale e non stai aggiungendo capitoli, saltalo
         if (args.Process.Data.Current.Data.Name.Contains("Optional") && addChapter != AddChapter.Attivo)
         {
             UnityEngine.Debug.Log("Capitolo opzionale");
@@ -102,7 +102,7 @@ public class EditProcess : MonoBehaviour
     {
         if (process != null && co_mgr != null)
         {
-            if (co_mgr.empty) // empty è vero quando leggo l'ultimo nodo
+            if (co_mgr.empty) // empty ï¿½ vero quando leggo l'ultimo nodo
             {
                 addChapter = AddChapter.Completato;
                 ProcessRunner.SkipChapters(currentNode.chapterId);
