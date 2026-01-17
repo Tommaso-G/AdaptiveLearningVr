@@ -15,7 +15,7 @@ public class CorrectDoorButton : MonoBehaviour
     private MapButton[] mapButtons;
     private Transform currentBlockedDoor;
     [SerializeField]
-    private List<GameObject> spawnPlaneGrid;
+    private List<SpawnArea> spawnPlaneGrid;
     [SerializeField]
     private Image resultImage;
     [SerializeField]
@@ -40,8 +40,8 @@ public class CorrectDoorButton : MonoBehaviour
     void Start()
     {
         mapButtons = FindObjectsByType<MapButton>(FindObjectsInactive.Include, FindObjectsSortMode.None).Where(b => b.selectableDoor).ToArray();
-        SpawnableObj.onSpawnAreaChange += UpdateAreaIcon;
-        spawnPlaneGrid = new List<GameObject>();
+        SpawnArea.onSpawnAreaChange += UpdateAreaIcon;
+        spawnPlaneGrid = new List<SpawnArea>();
         setBlockedDoor();
     }
 
@@ -84,7 +84,7 @@ public class CorrectDoorButton : MonoBehaviour
                 imageToSet[0].sprite = unlokedImage;
             }
 
-            if (spawnPlaneGrid.Contains(b.obstacleSpawnArea.gameObject))
+            if (spawnPlaneGrid.Contains(b.obstacleSpawnArea.GetComponent<SpawnArea>()))
             {
                 imageToSet[1].sprite = alertImage;
                 imageToSet[1].gameObject.SetActive(true);
@@ -160,7 +160,7 @@ public class CorrectDoorButton : MonoBehaviour
         setting = false;
     }
 
-    private void UpdateAreaIcon(GameObject spawnArea, bool occupied)
+    private void UpdateAreaIcon(SpawnArea spawnArea, bool occupied)
     {
         if (occupied)
         {
@@ -185,6 +185,6 @@ public class CorrectDoorButton : MonoBehaviour
 
     private void OnDestroy()
     {
-        SpawnableObj.onSpawnAreaChange -= UpdateAreaIcon;
+        SpawnArea.onSpawnAreaChange -= UpdateAreaIcon;
     }
 }

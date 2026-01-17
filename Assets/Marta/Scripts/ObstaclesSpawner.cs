@@ -4,111 +4,78 @@ using System.Collections.Generic;
 using System.Linq;
 using VRBuilder.Core;
 using UnityEngine.Localization.Settings;
-
+using UnityEditor.Search;
 using System;
+using System.Collections;
 
 public class ObstaclesSpawner : MonoBehaviour
 {
-    [Header("Spawn settings")]
-    public GameObject objToSpawn;
-    public GameObject smokeToSpawn;
-    public List<GameObject> spawnPlaneGrid;
-    public float spawnChance;
-    public float spawnRadius = 1.2f;
-    public int maxAttemps = 100;
-    public Transform safeSpawnPoints;
-    public bool smoke;
+    [Header("Spawnables")]
+    [SerializeField] private GameObject spawnablePrefab;
+    public List<SpawnArea> currentSpawnAreas = new List<SpawnArea>();
+    private List<SpawnArea> spawnAreas;
 
-    [Header("Raycast setup")]
-    public float distanceBetweenCheck;
-    public float heightOfCheck = 10f, rangeOfCheck = 30f;
-    public LayerMask layerMask;
-    public LayerMask obstacleMask;
-    public Vector2 positivePosition, negativePosition;
+    [Header("Spawn Settings")]
+    [SerializeField] private int maxAttemps = 100;
+    [SerializeField] private float spawnRadius = 1.2f;
+    [SerializeField] private float heightOfCheck = 10f;
+    [SerializeField] private float rangeOfCheck = 30f;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LayerMask obstacleMask;
 
-    private Transform childEmpty;
+    [SerializeField] private Transform childEmpty;
     private SpawnableObj spawnableObj;
+    private bool reset = true;
     private void Start()
     {
-        smoke = false;
-        spawnableObj = objToSpawn.GetComponent<SpawnableObj>();
-        SpawnableObj.onSpawnAreaChange += StopSmoke;
-        childEmpty = GetComponentsInChildren<Transform>().FirstOrDefault(t => t != transform);
+        spawnableObj = spawnablePrefab.GetComponent<SpawnableObj>();
         if (childEmpty != null)
         {
             childEmpty.gameObject.SetActive(true);
         }
-        else
-        {
-            Debug.Log("childEmpty non trovato");
-        }
     }
     private void initializeSpawn()
     {
+        spawnAreas = new List<SpawnArea>(currentSpawnAreas);
         childEmpty.gameObject.SetActive(true);
-        foreach (GameObject spawnPlane in spawnPlaneGrid)
+        foreach (SpawnArea spawnArea in spawnAreas)
         {
-            safeSpawnPoints = spawnPlane.GetComponentsInChildren<Transform>().FirstOrDefault(t => t != spawnPlane.transform);
-            getSpawnAreaLimits(spawnPlane);
-            SpawnResources(spawnPlane, smoke);
-        }
-    }
-
-    private void getSpawnAreaLimits(GameObject spawnPlane)
-    {
-        Mesh mesh = spawnPlane.GetComponent<MeshFilter>().mesh;
-        Vector3[] localVertices = mesh.vertices;
-
-        Vector3 worldPos = spawnPlane.transform.TransformPoint(localVertices[0]);
-        Vector2 Upperlimit = new Vector2 (worldPos.x, worldPos.z);
-        Vector2 Lowerlimit = new Vector2(worldPos.x, worldPos.z);
-
-        for (int i = 1; i < localVertices.Length; i++)
-        {
-            worldPos = spawnPlane.transform.TransformPoint(localVertices[i]);
-
-            Upperlimit.x = Mathf.Max(Upperlimit.x, worldPos.x);
-            Upperlimit.y = Mathf.Max(Upperlimit.y, worldPos.z);
-
-            Lowerlimit.x = Mathf.Min(Lowerlimit.x, worldPos.x);
-            Lowerlimit.y = Mathf.Min(Lowerlimit.y, worldPos.z);
+            SpawnResources(spawnArea);
         }
 
-        positivePosition.x = Upperlimit.x;
-        positivePosition.y = Upperlimit.y;
-
-        negativePosition.x = Lowerlimit.x;
-        negativePosition.y = Lowerlimit.y;
-
+        reset = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && !reset)
         {
-            DeleteResources();
+            ResetSpawner();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && reset)
+        {
             initializeSpawn();
         }
 
-        if(childEmpty?.childCount == 0)
+        if (childEmpty?.childCount == 0)
         {
             childEmpty.gameObject.SetActive(false);
         }
     }
 
-    void SpawnResources(GameObject spawnPlane, bool smoke = false)
+    void SpawnResources(SpawnArea spawnArea)
     {
         bool spawned = false;
         for (int attempts = 0; attempts < maxAttemps; attempts++)
         {
-            float x = UnityEngine.Random.Range(negativePosition.x, positivePosition.x);
-            float z = UnityEngine.Random.Range(negativePosition.y, positivePosition.y);
+            Vector2 bounds = spawnArea.GetRandomPoint();
             RaycastHit hit;
-            if (Physics.Raycast(new Vector3(x, heightOfCheck, z), Vector3.down, out hit, rangeOfCheck, layerMask))
+            if (Physics.Raycast(new Vector3(bounds.x, heightOfCheck, bounds.y), Vector3.down, out hit, rangeOfCheck, layerMask))
             {
                 if (IsSpaceFree(hit.point, spawnRadius, obstacleMask))
                 {
-                    spawnableObj.Instantiate(objToSpawn, spawnPlane, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform);
+                    spawnableObj.Instantiate(spawnablePrefab, spawnArea, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform);
                     spawned = true;
                     Debug.Log("Trovato punto random dopo " + attempts + " tentativi");
                     break;
@@ -118,13 +85,7 @@ public class ObstaclesSpawner : MonoBehaviour
 
         if (!spawned)
         {
-            spawnableObj.Instantiate(objToSpawn, spawnPlane, new Vector3(safeSpawnPoints.position.x, safeSpawnPoints.position.y + 0.5f, safeSpawnPoints.position.z), Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform);
-        }
-
-        if (smoke)
-        {
-            spawnableObj.Instantiate(smokeToSpawn, spawnPlane,Vector3.zero, Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform, spawnPlane.GetComponent<BoxCollider>());
-            //spawnPlane.GetComponentInChildren<ParticleSystem>()?.Play();
+            spawnableObj.Instantiate(spawnablePrefab, spawnArea, new Vector3(spawnArea.SafePoint.x, spawnArea.SafePoint.y + 0.5f, spawnArea.SafePoint.z), Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform);
         }
     }
 
@@ -133,19 +94,13 @@ public class ObstaclesSpawner : MonoBehaviour
         return Physics.OverlapSphere(position, radius, mask).Length == 0;
     }
 
-    private void StopSmoke(GameObject spawnArea, bool occupied)
-    {
-        if (!occupied)
-        {
-            spawnArea.GetComponentInChildren<ParticleSystem>()?.Stop();
-        }
-    }
-
-    void DeleteResources()
+    void ResetSpawner()
     {
         for (int i = childEmpty.childCount - 1; i >= 0; i--)
         {
             Destroy(childEmpty.GetChild(i).gameObject);
         }
-    } 
+
+        reset = true;
+    }
 }
