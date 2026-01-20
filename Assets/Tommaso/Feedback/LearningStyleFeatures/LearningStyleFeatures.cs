@@ -7,4 +7,8 @@ public abstract class LearningStyleFeatures : ScriptableObject
     public abstract void OnFeedbackClosed(FeedbackPrefabController feedback);
     public abstract void OnStepActivated(IStep step);
     public abstract void OnStepCompleted(IStep step);
+    public abstract void EnableFeature();
+    public abstract void DisableFeature();
+    public abstract void resetVariables();
+    
 }

@@ -1,18 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI; // per il componente Button
-using Unity.VisualScripting;
+
 
 public class FeedbackPrefabController : MonoBehaviour
 {
     [Header("Parametri generali (configurabili da Inspector)")]
     public GameObject waypointPrefab;
-    public float activationDistance = 2f;
+    public float activationDistance = 1f;
     public float scaleSpeed = 3f;
     public float maxScale = 0.004f;
-
-    [HideInInspector]
-    public bool WasClicked = false;
 
     private LearningStyleFeatures styleBehaviour;
     private LearningProfile profile;
@@ -22,7 +19,9 @@ public class FeedbackPrefabController : MonoBehaviour
     private Coroutine scaleRoutine;
     private bool isVisible = false;
 
-    public Button reflectiveButton; // bottone per profilo riflessivo
+    public Button reflectiveButtonActivate;
+
+    public Button reflectiveButtonDeactivate;
 
     private void Start()
     {
@@ -38,7 +37,7 @@ public class FeedbackPrefabController : MonoBehaviour
             // Se il profilo è Riflessivo → cerca e attiva il bottone
             if (styleBehaviour is RiflessivoFeatures)
             {
-                ActivateReflectiveButton();
+                HandleReflectiveButtons();
             }
         }
 
@@ -52,25 +51,49 @@ public class FeedbackPrefabController : MonoBehaviour
 
         // Imposta stato iniziale
         transform.localScale = Vector3.zero;
-
+        styleBehaviour?.resetVariables();
         // Avvia controllo distanza
         StartCoroutine(CheckDistanceRoutine());
+
+        
     }
 
-    private void ActivateReflectiveButton()
+    private void HandleReflectiveButtons()
     {
-
-        if (reflectiveButton != null)
+        if (reflectiveButtonActivate != null && reflectiveButtonDeactivate != null)
         {
-            reflectiveButton.gameObject.SetActive(true);
-            reflectiveButton.onClick.RemoveAllListeners();
-            reflectiveButton.onClick.AddListener(OnClicked);
+            // Stato iniziale: mostra solo A
+            reflectiveButtonActivate.gameObject.SetActive(false);
+            reflectiveButtonDeactivate.gameObject.SetActive(true);
 
-            Debug.Log($"[FeedbackPrefabController] Bottone riflessivo attivato per '{name}'.");
+            // Rimuove listener vecchi e aggiunge i nuovi
+            reflectiveButtonActivate.onClick.RemoveAllListeners();
+            reflectiveButtonDeactivate.onClick.RemoveAllListeners();
+
+            // Quando clicchi A → mostra B e nasconde A, 
+            reflectiveButtonActivate.onClick.AddListener(() =>
+            {
+                reflectiveButtonActivate.gameObject.SetActive(false);
+                reflectiveButtonDeactivate.gameObject.SetActive(true);
+                Debug.Log("[FeedbackPrefabController] Bottone A cliccato, mostra B.");
+                styleBehaviour?.EnableFeature();
+                
+            });
+
+            // Quando clicchi B → mostra A e nasconde B
+            reflectiveButtonDeactivate.onClick.AddListener(() =>
+            {
+                reflectiveButtonDeactivate.gameObject.SetActive(false);
+                reflectiveButtonActivate.gameObject.SetActive(true);
+                styleBehaviour?.DisableFeature();
+                Debug.Log("[FeedbackPrefabController] Bottone B cliccato, mostra A.");
+            });
+
+            Debug.Log($"[FeedbackPrefabController] Bottoni riflessivi attivati per '{name}'.");
         }
         else
         {
-            Debug.LogWarning($"[FeedbackPrefabController] Nessun bottone trovato in '{name}' per il profilo riflessivo.");
+            Debug.LogWarning($"[FeedbackPrefabController] Mancano uno o entrambi i bottoni riflessivi in '{name}'.");
         }
     }
 
@@ -135,6 +158,7 @@ public class FeedbackPrefabController : MonoBehaviour
         StartCoroutine(DestroyAfterClose());
 
         styleBehaviour?.OnFeedbackClosed(this);
+
     }
 
     private IEnumerator DestroyAfterClose()
@@ -143,16 +167,9 @@ public class FeedbackPrefabController : MonoBehaviour
             yield return null;
 
         Destroy(gameObject);
+    
     }
 
-    public void OnClicked()
-    {
-        if (WasClicked) return;
 
-        WasClicked = true;
-        Debug.Log($"[FeedbackPrefabController] Feedback '{name}' cliccato.");
 
-        styleBehaviour?.GetType().GetMethod("OnFeedbackClicked")?
-            .Invoke(styleBehaviour, new object[] { this });
-    }
 }

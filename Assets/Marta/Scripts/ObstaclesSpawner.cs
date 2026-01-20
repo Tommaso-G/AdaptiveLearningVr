@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VRBuilder.Core;
 using UnityEngine.Localization.Settings;
-using UnityEditor.Search;
+
 using System;
 using System.Collections;
 

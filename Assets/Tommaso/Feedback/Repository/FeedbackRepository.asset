@@ -148,7 +148,131 @@ MonoBehaviour:
           StepForCompletition:
           - Eseguire chiamata
           - Eseguire chiamata
-      riflessivo: []
+      riflessivo:
+      - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
+        feedbacks:
+        - FeedbackName: Chiama il personale addetto
+          images:
+          - {fileID: 21300000, guid: 5a1ed72f8a870f243bea1916543817ca, type: 3}
+          videos: []
+          StepForCompletition:
+          - Grab telefono
+          - Eseguire chiamata
+      - ChapterName: Attivazione allarme
+        feedbacks:
+        - FeedbackName: Attiva allarme
+          images:
+          - {fileID: 21300000, guid: 10c5611baef1f724f9d02fcb8db41ab6, type: 3}
+          videos: []
+          StepForCompletition:
+          - Attiva Allarme
+        - FeedbackName: Chiama i vigili del fuoco
+          images:
+          - {fileID: 21300000, guid: 61d02631a2dc24642bc658f317ba87db, type: 3}
+          videos: []
+          StepForCompletition:
+          - Grab telefono pompieri
+          - completa Domande
+      - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
+        feedbacks:
+        - FeedbackName: Chiudi il Gas e spegni la corrente
+          images:
+          - {fileID: 21300000, guid: 3d4c3a657f08185449cac91a350f704b, type: 3}
+          videos: []
+          StepForCompletition:
+          - Switch the levers
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: Isola l'incendio
+          images:
+          - {fileID: 21300000, guid: 7cadee21228d8944a9cffcee1fbcd19b, type: 3}
+          videos: []
+          StepForCompletition:
+          - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
+          - Non puoi domarli tutti... chiudi la porta e scappa
+        - FeedbackName: Usa stracci o indumenti per bloccare il fumo
+          images:
+          - {fileID: 21300000, guid: 3ceb0cc8898d3db42b79a6b0b73c415d, type: 3}
+          videos: []
+          StepForCompletition:
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          - Question to Check
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: Controlla le altre aule
+          images:
+          - {fileID: 21300000, guid: c5e04fd5b408f4949be0b848d37fe1b7, type: 3}
+          videos: []
+          StepForCompletition:
+          - istruzioni
+          - Perlustra tutta la scuola e chiudi le porte
+      - ChapterName: Aula computer
+        feedbacks:
+        - FeedbackName: Porta Paolina in salvo
+          images:
+          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+          videos: []
+          StepForCompletition:
+          - "Si c'\xE8 Paolina"
+          - Chiudi Porta Aula Computer
+        - FeedbackName: "non c'\xE8 nessuno"
+          images:
+          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+          videos: []
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno"
+          - Chiudi Porta Aula Computer
+      - ChapterName: Aula 2(in fondo a sinistra)
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno"
+          images:
+          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+          videos: []
+          StepForCompletition:
+          - "C'\xE9 qualcuno il Aula 2?"
+          - No, chiudi la porta
+      - ChapterName: 'Laboratorio di chimica '
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno"
+          images:
+          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+          videos: []
+          StepForCompletition:
+          - "C'\xE8 qualcuno in laboratorio di chimica?"
+          - No, chiudi la porta di chimica
+      - ChapterName: Biblioteca
+        feedbacks:
+        - FeedbackName: "c'\xE8 paolina in sedie a rotelle"
+          images:
+          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+          videos: []
+          StepForCompletition:
+          - "Si. c'\xE8 Paolina in sedie a rotelle"
+          - Portala fuori
+      - ChapterName: 'Mensa '
+        feedbacks:
+        - FeedbackName: "C'\xE8 michelle che balla..."
+          images:
+          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+          videos: []
+          StepForCompletition:
+          - "Si c'\xE8 Michelle"
+          - Porta Michelle all'uscita
+        - FeedbackName: "Non c'\xE8 nessuno qui"
+          images:
+          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+          videos: []
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in mensa"
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: Segnala gli assenti
+          images:
+          - {fileID: 21300000, guid: 521d6d5c5ea26fa4e82a373328448dce, type: 3}
+          videos: []
+          StepForCompletition:
+          - Eseguire chiamata
+          - Eseguire chiamata
     visualPath:
       attivo: []
       riflessivo: []

@@ -198,30 +198,30 @@ public class FeedbackAutoManager : MonoBehaviour
 
 
 
-private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
-{
-    string stepName = step.Data.Name;
-
-    if (shownFeedbacks.Contains(feedback))
-        return;
-
-    // Usa direttamente lo step passato
-    GameObject target = GetFirstGameObjectFromStep(step);
-
-    if (target == null)
+    private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
-        Debug.LogWarning($"[FeedbackAutoManager] Nessun GameObject target trovato per '{stepName}' nel capitolo '{chapterName}'.");
-        return;
+        string stepName = step.Data.Name;
+
+        if (shownFeedbacks.Contains(feedback))
+            return;
+
+        // Usa direttamente lo step passato
+        GameObject target = GetFirstGameObjectFromStep(step);
+
+        if (target == null)
+        {
+            Debug.LogWarning($"[FeedbackAutoManager] Nessun GameObject target trovato per '{stepName}' nel capitolo '{chapterName}'.");
+            return;
+        }
+
+        Transform feedbackPosition = feedbackDisplayer.FindFeedbackPositionChild(target);
+        feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPosition, feedbackHolder);
+
+        if (!activeFeedbackSteps.ContainsKey(feedback))
+            activeFeedbackSteps[feedback] = new HashSet<string>(feedback.StepForCompletition);
+
+        shownFeedbacks.Add(feedback);
     }
-
-    Transform feedbackPosition = feedbackDisplayer.FindFeedbackPositionChild(target);
-    feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPosition, feedbackHolder);
-
-    if (!activeFeedbackSteps.ContainsKey(feedback))
-        activeFeedbackSteps[feedback] = new HashSet<string>(feedback.StepForCompletition);
-
-    shownFeedbacks.Add(feedback);
-}
 
 
     private void HandleStepCompletion(string stepName)

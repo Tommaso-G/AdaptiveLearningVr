@@ -7,22 +7,19 @@ namespace UnityEngine.XR.Content.Interaction
 {
     public class ClosableDoor : Door
     {
-       
+        public UnityEvent onDoorClosed;
+        public UnityEvent onDoorOpened;
         public bool IsClosed => m_Closed;
 
 
         public override void Start()
         {
-
-
             // Imposta i limiti di apertura tra 0° e 90°
             m_OpenDoorLimits = m_DoorJoint.limits;
             m_OpenDoorLimits.min = 0.0f;
             m_OpenDoorLimits.max = 90.0f;
             m_DoorJoint.limits = m_OpenDoorLimits;
 
-
-            
             m_Closed = false;
         }
 
@@ -44,10 +41,18 @@ namespace UnityEngine.XR.Content.Interaction
                 {
                     m_DoorJoint.limits = m_ClosedDoorLimits;
                     m_Closed = true;
-
+                    onDoorClosed?.Invoke();  
 
                 }
             }
+            else
+            {
+                if (Mathf.Abs(m_DoorJoint.angle) > m_HingeCloseAngle + 1f)
+                {
+                    m_Closed = false;
+                    onDoorOpened?.Invoke();
+                }
+            } 
 
             if (m_KnobInteractor != null && m_KnobInteractorAttachTransform != null)
             {

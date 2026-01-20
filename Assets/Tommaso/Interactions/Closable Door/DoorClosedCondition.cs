@@ -73,7 +73,7 @@ public class DoorClosed: Condition<DoorClosed.DoorClosedData>
             }
 
             // Trova il collider del corridoio
-            GameObject corridorObject = GameObject.Find("Corridoio");
+            GameObject corridorObject = GameObject.Find("CorridoioCollider");
             if (corridorObject != null)
             {
                 corridorCollider = corridorObject.GetComponent<Collider>();

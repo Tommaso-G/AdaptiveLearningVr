@@ -8,159 +8,198 @@ using VRBuilder.Core;
 [CreateAssetMenu(menuName = "Learning Styles/Riflessivo Behaviour")]
 public class RiflessivoFeatures : LearningStyleFeatures
 {
+    [Header("Settings")]
+    public float audioFadeDuration = 1.5f;
+    [SerializeField] private float interactionRadius = 5f;
+    [SerializeField] private LayerMask interactableLayer;
+
+    [Header("State")]
+    [SerializeField] private bool isTimeStopFeatureEnabled = true;
+
     private Volume globalVolume;
-
-    public float audioFadeDuration = 1.5f; // durata fade audio
-    [SerializeField] private float interactionRadius = 5f; // raggio d'azione
-    [SerializeField] private LayerMask interactableLayer;  // layer degli oggetti interagibili
-
-    // Mantiene traccia solo degli oggetti disabilitati da questo effetto
     private readonly List<XRBaseInteractable> disabledInteractables = new();
+
+    // --- LOGICA DI CONTROLLO STATO ---
+
+    public override void EnableFeature()
+    {
+        isTimeStopFeatureEnabled = true;
+        Debug.Log("[RiflessivoFeatures] Feature abilitata manualmente.");
+        ApplyReflectiveEffects(Object.FindFirstObjectByType<FeedbackPrefabController>());
+        
+    }
+
+    public override void DisableFeature()
+    {
+        isTimeStopFeatureEnabled = false;
+        Debug.Log("[RiflessivoFeatures] Feature disabilitata manualmente. Reset immediato.");
+        
+        // Se disabilitiamo la feature mentre un feedback è attivo, ripristiniamo tutto subito
+        ResetReflectiveEffects(Object.FindFirstObjectByType<FeedbackPrefabController>());
+    }
+
+
+    // --- CICLO DI VITA FEEDBACK ---
 
     public override void OnFeedbackOpened(FeedbackPrefabController feedback)
     {
-        if (feedback == null) return;
-
-        Debug.Log($"[RiflessivoFeatures] Feedback '{feedback.name}' aperto — inizio effetto riflessivo.");
-
-        if (feedback.WasClicked)
+        if (feedback == null || !isTimeStopFeatureEnabled)
         {
-            Debug.Log($"[RiflessivoFeatures] Feedback '{feedback.name}' è già stato cliccato — nessun effetto.");
+            Debug.Log($"impossibile, isTimeStopFeature è: {isTimeStopFeatureEnabled}");
             return;
         }
+        
 
-        if (globalVolume == null)
-            globalVolume = Object.FindFirstObjectByType<Volume>();
-
-        if (globalVolume != null)
-            feedback.StartCoroutine(FadeVolumeWeight(globalVolume, 1f, 0.5f));
-
-        feedback.StartCoroutine(FadeAudioVolume(1f, 0f, audioFadeDuration));
-
-        // Disattiva interagibili vicini al feedback
-        DisableInteractable(feedback.transform.position, interactionRadius, interactableLayer);
-
-        // Pausa temporale globale
-        Time.timeScale = 0;
+        Debug.Log($"[RiflessivoFeatures] Apertura feedback: applicazione effetti.");
+        ApplyReflectiveEffects(feedback);
     }
 
     public override void OnFeedbackClosed(FeedbackPrefabController feedback)
     {
         if (feedback == null) return;
 
-        Debug.Log($"[RiflessivoFeatures] Feedback '{feedback.name}' chiuso — ripristino ambiente.");
+        Debug.Log($"[RiflessivoFeatures] Chiusura feedback: ripristino ambiente.");
+        ResetReflectiveEffects(feedback);
+    }
 
-        if (globalVolume == null)
-            globalVolume = Object.FindFirstObjectByType<Volume>();
+    public override void resetVariables()
+    {
+        isTimeStopFeatureEnabled = true;
+    }
 
+    // --- LOGICA ESECUZIONE EFFETTI ---
+
+    private void ApplyReflectiveEffects(FeedbackPrefabController feedback)
+    {
+        EnsureVolumeReference();
+
+        // 1. Post Process
         if (globalVolume != null)
+            feedback.StartCoroutine(FadeVolumeWeight(globalVolume, 1f, 0.5f));
+
+        // 2. Audio
+        feedback.StartCoroutine(FadeAudioVolume(AudioListener.volume, 0f, audioFadeDuration));
+
+        // 3. Blocca Interazioni
+        DisableInteractablesInRange(feedback.transform.position);
+
+        // 4. Tempo
+        Time.timeScale = 0;
+    }
+
+    private void ResetReflectiveEffects(FeedbackPrefabController feedback)
+    {
+        EnsureVolumeReference();
+
+        // 1. Post Process
+        if (globalVolume != null && feedback != null)
             feedback.StartCoroutine(FadeVolumeWeight(globalVolume, 0f, 0.5f));
+        else if (globalVolume != null)
+            globalVolume.weight = 0;
 
-        feedback.StartCoroutine(FadeAudioVolume(0f, 1f, audioFadeDuration));
+        // 2. Audio
+        if (feedback != null)
+            feedback.StartCoroutine(FadeAudioVolume(AudioListener.volume, 1f, audioFadeDuration));
+        else
+            AudioListener.volume = 1;
 
-        // Riattiva solo gli interagibili che erano stati disattivati
-        EnableInteractable();
+        // 3. Riabilita Interazioni
+        EnableInteractables();
 
-        // Riprende il tempo di gioco
+        // 4. Riprendi tempo
         Time.timeScale = 1;
     }
 
-    public void OnFeedbackClicked(FeedbackPrefabController feedback)
+    // --- UTILITY ---
+
+    private void EnsureVolumeReference()
     {
-        if (feedback == null) return;
-
-        Debug.Log($"[RiflessivoFeatures] Feedback '{feedback.name}' cliccato — blocco effetto.");
-
-        feedback.WasClicked = true;
-
         if (globalVolume == null)
             globalVolume = Object.FindFirstObjectByType<Volume>();
-
-        if (globalVolume != null)
-            feedback.StartCoroutine(FadeVolumeWeight(globalVolume, 0f, 0.5f));
-        
-        EnableInteractable();
-
-        Time.timeScale = 1;
     }
 
-    public override void OnStepActivated(IStep step)
+    private void DisableInteractablesInRange(Vector3 center)
     {
-        Debug.Log("[RiflessivoFeatures] Step attivato — modalità riflessiva attiva.");
+        disabledInteractables.Clear();
+        Collider[] nearbyObjects = Physics.OverlapSphere(center, interactionRadius, interactableLayer);
+
+        Debug.Log($"[RiflessivoFeatures] Scansione oggetti nel raggio di {interactionRadius} attorno a {center}. Trovati {nearbyObjects.Length} collider.");
+
+        foreach (Collider col in nearbyObjects)
+        {
+            // Trova tutti i componenti che derivano da XRBaseInteractable, anche nei figli
+            var interactables = col.GetComponentsInChildren<XRBaseInteractable>(true);
+
+            if (interactables.Length == 0)
+            {
+                Debug.Log($"[RiflessivoFeatures] Nessun XRBaseInteractable trovato in {col.gameObject.name}.");
+                continue;
+            }
+
+            Debug.Log($"[RiflessivoFeatures] {col.gameObject.name} contiene {interactables.Length} interattabili:");
+
+            foreach (var interactable in interactables)
+            {
+                if (interactable == null)
+                {
+                    Debug.LogWarning($"[RiflessivoFeatures] Un componente nullo trovato su {col.gameObject.name} — saltato.");
+                    continue;
+                }
+
+                Debug.Log($"    - {interactable.GetType().Name} (enabled={interactable.enabled})");
+
+                if (interactable.enabled)
+                {
+                    interactable.enabled = false;
+                    disabledInteractables.Add(interactable);
+                    Debug.Log($"      → DISATTIVATO: {interactable.name}");
+                }
+                else
+                {
+                    Debug.Log($"      → Già disattivato: {interactable.name}");
+                }
+            }
+        }
+
+        Debug.Log($"[RiflessivoFeatures] Totale interattabili disattivati: {disabledInteractables.Count}");
     }
 
-    public override void OnStepCompleted(IStep step)
+
+
+    private void EnableInteractables()
     {
-        Debug.Log("[RiflessivoFeatures] Step completato — modalità riflessiva terminata.");
+        foreach (var interactable in disabledInteractables)
+        {
+            if (interactable != null) interactable.enabled = true;
+        }
+        disabledInteractables.Clear();
     }
-
-    // ------------------------------------------
-    // Utility interne
-    // ------------------------------------------
 
     private IEnumerator FadeVolumeWeight(Volume volume, float targetWeight, float duration)
     {
         float startWeight = volume.weight;
         float elapsed = 0f;
-
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
             volume.weight = Mathf.Lerp(startWeight, targetWeight, elapsed / duration);
             yield return null;
         }
-
         volume.weight = targetWeight;
     }
 
     private IEnumerator FadeAudioVolume(float start, float end, float duration)
     {
         float elapsed = 0f;
-        AudioListener.volume = start;
-
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
             AudioListener.volume = Mathf.Lerp(start, end, elapsed / duration);
             yield return null;
         }
-
         AudioListener.volume = end;
     }
 
-    // ------------------------------------------
-    // Gestione interagibili
-    // ------------------------------------------
-
-    private void DisableInteractable(Vector3 center, float radius, LayerMask interactableLayer)
-    {
-        disabledInteractables.Clear(); // pulisce la lista per questa sessione
-
-        Collider[] nearbyObjects = Physics.OverlapSphere(center, radius, interactableLayer);
-        foreach (Collider col in nearbyObjects)
-        {
-            Debug.Log($"[RiflessivoFeatures] trovato: {col.name}");
-            XRBaseInteractable interactable = col.GetComponent<XRBaseInteractable>();
-            if (interactable != null && interactable.enabled)
-            {
-                interactable.enabled = false;
-                disabledInteractables.Add(interactable);
-                Debug.Log($"[RiflessivoFeatures] Disabilitato interagibile: {interactable.name}");
-            }
-        }
-    }
-
-    private void EnableInteractable()
-    {
-        foreach (XRBaseInteractable interactable in disabledInteractables)
-        {
-            if (interactable != null)
-            {
-                interactable.enabled = true;
-                Debug.Log($"[RiflessivoFeatures] Riattivato interagibile: {interactable.name}");
-            }
-        }
-
-        disabledInteractables.Clear();
-    }
+    public override void OnStepActivated(IStep step) { }
+    public override void OnStepCompleted(IStep step) { }
 }
