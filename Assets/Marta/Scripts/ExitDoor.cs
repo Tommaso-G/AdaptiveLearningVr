@@ -19,6 +19,7 @@ public class ExitDoor : MonoBehaviour
     private Color renderColor;
     private GameObject mapButton;
     private Transform target;
+    [SerializeField] private HandMenuRequester menuRequester;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -117,7 +118,7 @@ public class ExitDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            HandMenu.OnOpenPanel?.Invoke("Mappa Vie Di Fuga", true);
+            menuRequester.OpenMenu();
             correctDoorButton.CallCorrectButton(this);
         }
     }
@@ -126,7 +127,7 @@ public class ExitDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            HandMenu.OnOpenPanel?.Invoke("Mappa Vie Di Fuga", false);
+            menuRequester.CloseMenu();
         }
     }
 

@@ -8,6 +8,7 @@ public class interviewPhone : MonoBehaviour
     private MeshRenderer renderer;
     private AudioSource audioSource;
     private bool grabbedOnce;
+    [SerializeField] private HandMenuRequester menuRequester;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,7 +30,7 @@ public class interviewPhone : MonoBehaviour
 
     public void onGrabbedEnd()
     {
-        HandMenu.OnOpenPanel?.Invoke("Colloquio Pompieri", false);
+        menuRequester.CloseMenu();
         renderer.enabled = true;
     }
 
@@ -37,6 +38,6 @@ public class interviewPhone : MonoBehaviour
     {
         yield return new WaitWhile(() => audioSource.isPlaying);
         renderer.enabled = false;
-        HandMenu.OnOpenPanel?.Invoke("Colloquio Pompieri", true);
+        menuRequester.OpenMenu();
     }
 }

@@ -25,48 +25,137 @@ public class HandMenu : MonoBehaviour
 {
     public static Action<string, bool> OnOpenPanel;
 
+    [Header("UI show settings")]
+    public float UIshowAngle = 30f;
+    public float UIhideAngle = 45f;
+    public float upThreshold = 0.6f;
+    private float dotShowThreshold;
+    private float dotHideThreshold;
+
+    [Header("Controller Info")]
+    [SerializeField] private HapticImpulsePlayer controller;
+    [SerializeField] private Transform controllerVisual;
+    [SerializeField] private Renderer[] controllerRend;
+    [SerializeField] private List<Material> baseMats;
+
+    [Header("Vibration feedback settings")]
     [UnityEngine.Range(0, 1)]
     public float intensity;
     public float duration;
 
-    public float UIshowAngle = 30f;
-    public float UIhideAngle = 45f;
-    private float dotShowThreshold;
-    private float dotHideThreshold;
-    public float upThreshold = 0.6f;
-
-    [SerializeField] private HapticImpulsePlayer controller;
-    [SerializeField] private Transform controllerVisual;
-    [SerializeField] private Renderer[] controllerRend;
-    [SerializeField] List<Panel> UIPanels;
-    [SerializeField] private List<Material> baseMats;
+    [Header("UI Rotation")]
     [SerializeField] GameObject rotationUI;
-    private bool isVisible;
-    private Animator UIAnimator;
+    private Animator animatorRotUI;
     private bool firstTime;
     private Coroutine rotationCoroutine = null;
 
+    [System.Serializable]
+    public class MenuEntry
+    {
+        public string id;
+        public HandMenuPanel panel;
+    }
+
+
+    [Header("Hand Menu Panels")]
+    [SerializeField] private List<MenuEntry> menus;
+
+    private Dictionary<string, HandMenuPanel> menuMap;
+    private HandMenuPanel currentMenu;
+
+    private bool isMenuActive = false;
+    private bool isVisible;
+    private float lastToggleTime = 0f;
+    private float minToggleInterval = 0.2f;
+    private float sideDotMargin = 0.05f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        menuMap = new Dictionary<string, HandMenuPanel>();
+        foreach (var m in menus)
+        {
+            if (!menuMap.ContainsKey(m.id))
+                menuMap.Add(m.id, m.panel);
+        }
+    }
     void Start()
     {
-        HandMenu.OnOpenPanel += OpenPanel;
-        firstTime = true;
         controllerRend = controllerVisual.GetComponentsInChildren<Renderer>(true);
+
         isVisible = false;
+
+        animatorRotUI = rotationUI.GetComponent<Animator>();
+        firstTime = true;
+
         foreach (Renderer renderer in controllerRend)
         {
             Material[] mats = renderer.materials;
-            foreach(Material mat in mats)
+            foreach (Material mat in mats)
             {
                 baseMats.Add(mat);
             }
         }
     }
+    public void RequestOpen(string menuId)
+    {
+        if (!menuMap.ContainsKey(menuId)) // il menù è presente in elenco
+            return;
 
+        if (currentMenu != null && currentMenu.MenuId != menuId) // non si sovrappongo due richieste diverse di apertura
+            return;
+
+        if (currentMenu == null) // apri il menù
+        {
+            currentMenu = menuMap[menuId]; // seleziona il Menu panel
+            OnMenuOpened();
+        }
+    }
+
+    public void RequestClose(string menuId)
+    {
+        if (currentMenu == null)
+            return;
+
+        if (currentMenu.MenuId != menuId)
+            return;
+
+        CloseCurrent();
+    }
+
+    public void CloseCurrent()
+    {
+        if (currentMenu == null)
+            return;
+
+        print("CLOSE REQUEST ACCEPTED");
+        currentMenu.Close();
+        currentMenu = null;
+        OnMenuClosed();
+    }
+
+    private void OnMenuOpened()
+    {
+        print("OPEN REQUEST ACCEPTED");
+        TriggerHaptic();
+        HighlightController();
+        if (rotationCoroutine == null)
+        {
+            rotationCoroutine = StartCoroutine(ShowRotationUI());
+        }
+        isMenuActive = true;
+    }
+
+    private void OnMenuClosed()
+    {
+        isMenuActive = false;
+        isVisible = false;
+        HideRotationUI();
+    }
     private void TriggerHaptic()
     {
-        if (intensity > 0) 
-        { 
+        if (intensity > 0)
+        {
             controller.SendHapticImpulse(intensity, duration);
         }
     }
@@ -78,7 +167,8 @@ public class HandMenu : MonoBehaviour
     private IEnumerator blinkColor(List<Material> mats)
     {
         int k = 3;
-        while(k > 0){
+        while (k > 0)
+        {
             foreach (Material mat in mats)
             {
                 mat.EnableKeyword("_EMISSION");
@@ -93,50 +183,21 @@ public class HandMenu : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             k--;
         }
-        foreach (Material mat in mats) 
+        foreach (Material mat in mats)
         {
             mat.SetColor("_EmissionColor", Color.black);
             mat.DisableKeyword("_EMISSION");
         }
     }
 
-    void OpenPanel(string panelName, bool open)
+    private IEnumerator ShowRotationUI()
     {
 
-        GameObject panel = UIPanels.FirstOrDefault(p => p.key.Equals(panelName))?.panel;
-        UIAnimator = panel.GetComponent<Animator>();
-
-        if (open)
-        {
-
-            HighlightController();
-            TriggerHaptic();
-            if(rotationCoroutine == null)
-            {
-                rotationCoroutine = StartCoroutine(ShowRotationUI());
-            }
-        }
-        else
-        {
-            StopCoroutine(rotationCoroutine);
-            rotationCoroutine = null;
-            print("Stop coroutine");
-            rotationUI.GetComponent<Animator>().SetBool("ShowRotUI", false);
-            UIAnimator = null;
-
-        }
-    }
-
-    private  IEnumerator ShowRotationUI()
-    {
-
-        Animator animator = rotationUI.GetComponent<Animator>();
-
-        print("firstTime: " + firstTime);
+        print("SHOW ROT UI STARTED");
         if (firstTime)
         {
             firstTime = false;
-            print("aspetta 2");
+
             yield return new WaitForSeconds(2f);
             if (isVisible)
             {
@@ -144,14 +205,12 @@ public class HandMenu : MonoBehaviour
             }
             else
             {
-                animator.SetBool("ShowRotUI", true);
+                animatorRotUI.SetBool("ShowRotUI", true);
                 yield return null;
             }
         }
         else
         {
-
-            print("aspetta 10");
             yield return new WaitForSeconds(10f);
 
             if (isVisible)
@@ -160,73 +219,75 @@ public class HandMenu : MonoBehaviour
             }
             else
             {
-                animator.SetBool("ShowRotUI", true);
+                animatorRotUI.SetBool("ShowRotUI", true);
             }
         }
     }
+
+    private void HideRotationUI()
+    {
+
+        print("HIDE ROT UI STARTED");
+        if (rotationCoroutine != null)
+        {
+            StopCoroutine(rotationCoroutine);
+            rotationCoroutine = null;
+        }
+        animatorRotUI.SetBool("ShowRotUI", false);
+    }
+
     private void UpdateUI()
     {
-        if (!controller) return;
+        if (!controller || currentMenu == null)
+            return;
 
+        float now = Time.time;
+
+        // Calcola le soglie in dot
         dotShowThreshold = Mathf.Cos((90f - UIshowAngle) * Mathf.Deg2Rad);
         dotHideThreshold = Mathf.Cos((90f - UIhideAngle) * Mathf.Deg2Rad);
 
         Vector3 controllerForward = controller.transform.forward;
+        Vector3 controllerUp = controller.transform.up;
         Vector3 headForward = Camera.main.transform.forward;
         Vector3 headRight = Camera.main.transform.right;
 
         float dot = Vector3.Dot(controllerForward.normalized, -headForward.normalized);
-
-        float upDot = Vector3.Dot(controller.transform.up.normalized, Vector3.up);
-
+        float upDot = Vector3.Dot(controllerUp.normalized, Vector3.up);
         float sideDot = Vector3.Dot(controllerForward, headRight);
 
+        // Applica cooldown
+        if (now - lastToggleTime < minToggleInterval)
+            return;
 
-        if (!isVisible && dot < dotShowThreshold && sideDot > 0f && upDot > upThreshold)
+        // Controllo apertura menu
+        if (!isVisible &&
+            dot < dotShowThreshold &&
+            sideDot > 0f + sideDotMargin &&
+            upDot > upThreshold)
         {
             isVisible = true;
-            ShowUI();
+            HideRotationUI();
+            currentMenu.Open();
+            lastToggleTime = now;
+            print("OPENING MENU");
         }
-        else if (isVisible && (Mathf.Abs(dot) > dotHideThreshold || upDot < upThreshold || sideDot < 0f))
+        // Controllo chiusura menu
+        else if (isVisible &&
+            (dot > dotHideThreshold ||
+             sideDot < 0f - sideDotMargin ||
+             upDot < upThreshold))
         {
             isVisible = false;
-            HideUI();
+            currentMenu.Close();
+            lastToggleTime = now;
+            print("CLOSING MENU");
         }
-    }
-
-    private void ShowUI()
-    {
-        rotationUI.GetComponent<Animator>().SetBool("ShowRotUI", false);
-        if (UIAnimator != null)
-        {
-            UIAnimator.SetBool("FadeOut", false);
-            UIAnimator.SetBool("FadeIn", true);
-            print("FadeIn");
-        }
-    }
-
-    private void HideUI()
-    {
-        if (UIAnimator != null)
-        {
-            UIAnimator.SetBool("FadeIn", false);
-            UIAnimator.SetBool("FadeOut", true);
-            print("FadeOut");
-        }
-    }
-
-    public void EndInteraction(GameObject panel)
-    {
-        panel.SetActive(false);
-        StopCoroutine(rotationCoroutine);
-        rotationCoroutine = null;
-        rotationUI.GetComponent<Animator>().SetBool("ShowRotUI", false);
-        UIAnimator = null;
     }
 
     void LateUpdate()
     {
-        if(UIAnimator != null)
+        if (isMenuActive)
         {
             UpdateUI();
         }
