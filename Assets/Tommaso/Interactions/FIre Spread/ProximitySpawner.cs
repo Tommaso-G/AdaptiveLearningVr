@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.XR.Content.Interaction;
+using UnityEngine.Rendering;
 
 public class ProximitySpawner : MonoBehaviour
 {     
@@ -13,6 +14,7 @@ public class ProximitySpawner : MonoBehaviour
     [Tooltip("Prefab da instanziare presso i target trovati.")]
     public List<GameObject> prefabsToSpawn;
 
+    public Material burnedMaterial;
 
     [Tooltip("Scala finale da raggiungere prima dello spawn.")]
     public float targetScale = 2f;
@@ -23,7 +25,11 @@ public class ProximitySpawner : MonoBehaviour
     [Tooltip("Durata della scalatura (in secondi).")]
     public float scaleDurationClosedDoor = 2f;
 
+    public float burnDuration = 6f;
+
     private float scaleDuration;
+
+    
 
     // Per evitare spawn doppi sugli stessi oggetti
     private static readonly HashSet<Transform> spawnedTargets = new HashSet<Transform>();
@@ -58,6 +64,7 @@ public class ProximitySpawner : MonoBehaviour
 
         scaleDuration=scaleDurationClosedDoor;
 
+
         initialScale = transform.localScale;
         StartCoroutine(ScaleThenSpawnRoutine());
         Debug.Log($"scaleduration:{scaleDuration}");
@@ -85,7 +92,6 @@ public class ProximitySpawner : MonoBehaviour
         transform.localScale = targetScaleVector;
 
         StartCoroutine(CheckNearbyObjects());
-
  
     }
 
@@ -100,26 +106,26 @@ public class ProximitySpawner : MonoBehaviour
         {   
             yield return new WaitForSeconds(Random.Range(0.1f,4f));
             Transform target = hit.transform;
+            
 
             // Se non è già stato gestito, spawna un nuovo oggetto
             if (!spawnedTargets.Contains(target))
             {
                 GameObject randomPrefab = prefabsToSpawn[Random.Range(0, prefabsToSpawn.Count)];
                 GameObject spawned = Instantiate(randomPrefab, target.position, target.rotation);
-                
+
+                Debug.Log($"{name}: Avvio dissolvenza materiale su {target.name}");
 
                 if (prefabOriginalScales.ContainsKey(randomPrefab))
                 {
                     spawned.transform.localScale = prefabOriginalScales[randomPrefab];
                     Debug.Log($"{name}: istanziato prefab '{randomPrefab.name}' vicino a {target.name} con scala {spawned.transform.localScale} e scala originale {prefabOriginalScales[randomPrefab]}");
-
-                    
+  
                 }
 
                 spawnedTargets.Add(target);
+                StartCoroutine(BurnMaterial(target.gameObject, burnDuration));
                 
-                
-
                 Debug.Log($"{name}: istanziato prefab vicino a {target.name}");
             }
         }
@@ -176,5 +182,38 @@ public class ProximitySpawner : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 
-    
+    private IEnumerator BurnMaterial(GameObject burnedobject, float duration)
+    {
+         
+        Renderer targetRenderer = burnedobject.GetComponent<Renderer>();
+
+        if (targetRenderer == null || burnedMaterial == null)
+        {
+            Debug.Log("targetRenderer == null || burnedMaterial == null");
+            yield break;
+            
+        }
+        
+
+
+        Material orginalMaterial = targetRenderer.material;
+        Color originalColor = orginalMaterial.color;
+        Color burnedColor = burnedMaterial.color;
+
+        float elapsed = 0f;
+        while(elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            Color blendedColor = Color.Lerp(originalColor,burnedColor, t);
+            targetRenderer.material.color = blendedColor;
+
+            yield return null;  
+        }
+
+        targetRenderer.material = burnedMaterial;
+    }
+
+
 }
