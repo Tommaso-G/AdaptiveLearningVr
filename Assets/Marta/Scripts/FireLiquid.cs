@@ -42,7 +42,7 @@ public class FireLiquid : MonoBehaviour
         Vector3 randomOffset;
         do
         {
-            randomOffset = new Vector3(Random.Range(-2f, 2f), 0f, Random.Range(-2f, 2f));
+            randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
         } while (Mathf.Abs(randomOffset.x) < 0.2f && Mathf.Abs(randomOffset.z) < 0.2f);
 
 
@@ -51,14 +51,14 @@ public class FireLiquid : MonoBehaviour
         fire = Instantiate(newFire, spawnPosition, Quaternion.identity);
         fire.GetComponent<FireObject>().enabled = false;
         fire.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-        StartCoroutine(GrowOverTime(fire.transform, 3f));
+        StartCoroutine(GrowOverTime(fire.transform, 5f));
 
     }
 
     private IEnumerator GrowOverTime(Transform target, float duration)
     {
         Vector3 startScale = Vector3.zero;
-        Vector3 endScale = new Vector3(0.2f, 0.2f, 0.2f);
+        Vector3 endScale = new Vector3(0.7f, 0.7f, 0.7f);
         float elapsed = 0f;
 
         while (elapsed < duration)

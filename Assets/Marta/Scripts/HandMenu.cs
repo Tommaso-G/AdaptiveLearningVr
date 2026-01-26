@@ -100,15 +100,26 @@ public class HandMenu : MonoBehaviour
     public void RequestOpen(string menuId)
     {
         if (!menuMap.ContainsKey(menuId)) // il menù è presente in elenco
+        {
+            //print("menu non presente");
             return;
+        }
 
         if (currentMenu != null && currentMenu.MenuId != menuId) // non si sovrappongo due richieste diverse di apertura
+        {
+            //print("Due richieste di apertura");
             return;
+        }
 
         if (currentMenu == null) // apri il menù
         {
             currentMenu = menuMap[menuId]; // seleziona il Menu panel
             OnMenuOpened();
+        }
+        else
+        {
+            //print("Menù non null");
+            return;
         }
     }
 
@@ -128,7 +139,7 @@ public class HandMenu : MonoBehaviour
         if (currentMenu == null)
             return;
 
-        print("CLOSE REQUEST ACCEPTED");
+        //print("CLOSE REQUEST ACCEPTED");
         currentMenu.Close();
         currentMenu = null;
         OnMenuClosed();
@@ -136,7 +147,7 @@ public class HandMenu : MonoBehaviour
 
     private void OnMenuOpened()
     {
-        print("OPEN REQUEST ACCEPTED");
+        //print("OPEN REQUEST ACCEPTED");
         TriggerHaptic();
         HighlightController();
         if (rotationCoroutine == null)
@@ -193,7 +204,7 @@ public class HandMenu : MonoBehaviour
     private IEnumerator ShowRotationUI()
     {
 
-        print("SHOW ROT UI STARTED");
+        //print("SHOW ROT UI STARTED");
         if (firstTime)
         {
             firstTime = false;
@@ -227,7 +238,7 @@ public class HandMenu : MonoBehaviour
     private void HideRotationUI()
     {
 
-        print("HIDE ROT UI STARTED");
+        //print("HIDE ROT UI STARTED");
         if (rotationCoroutine != null)
         {
             StopCoroutine(rotationCoroutine);
@@ -270,7 +281,7 @@ public class HandMenu : MonoBehaviour
             HideRotationUI();
             currentMenu.Open();
             lastToggleTime = now;
-            print("OPENING MENU");
+            //print("OPENING MENU");
         }
         // Controllo chiusura menu
         else if (isVisible &&
@@ -281,7 +292,7 @@ public class HandMenu : MonoBehaviour
             isVisible = false;
             currentMenu.Close();
             lastToggleTime = now;
-            print("CLOSING MENU");
+            //print("CLOSING MENU");
         }
     }
 
