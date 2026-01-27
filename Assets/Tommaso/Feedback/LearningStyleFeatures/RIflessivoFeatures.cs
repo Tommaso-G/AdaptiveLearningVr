@@ -24,7 +24,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private readonly List<ClosableDoor> closableDoors= new();
     private readonly List<Animator> pausedAnimators= new();
     private readonly List<ParticleSystem> pausedParticles = new();
-    private readonly List<NavMeshAgent> pausedNavMeshAgents = new();
+    private readonly List<AgentState> pausedNavMeshAgents = new();
     public static bool IsPaused { get; private set; } = false;
 
 
@@ -305,31 +305,45 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     }
 
+    private class AgentState
+    {
+        public NavMeshAgent agent;
+        public Vector3 destination;
+    }
+
+
     private void PauseNavMeshAgent()
     {
         pausedNavMeshAgents.Clear();
+        var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
 
-        NavMeshAgent[] agents = FindObjectsByType<NavMeshAgent> (FindObjectsSortMode.None);
-
-        foreach (NavMeshAgent nma in agents)
+        foreach (var nma in agents)
         {
-            if(nma.gameObject.activeInHierarchy && !nma.isStopped)
+            if (nma != null && nma.gameObject.activeInHierarchy && !nma.isStopped)
             {
+                pausedNavMeshAgents.Add(new AgentState
+                {
+                    agent = nma,
+                    destination = nma.hasPath ? nma.destination : nma.transform.position
+                });
+
                 nma.isStopped = true;
             }
         }
     }
 
-        private void ResumeNavMeshAgents()
+    private void ResumeNavMeshAgents()
     {
-        foreach (NavMeshAgent nma in pausedNavMeshAgents)
+        foreach (var state in pausedNavMeshAgents)
         {
-            if (nma != null)
+            if (state.agent != null)
             {
-                nma.isStopped = false;
-            pausedNavMeshAgents.Clear();
+                state.agent.isStopped = false;
+                state.agent.SetDestination(state.destination);
             }
         }
+
+        pausedNavMeshAgents.Clear();
     }
 
     public static void SetPaused(bool value)

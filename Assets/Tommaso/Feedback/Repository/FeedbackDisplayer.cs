@@ -219,11 +219,19 @@ private void FillMultipleContainer(FeedbackData feedback, GameObject container)
     Transform contentParent = container.transform.Find("Canvas/Content");
     Transform navPanel = container.transform.Find("Nav Panel");
 
-    if (contentParent == null || navPanel == null)
+    if (navPanel == null)
     {
-        Debug.LogError("[FeedbackRepository] 'Canvas/Content' o 'Nav Panel' non trovati nel prefab multiplo.");
+        Debug.LogError("[FeedbackRepository] 'Nav Panel' non trovati nel prefab multiplo.");
         return;
     }
+
+    if (contentParent == null || navPanel == null)
+    {
+        Debug.LogError("[FeedbackRepository] 'Canvas/Content' non trovato nel prefab multiplo.");
+        return;
+    }
+
+
 
     Transform basePage = contentParent.Find("Page 1");
     Transform baseNavItem = navPanel.Find("Nav Item Toggle 1");

@@ -145,7 +145,7 @@ public class FeedbackRepository : ScriptableObject
 
         if (feedback != null)
         {
-            Debug.Log($"[FeedbackRepository] Feedback '{feedback.FeedbackName}' trovato per lo step '{stepName}' nel capitolo '{chapter.ChapterName}'.");
+            //Debug.Log($"[FeedbackRepository] Feedback '{feedback.FeedbackName}' trovato per lo step '{stepName}' nel capitolo '{chapter.ChapterName}'.");
             return feedback;
         }
         else
@@ -212,7 +212,7 @@ public class FeedbackRepository : ScriptableObject
             var properties = data.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var prop in properties)
             {
-                Debug.Log($"[StepHelpers] Analizzando property: {prop.Name} ({prop.PropertyType.Name}) in {ownerType}");
+               // Debug.Log($"[StepHelpers] Analizzando property: {prop.Name} ({prop.PropertyType.Name}) in {ownerType}");
 
                 // SingleSceneObjectReference
                 if (typeof(SingleSceneObjectReference).IsAssignableFrom(prop.PropertyType))
@@ -220,19 +220,19 @@ public class FeedbackRepository : ScriptableObject
                     var reference = prop.GetValue(data) as SingleSceneObjectReference;
                     if (reference == null)
                     {
-                        Debug.Log($"[StepHelpers] SingleSceneObjectReference nullo in property '{prop.Name}'");
+                        //Debug.Log($"[StepHelpers] SingleSceneObjectReference nullo in property '{prop.Name}'");
                         continue;
                     }
 
                     var sceneObject = reference.Value;
                     if (sceneObject != null && sceneObject.GameObject != null)
                     {
-                        Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in SingleSceneObjectReference '{prop.Name}'");
+                        //Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in SingleSceneObjectReference '{prop.Name}'");
                         return sceneObject.GameObject;
                     }
                     else
                     {
-                        Debug.Log($"[StepHelpers] SingleSceneObjectReference non risolto o GameObject nullo in property '{prop.Name}'");
+                        //Debug.Log($"[StepHelpers] SingleSceneObjectReference non risolto o GameObject nullo in property '{prop.Name}'");
                     }
                 }
                 // MultipleScenePropertyReference<T>
@@ -242,7 +242,7 @@ public class FeedbackRepository : ScriptableObject
                     var mspr = prop.GetValue(data);
                     if (mspr == null)
                     {
-                        Debug.Log($"[StepHelpers] MultipleScenePropertyReference nullo in property '{prop.Name}'");
+                       // Debug.Log($"[StepHelpers] MultipleScenePropertyReference nullo in property '{prop.Name}'");
                         continue;
                     }
 
@@ -250,14 +250,14 @@ public class FeedbackRepository : ScriptableObject
                     var guidsProp = prop.PropertyType.GetProperty("Guids");
                     if (guidsProp == null)
                     {
-                        Debug.Log($"[StepHelpers] Proprietà 'Guids' non trovata in '{prop.Name}'");
+                        //Debug.Log($"[StepHelpers] Proprietà 'Guids' non trovata in '{prop.Name}'");
                         continue;
                     }
 
                     var guids = guidsProp.GetValue(mspr) as IEnumerable<Guid>;
                     if (guids == null)
                     {
-                        Debug.Log($"[StepHelpers] Nessun GUID trovato in MultipleScenePropertyReference '{prop.Name}'");
+                        //Debug.Log($"[StepHelpers] Nessun GUID trovato in MultipleScenePropertyReference '{prop.Name}'");
                         continue;
                     }
 
@@ -266,7 +266,7 @@ public class FeedbackRepository : ScriptableObject
                         var sceneObject = registry.GetObjects(guid).FirstOrDefault();
                         if (sceneObject != null && sceneObject.GameObject != null)
                         {
-                            Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in MultipleScenePropertyReference '{prop.Name}'");
+                            //Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in MultipleScenePropertyReference '{prop.Name}'");
                             return sceneObject.GameObject;
                         }
                     }
@@ -286,7 +286,7 @@ public class FeedbackRepository : ScriptableObject
         // 2️⃣ Controlla Conditions
         foreach (var transition in step.Data.Transitions.Data.Transitions)
         {
-            Debug.Log($"[StepHelpers] Analizzando transition: {transition.Data.GetType().Name}");
+            //Debug.Log($"[StepHelpers] Analizzando transition: {transition.Data.GetType().Name}");
             foreach (var condition in transition.Data.Conditions)
             {
                 var go = CheckProperties(condition.Data, $"condition '{condition.Data.GetType().Name}'");
@@ -294,7 +294,7 @@ public class FeedbackRepository : ScriptableObject
             }
         }
 
-        Debug.Log($"[StepHelpers] <<< Nessun GameObject trovato nello step '{step.Data.Name}'");
+        //Debug.Log($"[StepHelpers] <<< Nessun GameObject trovato nello step '{step.Data.Name}'");
         return null;
     }
 
