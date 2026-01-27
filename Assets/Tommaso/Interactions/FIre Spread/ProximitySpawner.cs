@@ -67,13 +67,15 @@ public class ProximitySpawner : MonoBehaviour
 
         initialScale = transform.localScale;
         StartCoroutine(ScaleThenSpawnRoutine());
-        Debug.Log($"scaleduration:{scaleDuration}");
+        //Debug.Log($"scaleduration:{scaleDuration}");
         
     }
 
   
     private IEnumerator ScaleThenSpawnRoutine()
     {
+        yield return new WaitUntil(() => !RiflessivoFeatures.IsPaused);
+            
         float elapsed = 0f;
         hasScaled = false;
 
@@ -97,6 +99,8 @@ public class ProximitySpawner : MonoBehaviour
 
     private IEnumerator CheckNearbyObjects()
     {
+        yield return new WaitUntil(() => !RiflessivoFeatures.IsPaused);
+
         if (!hasScaled)
             yield break;
 
@@ -114,19 +118,19 @@ public class ProximitySpawner : MonoBehaviour
                 GameObject randomPrefab = prefabsToSpawn[Random.Range(0, prefabsToSpawn.Count)];
                 GameObject spawned = Instantiate(randomPrefab, target.position, target.rotation);
 
-                Debug.Log($"{name}: Avvio dissolvenza materiale su {target.name}");
+                //Debug.Log($"{name}: Avvio dissolvenza materiale su {target.name}");
 
                 if (prefabOriginalScales.ContainsKey(randomPrefab))
                 {
                     spawned.transform.localScale = prefabOriginalScales[randomPrefab];
-                    Debug.Log($"{name}: istanziato prefab '{randomPrefab.name}' vicino a {target.name} con scala {spawned.transform.localScale} e scala originale {prefabOriginalScales[randomPrefab]}");
+                    //Debug.Log($"{name}: istanziato prefab '{randomPrefab.name}' vicino a {target.name} con scala {spawned.transform.localScale} e scala originale {prefabOriginalScales[randomPrefab]}");
   
                 }
 
                 spawnedTargets.Add(target);
                 StartCoroutine(BurnMaterial(target.gameObject, burnDuration));
                 
-                Debug.Log($"{name}: istanziato prefab vicino a {target.name}");
+                //Debug.Log($"{name}: istanziato prefab vicino a {target.name}");
             }
         }
 
@@ -139,7 +143,7 @@ public class ProximitySpawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"collisione con: {other.name}");
+        //Debug.Log($"collisione con: {other.name}");
         RoomFire roomFire= other.GetComponent<RoomFire>();
         if (roomFire == null)
         {
@@ -150,7 +154,7 @@ public class ProximitySpawner : MonoBehaviour
         currentRoom = roomFire;
         currentDoor = roomFire.Door;  
 
-        Debug.Log($"{name}: entrato nella stanza {roomFire.name}, porta = {(currentDoor ? currentDoor.name : "nessuna")}, IsClosed = {(currentDoor != null ? currentDoor.IsClosed.ToString() : "n/a")}");
+        //Debug.Log($"{name}: entrato nella stanza {roomFire.name}, porta = {(currentDoor ? currentDoor.name : "nessuna")}, IsClosed = {(currentDoor != null ? currentDoor.IsClosed.ToString() : "n/a")}");
 
     if (currentDoor != null)
         {
@@ -184,17 +188,17 @@ public class ProximitySpawner : MonoBehaviour
 
     private IEnumerator BurnMaterial(GameObject burnedobject, float duration)
     {
+        yield return new WaitUntil(() => !RiflessivoFeatures.IsPaused);
          
         Renderer targetRenderer = burnedobject.GetComponent<Renderer>();
 
         if (targetRenderer == null || burnedMaterial == null)
         {
-            Debug.Log("targetRenderer == null || burnedMaterial == null");
+            
             yield break;
             
         }
         
-
 
         Material orginalMaterial = targetRenderer.material;
         Color originalColor = orginalMaterial.color;
@@ -213,6 +217,11 @@ public class ProximitySpawner : MonoBehaviour
         }
 
         targetRenderer.material = burnedMaterial;
+    }
+
+    private void CheckPause()
+    {
+
     }
 
 

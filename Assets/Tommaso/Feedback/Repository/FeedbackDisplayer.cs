@@ -351,11 +351,6 @@ private void FillMultipleContainer(FeedbackData feedback, GameObject container)
 }
 
 
-
-
- /// <summary>
-/// Prepara e mostra un feedback con waypoint e scaling adattivo.
-/// </summary>
     public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, Transform feedbackPosition, FeedbackSetHolder holder)
     {
         if (feedback == null || holder == null)

@@ -9,141 +9,84 @@ namespace UnityEngine.XR.Content.Interaction
     [RequireComponent(typeof(Rigidbody))]
     public class XRGrabNoY : XRGrabInteractable
     {
-        [Header("Attach Transforms personalizzati")]
-
-
         [Header("Distanza fissa davanti al giocatore (metri)")]
         [Range(0.2f, 10f)]
         public float grabDistance = 0.6f;
-
 
         private readonly List<XR.Interaction.Toolkit.Interactors.IXRSelectInteractor> grabbingHands = new();
 
         private float m_InitialY;
         private float m_InitialRotX;
-        private Vector3 m_OriginalPosition;
-        private Quaternion m_OriginalRotation;
+        private Rigidbody f_rigidbodyRef;
 
-        [HideInInspector]
-        [JsonIgnore]
+        [HideInInspector, JsonIgnore]
         public bool IsGrabbed = false;
 
         protected override void Awake()
         {
             base.Awake();
+            f_rigidbodyRef = GetComponent<Rigidbody>();
             selectMode = InteractableSelectMode.Multiple;
             movementType = MovementType.Instantaneous;
-            trackPosition = true;
-            trackRotation = true;
-
-            m_OriginalPosition = transform.position;
-            m_OriginalRotation = transform.rotation;
         }
 
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
-    {
-        base.OnSelectEntered(args);
-
-        if (!grabbingHands.Contains(args.interactorObject))
-            grabbingHands.Add(args.interactorObject);
-
-        IsGrabbed = grabbingHands.Count > 0;
-
-        if (grabbingHands.Count == 1)
+        protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
-            // Disattiva il tracking XR per gestire manualmente la posizione e rotazione
-            trackPosition = false;
-            trackRotation = false;
-            movementType = MovementType.Instantaneous;
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null)
-                rb.isKinematic = true; // Evita che la fisica interferisca
+            base.OnSelectEntered(args);
+            if (!grabbingHands.Contains(args.interactorObject))
+                grabbingHands.Add(args.interactorObject);
 
-            attachTransform ??= transform;
-            m_InitialY = transform.position.y;
-            m_InitialRotX = transform.localEulerAngles.x;
+            IsGrabbed = grabbingHands.Count > 0;
+
+            if (IsGrabbed)
+            {
+                // Disattiva la fisica e il tracking
+                f_rigidbodyRef.isKinematic = true;
+                trackPosition = trackRotation = false;
+
+                m_InitialY = transform.position.y;
+                m_InitialRotX = transform.localEulerAngles.x;
+            }
         }
-    }
 
-    protected override void OnSelectExited(SelectExitEventArgs args)
-    {
-        base.OnSelectExited(args);
-        grabbingHands.Remove(args.interactorObject);
-        IsGrabbed = grabbingHands.Count > 0;
-
-        if (grabbingHands.Count == 0)
+        protected override void OnSelectExited(SelectExitEventArgs args)
         {
-            // Riabilita la fisica solo quando non è più grabbato
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null)
-                rb.isKinematic = false;
+            base.OnSelectExited(args);
+            grabbingHands.Remove(args.interactorObject);
+            IsGrabbed = grabbingHands.Count > 0;
 
-            // Reimposta il tracking XR (opzionale, se vuoi che torni comportarsi normalmente)
-            trackPosition = true;
-            trackRotation = true;
-
-            m_InitialY = transform.position.y;
-            m_InitialRotX = transform.localEulerAngles.x;
+            if (!IsGrabbed)
+            {
+                // Ripristina fisica e tracking
+                f_rigidbodyRef.isKinematic = false;
+                trackPosition = trackRotation = true;
+            }
         }
-    }
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             base.ProcessInteractable(updatePhase);
+            if (!IsGrabbed) return;
 
-            if (!IsGrabbed)
-                return;
+            Camera cam = Camera.main;
+            if (cam == null) return;
 
-            MantieniDavantiAlGiocatore();
-            BloccaYERotazioneX();
-            MantieniOrientamentoOppostoGiocatore();
-        }
+            // --- Mantieni posizione centrata davanti alla camera ---
+            Vector3 targetPos = cam.transform.position + cam.transform.forward * grabDistance + cam.transform.right * 0.4f;
+            targetPos.y = m_InitialY;  // Mantiene la stessa altezza di quando è stato afferrato
+            transform.position = targetPos;
 
-        private void BloccaYERotazioneX()
-        {
-            Vector3 pos = transform.position;
-            pos.y = m_InitialY;
-            transform.position = pos;
+            // --- Allinea la rotazione per essere centrato rispetto alla camera ---
+            // Guarda nella direzione opposta al visore (frontale e centrato)
+            Vector3 lookDir = -cam.transform.forward;
+            lookDir.y = 0; // Mantiene l’orientamento orizzontale
+            if (lookDir.sqrMagnitude > 0.001f)
+                transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
 
-            Vector3 localRot = transform.localEulerAngles;
-            localRot.x = m_InitialRotX;
-            transform.localEulerAngles = localRot;
-        }
-
-        private void MantieniOrientamentoOppostoGiocatore()
-        {
-            Camera mainCam = Camera.main;
-            if (mainCam == null)
-                return;
-
-            Vector3 cameraPos = mainCam.transform.position;
-            Vector3 directionToCamera = (cameraPos - transform.position).normalized;
-
-            // Guarda nella direzione opposta alla camera
-            Vector3 lookTarget = transform.position + directionToCamera;
-            lookTarget.y = transform.position.y;
-
-            transform.LookAt(lookTarget);
-
+            // --- Blocca rotazione X (mantiene inclinazione iniziale) ---
             Vector3 euler = transform.localEulerAngles;
             euler.x = m_InitialRotX;
             transform.localEulerAngles = euler;
-        }
-
-        /// <summary>
-        /// Mantiene l’oggetto sempre davanti al giocatore, alla distanza fissa specificata.
-        /// </summary>
-        private void MantieniDavantiAlGiocatore()
-        {
-            Camera mainCam = Camera.main;
-            if (mainCam == null)
-                return;
-
-            // Posizione leggermente davanti al visore
-            Vector3 targetPos = mainCam.transform.position + mainCam.transform.forward * grabDistance;
-
-            // Nessun blocco sull'asse Y, resta centrato davanti agli occhi
-            transform.position = targetPos;
         }
 
     }

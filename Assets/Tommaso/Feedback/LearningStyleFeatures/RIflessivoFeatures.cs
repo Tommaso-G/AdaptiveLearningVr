@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
+using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using VRBuilder.Core;
 
@@ -18,6 +21,14 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private Volume globalVolume;
     private readonly List<XRBaseInteractable> disabledInteractables = new();
+    private readonly List<ClosableDoor> closableDoors= new();
+    private readonly List<Animator> pausedAnimators= new();
+    private readonly List<ParticleSystem> pausedParticles = new();
+    private readonly List<NavMeshAgent> pausedNavMeshAgents = new();
+    public static bool IsPaused { get; private set; } = false;
+
+
+
 
     // --- LOGICA DI CONTROLLO STATO ---
 
@@ -32,7 +43,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     public override void DisableFeature()
     {
         isTimeStopFeatureEnabled = false;
-        Debug.Log("[RiflessivoFeatures] Feature disabilitata manualmente. Reset immediato.");
+        //Debug.Log("[RiflessivoFeatures] Feature disabilitata manualmente. Reset immediato.");
         
         // Se disabilitiamo la feature mentre un feedback è attivo, ripristiniamo tutto subito
         ResetReflectiveEffects(Object.FindFirstObjectByType<FeedbackPrefabController>());
@@ -45,12 +56,12 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         if (feedback == null || !isTimeStopFeatureEnabled)
         {
-            Debug.Log($"impossibile, isTimeStopFeature è: {isTimeStopFeatureEnabled}");
+            //Debug.Log($"impossibile, isTimeStopFeature è: {isTimeStopFeatureEnabled}");
             return;
         }
         
 
-        Debug.Log($"[RiflessivoFeatures] Apertura feedback: applicazione effetti.");
+        //Debug.Log($"[RiflessivoFeatures] Apertura feedback: applicazione effetti.");
         ApplyReflectiveEffects(feedback);
     }
 
@@ -58,7 +69,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         if (feedback == null) return;
 
-        Debug.Log($"[RiflessivoFeatures] Chiusura feedback: ripristino ambiente.");
+        //Debug.Log($"[RiflessivoFeatures] Chiusura feedback: ripristino ambiente.");
         ResetReflectiveEffects(feedback);
     }
 
@@ -83,8 +94,14 @@ public class RiflessivoFeatures : LearningStyleFeatures
         // 3. Blocca Interazioni
         DisableInteractablesInRange(feedback.transform.position);
 
-        // 4. Tempo
-        Time.timeScale = 0;
+        PauseAnimators();
+
+        PauseParticles();
+
+        PauseNavMeshAgent();
+
+        SetPaused(true);
+
     }
 
     private void ResetReflectiveEffects(FeedbackPrefabController feedback)
@@ -106,11 +123,15 @@ public class RiflessivoFeatures : LearningStyleFeatures
         // 3. Riabilita Interazioni
         EnableInteractables();
 
-        // 4. Riprendi tempo
-        Time.timeScale = 1;
-    }
+        ResumeAnimators();
 
-    // --- UTILITY ---
+        ResumeParticles();
+
+        ResumeNavMeshAgents();
+
+        SetPaused(false);
+
+    }
 
     private void EnsureVolumeReference()
     {
@@ -118,51 +139,69 @@ public class RiflessivoFeatures : LearningStyleFeatures
             globalVolume = Object.FindFirstObjectByType<Volume>();
     }
 
+
     private void DisableInteractablesInRange(Vector3 center)
     {
         disabledInteractables.Clear();
-        Collider[] nearbyObjects = Physics.OverlapSphere(center, interactionRadius, interactableLayer);
+        closableDoors.Clear();
 
-        Debug.Log($"[RiflessivoFeatures] Scansione oggetti nel raggio di {interactionRadius} attorno a {center}. Trovati {nearbyObjects.Length} collider.");
+        Collider[] nearbyObjects = Physics.OverlapSphere(center, interactionRadius);
+        //Debug.Log($"[RiflessivoFeatures] Scansione oggetti nel raggio di {interactionRadius} attorno a {center}. Trovati {nearbyObjects.Length} collider.");
 
         foreach (Collider col in nearbyObjects)
         {
-            // Trova tutti i componenti che derivano da XRBaseInteractable, anche nei figli
+            // 1. XRBaseInteractable
             var interactables = col.GetComponentsInChildren<XRBaseInteractable>(true);
-
-            if (interactables.Length == 0)
+            if (interactables.Length > 0)
             {
-                Debug.Log($"[RiflessivoFeatures] Nessun XRBaseInteractable trovato in {col.gameObject.name}.");
-                continue;
+                //Debug.Log($"[RiflessivoFeatures] {col.gameObject.name} contiene {interactables.Length} interattabili:");
+
+                foreach (var interactable in interactables)
+                {
+                    if (interactable == null)
+                    {
+                        Debug.LogWarning($"[RiflessivoFeatures] Componente nullo su {col.gameObject.name} — saltato.");
+                        continue;
+                    }
+
+                    //Debug.Log($"    - {interactable.GetType().Name} (enabled={interactable.enabled})");
+
+                    if (interactable.enabled)
+                    {
+                        interactable.enabled = false;
+                        disabledInteractables.Add(interactable);
+                        //Debug.Log($"      → DISATTIVATO: {interactable.name}");
+                    }
+                    else
+                    {
+                        //Debug.Log($"      → Già disattivato: {interactable.name}");
+                    }
+                }
             }
 
-            Debug.Log($"[RiflessivoFeatures] {col.gameObject.name} contiene {interactables.Length} interattabili:");
-
-            foreach (var interactable in interactables)
+            // 2. ClosableDoor
+            var doors = col.GetComponentsInChildren<ClosableDoor>(true);
+            foreach (var door in doors)
             {
-                if (interactable == null)
-                {
-                    Debug.LogWarning($"[RiflessivoFeatures] Un componente nullo trovato su {col.gameObject.name} — saltato.");
+                if (door == null)
                     continue;
-                }
 
-                Debug.Log($"    - {interactable.GetType().Name} (enabled={interactable.enabled})");
-
-                if (interactable.enabled)
+                if (door.enabled)
                 {
-                    interactable.enabled = false;
-                    disabledInteractables.Add(interactable);
-                    Debug.Log($"      → DISATTIVATO: {interactable.name}");
+                    door.enabled = false;
+                    closableDoors.Add(door);
+                    //Debug.Log($"[RiflessivoFeatures] → DISATTIVATO Door: {door.name}");
                 }
                 else
                 {
-                    Debug.Log($"      → Già disattivato: {interactable.name}");
+                    //Debug.Log($"[RiflessivoFeatures] → Porta già disattivata: {door.name}");
                 }
             }
         }
 
-        Debug.Log($"[RiflessivoFeatures] Totale interattabili disattivati: {disabledInteractables.Count}");
+        //Debug.Log($"[RiflessivoFeatures] Totale interattabili disattivati: {disabledInteractables.Count}, porte disattivate: {closableDoors.Count}");
     }
+
 
 
 
@@ -170,10 +209,22 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         foreach (var interactable in disabledInteractables)
         {
-            if (interactable != null) interactable.enabled = true;
+            if (interactable != null)
+                interactable.enabled = true;
         }
+
+        foreach (var door in closableDoors)
+        {
+            if (door != null)
+                door.enabled = true;
+        }
+
         disabledInteractables.Clear();
+        closableDoors.Clear();
+
+        Debug.Log("[RiflessivoFeatures] Tutti gli interattabili e le porte sono stati riattivati.");
     }
+
 
     private IEnumerator FadeVolumeWeight(Volume volume, float targetWeight, float duration)
     {
@@ -199,6 +250,95 @@ public class RiflessivoFeatures : LearningStyleFeatures
         }
         AudioListener.volume = end;
     }
+
+    public void PauseAnimators()
+    {
+        pausedAnimators.Clear();
+
+        Animator[] animators = FindObjectsByType<Animator>(FindObjectsSortMode.None);
+        
+        foreach (Animator animator in animators)
+        {
+            if(animator.enabled && animator.gameObject.activeInHierarchy)
+            {
+                animator.enabled = false;
+                pausedAnimators.Add(animator);
+            }
+        }
+    }
+
+    private void ResumeAnimators()
+    {
+        foreach (Animator animator in pausedAnimators)
+        {
+            if (animator != null)
+                animator.enabled = true;
+        }
+        pausedAnimators.Clear();
+    }
+
+    private void PauseParticles()
+    {
+        pausedParticles.Clear();
+
+        ParticleSystem[] particleSystems = FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
+
+        foreach (ParticleSystem ps in particleSystems)
+        {
+            if(ps.isPlaying && ps.gameObject.activeInHierarchy)
+            {
+            ps.Pause(); 
+            pausedParticles.Add(ps);
+            }
+        }
+
+    }
+
+    private void ResumeParticles()
+    {
+        foreach (ParticleSystem ps in pausedParticles)
+        {
+            if (ps != null)
+                ps.Play(); 
+        }
+        pausedParticles.Clear();
+
+    }
+
+    private void PauseNavMeshAgent()
+    {
+        pausedNavMeshAgents.Clear();
+
+        NavMeshAgent[] agents = FindObjectsByType<NavMeshAgent> (FindObjectsSortMode.None);
+
+        foreach (NavMeshAgent nma in agents)
+        {
+            if(nma.gameObject.activeInHierarchy && !nma.isStopped)
+            {
+                nma.isStopped = true;
+            }
+        }
+    }
+
+        private void ResumeNavMeshAgents()
+    {
+        foreach (NavMeshAgent nma in pausedNavMeshAgents)
+        {
+            if (nma != null)
+            {
+                nma.isStopped = false;
+            pausedNavMeshAgents.Clear();
+            }
+        }
+    }
+
+    public static void SetPaused(bool value)
+    {
+        IsPaused = value;
+
+    }
+
+    
 
     public override void OnStepActivated(IStep step) { }
     public override void OnStepCompleted(IStep step) { }

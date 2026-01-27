@@ -72,13 +72,13 @@ public class FeedbackAutoManager : MonoBehaviour
             return;
         }
 
-        // 1️⃣ Ottieni il profilo dell’utente
+        // Ottieni il profilo dell’utente
         var profileTuple = profile.GetProfileTuple();
 
-        // 2️⃣ Ottieni solo i feedback appartenenti al percorso corretto
+        // Ottieni solo i feedback appartenenti al percorso corretto
         var feedbackList = feedbackHolder.FeedbackRepository.GetAllFeedbacksForProfile(profileTuple);
 
-        // 3️⃣ Costruisci la mappa step → feedback
+        // Costruisci la mappa step → feedback
         var feedbackMap = new Dictionary<string, FeedbackRepository.FeedbackData>();
         foreach (var fb in feedbackList)
         {
@@ -93,7 +93,7 @@ public class FeedbackAutoManager : MonoBehaviour
         int subChapterCount = 0;
         int totalStepCount = 0;
 
-        // 4️⃣ Scorri i capitoli principali
+        // Scorri i capitoli principali
         foreach (var chapter in process.Data.Chapters)
         {
             if (chapter == null)
@@ -129,7 +129,7 @@ public class FeedbackAutoManager : MonoBehaviour
             RegisterSubChaptersWithSeparateCount(chapter, feedbackMap, ref subChapterCount, ref totalStepCount);
         }
 
-        Debug.Log($"[FeedbackAutoManager] Registrati {mainChapterCount} capitoli principali, {subChapterCount} sottocapitoli e {totalStepCount} step con feedback associato per il profilo {profileTuple.visivoVerbale}, {profileTuple.attivoRiflessivo}, {profileTuple.sequenzialeGlobale}.");
+        //Debug.Log($"[FeedbackAutoManager] Registrati {mainChapterCount} capitoli principali, {subChapterCount} sottocapitoli e {totalStepCount} step con feedback associato per il profilo {profileTuple.visivoVerbale}, {profileTuple.attivoRiflessivo}, {profileTuple.sequenzialeGlobale}.");
     }
 
 
@@ -166,7 +166,7 @@ public class FeedbackAutoManager : MonoBehaviour
                                     string subStepName = subStep.Data.Name;
                                     string subChapterName = subChapter.Data.Name;
 
-                                    // 🔹 Filtra solo gli step con feedback associato
+                                    //Filtra solo gli step con feedback associato
                                     if (!feedbackMap.ContainsKey(subStepName))
                                         continue;
 
@@ -184,7 +184,7 @@ public class FeedbackAutoManager : MonoBehaviour
                                 }
                             }
 
-                            // 🔁 Ricorsione per sottocapitoli annidati
+                            //Ricorsione per sottocapitoli annidati
                             RegisterSubChaptersWithSeparateCount(subChapter, feedbackMap, ref subChapterCount, ref totalStepCount);
                         }
                     }
@@ -196,11 +196,17 @@ public class FeedbackAutoManager : MonoBehaviour
 
 
 
-
-
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
         string stepName = step.Data.Name;
+
+        // Mostra il feedback solo se è il primo step associato
+        string firstStep = feedback.StepForCompletition.FirstOrDefault();
+        if (stepName != firstStep)
+        {
+            //Debug.Log($"[FeedbackAutoManager] Step '{stepName}' attivato, ma non è il primo step per '{feedback.FeedbackName}', quindi non mostro il feedback.");
+            return;
+        }
 
         if (shownFeedbacks.Contains(feedback))
             return;
@@ -210,7 +216,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
         if (target == null)
         {
-            Debug.LogWarning($"[FeedbackAutoManager] Nessun GameObject target trovato per '{stepName}' nel capitolo '{chapterName}'.");
+            //Debug.LogWarning($"[FeedbackAutoManager] Nessun GameObject target trovato per '{stepName}' nel capitolo '{chapterName}'.");
             return;
         }
 
@@ -222,6 +228,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
         shownFeedbacks.Add(feedback);
     }
+
 
 
     private void HandleStepCompletion(string stepName)
@@ -236,13 +243,13 @@ public class FeedbackAutoManager : MonoBehaviour
             if (remainingSteps.Contains(stepName))
             {
                 remainingSteps.Remove(stepName);
-                Debug.Log($"[FeedbackAutoManager] Step '{stepName}' rimosso dai step rimanenti del feedback '{feedback.FeedbackName}'.");
+                //Debug.Log($"[FeedbackAutoManager] Step '{stepName}' rimosso dai step rimanenti del feedback '{feedback.FeedbackName}'.");
             }
 
             // Se tutti gli step di questo feedback sono completati
             if (remainingSteps.Count == 0)
             {
-                Debug.Log($"[FeedbackAutoManager] Tutti gli step completati per '{feedback.FeedbackName}', chiudo il feedback.");
+                //Debug.Log($"[FeedbackAutoManager] Tutti gli step completati per '{feedback.FeedbackName}', chiudo il feedback.");
 
                 // Trova il prefab del feedback attivo in scena
                 FeedbackPrefabController prefab = FindFeedbackInstance(feedback.FeedbackName);
@@ -250,11 +257,11 @@ public class FeedbackAutoManager : MonoBehaviour
                 if (prefab != null)
                 {
                     prefab.CloseFeedback();
-                    Debug.Log($"[FeedbackAutoManager] Feedback prefab '{feedback.FeedbackName}' chiuso con animazione.");
+                    //Debug.Log($"[FeedbackAutoManager] Feedback prefab '{feedback.FeedbackName}' chiuso con animazione.");
                 }
                 else
                 {
-                    Debug.LogWarning($"[FeedbackAutoManager] Nessuna istanza trovata per '{feedback.FeedbackName}'.");
+                    //Debug.LogWarning($"[FeedbackAutoManager] Nessuna istanza trovata per '{feedback.FeedbackName}'.");
                 }
 
                 feedbacksToRemove.Add(feedback);
