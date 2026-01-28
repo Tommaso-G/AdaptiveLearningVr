@@ -82,24 +82,24 @@ public class GrabbedCondition : Condition<GrabbedCondition.GrabbedConditionData>
 
         public override IEnumerator Update()
         {
-            // Attende finché il valore IsGrabbed non diventa true
+            
             while (grabScript != null && !grabScript.IsGrabbed)
             {
                 yield return null;
             }
 
-        // Una volta afferrato, segna la condizione come completata
+        
             Data.IsCompleted = true;
         }
 
         public override void End()
         {
-        // Nessuna pulizia necessaria in questo caso
+        
         }
 
         public override void FastForward()
         {
-        // Se si forza il completamento dello step
+        
         Data.IsCompleted = true;
         }
     }   

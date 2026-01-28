@@ -51,17 +51,9 @@ public class FollowerAgent : MonoBehaviour
             agent.SetDestination(playerTransform.position);
         }
         
-        detectDestination(destinationCollider);
 
     }
 
-    private void detectDestination(Collider collider) {
-
-        if (collider.bounds.Contains(transform.position))
-        {
-            agent.isStopped = true; 
-        }
-     }
 
 
 

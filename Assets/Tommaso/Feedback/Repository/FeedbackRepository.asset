@@ -196,9 +196,14 @@ MonoBehaviour:
           videos: []
           StepForCompletition:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
-          - Question to Check
       - ChapterName: Giro di perlustrazione
-        feedbacks: []
+        feedbacks:
+        - FeedbackName: Perlustra la scuola
+          images:
+          - {fileID: 21300000, guid: c5e04fd5b408f4949be0b848d37fe1b7, type: 3}
+          videos: []
+          StepForCompletition:
+          - istruzioni
       - ChapterName: Aula computer
         feedbacks:
         - FeedbackName: Porta Paolina in salvo
@@ -264,8 +269,7 @@ MonoBehaviour:
           - {fileID: 21300000, guid: 521d6d5c5ea26fa4e82a373328448dce, type: 3}
           videos: []
           StepForCompletition:
-          - Eseguire chiamata
-          - Eseguire chiamata
+          - segnala assenti
     visualPath:
       attivo: []
       riflessivo: []

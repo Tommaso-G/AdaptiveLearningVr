@@ -227,12 +227,12 @@ public class FeedbackRepository : ScriptableObject
                     var sceneObject = reference.Value;
                     if (sceneObject != null && sceneObject.GameObject != null)
                     {
-                        //Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in SingleSceneObjectReference '{prop.Name}'");
+                        Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in SingleSceneObjectReference '{prop.Name}'");
                         return sceneObject.GameObject;
                     }
                     else
                     {
-                        //Debug.Log($"[StepHelpers] SingleSceneObjectReference non risolto o GameObject nullo in property '{prop.Name}'");
+                        Debug.Log($"[StepHelpers] SingleSceneObjectReference non risolto o GameObject nullo in property '{prop.Name}'");
                     }
                 }
                 // MultipleScenePropertyReference<T>
@@ -294,13 +294,14 @@ public class FeedbackRepository : ScriptableObject
             }
         }
 
-        //Debug.Log($"[StepHelpers] <<< Nessun GameObject trovato nello step '{step.Data.Name}'");
+        Debug.Log($"[StepHelpers] <<< Nessun GameObject trovato nello step '{step.Data.Name}'");
         return null;
     }
 
 
 
 }
+
 
 
 

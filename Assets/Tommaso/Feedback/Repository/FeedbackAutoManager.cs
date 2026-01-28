@@ -22,7 +22,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
     public FeedbackDisplayer feedbackDisplayer;
 
-    // Dizionario: Feedback attivo → Step ancora da completare
+    
     private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
 
