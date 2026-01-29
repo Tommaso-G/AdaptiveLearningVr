@@ -1,11 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
 using VRBuilder.Core;
-using VRBuilder.Core.Behaviors;
-
-
 
 [CustomPropertyDrawer(typeof(StepForCompletionDropdownAttribute))]
 public class StepForCompletionDrawer : PropertyDrawer
@@ -13,14 +9,22 @@ public class StepForCompletionDrawer : PropertyDrawer
     private List<string> allSteps = new();
     private bool initialized = false;
 
-    private const string ProcessJsonPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json"; // <-- aggiorna
+    private string defaultPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json";
+    private string profilingPath = "Assets/StreamingAssets/Processes/Profiling/Profiling.json";
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         if (!initialized)
         {
-            var data = VRBuilderJsonReader.ParseProcessJson(ProcessJsonPath);
-            allSteps = data.steps;
+            // Determina il percorso in base all'oggetto che contiene il campo
+            var target = property.serializedObject.targetObject;
+            string pathToUse = defaultPath;
+
+            if (target is ProfilingFeedbackRepository)
+                pathToUse = profilingPath;
+
+            var data = VRBuilderJsonReader.ParseProcessJson(pathToUse);
+            allSteps = data.steps ?? new List<string>();
             initialized = true;
         }
 
@@ -41,4 +45,3 @@ public class StepForCompletionDrawer : PropertyDrawer
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         => EditorGUIUtility.singleLineHeight;
 }
-

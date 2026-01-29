@@ -163,15 +163,15 @@ RectTransform:
   m_GameObject: {fileID: 1114160402093144714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.70392054, y: 0.70392054, z: 0.70392054}
+  m_LocalScale: {x: 1.537952, y: 1.537952, z: 1.537952}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3294736972367941987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -34}
-  m_SizeDelta: {x: 307.28, y: 454.8}
+  m_AnchoredPosition: {x: 0, y: -59}
+  m_SizeDelta: {x: 297.9, y: 171}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6555411993497105542
 CanvasRenderer:
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -255,7 +255,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 410.2, y: 505.69}
+  m_SizeDelta: {x: 481.1, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7391290841391280896
 Canvas:
@@ -428,7 +428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8506367211412602622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 2060647768648489109}
   - component: {fileID: 5903788211313798920}
   - component: {fileID: 7466376137086755807}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Nav Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +528,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 98.9, y: 440}
+  m_SizeDelta: {x: 65.9, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2265020912554802909
 Canvas:
@@ -717,14 +717,14 @@ RectTransform:
   m_GameObject: {fileID: 6856809238978939247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.60620034, y: 0.60620034, z: 0.60620034}
+  m_LocalScale: {x: 0.70907253, y: 0.70907253, z: 0.70907253}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3294736972367941987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -8}
+  m_AnchoredPosition: {x: 0, y: -69}
   m_SizeDelta: {x: 640, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8694307229445415831
@@ -747,7 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -770,7 +770,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6856809238978939247}
   m_Enabled: 1
-  m_VideoClip: {fileID: 0}
+  m_VideoClip: {fileID: 32900000, guid: cbe76b08f153203488cf79c951e1723d, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -811,7 +811,7 @@ GameObject:
   - component: {fileID: 3005487944044422398}
   - component: {fileID: 4142241475496110484}
   - component: {fileID: 6454053506211579025}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Nav Item Toggle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -967,7 +967,7 @@ GameObject:
   - component: {fileID: 5796308926151424657}
   - component: {fileID: 794975930318384410}
   - component: {fileID: 6790089699607559487}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1021,7 +1021,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduzione
+  m_text: START
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
   m_sharedMaterial: {fileID: 4687939059374929122, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 1740560637563251923}
   - component: {fileID: 5051185224985385145}
   - component: {fileID: 55116821090004491}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: On Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1480,6 +1480,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 219.99805
       objectReference: {fileID: 0}
+    - target: {fileID: 5042876528037332393, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
+      propertyPath: m_Spacing
+      value: -34.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042876528037332393, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5627194782963445978, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
       propertyPath: m_Name
       value: MultiplePages
@@ -1530,11 +1538,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8105729377207568297, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 512
+      value: 582.2
       objectReference: {fileID: 0}
     - target: {fileID: 8105729377207568297, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 440
+      value: 401.8
       objectReference: {fileID: 0}
     - target: {fileID: 8105729377207568297, guid: 3aa8ee2a47661f1468bab41079948717, type: 3}
       propertyPath: m_LocalScale.x
@@ -1662,9 +1670,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypointPrefab: {fileID: 5154181363226074016, guid: 37f15095cf94f7643b8990408e720ed6, type: 3}
-  activationDistance: 2.5
+  activationDistance: 5
   scaleSpeed: 15
-  maxScale: 0.002
+  maxScale: 0.003
   reflectiveButtonActivate: {fileID: 0}
   reflectiveButtonDeactivate: {fileID: 0}
 --- !u!224 &3629523212267157766 stripped

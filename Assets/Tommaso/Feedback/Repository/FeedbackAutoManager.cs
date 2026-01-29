@@ -21,6 +21,7 @@ public class FeedbackAutoManager : MonoBehaviour
     public FeedbackSetHolder feedbackHolder;
 
     public FeedbackDisplayer feedbackDisplayer;
+    
 
     
     private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
@@ -59,26 +60,49 @@ public class FeedbackAutoManager : MonoBehaviour
             return;
         }
 
-        if (feedbackHolder?.FeedbackRepository == null)
+        // Se non è assegnato né uno né l’altro, esci
+        if (feedbackHolder == null ||
+            (feedbackHolder.FeedbackRepository == null && feedbackHolder.ProfilingFeedbackRepository == null))
         {
-            Debug.LogError("[FeedbackAutoManager] FeedbackRepository non assegnato.");
+            Debug.LogError("[FeedbackAutoManager] Nessun FeedbackRepository assegnato.");
             return;
         }
 
+        IEnumerable<FeedbackRepository.FeedbackData> feedbackList = null;
         LearningProfile profile = GetComponent<LearningProfile>();
-        if (profile == null)
+
+        // ==============================
+        // 1️⃣ Usa ProfilingFeedbackRepository se è presente
+        // ==============================
+        if (feedbackHolder.ProfilingFeedbackRepository != null)
         {
-            Debug.LogWarning("[FeedbackAutoManager] LearningProfile non trovato sul GameObject.");
+            Debug.Log("[FeedbackAutoManager] Uso ProfilingFeedbackRepository (profiling mode).");
+            feedbackList = feedbackHolder.ProfilingFeedbackRepository.GetAllFeedbacks();
+        }
+        // ==============================
+        // 2️⃣ Altrimenti usa FeedbackRepository classico
+        // ==============================
+        else if (feedbackHolder.FeedbackRepository != null)
+        {
+            if (profile == null)
+            {
+                Debug.LogWarning("[FeedbackAutoManager] LearningProfile non trovato sul GameObject. Impossibile determinare il profilo per il repository standard.");
+                return;
+            }
+
+            var profileTuple = profile.GetProfileTuple();
+            feedbackList = feedbackHolder.FeedbackRepository.GetAllFeedbacksForProfile(profileTuple);
+        }
+
+        if (feedbackList == null)
+        {
+            Debug.LogWarning("[FeedbackAutoManager] Nessun feedback trovato nel repository selezionato.");
             return;
         }
 
-        // Ottieni il profilo dell’utente
-        var profileTuple = profile.GetProfileTuple();
-
-        // Ottieni solo i feedback appartenenti al percorso corretto
-        var feedbackList = feedbackHolder.FeedbackRepository.GetAllFeedbacksForProfile(profileTuple);
-
-        // Costruisci la mappa step → feedback
+        // ==============================
+        // 3️⃣ Costruzione mappa step → feedback
+        // ==============================
         var feedbackMap = new Dictionary<string, FeedbackRepository.FeedbackData>();
         foreach (var fb in feedbackList)
         {
@@ -93,7 +117,9 @@ public class FeedbackAutoManager : MonoBehaviour
         int subChapterCount = 0;
         int totalStepCount = 0;
 
-        // Scorri i capitoli principali
+        // ==============================
+        // 4️⃣ Scansione dei capitoli principali
+        // ==============================
         foreach (var chapter in process.Data.Chapters)
         {
             if (chapter == null)
@@ -102,14 +128,13 @@ public class FeedbackAutoManager : MonoBehaviour
             mainChapterCount++;
             string chapterName = chapter.Data.Name;
 
-            // --- Step del capitolo principale ---
             foreach (var stepChild in chapter.Data.Steps)
             {
                 if (stepChild is IStep step)
                 {
                     string stepName = step.Data.Name;
                     if (!feedbackMap.ContainsKey(stepName))
-                        continue; // salta se non ha feedback
+                        continue;
 
                     var feedback = feedbackMap[stepName];
 
@@ -125,12 +150,12 @@ public class FeedbackAutoManager : MonoBehaviour
                 }
             }
 
-            // --- Subchapter (ricorsione) ---
             RegisterSubChaptersWithSeparateCount(chapter, feedbackMap, ref subChapterCount, ref totalStepCount);
         }
 
-        //Debug.Log($"[FeedbackAutoManager] Registrati {mainChapterCount} capitoli principali, {subChapterCount} sottocapitoli e {totalStepCount} step con feedback associato per il profilo {profileTuple.visivoVerbale}, {profileTuple.attivoRiflessivo}, {profileTuple.sequenzialeGlobale}.");
+        Debug.Log($"[FeedbackAutoManager] Registrati {mainChapterCount} capitoli principali, {subChapterCount} sottocapitoli e {totalStepCount} step con feedback associato.");
     }
+
 
 
 

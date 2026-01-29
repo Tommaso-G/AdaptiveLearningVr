@@ -64,56 +64,95 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
 
-        public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSetHolder holder)
+public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSetHolder holder)
+{
+    if (feedback == null)
     {
-        if (feedback == null)
-        {
-            Debug.LogWarning("[FeedbackRepository] Nessun feedback fornito a DisplayFeedback.");
-            return;
-        }
-
-        // Determina quanti elementi multimediali ci sono
-        int totalElements = 0;
-        if (feedback.images != null) totalElements += feedback.images.Count;
-        if (feedback.videos != null) totalElements += feedback.videos.Count;
-
-        // Se non ci sono media, logga e interrompi
-        if (totalElements == 0)
-        {
-            Debug.LogWarning($"[FeedbackRepository] Il feedback '{feedback.FeedbackName}' non contiene immagini né video.");
-            return;
-        }
-
-        // Controllo prefabs
-        if (feedbackHolder.FeedbackRepository.SingleContainer == null || feedbackHolder.FeedbackRepository.MultipleContainer == null)
-        {
-            Debug.LogError("[FeedbackRepository] Prefab SingleContainer o MultipleContainer non assegnato.");
-            return;
-        }
-
-        GameObject containerInstance;
-
-        // Se un solo elemento → prefab singolo
-        if (totalElements == 1)
-        {
-            containerInstance = Instantiate(feedbackHolder.FeedbackRepository.SingleContainer, position.position, position.rotation);
-            containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
-            FillSingleContainer(feedback, containerInstance);
-        }
-        else
-        {
-            // Più elementi → prefab multiplo
-            containerInstance = Instantiate(feedbackHolder.FeedbackRepository.MultipleContainer, position.position, position.rotation);
-            containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
-            FillMultipleContainer(feedback, containerInstance);
-        }
-
-        // Salva istanza attiva nel FeedbackSetHolder
-        if (holder != null)
-            holder.activeFeedbackInstance = containerInstance;
-
-        //Debug.Log($"[FeedbackRepository] Mostrato feedback '{feedback.FeedbackName}' con {totalElements} elementi.");
+        Debug.LogWarning("[FeedbackDisplayer] Nessun feedback fornito a ChooseFeedback.");
+        return;
     }
+
+    if (holder == null)
+    {
+        Debug.LogError("[FeedbackDisplayer] Holder nullo passato a ChooseFeedback.");
+        return;
+    }
+
+    // ======= Caso speciale: prefab personalizzato =======
+    if (feedback.PersonalizedPrefab != null)
+    {
+        GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
+        customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
+        holder.activeFeedbackInstance = customInstance;
+
+        Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
+        return; // Ignora tutto il resto
+    }
+
+    // ======= Scegli repository attivo (Profiling ha priorità) =======
+    var activeRepo = holder.ProfilingFeedbackRepository != null
+        ? holder.ProfilingFeedbackRepository as ScriptableObject
+        : holder.FeedbackRepository as ScriptableObject;
+
+    if (activeRepo == null)
+    {
+        Debug.LogError("[FeedbackDisplayer] Nessun repository valido trovato nel holder.");
+        return;
+    }
+
+    // ======= Conta elementi multimediali =======
+    int totalElements = 0;
+    if (feedback.images != null) totalElements += feedback.images.Count;
+    if (feedback.videos != null) totalElements += feedback.videos.Count;
+
+    if (totalElements == 0)
+    {
+        Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene immagini né video.");
+        return;
+    }
+
+    // ======= Risolvi i prefab dal repository corretto =======
+    GameObject singlePrefab = null;
+    GameObject multiplePrefab = null;
+
+    if (holder.ProfilingFeedbackRepository != null)
+    {
+        singlePrefab = holder.ProfilingFeedbackRepository.SingleContainer;
+        multiplePrefab = holder.ProfilingFeedbackRepository.MultipleContainer;
+    }
+    else if (holder.FeedbackRepository != null)
+    {
+        singlePrefab = holder.FeedbackRepository.SingleContainer;
+        multiplePrefab = holder.FeedbackRepository.MultipleContainer;
+    }
+
+    if (singlePrefab == null || multiplePrefab == null)
+    {
+        Debug.LogError("[FeedbackDisplayer] Prefab SingleContainer o MultipleContainer non assegnato nel repository attivo.");
+        return;
+    }
+
+    // ======= Istanzia il container corretto =======
+    GameObject containerInstance;
+
+    if (totalElements == 1)
+    {
+        containerInstance = Instantiate(singlePrefab, position.position, position.rotation);
+        containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
+        FillSingleContainer(feedback, containerInstance);
+    }
+    else
+    {
+        containerInstance = Instantiate(multiplePrefab, position.position, position.rotation);
+        containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
+        FillMultipleContainer(feedback, containerInstance);
+    }
+
+    holder.activeFeedbackInstance = containerInstance;
+
+    //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {totalElements} elementi.");
+}
+
 
     
 
@@ -190,145 +229,150 @@ public class FeedbackDisplayer : MonoBehaviour
         }
     }
 
-private void FillMultipleContainer(FeedbackData feedback, GameObject container)
-{
-    if (feedback == null || container == null)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+    private const string CONTENT_PATH = "Canvas/Content";
+    private const string NAV_PANEL_PATH = "Nav Panel";
+    private const string BASE_PAGE_NAME = "Page 1";
+    private const string BASE_NAV_NAME = "Nav Item Toggle 1";
+
+    private void FillMultipleContainer(FeedbackData feedback, GameObject container)
     {
-        Debug.LogWarning("[FeedbackRepository] FillMultipleContainer chiamato con parametri null.");
-        return;
-    }
-
-    // 1️⃣ Crea lista ordinata di media
-    var allMedia = new List<(string name, object content)>();
-
-    if (feedback.images != null)
-        allMedia.AddRange(feedback.images.Where(img => img != null).Select(img => (img.name, (object)img)));
-
-    if (feedback.videos != null)
-        allMedia.AddRange(feedback.videos.Where(vid => vid != null).Select(vid => (vid.name, (object)vid)));
-
-    if (allMedia.Count == 0)
-    {
-        Debug.LogWarning($"[FeedbackRepository] Nessun contenuto multimediale valido per '{feedback.FeedbackName}'.");
-        return;
-    }
-
-    allMedia = allMedia.OrderBy(m => m.name).ToList();
-
-    // 2️⃣ Trova contenitori
-    Transform contentParent = container.transform.Find("Canvas/Content");
-    Transform navPanel = container.transform.Find("Nav Panel");
-
-    if (navPanel == null)
-    {
-        Debug.LogError("[FeedbackRepository] 'Nav Panel' non trovati nel prefab multiplo.");
-        return;
-    }
-
-    if (contentParent == null || navPanel == null)
-    {
-        Debug.LogError("[FeedbackRepository] 'Canvas/Content' non trovato nel prefab multiplo.");
-        return;
-    }
-
-
-
-    Transform basePage = contentParent.Find("Page 1");
-    Transform baseNavItem = navPanel.Find("Nav Item Toggle 1");
-    if (basePage == null || baseNavItem == null)
-    {
-        Debug.LogError("[FeedbackRepository] 'Page 1' o 'Nav Item Toggle 1' non trovati nel prefab multiplo.");
-        return;
-    }
-
-    var headerText = container.transform.Find("Canvas/Header Text")?.GetComponent<TMPro.TMP_Text>();
-    if (headerText != null)
-        headerText.text = feedback.FeedbackName;
-
-    // 5️⃣ Pulisci precedenti
-    for (int i = contentParent.childCount - 1; i >= 0; i--)
-    {
-        var child = contentParent.GetChild(i);
-        if (child.name.StartsWith("Page") && child != basePage)
-            Destroy(child.gameObject);
-    }
-
-    for (int i = navPanel.childCount - 1; i >= 0; i--)
-    {
-        var child = navPanel.GetChild(i);
-        if (child.name.StartsWith("Nav Item Toggle") && child != baseNavItem)
-            Destroy(child.gameObject);
-    }
-
-    // 6️⃣ Crea dinamicamente le pagine
-    for (int i = 0; i < allMedia.Count; i++)
-    {
-        Transform page;
-        Transform navItem;
-
-        if (i == 0)
+        if (feedback == null || container == null)
         {
-            page = basePage;
-            navItem = baseNavItem;
+            Debug.LogWarning("[FeedbackRepository] FillMultipleContainer chiamato con parametri null.");
+            return;
         }
-        else
+
+        var allMedia = CollectMedia(feedback);
+        if (allMedia.Count == 0)
         {
-            page = Instantiate(basePage, contentParent);
+            Debug.LogWarning($"[FeedbackRepository] Nessun contenuto multimediale valido per '{feedback.FeedbackName}'.");
+            return;
+        }
+
+        var contentParent = container.transform.Find(CONTENT_PATH);
+        var navPanel = container.transform.Find(NAV_PANEL_PATH);
+
+        if (contentParent == null || navPanel == null)
+        {
+            Debug.LogError("[FeedbackRepository] Struttura prefab non valida (manca Canvas/Content o Nav Panel).");
+            return;
+        }
+
+        var basePage = contentParent.Find(BASE_PAGE_NAME);
+        var baseNavItem = navPanel.Find(BASE_NAV_NAME);
+        if (basePage == null || baseNavItem == null)
+        {
+            Debug.LogError("[FeedbackRepository] Page 1 o Nav Item Toggle 1 non trovati.");
+            return;
+        }
+
+        SetHeader(container, feedback.FeedbackName);
+        ClearOldPages(contentParent, basePage);
+        ClearOldPages(navPanel, baseNavItem);
+
+        CreatePages(allMedia, contentParent, navPanel, basePage, baseNavItem);
+        SetupNavigation(container, navPanel, contentParent);
+    }
+
+    private List<(string name, object content)> CollectMedia(FeedbackData feedback)
+    {
+        var media = new List<(string name, object content)>();
+        if (feedback.images != null)
+            media.AddRange(feedback.images
+                .Where(i => i != null)
+                .Select(i => (i.name, (object)i)));
+
+        if (feedback.videos != null)
+            media.AddRange(feedback.videos
+                .Where(v => v != null)
+                .Select(v => (v.name, (object)v)));
+
+        return media.OrderBy(m => m.name).ToList();
+    }
+
+
+    private void SetHeader(GameObject container, string title)
+    {
+        var header = container.transform.Find("Canvas/Header Text")?.GetComponent<TMPro.TMP_Text>();
+        if (header != null)
+            header.text = title;
+    }
+
+    private void ClearOldPages(Transform parent, Transform keep)
+    {
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            var child = parent.GetChild(i);
+            if (child != keep && (child.name.StartsWith("Page") || child.name.StartsWith("Nav Item Toggle")))
+                UnityEngine.Object.Destroy(child.gameObject);
+        }
+    }
+
+    private void CreatePages(List<(string name, object content)> allMedia,
+        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem)
+    {
+        for (int i = 0; i < allMedia.Count; i++)
+        {
+            var (page, navItem) = (i == 0)
+                ? (basePage, baseNavItem)
+                : (UnityEngine.Object.Instantiate(basePage, contentParent), UnityEngine.Object.Instantiate(baseNavItem, navPanel));
+
             page.name = $"Page {i + 1}";
-            page.SetAsLastSibling();
-
-            navItem = Instantiate(baseNavItem, navPanel);
             navItem.name = $"Nav Item Toggle {i + 1}";
-            navItem.SetAsLastSibling();
+
+            var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
+            if (textComp != null)
+                textComp.text = (i == 0) ? "Start" : $"Step {i}";
+
+            SetupMedia(allMedia[i].content, page);
         }
+    }
 
-        // Aggiorna testo del toggle
-        var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
-        if (textComp != null)
-            textComp.text = (i == 0) ? "Introduzione" : $"Step {i}";
+    private void SetupMedia(object media, Transform page)
+    {
+        var imgContainer = page.Find("Image Container");
+        var vidContainer = page.Find("Video Container");
 
-        // Disattiva contenitori inutilizzati
-        Transform imageContainer = page.Find("Image Container");
-        Transform videoContainer = page.Find("Video Container");
-        if (imageContainer != null) imageContainer.gameObject.SetActive(false);
-        if (videoContainer != null) videoContainer.gameObject.SetActive(false);
-
-        Image imageComponent = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
-        VideoPlayer videoPlayer = videoContainer?.GetComponentInChildren<VideoPlayer>();
-
-        var media = allMedia[i].content;
+        if (imgContainer != null) imgContainer.gameObject.SetActive(false);
+        if (vidContainer != null) vidContainer.gameObject.SetActive(false);
 
         if (media is Sprite sprite)
         {
-            if (imageContainer != null && imageComponent != null)
+            var img = imgContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
+            if (img != null)
             {
-                imageContainer.gameObject.SetActive(true);
-                imageComponent.sprite = sprite;
+                imgContainer.gameObject.SetActive(true);
+                img.sprite = sprite;
             }
         }
         else if (media is VideoClip clip)
         {
-            if (videoContainer != null && videoPlayer != null)
+            var player = vidContainer?.GetComponentInChildren<VideoPlayer>();
+            if (player != null)
             {
-                videoContainer.gameObject.SetActive(true);
-                videoPlayer.clip = clip;
-                videoPlayer.Play();
+                vidContainer.gameObject.SetActive(true);
+                player.clip = clip;
+                player.Play();
             }
         }
 
-        if (page.TryGetComponent(out RectTransform pageRect))
-            LayoutRebuilder.ForceRebuildLayoutImmediate(pageRect);
+        if (page.TryGetComponent(out RectTransform rect))
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
     }
 
-    // 8️⃣ Aggiorna layout
-    Canvas.ForceUpdateCanvases();
-
-    var linker = container.GetComponentInChildren<PageToggleLinkerIndexed>();
-    if (linker != null)
+    private void SetupNavigation(GameObject container, Transform navPanel, Transform contentParent)
     {
+        Canvas.ForceUpdateCanvases();
+        var linker = container.GetComponentInChildren<PageToggleLinkerIndexed>();
+        if (linker == null)
+        {
+            Debug.LogWarning("[FeedbackRepository] Nessun PageToggleLinkerIndexed trovato nel prefab.");
+            return;
+        }
+
         linker.RefreshLists();
 
-        // 🔧 Collega dinamicamente i Toggle all’evento corretto
         foreach (Transform navItem in navPanel)
         {
             var toggle = navItem.GetComponent<Toggle>();
@@ -340,24 +384,19 @@ private void FillMultipleContainer(FeedbackData feedback, GameObject container)
         }
 
         linker.StartCoroutine(DelayedRefresh(linker));
-    }
-    else
-    {
-        Debug.LogWarning("[FeedbackRepository] Nessun PageToggleLinkerIndexed trovato nel prefab.");
+
+        // attiva solo la prima pagina e toggle
+        for (int i = 0; i < contentParent.childCount; i++)
+            contentParent.GetChild(i).gameObject.SetActive(i == 0);
+        for (int i = 0; i < navPanel.childCount; i++)
+        {
+            var toggle = navPanel.GetChild(i).GetComponent<Toggle>();
+            if (toggle != null)
+                toggle.isOn = (i == 0);
+        }
     }
 
-    // 9️⃣ Attiva solo prima pagina e toggle
-    for (int i = 0; i < contentParent.childCount; i++)
-        contentParent.GetChild(i).gameObject.SetActive(i == 0);
-
-    for (int i = 0; i < navPanel.childCount; i++)
-    {
-        var toggleObj = navPanel.GetChild(i).GetComponent<Toggle>();
-        if (toggleObj != null)
-            toggleObj.isOn = (i == 0);
-    }
-}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
     public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, Transform feedbackPosition, FeedbackSetHolder holder)
     {

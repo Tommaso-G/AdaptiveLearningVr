@@ -1,11 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
 using VRBuilder.Core;
-using VRBuilder.Core.Behaviors;
-
-
 
 [CustomPropertyDrawer(typeof(ChapterDropdownAttribute))]
 public class ChapterDropdownDrawer : PropertyDrawer
@@ -13,14 +9,23 @@ public class ChapterDropdownDrawer : PropertyDrawer
     private List<string> allChapters = new();
     private bool initialized = false;
 
-    private const string ProcessJsonPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json"; // <-- aggiorna
+    // Default path
+    private string defaultPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json";
+    private string profilingPath = "Assets/StreamingAssets/Processes/Profiling/Profiling.json";
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         if (!initialized)
         {
-            var data = VRBuilderJsonReader.ParseProcessJson(ProcessJsonPath);
-            allChapters = data.chapters;
+            // Scegli il path in base al tipo dell'oggetto che contiene il campo
+            var target = property.serializedObject.targetObject;
+
+            string pathToUse = defaultPath;
+            if (target is ProfilingFeedbackRepository)
+                pathToUse = profilingPath;
+
+            var data = VRBuilderJsonReader.ParseProcessJson(pathToUse);
+            allChapters = data.chapters ?? new List<string>();
             initialized = true;
         }
 

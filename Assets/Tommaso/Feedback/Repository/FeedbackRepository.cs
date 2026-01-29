@@ -82,6 +82,9 @@ public class FeedbackRepository : ScriptableObject
         [Header("Step di completamento associati (0 o più)")]
         [StepForCompletionDropdown]
         public List<string> StepForCompletition = new List<string>();
+
+        [Header("Prefab Personalizzato")]
+        public GameObject PersonalizedPrefab;
     }
 
     // ======================= METODI GET =========================
