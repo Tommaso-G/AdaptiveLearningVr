@@ -39,7 +39,7 @@ public class Teacher : MonoBehaviour
         return correctInputs;
     }
 
-    public void setPresent(TMP_InputField tmpField)
+    public void setPresent(TMP_Text tmpField)
     {
         string present = tmpField.text;
 
@@ -54,7 +54,7 @@ public class Teacher : MonoBehaviour
     }
 
 
-    public void setEvacuated(TMP_InputField tmpField)
+    public void setEvacuated(TMP_Text tmpField)
     {
         string evacuated = tmpField.text;
 
@@ -69,7 +69,7 @@ public class Teacher : MonoBehaviour
     }
 
 
-    public void setMissing(TMP_InputField tmpField)
+    public void setMissing(TMP_Text tmpField)
     {
         string missing = tmpField.text;
 
