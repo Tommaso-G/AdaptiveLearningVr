@@ -278,6 +278,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 9098795482340195838}
+        m_TargetAssemblyTypeName: UnityEngine.XR.Content.Interaction.ClosableDoor,
+          Assembly-CSharp
+        m_MethodName: ActivateSpring
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -322,6 +335,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  grabPoints: []
 --- !u!1 &3758504546335403502
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,12 +429,25 @@ MonoBehaviour:
   m_OnUnlock:
     m_PersistentCalls:
       m_Calls: []
+  m_OnClosure:
+    m_PersistentCalls:
+      m_Calls: []
   m_Closed: 0
   m_LastHandleValue: 1
   m_Locked: 0
   m_KeySocket: {fileID: 0}
   m_KnobInteractor: {fileID: 0}
   m_KnobInteractorAttachTransform: {fileID: 0}
+  onDoorClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoorOpened:
+    m_PersistentCalls:
+      m_Calls: []
+  closed_angle: 85
+  opened_angle: 4
+  initialSpring: 100
+  initalDamper: 35
 --- !u!1 &6824770567609431110
 GameObject:
   m_ObjectHideFlags: 0

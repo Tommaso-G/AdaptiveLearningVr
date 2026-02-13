@@ -10,7 +10,20 @@ namespace UnityEngine.XR.Content.Interaction
         public UnityEvent onDoorClosed;
         public UnityEvent onDoorOpened;
         public bool IsClosed => m_Closed;
+        private bool was_closed = false;
 
+        public bool IsGrabbed = false;
+
+        public float closed_angle= 85f;
+
+        public float opened_angle= 4f;
+
+        public float initialSpring = 100f;
+
+        public float initalDamper = 35f;
+
+        private Rigidbody m_Rigidbody;  // campo della classe
+        private Quaternion initialRotation;
 
         public override void Start()
         {
@@ -19,61 +32,92 @@ namespace UnityEngine.XR.Content.Interaction
             m_OpenDoorLimits.min = 0.0f;
             m_OpenDoorLimits.max = 90.0f;
             m_DoorJoint.limits = m_OpenDoorLimits;
-
+            m_Rigidbody.isKinematic = true;   
             m_Closed = false;
         }
 
         void Awake()
         {
             m_DoorJoint.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+            m_Rigidbody = m_DoorJoint.GetComponent<Rigidbody>();
+            initialRotation = m_DoorJoint.transform.localRotation;
+        }
+
+        public void ActivateIsGrabbed(bool Activate)
+        {
+            if (Activate)
+            {
+                IsGrabbed = true;
+                m_Rigidbody.isKinematic = false;
+            }
+                
+            else IsGrabbed = false;
+                
         }
 
 
         public override void Update()
         {
-            // If the door is open, keep track of the hinge joint and see if it enters a state where it should close again
-            if (!m_Closed)
+            float currentAngle = Quaternion.Angle(initialRotation, m_DoorJoint.transform.localRotation);
+            //Debug.Log("Porta boh, angolo corrente: " + currentAngle );
+            
+            Rigidbody rb = m_DoorJoint.GetComponent<Rigidbody>();
+
+            // Porta chiusa
+            if (!m_Closed && currentAngle >= closed_angle && !IsGrabbed)
             {
-                if (m_LastHandleValue < m_HandleCloseValue)
-                    return;
+                m_Closed = true;
+                was_closed = true;
+                m_Rigidbody.angularVelocity = Vector3.zero;
+                m_Rigidbody.linearVelocity = Vector3.zero;
+                m_DoorJoint.transform.localRotation = initialRotation * Quaternion.Euler(0f, -90f, 0f);
+                m_Rigidbody.isKinematic = true;
+                onDoorClosed?.Invoke();
+                //Debug.Log("Porta CHIUSA, angolo corrente: " + currentAngle );
+            }
 
-                if (Mathf.Abs(m_DoorJoint.angle) < m_HingeCloseAngle)
-                {
-                    m_DoorJoint.limits = m_ClosedDoorLimits;
-                    m_Closed = true;
-                    onDoorClosed?.Invoke();  
+            // Porta aperta
+            else if (m_Closed && currentAngle <= closed_angle)
+            {
+                m_Closed = false;
+                
+                onDoorOpened?.Invoke();
+                //Debug.Log("Porta APERTA, angolo corrente:"  + currentAngle);
+            }
 
-                }
+            //Porta spalancata
+            if(was_closed && currentAngle <= opened_angle && !IsGrabbed){
+                m_Rigidbody.isKinematic = true;
+                was_closed = false;
+                
+
+            }
+
+
+        }
+
+        public void ActivateSpring()
+        {
+            m_DoorJoint.useSpring = true;
+            JointSpring spring = m_DoorJoint.spring;
+            spring.spring = initialSpring;
+            spring.damper = initalDamper;
+            
+
+            if (was_closed)
+            {   
+                spring.targetPosition = 90f;
+                m_DoorJoint.spring = spring;
+                
             }
             else
             {
-                if (Mathf.Abs(m_DoorJoint.angle) > m_HingeCloseAngle + 1f)
-                {
-                    m_Closed = false;
-                    onDoorOpened?.Invoke();
-                }
-            } 
-
-            if (m_KnobInteractor != null && m_KnobInteractorAttachTransform != null)
-            {
-                var distance = (m_KnobInteractorAttachTransform.position - m_KeyKnob.transform.position).magnitude;
-
-                // If over threshold, break and grant the key back to the interactor
-                if (distance > m_KeyPullDistance)
-                {
-                    var newKeyInteractor = m_KnobInteractor;
-                    m_KeySocket.SetActive(true);
-                    m_Key.transform.gameObject.SetActive(true);
-                    newKeyInteractor.interactionManager.SelectEnter(newKeyInteractor, m_Key);
-                    m_KeyKnob.SetActive(false);
-                }
+                spring.targetPosition = 0f;
+                m_DoorJoint.spring = spring;
+              
             }
+
         }
-
-
-
-
-
 
 
     }

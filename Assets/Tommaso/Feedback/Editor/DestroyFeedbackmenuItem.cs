@@ -1,14 +1,14 @@
-using VRBuilder.Core.Behaviors;
+using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
-public class DestroyFeedbackMenuItem : MenuItem<IBehavior>
+public class GameCompletedMenuItem : MenuItem<ICondition>
 {
     /// <inheritdoc />
-    public override string DisplayedName => "Custom/Destroy Feedback";
+    public override string DisplayedName => "Custom/Profilazione/Game Completed";
 
     /// <inheritdoc />
-    public override IBehavior GetNewItem()
+    public override ICondition GetNewItem()
     {
-        return new DestroyFeedbackBehaviour();
+        return new GameCompletedCondition();
     }
 }

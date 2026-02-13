@@ -38,7 +38,7 @@ public static class VRBuilderJsonReader
                 CollectChapterRecursive(chapter, chapters, steps, idMap, guidToName);
         }
 
-        Debug.Log($"[VRBuilderJsonReader] Trovati {chapters.Count} capitoli e {steps.Count} step (inclusi subchapter).");
+        //Debug.Log($"[VRBuilderJsonReader] Trovati {chapters.Count} capitoli e {steps.Count} step (inclusi subchapter).");
         return (chapters, steps);
     }
 

@@ -10,6 +10,9 @@ namespace UnityEngine.XR.Content.Interaction
     {
         [Serializable] public class BreakEvent : UnityEvent<GameObject, GameObject> { }
 
+        [System.Serializable]
+        public class CollisionEvent : UnityEvent<Collision> { }
+
         [SerializeField]
         [Tooltip("The 'broken' version of this object.")]
         GameObject m_BrokenVersion;
@@ -22,6 +25,9 @@ namespace UnityEngine.XR.Content.Interaction
         [Tooltip("Events to fire when a matching object collides and break this object. " +
             "The first parameter is the colliding object, the second parameter is the 'broken' version.")]
         BreakEvent m_OnBreak = new BreakEvent();
+        public CollisionEvent OnCollisionEnterEvent; 
+
+        public bool hisTurn = false;
 
         bool m_Destroyed = false;
 
@@ -33,11 +39,22 @@ namespace UnityEngine.XR.Content.Interaction
 
         void OnCollisionEnter(Collision collision)
         {
+            
+
             if (m_Destroyed)
                 return;
 
+
+
             if (collision.gameObject.tag.Equals(m_ColliderTag, System.StringComparison.InvariantCultureIgnoreCase))
             {
+                if (!hisTurn)
+                {
+                    OnCollisionEnterEvent?.Invoke(collision);
+                    return;
+                }
+                
+                OnCollisionEnterEvent?.Invoke(collision);
                 m_Destroyed = true;
                 var brokenVersion = Instantiate(m_BrokenVersion, transform.position, transform.rotation);
                 m_OnBreak.Invoke(collision.gameObject, brokenVersion);

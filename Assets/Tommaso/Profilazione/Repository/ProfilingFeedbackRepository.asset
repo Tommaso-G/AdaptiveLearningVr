@@ -15,21 +15,29 @@ MonoBehaviour:
   SingleContainer: {fileID: 781630661673262138, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
   MultipleContainer: {fileID: 879382917961715317, guid: a3d1bb9f24db9514bb18390e762b7954, type: 3}
   chapters:
-  - ChapterName: Chapter 1
+  - ChapterName: Visivo-Verbale
     feedbacks:
     - FeedbackName: Ricorda le parole
       images:
       - {fileID: 21300000, guid: 5a7417a5142e8d54e986a84d59f33f59, type: 3}
       videos: []
       StepForCompletition:
-      - Ricorda le parole istruzioni
-      - Not ending
+      - Test parole
+      - Ricorda Parole e Immagini
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: Ricorda le Immagini
       images:
       - {fileID: 21300000, guid: 5a7417a5142e8d54e986a84d59f33f59, type: 3}
       videos: []
       StepForCompletition:
-      - Ricorda le immagini sitruzioni
-      - Not ending
+      - Test  immagini
+      - Ricorda Parole e Immagini
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Ricorda la sequenza
+      images:
+      - {fileID: 21300000, guid: 3bdf848603cd2eb4e9048eb251f91e63, type: 3}
+      - {fileID: 21300000, guid: 823696daa6185704a959a4047c60a9ca, type: 3}
+      videos: []
+      StepForCompletition:
+      - Ricorda gli interactable
       PersonalizedPrefab: {fileID: 0}

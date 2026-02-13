@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.CodeDom.Compiler;
+using Unity.VisualScripting;
 
-public class ImageMemoryGame : MonoBehaviour
+public class ImageMemoryGame : MonoBehaviour, ICompletableStep
 {
+    public bool IsCompleted { get; private set; } = false;
+
     [Header("Impostazioni immagini")]
     [Tooltip("Lista di immagini da mostrare")]
     public List<Sprite> immagini = new List<Sprite>();
@@ -27,6 +31,8 @@ public class ImageMemoryGame : MonoBehaviour
     private List<Sprite> ordineUtente = new List<Sprite>();
     private int indiceCorrente = 0;
 
+    private int indexToComplete = 0;
+
     private Image immagineMostra;
 
     private void Start()
@@ -46,6 +52,14 @@ public class ImageMemoryGame : MonoBehaviour
         }
 
         immagineMostra.gameObject.SetActive(false);
+
+    }
+
+    public void resetSequence()
+    {
+        if(indexToComplete == 3) return;
+        indiceCorrente = 0;
+        
         StartCoroutine(TimerBeforeStart());
     }
 
@@ -70,6 +84,7 @@ public class ImageMemoryGame : MonoBehaviour
 
     private IEnumerator MostraImmaginiInOrdineCasuale()
     {
+        
         immagineMostra.gameObject.SetActive(true);
         // Crea una copia casuale delle immagini
         List<Sprite> ordineCasuale = new List<Sprite>(immagini);
@@ -87,83 +102,157 @@ public class ImageMemoryGame : MonoBehaviour
 
         // Fine fase 1
         contenitoreMostra.SetActive(false);
+        immagineMostra.gameObject.SetActive(false);
         MostraPulsanti();
     }
 
-private void MostraPulsanti()
-{
-    foreach (Transform child in contenitorePulsanti)
-        Destroy(child.gameObject);
-
-    // Mostra i pulsanti in ordine casuale
-    List<Sprite> ordineMisto = new List<Sprite>(immagini);
-    ordineMisto.Shuffle();
-
-    foreach (Sprite img in ordineMisto)
+    private void MostraPulsanti()
     {
-        GameObject pulsante = Instantiate(pulsantePrefab, contenitorePulsanti);
-        pulsante.SetActive(true);
-
-        // 🔹 Campo Image del figlio (mostra lo sprite)
-        Image imageFiglio = pulsante.transform.Find("Image").GetComponent<Image>();
-        imageFiglio.sprite = img;
-
-        // 🔹 Campo Image del bottone (sfondo del pulsante)
-        Image imageBottone = pulsante.GetComponent<Image>();
-
-        Button btn = pulsante.GetComponent<Button>();
-        Sprite immagineCliccata = img;
-        btn.onClick.AddListener(() => SelezionaImmagine(immagineCliccata, pulsante, imageBottone));
-    }
-}
 
 
-private void SelezionaImmagine(Sprite immagine, GameObject pulsante, Image imageBottone)
-{
-    if (indiceCorrente >= ordineCorretto.Count) return;
-
-    // ✅ Se è corretta
-    if (immagine == ordineCorretto[indiceCorrente])
-    {
-        StartCoroutine(GreenThenDestroy(pulsante, imageBottone));
-        ordineUtente.Add(immagine);
-        indiceCorrente++;
-
-        if (indiceCorrente == ordineCorretto.Count)
+        if (contenitorePulsanti == null)
         {
-            Debug.Log("✅ Sequenza completata correttamente!");
+            Debug.LogError("❌ contenitorePulsanti è NULL");
+            return;
+        }
+
+
+        // Distrugge i pulsanti precedenti
+        foreach (Transform child in contenitorePulsanti)
+        {
+            Destroy(child.gameObject);
+        }
+        // Genera ordine casuale
+        List<Sprite> ordineMisto = new List<Sprite>(immagini);
+        if (ordineMisto.Count == 0)
+        {
+
+            return;
+        }
+        ordineMisto.Shuffle();
+
+        // Crea i pulsanti
+        foreach (Sprite img in ordineMisto)
+        {
+            if (pulsantePrefab == null)
+            {
+
+                return;
+            }
+
+            GameObject pulsante = Instantiate(pulsantePrefab, contenitorePulsanti);
+            pulsante.SetActive(true);
+
+            // Campo Image del figlio
+            Transform imageChild = pulsante.transform.Find("Image");
+            if (imageChild == null)
+            {
+                Debug.LogError($"❌ Nessun oggetto 'Image' trovato come figlio di {pulsante.name}");
+                continue;
+            }
+
+            Image imageFiglio = imageChild.GetComponent<Image>();
+            if (imageFiglio == null)
+            {
+                Debug.LogError($"❌ Nessun componente Image nel figlio di {pulsante.name}");
+                continue;
+            }
+
+            imageFiglio.sprite = img;
+
+            // Campo Image del bottone (sfondo)
+            Image imageBottone = pulsante.GetComponent<Image>();
+            if (imageBottone == null)
+            {
+                Debug.LogError($"❌ Nessun componente Image nel pulsante {pulsante.name}");
+                continue;
+            }
+
+            // Componente Button
+            Button btn = pulsante.GetComponent<Button>();
+            if (btn == null)
+            {
+                Debug.LogError($"❌ Nessun componente Button nel prefab {pulsante.name}");
+                continue;
+            }
+            Sprite immagineCliccata = img;
+            btn.onClick.AddListener(() =>
+            {
+                SelezionaImmagine(immagineCliccata, pulsante, imageBottone);
+            });
+
+        }
+
+        // Controllo finale
+        int pulsantiTotali = contenitorePulsanti.childCount;
+        //Debug.Log($"📋 Totale pulsanti generati: {pulsantiTotali}");
+    }
+
+
+
+    private void SelezionaImmagine(Sprite immagine, GameObject pulsante, Image imageBottone)
+    {
+        if (indiceCorrente >= ordineCorretto.Count) return;
+
+        Color previousColor = imageBottone.color;
+
+        // ✅ Se è corretta
+        if (immagine == ordineCorretto[indiceCorrente])
+        {
+            StartCoroutine(GreenThenDestroy(pulsante, imageBottone));
+            ordineUtente.Add(immagine);
+            indiceCorrente++;
+
+            if (indiceCorrente == ordineCorretto.Count)
+            {
+                indexToComplete++;
+                contenitoreMostra.SetActive(true);
+                //Debug.Log("✅ Sequenza completata correttamente!");
+                if(indexToComplete == 3)
+                    {
+                        Debug.Log("Gioco completato!");
+                        IsCompleted = true;
+                    }
+                
+            }
+        }
+        else
+        {
+            StartCoroutine(RedBlink(pulsante, imageBottone, previousColor));
+            //Debug.Log("❌ Immagine errata!");
         }
     }
-    else
+
+
+    private IEnumerator GreenThenDestroy(GameObject pulsante, Image imageBottone)
+    {
+        imageBottone.color = Color.green;
+        yield return new WaitForSeconds(0.5f);
+        Destroy(pulsante);
+    }
+
+    private IEnumerator RedBlink(GameObject pulsante, Image imageBottone, Color previousColor)
     {
         imageBottone.color = Color.red;
-        Debug.Log("❌ Immagine errata!");
+        yield return new WaitForSeconds(0.5f);
+        imageBottone.color = previousColor;
     }
-}
 
-
-private IEnumerator GreenThenDestroy(GameObject pulsante, Image imageBottone)
-{
-    imageBottone.color = Color.green;
-    yield return new WaitForSeconds(0.5f);
-    Destroy(pulsante);
-}
-
-}
+    }
 
 
 // Estensione per mischiare liste
-public static class ListExtensions
-{
-    private static System.Random rng = new System.Random();
-    public static void Shuffle<T>(this IList<T> list)
+    public static class ListExtensions
     {
-        int n = list.Count;
-        while (n > 1)
+        private static System.Random rng = new System.Random();
+        public static void Shuffle<T>(this IList<T> list)
         {
-            n--;
-            int k = rng.Next(n + 1);
-            (list[k], list[n]) = (list[n], list[k]);
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                (list[k], list[n]) = (list[n], list[k]);
+            }
         }
     }
-}
