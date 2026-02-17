@@ -23,6 +23,11 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public Button reflectiveButtonDeactivate;
 
+    public ScrollRect scrollable;  
+
+    public Scrollbar verticalScrollbar;
+    public RectTransform content;
+
     private void Start()
     {
         // Trova la camera del giocatore
@@ -54,6 +59,7 @@ public class FeedbackPrefabController : MonoBehaviour
         styleBehaviour?.resetVariables();
         // Avvia controllo distanza
         StartCoroutine(CheckDistanceRoutine());
+        
 
         
     }
@@ -99,6 +105,7 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private IEnumerator CheckDistanceRoutine()
     {
+
         while (playerCamera != null)
         {
             float distance = Vector3.Distance(playerCamera.transform.position, transform.position);
@@ -111,6 +118,7 @@ public class FeedbackPrefabController : MonoBehaviour
 
                 StartScaling(Vector3.one * maxScale);
                 styleBehaviour?.OnFeedbackOpened(this);
+                
             }
             else if (distance > activationDistance && isVisible)
             {
@@ -122,9 +130,47 @@ public class FeedbackPrefabController : MonoBehaviour
                 styleBehaviour?.OnFeedbackClosed(this);
             }
 
+            
+
             yield return null;
         }
     }
+
+    public void UpdateScrollState()
+    {
+        if (scrollable == null || content == null)
+        {
+            Debug.LogWarning("[FeedbackScrollableController] ScrollRect o Content non assegnati.");
+            return;
+        }
+
+        float contentHeight = content.rect.height;
+        float viewportHeight = scrollable.viewport != null
+            ? scrollable.viewport.rect.height
+            : scrollable.GetComponent<RectTransform>().rect.height;
+
+        bool needsScroll = contentHeight > viewportHeight + 10f;
+
+        scrollable.enabled = needsScroll;
+        if (verticalScrollbar != null)
+            verticalScrollbar.gameObject.SetActive(needsScroll);
+
+    }
+
+    public void ResetScrollPosition()
+    {
+        if (scrollable == null)
+            return;
+
+        scrollable.verticalNormalizedPosition = 1f;   // in alto
+        scrollable.horizontalNormalizedPosition = 0f; // a sinistra
+        Canvas.ForceUpdateCanvases();
+
+        //Debug.Log($"[FeedbackScrollableController] Scroll riallineato in alto per '{name}'.");
+    }
+
+
+
 
     private void StartScaling(Vector3 targetScale)
     {
@@ -139,12 +185,32 @@ public class FeedbackPrefabController : MonoBehaviour
         while (Vector3.Distance(transform.localScale, targetScale) > 0.0001f)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
+            ResetScrollPosition();
+            UpdateScrollState();
             yield return null;
+            
         }
 
+        // Assicurati che arrivi esattamente al target
         transform.localScale = targetScale;
         scaleRoutine = null;
-    }
+
+
+        var rect = GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            // Force rebuild layout **dopo che la scala è stata applicata**
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            
+
+            Canvas.ForceUpdateCanvases();
+        }
+
+        
+        
+       // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
+}
+
 
     public void CloseFeedback()
     {

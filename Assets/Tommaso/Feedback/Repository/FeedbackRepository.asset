@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FeedbackRepository
   m_EditorClassIdentifier: 
   SingleContainer: {fileID: 781630661673262138, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
-  MultipleContainer: {fileID: 879382917961715317, guid: a3d1bb9f24db9514bb18390e762b7954, type: 3}
+  MultipleContainer: {fileID: 781630661673262138, guid: 450a88fda2be06d46a17709a92bce11d, type: 3}
   globalPath:
     verbalPath:
       attivo: []
@@ -27,249 +27,256 @@ MonoBehaviour:
       - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
         feedbacks:
         - FeedbackName: Chiama il personale addetto
-          images:
-          - {fileID: 21300000, guid: 5a1ed72f8a870f243bea1916543817ca, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Grab telefono
           - Eseguire chiamata
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Attivazione allarme
         feedbacks:
         - FeedbackName: Attiva allarme
-          images:
-          - {fileID: 21300000, guid: 10c5611baef1f724f9d02fcb8db41ab6, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Attiva Allarme
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Chiama i vigili del fuoco
-          images:
-          - {fileID: 21300000, guid: 61d02631a2dc24642bc658f317ba87db, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Grab telefono pompieri
           - completa Domande
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
         feedbacks:
         - FeedbackName: Chiudi il Gas e spegni la corrente
-          images:
-          - {fileID: 21300000, guid: 3d4c3a657f08185449cac91a350f704b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Switch the levers
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: Isola l'incendio
-          images:
-          - {fileID: 21300000, guid: 7cadee21228d8944a9cffcee1fbcd19b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
           - Non puoi domarli tutti... chiudi la porta e scappa
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Usa stracci o indumenti per bloccare il fumo
-          images:
-          - {fileID: 21300000, guid: 3ceb0cc8898d3db42b79a6b0b73c415d, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           - Question to Check
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Giro di perlustrazione
         feedbacks:
         - FeedbackName: Controlla le altre aule
-          images:
-          - {fileID: 21300000, guid: c5e04fd5b408f4949be0b848d37fe1b7, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - istruzioni
           - Perlustra tutta la scuola e chiudi le porte
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Aula computer
         feedbacks:
         - FeedbackName: Porta Paolina in salvo
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "Si c'\xE8 Paolina"
           - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: "non c'\xE8 nessuno"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "No, non c'\xE8 nessuno"
           - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Aula 2(in fondo a sinistra)
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "C'\xE9 qualcuno il Aula 2?"
           - No, chiudi la porta
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: 'Laboratorio di chimica '
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "C'\xE8 qualcuno in laboratorio di chimica?"
           - No, chiudi la porta di chimica
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Biblioteca
         feedbacks:
         - FeedbackName: "c'\xE8 paolina in sedie a rotelle"
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "Si. c'\xE8 Paolina in sedie a rotelle"
           - Portala fuori
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: 'Mensa '
         feedbacks:
         - FeedbackName: "C'\xE8 michelle che balla..."
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "Si c'\xE8 Michelle"
           - Porta Michelle all'uscita
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: "Non c'\xE8 nessuno qui"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - "No, non c'\xE8 nessuno in mensa"
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: Segnala gli assenti
-          images:
-          - {fileID: 21300000, guid: 521d6d5c5ea26fa4e82a373328448dce, type: 3}
-          videos: []
+          pages: []
           StepForCompletition:
           - Eseguire chiamata
           - Eseguire chiamata
+          PersonalizedPrefab: {fileID: 0}
       riflessivo:
       - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
         feedbacks:
         - FeedbackName: Chiama il personale addetto
-          images:
-          - {fileID: 21300000, guid: 5a1ed72f8a870f243bea1916543817ca, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 5a1ed72f8a870f243bea1916543817ca, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Grab telefono
           - Eseguire chiamata
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Attivazione allarme
         feedbacks:
         - FeedbackName: Attiva allarme
-          images:
-          - {fileID: 21300000, guid: 10c5611baef1f724f9d02fcb8db41ab6, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 10c5611baef1f724f9d02fcb8db41ab6, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Attiva Allarme
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Chiama i vigili del fuoco
-          images:
-          - {fileID: 21300000, guid: 61d02631a2dc24642bc658f317ba87db, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 61d02631a2dc24642bc658f317ba87db, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Grab telefono pompieri
           - completa Domande
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
         feedbacks:
         - FeedbackName: Chiudi il Gas e spegni la corrente
-          images:
-          - {fileID: 21300000, guid: 3d4c3a657f08185449cac91a350f704b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 3d4c3a657f08185449cac91a350f704b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Switch the levers
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: Isola l'incendio
-          images:
-          - {fileID: 21300000, guid: 7cadee21228d8944a9cffcee1fbcd19b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 7cadee21228d8944a9cffcee1fbcd19b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
           - Non puoi domarli tutti... chiudi la porta e scappa
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Usa stracci o indumenti per bloccare il fumo
-          images:
-          - {fileID: 21300000, guid: 3ceb0cc8898d3db42b79a6b0b73c415d, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 3ceb0cc8898d3db42b79a6b0b73c415d, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Giro di perlustrazione
-        feedbacks:
-        - FeedbackName: Perlustra la scuola
-          images:
-          - {fileID: 21300000, guid: c5e04fd5b408f4949be0b848d37fe1b7, type: 3}
-          videos: []
-          StepForCompletition:
-          - istruzioni
+        feedbacks: []
       - ChapterName: Aula computer
         feedbacks:
         - FeedbackName: Porta Paolina in salvo
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "Si c'\xE8 Paolina"
           - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: "non c'\xE8 nessuno"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "No, non c'\xE8 nessuno"
           - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Aula 2(in fondo a sinistra)
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "C'\xE9 qualcuno il Aula 2?"
           - No, chiudi la porta di aula 2
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: 'Laboratorio di chimica '
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "C'\xE8 qualcuno in laboratorio di chimica?"
           - No, chiudi la porta di chimica
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Biblioteca
         feedbacks:
         - FeedbackName: "c'\xE8 paolina in sedie a rotelle"
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "Si. c'\xE8 Paolina in sedie a rotelle"
           - Portala fuori
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: 'Mensa '
         feedbacks:
         - FeedbackName: "C'\xE8 michelle che balla..."
-          images:
-          - {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "Si c'\xE8 Michelle"
           - Porta Michelle all'uscita
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: "Non c'\xE8 nessuno qui"
-          images:
-          - {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 290738d5b06f7734bb2e75a39082865b, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - "No, non c'\xE8 nessuno in mensa"
+          PersonalizedPrefab: {fileID: 0}
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: Segnala gli assenti
-          images:
-          - {fileID: 21300000, guid: 521d6d5c5ea26fa4e82a373328448dce, type: 3}
-          videos: []
+          pages:
+          - image: {fileID: 21300000, guid: 521d6d5c5ea26fa4e82a373328448dce, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
     visualPath:
       attivo: []
       riflessivo: []

@@ -73,18 +73,30 @@ public class FeedbackRepository : ScriptableObject
         [Header("Nome del feedback")]
         public string FeedbackName = "";
 
-        [Header("Immagini (0 o più)")]
-        public List<Sprite> images = new List<Sprite>();
-
-        [Header("Video (0 o più)")]
-        public List<VideoClip> videos = new List<VideoClip>();
+        [Header("Pagine del feedback")]
+        public List<FeedbackPage> pages = new List<FeedbackPage>();
 
         [Header("Step di completamento associati (0 o più)")]
         [StepForCompletionDropdown]
         public List<string> StepForCompletition = new List<string>();
 
-        [Header("Prefab Personalizzato")]
+        [Header("Prefab Personalizzato, se inserito tutto il resto viene ignorato")]
         public GameObject PersonalizedPrefab;
+    }
+
+    [Serializable]
+    public class FeedbackPage
+    {
+        
+        [Tooltip("Una singola immagine opzionale per la pagina.")]
+        public Sprite image;
+
+        [Tooltip("Un singolo video opzionale per la pagina.")]
+        public VideoClip video;
+
+        [Tooltip("Testo opzionale  della pagina.")]
+        [TextArea(2, 5)]
+        public string text;
     }
 
     // ======================= METODI GET =========================

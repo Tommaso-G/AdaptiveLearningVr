@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
         if (child != null)
         {
-            Debug.Log($"[FeedbackAutoManager] Figlio 'feedbackPosition' trovato in '{parent.name}'.");
+            //Debug.Log($"[FeedbackAutoManager] Figlio 'feedbackPosition' trovato in '{parent.name}'.");
 
             // Log dettagliati del child originale
             //Debug.Log($"[FeedbackAutoManager] CHILD LOCAL Position: {child.localPosition}, LOCAL Rotation: {child.localEulerAngles}, LOCAL Scale: {child.localScale}");
@@ -64,98 +64,102 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
 
-public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSetHolder holder)
-{
-    if (feedback == null)
+    public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSetHolder holder)
     {
-        Debug.LogWarning("[FeedbackDisplayer] Nessun feedback fornito a ChooseFeedback.");
-        return;
+        if (feedback == null)
+        {
+            Debug.LogWarning("[FeedbackDisplayer] Nessun feedback fornito a ChooseFeedback.");
+            return;
+        }
+
+        if (holder == null)
+        {
+            Debug.LogError("[FeedbackDisplayer] Holder nullo passato a ChooseFeedback.");
+            return;
+        }
+
+        // ======= Caso speciale: prefab personalizzato =======
+        if (feedback.PersonalizedPrefab != null)
+        {
+            GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
+            customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
+            holder.activeFeedbackInstance = customInstance;
+
+            //Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
+            return; // Ignora tutto il resto
+        }
+
+        // ======= Scegli repository attivo (Profiling ha priorità) =======
+        var activeRepo = holder.ProfilingFeedbackRepository != null
+            ? holder.ProfilingFeedbackRepository as ScriptableObject
+            : holder.FeedbackRepository as ScriptableObject;
+
+        if (activeRepo == null)
+        {
+            Debug.LogError("[FeedbackDisplayer] Nessun repository valido trovato nel holder.");
+            return;
+        }
+
+        // ======= Verifica pagine =======
+        if (feedback.pages == null || feedback.pages.Count == 0)
+        {
+            Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
+            return;
+        }
+
+        // ======= Risolvi i prefab dal repository corretto =======
+        GameObject singlePrefab = null;
+        GameObject multiplePrefab = null;
+
+        if (holder.ProfilingFeedbackRepository != null)
+        {
+            singlePrefab = holder.ProfilingFeedbackRepository.SingleContainer;
+            multiplePrefab = holder.ProfilingFeedbackRepository.MultipleContainer;
+        }
+        else if (holder.FeedbackRepository != null)
+        {
+            singlePrefab = holder.FeedbackRepository.SingleContainer;
+            multiplePrefab = holder.FeedbackRepository.MultipleContainer;
+        }
+
+        if (singlePrefab == null || multiplePrefab == null)
+        {
+            Debug.LogError("[FeedbackDisplayer] Prefab SingleContainer o MultipleContainer non assegnato nel repository attivo.");
+            return;
+        }
+
+        // ======= Istanzia il container corretto in base al numero di pagine =======
+        GameObject containerInstance;
+
+        if (feedback.pages.Count == 1)
+        {
+            containerInstance = Instantiate(singlePrefab, position.position, position.rotation);
+            containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
+            FillSingleContainer(feedback, containerInstance);
+        }
+        else
+        {
+            containerInstance = Instantiate(multiplePrefab, position.position, position.rotation);
+            containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
+            FillMultipleContainer(feedback, containerInstance);
+        }
+
+        holder.activeFeedbackInstance = containerInstance;
+
+        //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {feedback.pages.Count} pagina/e.");
     }
 
-    if (holder == null)
-    {
-        Debug.LogError("[FeedbackDisplayer] Holder nullo passato a ChooseFeedback.");
-        return;
-    }
-
-    // ======= Caso speciale: prefab personalizzato =======
-    if (feedback.PersonalizedPrefab != null)
-    {
-        GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
-        customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
-        holder.activeFeedbackInstance = customInstance;
-
-        Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
-        return; // Ignora tutto il resto
-    }
-
-    // ======= Scegli repository attivo (Profiling ha priorità) =======
-    var activeRepo = holder.ProfilingFeedbackRepository != null
-        ? holder.ProfilingFeedbackRepository as ScriptableObject
-        : holder.FeedbackRepository as ScriptableObject;
-
-    if (activeRepo == null)
-    {
-        Debug.LogError("[FeedbackDisplayer] Nessun repository valido trovato nel holder.");
-        return;
-    }
-
-    // ======= Conta elementi multimediali =======
-    int totalElements = 0;
-    if (feedback.images != null) totalElements += feedback.images.Count;
-    if (feedback.videos != null) totalElements += feedback.videos.Count;
-
-    if (totalElements == 0)
-    {
-        Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene immagini né video.");
-        return;
-    }
-
-    // ======= Risolvi i prefab dal repository corretto =======
-    GameObject singlePrefab = null;
-    GameObject multiplePrefab = null;
-
-    if (holder.ProfilingFeedbackRepository != null)
-    {
-        singlePrefab = holder.ProfilingFeedbackRepository.SingleContainer;
-        multiplePrefab = holder.ProfilingFeedbackRepository.MultipleContainer;
-    }
-    else if (holder.FeedbackRepository != null)
-    {
-        singlePrefab = holder.FeedbackRepository.SingleContainer;
-        multiplePrefab = holder.FeedbackRepository.MultipleContainer;
-    }
-
-    if (singlePrefab == null || multiplePrefab == null)
-    {
-        Debug.LogError("[FeedbackDisplayer] Prefab SingleContainer o MultipleContainer non assegnato nel repository attivo.");
-        return;
-    }
-
-    // ======= Istanzia il container corretto =======
-    GameObject containerInstance;
-
-    if (totalElements == 1)
-    {
-        containerInstance = Instantiate(singlePrefab, position.position, position.rotation);
-        containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
-        FillSingleContainer(feedback, containerInstance);
-    }
-    else
-    {
-        containerInstance = Instantiate(multiplePrefab, position.position, position.rotation);
-        containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
-        FillMultipleContainer(feedback, containerInstance);
-    }
-
-    holder.activeFeedbackInstance = containerInstance;
-
-    //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {totalElements} elementi.");
-}
 
 
-    
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private readonly string SINGLE_PATH_TITLE_TEXT = "Canvas/Title Text";
+    private readonly string SINGLE_PATH_BODY_TEXT = "Canvas/Scrollable/Content/Body Text";
+    private readonly string SINGLE_PATH_IMAGE_CONTAINER = "Canvas/Scrollable/Content/Image Container";
+    private readonly string SINGLE_PATH_VIDEO_CONTAINER = "Canvas/Scrollable/Content/Video Container";
+    private readonly string SINGLE_PATH_LAYOUT_PARENT = "Canvas";
+
+    // ======= Metodo aggiornato =======
     private void FillSingleContainer(FeedbackData feedback, GameObject container)
     {
         if (feedback == null || container == null)
@@ -164,76 +168,109 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
             return;
         }
 
-        // Imposta titolo del feedback
-        var headerText = container.transform.Find("Content/Modal Content Text")?.GetComponent<TMPro.TMP_Text>();
-        if (headerText != null)
+        if (feedback.pages == null || feedback.pages.Count == 0)
         {
-            headerText.text = feedback.FeedbackName;
-        }
-        else
-        {
-            Debug.LogWarning("[FeedbackRepository] 'Modal Content Text' non trovato nel prefab.");
+            Debug.LogWarning($"[FeedbackRepository] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
+            return;
         }
 
-        // Trova i contenitori nel prefab
-        Transform imageContainer = container.transform.Find("Content/Image Container");
-        Transform videoContainer = container.transform.Find("Content/Video Container");
+        var page = feedback.pages[0];
+
+        // ======= Imposta titolo =======
+        var headerText = container.transform.Find(SINGLE_PATH_TITLE_TEXT)?.GetComponent<TMPro.TMP_Text>();
+        if (headerText != null)
+            headerText.text = feedback.FeedbackName;
+        else
+            Debug.LogWarning($"[FeedbackRepository] '{SINGLE_PATH_TITLE_TEXT}' non trovato nel prefab.");
+
+        // ======= Trova riferimenti =======
+        Transform bodyTextTransform = container.transform.Find(SINGLE_PATH_BODY_TEXT);
+        var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
+
+        Transform imageContainer = container.transform.Find(SINGLE_PATH_IMAGE_CONTAINER);
+        Transform videoContainer = container.transform.Find(SINGLE_PATH_VIDEO_CONTAINER);
         VideoPlayer videoPlayer = container.GetComponentInChildren<VideoPlayer>();
         UnityEngine.UI.Image imageComponent = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
 
-        // Disattiva entrambi all’inizio
+        // Disattiva tutto
+        if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
         if (videoContainer != null) videoContainer.gameObject.SetActive(false);
 
-        // Determina se c’è un’immagine o un video
-        bool hasImage = feedback.images != null && feedback.images.Count > 0 && feedback.images[0] != null;
-        bool hasVideo = feedback.videos != null && feedback.videos.Count > 0 && feedback.videos[0] != null;
+        // ======= Validazione: immagine + video =======
+        bool hasImage = page.image != null;
+        bool hasVideo = page.video != null;
 
+        if (hasImage && hasVideo)
+        {
+            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedback.FeedbackName}' contiene sia un'immagine che un video. " +
+                           "Ogni pagina deve contenere solo uno dei due.");
+            return;
+        }
+
+        // ======= Testo =======
+        if (bodyTextTransform != null && bodyText != null)
+        {
+            if (!string.IsNullOrEmpty(page.text))
+            {
+                bodyTextTransform.gameObject.SetActive(true);
+                bodyText.text = page.text;
+            }
+            else
+            {
+                bodyTextTransform.gameObject.SetActive(false);
+            }
+        }
+
+        // ======= Immagine =======
         if (hasImage)
         {
             if (imageContainer != null && imageComponent != null)
             {
                 imageContainer.gameObject.SetActive(true);
-                imageComponent.sprite = feedback.images[0];
-                //Debug.Log($"[FeedbackRepository] Immagine impostata per '{feedback.FeedbackName}'.");
+                imageComponent.sprite = page.image;
             }
             else
             {
-                Debug.LogWarning("[FeedbackRepository] Immagine presente ma 'Image Container' non trovato nel prefab.");
+                Debug.LogWarning($"[FeedbackRepository] '{SINGLE_PATH_IMAGE_CONTAINER}' o immagine non trovati nel prefab.");
             }
         }
-        else if (hasVideo)
+
+        // ======= Video =======
+        if (hasVideo)
         {
             if (videoContainer != null && videoPlayer != null)
             {
                 videoContainer.gameObject.SetActive(true);
-                videoPlayer.clip = feedback.videos[0];
+                videoPlayer.clip = page.video;
                 videoPlayer.Play();
-               // Debug.Log($"[FeedbackRepository] Video impostato per '{feedback.FeedbackName}'.");
             }
             else
             {
-                Debug.LogWarning("[FeedbackRepository] Video presente ma 'Video Container' o 'Video Player' non trovati.");
+                Debug.LogWarning($"[FeedbackRepository] '{SINGLE_PATH_VIDEO_CONTAINER}' o VideoPlayer non trovati nel prefab.");
             }
         }
-        else
-        {
-            Debug.LogWarning($"[FeedbackRepository] Nessun contenuto multimediale valido trovato per '{feedback.FeedbackName}'.");
-        }
 
-            // Forza il re-layout del prefab
-        Transform layoutParent = container.transform.Find("Content"); // o il transform che ha il VerticalLayoutGroup
+        // ======= Forza re-layout =======
+        Transform layoutParent = container.transform.Find(SINGLE_PATH_LAYOUT_PARENT);
         if (layoutParent != null)
-        {
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(layoutParent.GetComponent<RectTransform>());
-        }
     }
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
-    private const string CONTENT_PATH = "Canvas/Content";
-    private const string NAV_PANEL_PATH = "Nav Panel";
-    private const string BASE_PAGE_NAME = "Page 1";
-    private const string BASE_NAV_NAME = "Nav Item Toggle 1";
+    private readonly string MULTI_PATH_CONTENT = "Layout/Canvas/Scrollable/Content";
+    private readonly string MULTI_PATH_NAV_PANEL = "Layout/Nav Panel";
+    private readonly string MULTI_PATH_HEADER_TEXT = "Layout/Canvas/Title Text";
+
+    private readonly string MULTI_PATH_BODY_TEXT = "Body Text";
+    private readonly string MULTI_PATH_IMAGE_CONTAINER = "Image Container";
+    private readonly string MULTI_PATH_VIDEO_CONTAINER = "Video Container";
+
+    // ===============================================================
+    // MULTI-PAGE FEEDBACK
+    // ===============================================================
 
     private void FillMultipleContainer(FeedbackData feedback, GameObject container)
     {
@@ -243,27 +280,27 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
             return;
         }
 
-        var allMedia = CollectMedia(feedback);
-        if (allMedia.Count == 0)
+        if (feedback.pages == null || feedback.pages.Count == 0)
         {
-            Debug.LogWarning($"[FeedbackRepository] Nessun contenuto multimediale valido per '{feedback.FeedbackName}'.");
+            Debug.LogWarning($"[FeedbackRepository] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
             return;
         }
 
-        var contentParent = container.transform.Find(CONTENT_PATH);
-        var navPanel = container.transform.Find(NAV_PANEL_PATH);
+        var contentParent = container.transform.Find(MULTI_PATH_CONTENT);
+        var navPanel = container.transform.Find(MULTI_PATH_NAV_PANEL);
 
         if (contentParent == null || navPanel == null)
         {
-            Debug.LogError("[FeedbackRepository] Struttura prefab non valida (manca Canvas/Content o Nav Panel).");
+            Debug.LogError("[FeedbackRepository] Struttura prefab non valida (manca Content o Nav Panel).");
             return;
         }
 
-        var basePage = contentParent.Find(BASE_PAGE_NAME);
-        var baseNavItem = navPanel.Find(BASE_NAV_NAME);
+        var basePage = contentParent.Find("Page 1");
+        var baseNavItem = navPanel.Find("Nav Item Toggle 1");
+
         if (basePage == null || baseNavItem == null)
         {
-            Debug.LogError("[FeedbackRepository] Page 1 o Nav Item Toggle 1 non trovati.");
+            Debug.LogError("[FeedbackRepository] Page 1 o Nav Item Toggle 1 non trovati nel prefab.");
             return;
         }
 
@@ -271,30 +308,18 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
         ClearOldPages(contentParent, basePage);
         ClearOldPages(navPanel, baseNavItem);
 
-        CreatePages(allMedia, contentParent, navPanel, basePage, baseNavItem);
+        CreatePages(feedback.pages, contentParent, navPanel, basePage, baseNavItem, feedback.FeedbackName);
         SetupNavigation(container, navPanel, contentParent);
+        StartCoroutine(ForceLayoutNextFrame(contentParent));
     }
 
-    private List<(string name, object content)> CollectMedia(FeedbackData feedback)
-    {
-        var media = new List<(string name, object content)>();
-        if (feedback.images != null)
-            media.AddRange(feedback.images
-                .Where(i => i != null)
-                .Select(i => (i.name, (object)i)));
-
-        if (feedback.videos != null)
-            media.AddRange(feedback.videos
-                .Where(v => v != null)
-                .Select(v => (v.name, (object)v)));
-
-        return media.OrderBy(m => m.name).ToList();
-    }
-
+    // ===============================================================
+    // SUPPORT METHODS
+    // ===============================================================
 
     private void SetHeader(GameObject container, string title)
     {
-        var header = container.transform.Find("Canvas/Header Text")?.GetComponent<TMPro.TMP_Text>();
+        var header = container.transform.Find(MULTI_PATH_HEADER_TEXT)?.GetComponent<TMPro.TMP_Text>();
         if (header != null)
             header.text = title;
     }
@@ -309,14 +334,15 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
         }
     }
 
-    private void CreatePages(List<(string name, object content)> allMedia,
-        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem)
+    private void CreatePages(List<FeedbackRepository.FeedbackPage> pages,
+        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem, string feedbackName)
     {
-        for (int i = 0; i < allMedia.Count; i++)
+        for (int i = 0; i < pages.Count; i++)
         {
             var (page, navItem) = (i == 0)
                 ? (basePage, baseNavItem)
-                : (UnityEngine.Object.Instantiate(basePage, contentParent), UnityEngine.Object.Instantiate(baseNavItem, navPanel));
+                : (UnityEngine.Object.Instantiate(basePage, contentParent),
+                   UnityEngine.Object.Instantiate(baseNavItem, navPanel));
 
             page.name = $"Page {i + 1}";
             navItem.name = $"Nav Item Toggle {i + 1}";
@@ -325,45 +351,83 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
             if (textComp != null)
                 textComp.text = (i == 0) ? "Start" : $"Step {i}";
 
-            SetupMedia(allMedia[i].content, page);
+            SetupPageContent(pages[i], page, feedbackName);
         }
     }
 
-    private void SetupMedia(object media, Transform page)
+    private void SetupPageContent(FeedbackRepository.FeedbackPage pageData, Transform page, string feedbackName)
     {
-        var imgContainer = page.Find("Image Container");
-        var vidContainer = page.Find("Video Container");
+        var bodyTextTransform = page.Find(MULTI_PATH_BODY_TEXT);
+        var imageContainer = page.Find(MULTI_PATH_IMAGE_CONTAINER);
+        var videoContainer = page.Find(MULTI_PATH_VIDEO_CONTAINER);
 
-        if (imgContainer != null) imgContainer.gameObject.SetActive(false);
-        if (vidContainer != null) vidContainer.gameObject.SetActive(false);
+        var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
+        var image = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
+        var player = videoContainer?.GetComponentInChildren<VideoPlayer>();
 
-        if (media is Sprite sprite)
+        // ======= Disattiva tutto all'inizio =======
+        if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
+        if (imageContainer != null) imageContainer.gameObject.SetActive(false);
+        if (videoContainer != null) videoContainer.gameObject.SetActive(false);
+
+        bool hasText = !string.IsNullOrEmpty(pageData.text);
+        bool hasImage = pageData.image != null;
+        bool hasVideo = pageData.video != null;
+
+        // ======= Validazione: immagine + video non ammessi =======
+        if (hasImage && hasVideo)
         {
-            var img = imgContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
-            if (img != null)
+            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedbackName}' contiene sia un'immagine che un video. " +
+                        "Ogni pagina deve contenere solo uno dei due.");
+            return;
+        }
+
+        // ======= Testo =======
+        if (bodyText != null && hasText)
+        {
+            bodyText.text = pageData.text;
+            bodyTextTransform.gameObject.SetActive(true);
+        }
+
+        // ======= Immagine =======
+        if (hasImage)
+        {
+            if (imageContainer != null && image != null)
             {
-                imgContainer.gameObject.SetActive(true);
-                img.sprite = sprite;
+                image.sprite = pageData.image;
+                imageContainer.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.LogWarning($"[FeedbackRepository] Immagine presente ma '{MULTI_PATH_IMAGE_CONTAINER}' non trovato o mancante Image component.");
             }
         }
-        else if (media is VideoClip clip)
+
+        // ======= Video =======
+        if (hasVideo)
         {
-            var player = vidContainer?.GetComponentInChildren<VideoPlayer>();
-            if (player != null)
+            if (videoContainer != null && player != null)
             {
-                vidContainer.gameObject.SetActive(true);
-                player.clip = clip;
+                player.clip = pageData.video;
+                videoContainer.gameObject.SetActive(true);
                 player.Play();
             }
+            else
+            {
+                Debug.LogWarning($"[FeedbackRepository] Video presente ma '{MULTI_PATH_VIDEO_CONTAINER}' o VideoPlayer non trovati.");
+            }
         }
 
+        // ======= Re-layout =======
         if (page.TryGetComponent(out RectTransform rect))
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
     }
 
+
     private void SetupNavigation(GameObject container, Transform navPanel, Transform contentParent)
     {
         Canvas.ForceUpdateCanvases();
+
         var linker = container.GetComponentInChildren<PageToggleLinkerIndexed>();
         if (linker == null)
         {
@@ -385,9 +449,10 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
 
         linker.StartCoroutine(DelayedRefresh(linker));
 
-        // attiva solo la prima pagina e toggle
+        // Attiva solo la prima pagina
         for (int i = 0; i < contentParent.childCount; i++)
             contentParent.GetChild(i).gameObject.SetActive(i == 0);
+
         for (int i = 0; i < navPanel.childCount; i++)
         {
             var toggle = navPanel.GetChild(i).GetComponent<Toggle>();
@@ -395,6 +460,7 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
                 toggle.isOn = (i == 0);
         }
     }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
@@ -414,14 +480,29 @@ public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSe
     }
 
 
+    // 🔁 Coroutine per refreshare dopo un frame
+    private IEnumerator DelayedRefresh(PageToggleLinkerIndexed linker)
+    {
+        yield return null; // Attendi che Unity completi l'instanziazione
+        linker.RefreshLists();
+        // Debug.Log("[FeedbackRepository] PageToggleLinkerIndexed aggiornato dopo la creazione dinamica delle pagine.");
+    }
 
-        // 🔁 Coroutine per refreshare dopo un frame
-        private IEnumerator DelayedRefresh(PageToggleLinkerIndexed linker)
+    private IEnumerator ForceLayoutNextFrame(Transform contentParent)
+    {
+        // Forza subito un refresh del canvas
+        Canvas.ForceUpdateCanvases();
+
+        // Attendi un frame per permettere a Unity di aggiornare la gerarchia UI
+        yield return null;
+
+        if (contentParent != null && contentParent.TryGetComponent(out RectTransform rect))
         {
-            yield return null; // Attendi che Unity completi l'instanziazione
-            linker.RefreshLists();
-           // Debug.Log("[FeedbackRepository] PageToggleLinkerIndexed aggiornato dopo la creazione dinamica delle pagine.");
+            // Ricostruisce il layout solo dopo che le pagine sono effettivamente attive
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            Canvas.ForceUpdateCanvases();
         }
+    }
 
 
 }

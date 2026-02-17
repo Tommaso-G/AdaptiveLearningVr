@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class PageToggleLinkerIndexed : MonoBehaviour
 {
@@ -9,10 +10,15 @@ public class PageToggleLinkerIndexed : MonoBehaviour
     public Transform toggleContainer;
 
     [Header("Contenitore delle pagine (genitore di tutte le Pagine)")]
-    public Transform pageContainer;
+    public RectTransform pageContainer;
 
     private List<Toggle> toggles = new List<Toggle>();
     private List<GameObject> pages = new List<GameObject>();
+
+    [Header("Scroll rect della pagina")]
+    public ScrollRect scrollable;  
+
+    public Scrollbar verticalScrollbar;
 
     private void Awake()
     {
@@ -43,35 +49,66 @@ public class PageToggleLinkerIndexed : MonoBehaviour
         //Debug.Log($"[PageToggleLinkerIndexed] Caricati {toggles.Count} toggle e {pages.Count} pagine.");
     }
 
-    /// <summary>
-    /// Metodo da collegare direttamente all'evento OnValueChanged (bool) del Toggle.
-    /// </summary>
+
+
     public void OnToggleValueChanged(Toggle changedToggle, bool isOn)
     {
-        if (!isOn)
-            return;
-
-        if (changedToggle == null)
-        {
-            Debug.LogWarning("[PageToggleLinkerIndexed] Toggle nullo passato all'evento.");
-            return;
-        }
+        if (!isOn) return;
+        if (changedToggle == null) return;
 
         if (toggles.Count == 0 || pages.Count == 0)
             RefreshLists();
 
         int index = toggles.IndexOf(changedToggle);
-        if (index < 0 || index >= pages.Count)
-        {
-            Debug.LogWarning($"[PageToggleLinkerIndexed] Nessuna pagina trovata per il toggle {changedToggle.name}");
-            return;
-        }
+        if (index < 0 || index >= pages.Count) return;
 
         // Attiva solo la pagina corrispondente
         for (int i = 0; i < pages.Count; i++)
             pages[i].SetActive(i == index);
 
-        //Debug.Log($"[PageToggleLinkerIndexed] Attivata pagina {pages[index].name} per toggle {changedToggle.name}");
+        // Coroutine per rebuild posticipato
+        StartCoroutine(ForceLayoutNextFrame(pages[index]));
+        
+
+    }
+
+    private IEnumerator ForceLayoutNextFrame(GameObject page)
+    {
+        yield return null; // aspetta 1 frame
+        if (page != null && page.TryGetComponent(out RectTransform rect))
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            Canvas.ForceUpdateCanvases();
+
+            // ======== Reset scroll usando il riferimento pubblico ========
+            if (scrollable != null)
+            {
+                scrollable.verticalNormalizedPosition = 1f;   // in alto
+                scrollable.horizontalNormalizedPosition = 0f; // a sinistra
+            }
+            UpdateScrollStateAfterPageChange();
+        }
+    }
+
+    private void UpdateScrollStateAfterPageChange()
+        {
+        if (scrollable == null || pageContainer == null)
+        {
+            Debug.LogWarning("[FeedbackScrollableController] ScrollRect o Content non assegnati.");
+            return;
+        }
+
+        float contentHeight = pageContainer.rect.height;
+        float viewportHeight = scrollable.viewport != null
+            ? scrollable.viewport.rect.height
+            : scrollable.GetComponent<RectTransform>().rect.height;
+
+        bool needsScroll = contentHeight > viewportHeight + 10f;
+
+        scrollable.enabled = needsScroll;
+        if (verticalScrollbar != null)
+            verticalScrollbar.gameObject.SetActive(needsScroll);
+
     }
 
 }
