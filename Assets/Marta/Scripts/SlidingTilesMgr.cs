@@ -3,11 +3,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-public class SlidingTilesMgr : MonoBehaviour
+public class SlidingTilesMgr : MonoBehaviour, ICompletableStep
 {
+    public bool IsCompleted { get; private set; }
     private List<SlidingTile> slidingTiles = new List<SlidingTile>();
     private int onTarget = 0;
     [SerializeField] private List<MySocket> XRSockets = new List<MySocket>();
+    private int formOnTarget = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,14 +35,36 @@ public class SlidingTilesMgr : MonoBehaviour
                 socket.gameObject.SetActive(true);
             }
 
-            foreach(SlidingTile tile in slidingTiles)
+            foreach (SlidingTile tile in slidingTiles)
             {
                 tile.onTarget = true;
             }
+
+            IsCompleted = true;
         }
         else
         {
             onTarget = 0;
         }
     }
+
+    //public void FormOnTarget()
+    //{
+    //    foreach (MySocket socket in XRSockets)
+    //    {
+    //        if (socket.filled)
+    //        {
+    //            formOnTarget += 1;
+    //        }
+    //    }
+
+    //    if (formOnTarget == slidingTiles.Count)
+    //    {
+    //        IsCompleted = true;
+    //    }
+    //    else
+    //    {
+    //        formOnTarget = 0;
+    //    }
+    //}
 }

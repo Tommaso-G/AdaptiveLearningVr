@@ -449,7 +449,7 @@ public class BoxPlayer : MonoBehaviour
         //    }
         //}
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Reset();
 

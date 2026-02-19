@@ -2,8 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class EndTile : SpecialTile
+public class EndTile : SpecialTile, ICompletableStep
 {
+    public bool IsCompleted { get; private set; }
     [SerializeField]
     AudioSource audio;
     [SerializeField]
@@ -21,6 +22,8 @@ public class EndTile : SpecialTile
         }
         else
         {
+            BoxCollider box = boxPlayer.GetComponent<BoxCollider>();
+            box.size = new Vector3(0.9f, 1.9f, 0.9f);
             boxPlayer.GetComponent<Rigidbody>().isKinematic = false;
             StartCoroutine(Win());
         }
@@ -32,5 +35,6 @@ public class EndTile : SpecialTile
         audio.Play();
         effect.enabled = true;
         boxPlayer.gameObject.SetActive(false);
+        IsCompleted = true;
     }
 }

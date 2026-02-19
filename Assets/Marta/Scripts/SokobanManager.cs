@@ -3,8 +3,11 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SokobanManager : MonoBehaviour
+public class SokobanManager : MonoBehaviour, ICompletableStep
 {
+    public bool IsCompleted { get; private set; } = false;
+
+    [SerializeField]
     private List<SokobanBox> boxes = new();
 
     private int targetsReached = 0;
@@ -48,9 +51,10 @@ public class SokobanManager : MonoBehaviour
     public void TargetReached()
     {
         targetsReached++;
-        if(targetsReached == boxes.Count)
+        if (targetsReached == boxes.Count)
         {
             doneImg.enabled = true;
+            IsCompleted = true;
         }
     }
 

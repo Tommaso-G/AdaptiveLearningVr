@@ -2,11 +2,15 @@ using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using VRBuilder.XRInteraction.Interactables;
-public class MySocket : MonoBehaviour
+public class MySocket : MonoBehaviour, ICompletableStep
 {
+    public bool IsCompleted { get; private set; }
     [SerializeField]
     private Collider objToSnap;
     private MeshRenderer hoverRenderer;
+    //[SerializeField]
+    //private SlidingTilesMgr mgr;
+    public bool filled { get; private set; }
 
     private void Start()
     {
@@ -16,11 +20,18 @@ public class MySocket : MonoBehaviour
     {
         if (other != objToSnap) return;
 
+        if (hoverRenderer == null)
+        {
+            hoverRenderer = GetComponent<MeshRenderer>();
+        }
+
         hoverRenderer.enabled = true;
         InteractableObject interactable = other.gameObject.GetComponent<InteractableObject>();
         Transform currentParent = interactable.transform.parent;
-        IXRInteractor controller = currentParent.GetComponent<IXRInteractor>();
-        if (controller == null)
+        if (currentParent == null) return;
+
+        IXRInteractor interactor = currentParent.GetComponent<IXRInteractor>();
+        if (interactor == null)
         {
             interactable.enabled = false;
             GetComponent<Collider>().enabled = false;
@@ -28,6 +39,9 @@ public class MySocket : MonoBehaviour
             other.transform.position = transform.position;
             other.transform.rotation = transform.rotation;
             hoverRenderer.enabled = false;
+            filled = true;
+            IsCompleted = true;
+            //mgr.FormOnTarget();
         }
 
     }

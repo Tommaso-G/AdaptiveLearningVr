@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class SafeDoor : MonoBehaviour
+public class SafeDoor : MonoBehaviour, ICompletableStep
 {
+    public bool IsCompleted { get; private set; }
     public MeshRenderer redLight;
     public MeshRenderer greenLight;
     public Material red;
@@ -36,7 +37,7 @@ public class SafeDoor : MonoBehaviour
     {
         if (ischecking) return;
 
-        if(insertedDigits < length)
+        if (insertedDigits < length)
         {
             insertedDigits += 1;
             psw += n;
@@ -51,7 +52,7 @@ public class SafeDoor : MonoBehaviour
     {
         ischecking = true;
         print("pws: " + psw + ", password: " + password);
-        if(stringPassword == psw)
+        if (stringPassword == psw)
         {
             greenLight.material = green;
 
@@ -63,6 +64,7 @@ public class SafeDoor : MonoBehaviour
 
             AudioFeedback.clip = correct;
             AudioFeedback.Play();
+            IsCompleted = true;
         }
         else
         {
