@@ -4,6 +4,7 @@ using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class GridSnapEvent : UnityEvent<bool> { }
@@ -17,12 +18,20 @@ public class CorrectGridCell : MonoBehaviour
     public int correctColumn = 0;
 
     [Header("Socket singolo (se presente, ignora la griglia)")]
-    public XRSocketInteractor correctSingleSocket;  // 🔹 Socket singolo assegnabile
+    public XRSocketInteractor correctSingleSocket;  // Socket singolo assegnabile
 
     [Header("Evento")]
     public GridSnapEvent OnCheckSnap;  // true se l'oggetto è posizionato correttamente
 
+    [Header("Reset su contatto")]
+    [Tooltip("Se l'oggetto entra in questo collider, torna alla posizione iniziale.")]
+    public Collider resetTriggerCollider;
+
     private XRGrabInteractable interactable;
+
+    // Posizione e rotazione iniziale
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
     private void Awake()
     {
@@ -33,6 +42,12 @@ public class CorrectGridCell : MonoBehaviour
 
         interactable.selectEntered.AddListener(OnSelectEntered);
         interactable.selectExited.AddListener(OnSelectExited);
+    }
+
+    private void Start()
+    {
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     private void OnDestroy()
@@ -58,7 +73,7 @@ public class CorrectGridCell : MonoBehaviour
 
         bool correct = false;
 
-        // Caso A → è stato assegnato un socket singolo
+        // Caso A → socket singolo assegnato
         if (correctSingleSocket != null)
         {
             if (interactor is XRSocketInteractor singleSocket && singleSocket == correctSingleSocket)
@@ -72,7 +87,7 @@ public class CorrectGridCell : MonoBehaviour
                 Debug.Log($"{name} NON è attaccato al socket corretto (attuale: {interactor.transform.name}).");
             }
         }
-        // Caso B → nessun socket singolo assegnato → usa la griglia
+        // Caso B → usa la griglia
         else if (gridSocket != null && interactor is XRGridSocketInteractor)
         {
             var pos = GetGridPosition(gridSocket);
@@ -101,7 +116,7 @@ public class CorrectGridCell : MonoBehaviour
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance
         );
 
-        var dict = dictField?.GetValue(grid) as System.Collections.Generic.Dictionary<IXRInteractable, Transform>;
+        var dict = dictField?.GetValue(grid) as Dictionary<IXRInteractable, Transform>;
         if (dict == null || !dict.ContainsKey(interactable))
             return null;
 
@@ -130,5 +145,30 @@ public class CorrectGridCell : MonoBehaviour
 
         return null;
     }
-}
 
+    // ===========================
+    // RESET POSIZIONE SU COLLISIONE
+    // ===========================
+    private void ResetToInitialPosition()
+    {
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+
+        var rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        Debug.Log($"{name} è tornato alla posizione iniziale perché ha toccato il resetTriggerCollider.");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (resetTriggerCollider != null && other == resetTriggerCollider)
+        {
+            ResetToInitialPosition();
+        }
+    }
+}

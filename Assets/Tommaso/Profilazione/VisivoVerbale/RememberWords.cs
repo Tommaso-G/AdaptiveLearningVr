@@ -55,7 +55,7 @@ public class WordMemoryGame : MonoBehaviour, ICompletableStep
 
     public void ResetSequence()
     {
-        if (indexToComplete == 3) return;
+        if (indexToComplete == 1) return;
 
         indiceCorrente = 0;
         ordineCorretto.Clear();
@@ -178,7 +178,7 @@ public class WordMemoryGame : MonoBehaviour, ICompletableStep
                 indexToComplete++;
                 contenitoreMostra.SetActive(true);
 
-                if (indexToComplete == 3)
+                if (indexToComplete == 1)
                 {
                     Debug.Log("🎯 Gioco completato!");
                     IsCompleted = true;

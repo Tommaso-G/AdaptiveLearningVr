@@ -57,7 +57,7 @@ public class ImageMemoryGame : MonoBehaviour, ICompletableStep
 
     public void resetSequence()
     {
-        if(indexToComplete == 3) return;
+        if(indexToComplete == 1) return;
         indiceCorrente = 0;
         
         StartCoroutine(TimerBeforeStart());
@@ -208,7 +208,7 @@ public class ImageMemoryGame : MonoBehaviour, ICompletableStep
                 indexToComplete++;
                 contenitoreMostra.SetActive(true);
                 //Debug.Log("✅ Sequenza completata correttamente!");
-                if(indexToComplete == 3)
+                if(indexToComplete == 1)
                     {
                         Debug.Log("Gioco completato!");
                         IsCompleted = true;

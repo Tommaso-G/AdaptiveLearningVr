@@ -24,7 +24,6 @@ MonoBehaviour:
         text: 
       StepForCompletition:
       - Test parole
-      - Ricorda Parole e Immagini
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Ricorda le immagini
     feedbacks:
@@ -35,7 +34,6 @@ MonoBehaviour:
         text: 
       StepForCompletition:
       - Test  immagini
-      - Ricorda Parole e Immagini
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Visivo-Verbale
     feedbacks:
@@ -166,4 +164,20 @@ MonoBehaviour:
         text: 
       StepForCompletition:
       - Inizia l'assemblaggio
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: 'La creazione '
+      pages:
+      - image: {fileID: 21300000, guid: 48c9703cc4e6d6740afa85179f512963, type: 3}
+        video: {fileID: 0}
+        text: 
+      StepForCompletition:
+      - Premi il bottone e raggiungi gli dei
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: La Chimera
+      pages:
+      - image: {fileID: 21300000, guid: b3411cce27c37f74f8708b1fb2af4f38, type: 3}
+        video: {fileID: 0}
+        text: 
+      StepForCompletition:
+      - Osserva la chimera
       PersonalizedPrefab: {fileID: 0}
