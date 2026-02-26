@@ -20,6 +20,7 @@ public class ExitDoor : MonoBehaviour
     private GameObject mapButton;
     private Transform target;
     [SerializeField] private HandMenuRequester menuRequester;
+    public Transform feedbackPos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

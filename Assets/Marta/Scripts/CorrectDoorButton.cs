@@ -36,13 +36,16 @@ public class CorrectDoorButton : MonoBehaviour
     private bool setting = false;
     private Collider currentUITrigger;
 
+    [SerializeField] private Transform feedbackPos;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mapButtons = FindObjectsByType<MapButton>(FindObjectsInactive.Include, FindObjectsSortMode.None).Where(b => b.selectableDoor).ToArray();
         SpawnArea.onSpawnAreaChange += UpdateAreaIcon;
         spawnPlaneGrid = new List<SpawnArea>();
-        setBlockedDoor();
+        //setBlockedDoor();
     }
 
     public void CallCorrectButton(ExitDoor door)
@@ -133,7 +136,7 @@ public class CorrectDoorButton : MonoBehaviour
 
     }
 
-    private void setBlockedDoor()
+    public void setBlockedDoor()
     {
         foreach (MapButton b in mapButtons)
         {
@@ -145,6 +148,7 @@ public class CorrectDoorButton : MonoBehaviour
             {
                 print(b.gameObject.name);
                 b.ExitDoor.triggerUICollider.enabled = true;
+                feedbackPos.SetWorldPose(b.ExitDoor.feedbackPos.GetWorldPose());
                 AITarget aiTarget = childAgent.GetComponent<AITarget>();
                 if (!aiTarget.gameObject.activeSelf)
                 {
@@ -154,7 +158,11 @@ public class CorrectDoorButton : MonoBehaviour
                 {
                     aiTarget.resetTarget();
                 }
-                childAgent.Warp(b.ExitDoor.gameObject.transform.Find("ChildPos").transform.position);
+                Transform target = b.ExitDoor.transform.Find("ChildPos");
+
+                childAgent.Warp(target.position);
+                childAgent.transform.rotation = target.rotation;
+
             }
         }
         setting = false;
@@ -162,6 +170,7 @@ public class CorrectDoorButton : MonoBehaviour
 
     private void UpdateAreaIcon(SpawnArea spawnArea, bool occupied)
     {
+        print("OnAreaChange respond");
         if (occupied)
         {
             spawnPlaneGrid.Add(spawnArea);

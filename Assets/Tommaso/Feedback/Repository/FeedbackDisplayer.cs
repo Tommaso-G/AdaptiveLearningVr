@@ -1,4 +1,4 @@
-    using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ public class FeedbackDisplayer : MonoBehaviour
     [Header("Riferimenti")]
     public FeedbackSetHolder feedbackHolder;
 
-    public Transform FindFeedbackPositionChild(GameObject parent)
+    public List<Transform> FindFeedbackPositionChild(GameObject parent)
     {
         if (parent == null)
         {
@@ -27,34 +27,54 @@ public class FeedbackDisplayer : MonoBehaviour
             return null;
         }
 
-        Transform child = parent.transform.Find("feedbackPosition");
+        List<Transform> children = new List<Transform>();
 
-        if (child != null)
+        Transform feedbackPosition = parent.transform.Find("feedbackPosition");
+
+        if (feedbackPosition.childCount > 0)
         {
-            //Debug.Log($"[FeedbackAutoManager] Figlio 'feedbackPosition' trovato in '{parent.name}'.");
+            foreach (Transform child in feedbackPosition)
+            {
+                if (child != feedbackPosition) { children.Add(child); }
+            }
+        }
+        else
+        {
+            children.Add(feedbackPosition);
+        }
 
-            // Log dettagliati del child originale
-            //Debug.Log($"[FeedbackAutoManager] CHILD LOCAL Position: {child.localPosition}, LOCAL Rotation: {child.localEulerAngles}, LOCAL Scale: {child.localScale}");
-            //Debug.Log($"[FeedbackAutoManager] CHILD GLOBAL Position: {child.position}, GLOBAL Rotation: {child.eulerAngles}, GLOBAL Scale: {child.lossyScale}");
+        if (children != null)
+        {
+            List<Transform> temps = new List<Transform>();
+            foreach (Transform child in children)
+            {
+                //Debug.Log($"[FeedbackAutoManager] Figlio 'feedbackPosition' trovato in '{parent.name}'.");
 
-            // Crea un Transform temporaneo non parentato
-            GameObject tempGO = new GameObject($"Temp_{child.name}");
-            Transform temp = tempGO.transform;
+                // Log dettagliati del child originale
+                //Debug.Log($"[FeedbackAutoManager] CHILD LOCAL Position: {child.localPosition}, LOCAL Rotation: {child.localEulerAngles}, LOCAL Scale: {child.localScale}");
+                //Debug.Log($"[FeedbackAutoManager] CHILD GLOBAL Position: {child.position}, GLOBAL Rotation: {child.eulerAngles}, GLOBAL Scale: {child.lossyScale}");
 
-            // 1️⃣ Posizione globale identica al child
-            temp.position = child.position;
+                // Crea un Transform temporaneo non parentato
+                GameObject tempGO = new GameObject($"Temp_{child.name}");
+                Transform temp = tempGO.transform;
 
-            // 2️⃣ Rotazione corretta: resetta X e Z, mantieni Y come nell’Inspector
-            Vector3 euler = child.eulerAngles;
-            temp.rotation = Quaternion.Euler(0f, euler.y, 0f);
+                // 1️⃣ Posizione globale identica al child
+                temp.position = child.position;
 
-            // 3️⃣ Scala globale identica
-            temp.localScale = child.lossyScale;
+                // 2️⃣ Rotazione corretta: resetta X e Z, mantieni Y come nell’Inspector
+                Vector3 euler = child.eulerAngles;
+                temp.rotation = Quaternion.Euler(0f, euler.y, 0f);
 
-            // Log del Transform pulito
-            //Debug.Log($"[FeedbackAutoManager] TEMP Transform Position: {temp.position}, Rotation: {temp.eulerAngles}, Scale: {temp.localScale}");
+                // 3️⃣ Scala globale identica
+                temp.localScale = child.lossyScale;
 
-            return temp;
+                // Log del Transform pulito
+                //Debug.Log($"[FeedbackAutoManager] TEMP Transform Position: {temp.position}, Rotation: {temp.eulerAngles}, Scale: {temp.localScale}");
+
+                temps.Add(temp);
+            }
+
+            return temps;
         }
         else
         {
@@ -64,7 +84,7 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
 
-    public void ChooseFeedback(FeedbackData feedback, Transform position, FeedbackSetHolder holder)
+    public void ChooseFeedback(FeedbackData feedback, List<Transform> positions, FeedbackSetHolder holder)
     {
         if (feedback == null)
         {
@@ -78,80 +98,84 @@ public class FeedbackDisplayer : MonoBehaviour
             return;
         }
 
-        // ======= Caso speciale: prefab personalizzato =======
-        if (feedback.PersonalizedPrefab != null)
+        foreach (Transform position in positions)
         {
-            GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
-            customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
-            holder.activeFeedbackInstance = customInstance;
 
-            //Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
-            return; // Ignora tutto il resto
+            // ======= Caso speciale: prefab personalizzato =======
+            if (feedback.PersonalizedPrefab != null)
+            {
+                GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
+                customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
+                holder.activeFeedbackInstance = customInstance;
+
+                //Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
+                return; // Ignora tutto il resto
+            }
+
+            // ======= Scegli repository attivo (Profiling ha priorità) =======
+            var activeRepo = holder.ProfilingFeedbackRepository != null
+                ? holder.ProfilingFeedbackRepository as ScriptableObject
+                : holder.FeedbackRepository as ScriptableObject;
+
+            if (activeRepo == null)
+            {
+                Debug.LogError("[FeedbackDisplayer] Nessun repository valido trovato nel holder.");
+                return;
+            }
+
+            // ======= Verifica pagine =======
+            if (feedback.pages == null || feedback.pages.Count == 0)
+            {
+                Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
+                return;
+            }
+
+            // ======= Risolvi i prefab dal repository corretto =======
+            GameObject singlePrefab = null;
+            GameObject multiplePrefab = null;
+
+            if (holder.ProfilingFeedbackRepository != null)
+            {
+                singlePrefab = holder.ProfilingFeedbackRepository.SingleContainer;
+                multiplePrefab = holder.ProfilingFeedbackRepository.MultipleContainer;
+            }
+            else if (holder.FeedbackRepository != null)
+            {
+                singlePrefab = holder.FeedbackRepository.SingleContainer;
+                multiplePrefab = holder.FeedbackRepository.MultipleContainer;
+            }
+
+            if (singlePrefab == null || multiplePrefab == null)
+            {
+                Debug.LogError("[FeedbackDisplayer] Prefab SingleContainer o MultipleContainer non assegnato nel repository attivo.");
+                return;
+            }
+
+            // ======= Istanzia il container corretto in base al numero di pagine =======
+            GameObject containerInstance;
+
+            if (feedback.pages.Count == 1)
+            {
+                containerInstance = Instantiate(singlePrefab, position.position, position.rotation);
+                containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
+                FillSingleContainer(feedback, containerInstance);
+            }
+            else
+            {
+                containerInstance = Instantiate(multiplePrefab, position.position, position.rotation);
+                containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
+                FillMultipleContainer(feedback, containerInstance);
+            }
+
+            holder.activeFeedbackInstance = containerInstance;
+
+            //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {feedback.pages.Count} pagina/e.");
         }
-
-        // ======= Scegli repository attivo (Profiling ha priorità) =======
-        var activeRepo = holder.ProfilingFeedbackRepository != null
-            ? holder.ProfilingFeedbackRepository as ScriptableObject
-            : holder.FeedbackRepository as ScriptableObject;
-
-        if (activeRepo == null)
-        {
-            Debug.LogError("[FeedbackDisplayer] Nessun repository valido trovato nel holder.");
-            return;
-        }
-
-        // ======= Verifica pagine =======
-        if (feedback.pages == null || feedback.pages.Count == 0)
-        {
-            Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
-            return;
-        }
-
-        // ======= Risolvi i prefab dal repository corretto =======
-        GameObject singlePrefab = null;
-        GameObject multiplePrefab = null;
-
-        if (holder.ProfilingFeedbackRepository != null)
-        {
-            singlePrefab = holder.ProfilingFeedbackRepository.SingleContainer;
-            multiplePrefab = holder.ProfilingFeedbackRepository.MultipleContainer;
-        }
-        else if (holder.FeedbackRepository != null)
-        {
-            singlePrefab = holder.FeedbackRepository.SingleContainer;
-            multiplePrefab = holder.FeedbackRepository.MultipleContainer;
-        }
-
-        if (singlePrefab == null || multiplePrefab == null)
-        {
-            Debug.LogError("[FeedbackDisplayer] Prefab SingleContainer o MultipleContainer non assegnato nel repository attivo.");
-            return;
-        }
-
-        // ======= Istanzia il container corretto in base al numero di pagine =======
-        GameObject containerInstance;
-
-        if (feedback.pages.Count == 1)
-        {
-            containerInstance = Instantiate(singlePrefab, position.position, position.rotation);
-            containerInstance.name = $"Feedback_Single_{feedback.FeedbackName}";
-            FillSingleContainer(feedback, containerInstance);
-        }
-        else
-        {
-            containerInstance = Instantiate(multiplePrefab, position.position, position.rotation);
-            containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
-            FillMultipleContainer(feedback, containerInstance);
-        }
-
-        holder.activeFeedbackInstance = containerInstance;
-
-        //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {feedback.pages.Count} pagina/e.");
     }
 
 
 
-/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private readonly string SINGLE_PATH_TITLE_TEXT = "Canvas/Title Text";
     private readonly string SINGLE_PATH_BODY_TEXT = "Canvas/Scrollable/Content/Body Text";
@@ -259,7 +283,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
     private readonly string MULTI_PATH_CONTENT = "Layout/Canvas/Scrollable/Content";
     private readonly string MULTI_PATH_NAV_PANEL = "Layout/Nav Panel";
     private readonly string MULTI_PATH_HEADER_TEXT = "Layout/Canvas/Title Text";
@@ -462,9 +486,9 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-    public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, Transform feedbackPosition, FeedbackSetHolder holder)
+    public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, List<Transform> feedbackPositions, FeedbackSetHolder holder)
     {
         if (feedback == null || holder == null)
         {
@@ -473,7 +497,7 @@ public class FeedbackDisplayer : MonoBehaviour
         }
 
         // Istanzia e visualizza il feedback
-        ChooseFeedback(feedback, feedbackPosition, holder);
+        ChooseFeedback(feedback, feedbackPositions, holder);
 
 
         return holder.activeFeedbackInstance;

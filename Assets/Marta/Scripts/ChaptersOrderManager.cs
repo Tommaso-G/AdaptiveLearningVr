@@ -40,6 +40,7 @@ public class ChaptersOrderManager : MonoBehaviour
     private bool nextChapter;
     private int currentNode;
     private Dictionary<string, int> chapterNameToIndex = new Dictionary<string, int>();
+
     public List<ChapterLink> ChaptersToAddOrRemove; // (nome_nuovo_cap, nome_cap_precedente)
     [Tooltip("Inseriemento immediato dopo il capitolo corrente. Richiede si specificare solo il nome del nuovo capitolo.")]
     public bool addNow;
@@ -55,6 +56,8 @@ public class ChaptersOrderManager : MonoBehaviour
     public Node head { get; private set; }
     public bool empty { get; private set; }
     public int lastNodeId { get; private set; }
+
+    public bool EditorChaptersReady { get; private set; } = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -106,6 +109,7 @@ public class ChaptersOrderManager : MonoBehaviour
             ChaptersToAddOrRemove.RemoveAt(0);
         }
 
+        EditorChaptersReady = true;
         PrintNodesList();
     }
 
@@ -155,6 +159,12 @@ public class ChaptersOrderManager : MonoBehaviour
     // chiamata runtime
     private void AddChapterNow(string chapterName)
     {
+        if (chapterName == null)
+        {
+            Debug.LogWarning($"Inserimento nullo");
+            return;
+        }
+
         if (!chapterNameToIndex.TryGetValue(chapterName, out int newIndex))
         {
             Debug.LogWarning($"Capitolo non trovato: {chapterName}");
@@ -229,11 +239,15 @@ public class ChaptersOrderManager : MonoBehaviour
         }
     }
 
-    private void RemoveChapter(string prevName = "", int prevId = -1)
+    private void RemoveChapter(string prevName = "", string chapterToRemoveName = "", int prevId = -1)
     {
         Node prevNode = null;
-        // se io avessi accesso ai nodi potrei avere max precisione es remove (7op, 6op, (prevId)10)
-        if (prevId != -1)
+
+        if (chapterToRemoveName != "")
+        {
+            prevNode = nodes.FirstOrDefault(n => n.OptionalNext?.chapterId == chapterNameToIndex[chapterToRemoveName] && n.OptionalNext.OptionalNext != null);
+        }
+        else if (prevId != -1)//se io avessi accesso ai nodi potrei avere max precisione es remove(7op, 6op, (prevId)10)
         {
             prevNode = nodes.FirstOrDefault(n => n.Id == prevId);
         }
@@ -334,17 +348,37 @@ public class ChaptersOrderManager : MonoBehaviour
         // per debug, poi chiamerò direttamente AddChapterNow() da un altro script
         if (addNow)
         {
-            AddChapterNow(ChaptersToAddOrRemove[0].newChapter);
-            addNow = false;
+            if (ChaptersToAddOrRemove.Count > 0)
+            {
+                AddChapterNow(ChaptersToAddOrRemove[0].newChapter);
+                addNow = false;
+            }
+            else
+            {
+                Debug.Log("Inserimento impossibile: lista vuota");
+                addNow = false;
+            }
         }
 
         if (removeNow)
         {
-            RemoveChapter(ChaptersToAddOrRemove.Count != 0 ? ChaptersToAddOrRemove[0].previousChapter! : "", prevId);
+            RemoveChapter(ChaptersToAddOrRemove.Count != 0 ? ChaptersToAddOrRemove[0].previousChapter : "", ChaptersToAddOrRemove.Count != 0 ? ChaptersToAddOrRemove[0].newChapter : "", prevId);
+            //RemoveChapter("", ChaptersToAddOrRemove.Count != 0 ? ChaptersToAddOrRemove[0].newChapter : "", prevId);
             removeNow = false;
         }
 
 
+    }
+
+    public IEnumerable<string> AvailablePreviousChapters
+    {
+        get
+        {
+            yield return "None";   // voce null
+
+            foreach (var key in chapterNameToIndex.Keys)
+                yield return key;
+        }
     }
 
     private void PrintNodesList()

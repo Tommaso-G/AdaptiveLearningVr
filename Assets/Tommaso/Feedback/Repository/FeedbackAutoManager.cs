@@ -21,9 +21,9 @@ public class FeedbackAutoManager : MonoBehaviour
     public FeedbackSetHolder feedbackHolder;
 
     public FeedbackDisplayer feedbackDisplayer;
-    
 
-    
+
+
     private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
 
@@ -245,8 +245,8 @@ public class FeedbackAutoManager : MonoBehaviour
             return;
         }
 
-        Transform feedbackPosition = feedbackDisplayer.FindFeedbackPositionChild(target);
-        feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPosition, feedbackHolder);
+        List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
+        feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
 
         if (!activeFeedbackSteps.ContainsKey(feedback))
             activeFeedbackSteps[feedback] = new HashSet<string>(feedback.StepForCompletition);
@@ -277,11 +277,14 @@ public class FeedbackAutoManager : MonoBehaviour
                 //Debug.Log($"[FeedbackAutoManager] Tutti gli step completati per '{feedback.FeedbackName}', chiudo il feedback.");
 
                 // Trova il prefab del feedback attivo in scena
-                FeedbackPrefabController prefab = FindFeedbackInstance(feedback.FeedbackName);
+                List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
 
-                if (prefab != null)
+                if (prefabs != null)
                 {
-                    prefab.CloseFeedback();
+                    for (int i = prefabs.Count - 1; i >= 0; i--)
+                    {
+                        prefabs[i].CloseFeedback();
+                    }
                     //Debug.Log($"[FeedbackAutoManager] Feedback prefab '{feedback.FeedbackName}' chiuso con animazione.");
                 }
                 else
@@ -301,23 +304,26 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
-        private FeedbackPrefabController FindFeedbackInstance(string feedbackName)
+    private List<FeedbackPrefabController> FindFeedbackInstance(string feedbackName)
     {
-            FeedbackPrefabController[] allFeedbacks = FindObjectsByType<FeedbackPrefabController>(FindObjectsSortMode.None);
+        FeedbackPrefabController[] allFeedbacks = FindObjectsByType<FeedbackPrefabController>(FindObjectsSortMode.None);
+
+        List<FeedbackPrefabController> feedbacksToRemove = new List<FeedbackPrefabController>();
 
         foreach (var fb in allFeedbacks)
         {
             // Confronta i nomi, oppure puoi aggiungere un campo "feedbackName" al prefab per più robustezza
             if (fb.name.Contains(feedbackName))
             {
-                return fb;
+                feedbacksToRemove.Add(fb);
             }
         }
 
-        return null;
+        return feedbacksToRemove.Count() != 0 ? feedbacksToRemove : null;
+
     }
 
 
 
-    
+
 }

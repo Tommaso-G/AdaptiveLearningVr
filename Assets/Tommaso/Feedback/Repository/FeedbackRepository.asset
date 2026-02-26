@@ -277,6 +277,94 @@ MonoBehaviour:
           StepForCompletition:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: Prendi l'estintore
+          pages:
+          - image: {fileID: -968243163, guid: 47b9246a1d9f0da418e33e034d62fd73, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Grab extiguisher
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Rimuovi la sicura
+          pages:
+          - image: {fileID: -2048442159, guid: 0eed8d80f4b9c7c4ca2baada663b5af4, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Sfaty catch removal
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Afferra l'ugello
+          pages:
+          - image: {fileID: -526264249, guid: 9a475da9217fda2429cc9ec8f140f5ad, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - grab ejector
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Spegni il fuoco
+          pages:
+          - image: {fileID: 67365614, guid: 941c12a00696cba41a010c96fc53a651, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: Apri il medikit
+          pages:
+          - image: {fileID: -1809595302, guid: 726fc7c890ca3f944bce32ff3422c08d, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Apri medkit
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Disinfetta la ferita
+          pages:
+          - image: {fileID: -745232663, guid: fb0a854dc9628e5419e23ce87f1e211a, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Grab bottle
+          - Grab tappo
+          - Versa acqua
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Asciuga la ferita
+          pages:
+          - image: {fileID: -1231100767, guid: 24c044bee8081784689b8ad03d0f45ba, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Asciuga
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Metti la garza
+          pages:
+          - image: {fileID: 452526266, guid: 959a168185037414494b92f79941752f, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - metti garza
+          PersonalizedPrefab: {fileID: 0}
+      - ChapterName: Vie di fuga Optional
+        feedbacks:
+        - FeedbackName: Seleziona un'uscita
+          pages:
+          - image: {fileID: 1840564868, guid: 3283737536d365441ad40d728e25a75b, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Seleziona una via di fuga alternativa
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Chiudi la mappa
+          pages:
+          - image: {fileID: 907157278, guid: d715085bfb1228c44900ccc340c12039, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Chiudi la mappa
+          PersonalizedPrefab: {fileID: 0}
     visualPath:
       attivo: []
       riflessivo: []

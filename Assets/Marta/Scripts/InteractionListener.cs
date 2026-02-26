@@ -36,7 +36,7 @@ public class InteractionListener : MonoBehaviour
         }
         else if (door != null)
         {
-            door.onClosure.AddListener(OnDoorClosed);
+            door.onDoorClosed.AddListener(OnDoorClosed);
         }
         else if (interactable != null)
         {
@@ -60,7 +60,7 @@ public class InteractionListener : MonoBehaviour
     private void OnDoorClosed()
     {
         executionOrderController.checkForObjInStep(gameObject);
-        //Debug.Log("Interazione con: " + gameObject.name);
+        Debug.Log("Interazione con: " + gameObject.name);
 
     }
 

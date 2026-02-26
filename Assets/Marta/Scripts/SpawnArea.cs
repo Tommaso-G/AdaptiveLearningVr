@@ -14,9 +14,23 @@ public class SpawnArea : MonoBehaviour
     private Bounds areaBounds;
     private bool isOccupied;
     public bool IsOccupied => isOccupied;
-    public Vector3 SafePoint => safeSpawnPoint.position;
+    public Vector3 SafePoint
+    {
+        get
+        {
+            if (safeSpawnPoint == null)
+            {
+                Debug.LogError("SafePoint è stato distrutto o non assegnato!");
+                return Vector3.zero;
+            }
+
+            return safeSpawnPoint.position;
+        }
+    }
 
     public static event Action<SpawnArea, bool> onSpawnAreaChange;
+
+    public Transform feedbackPos;
 
     public Bounds AreaBounds => areaBounds;
     private void Awake()
@@ -49,6 +63,7 @@ public class SpawnArea : MonoBehaviour
     {
         isOccupied = value;
         onSpawnAreaChange?.Invoke(this, value);
+        print("OnAreaChange");
         if (value && effectActive)
         {
             SpawnEffect();
@@ -91,17 +106,23 @@ public class SpawnArea : MonoBehaviour
         }
     }
 
+    public void SetFeedbackParent(Transform newParent)
+    {
+        if (feedbackPos != null)
+            feedbackPos.parent = newParent;
+    }
+
     public void ResetArea()
     {
         isOccupied = false;
-        if(transform.childCount - 1 < 1) 
-        {
-            return; 
-        }
 
         for (int i = transform.childCount - 1; i > 0; i--)
         {
-            Destroy(transform.GetChild(i).gameObject);
+            if (transform.GetChild(i).GetComponent<ParticleSystem>() != null)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+                break;
+            }
         }
 
         if (effectsController != null)

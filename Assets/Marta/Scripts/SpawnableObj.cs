@@ -1,29 +1,34 @@
 using System;
+using UnityEditor;
+using UnityEditor.Build.Pipeline;
 using UnityEngine;
 using static UnityEngine.Rendering.ProbeAdjustmentVolume;
 
 public class SpawnableObj : MonoBehaviour
 {
     [SerializeField] private SpawnArea spawnArea;
-    // Start is called once before the first executon of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
 
-    public void Instantiate(GameObject prefab, SpawnArea spawnArea, Vector3 position, Quaternion rotation, Transform parent)
+    public event Action<SpawnableObj, SpawnArea> SpawnableObjDestroyed;
+    // Start is called once before the first executon of Update after the MonoBehaviour is created
+    public void Initialize(SpawnArea area)
     {
-        if (prefab == null || spawnArea == null)
-        {
-            Debug.LogWarning("SpawnableObject: prefab o area null");
-            return;
-        }
-        this.spawnArea = spawnArea;
-        Instantiate(prefab, position, rotation, parent);
+        spawnArea = area;
         spawnArea.SetOccupied(true);
     }
 
     private void OnDestroy()
     {
-        spawnArea?.SetOccupied(false);
+#if UNITY_EDITOR
+        // Questo serve a distinguere distruzione in-game da chiusura Play Mode
+        if (!Application.isPlaying || !EditorApplication.isPlayingOrWillChangePlaymode)
+            return;
+#endif
+
+        // Controlla sempre che l'oggetto non sia distrutto
+        if (spawnArea != null && spawnArea.gameObject != null)
+        {
+            spawnArea.SetOccupied(false);
+            SpawnableObjDestroyed?.Invoke(this, spawnArea);
+        }
     }
 }
