@@ -10,7 +10,7 @@ using VRBuilder.Core.Attributes;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
 using System.Linq;
-using static Unity.VisualScripting.Metadata;
+
 
 [DataContract(IsReference = true)]
 public class ChildDestroyedCondition : Condition<ChildDestroyedCondition.ChildDestroyedConditionData>
