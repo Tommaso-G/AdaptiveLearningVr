@@ -31,6 +31,11 @@ public class ExecutionOrderController : MonoBehaviour
     [SerializeField] private List<GameObject> optionalSubChapterObjs;
     [SerializeField] private List<ParallelStep> parallelStepObjs;
     [SerializeField] private ChaptersOrderManager co_mgr;
+    [SerializeField] private StepErrorTracker errorTracker;
+
+
+    private IChapter previousChapter = null;
+
 
     private enum StepObjectMode
     {
@@ -47,15 +52,19 @@ public class ExecutionOrderController : MonoBehaviour
         lockedUI = transform.GetComponentInChildren<Canvas>(true);
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
         ProcessRunner.Events.StepStarted += OnStepStarted;
-        //ProcessRunner.Events.ChapterStarted += OnChapterStarted;
+        ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         co_mgr.OnSubChapterAdded += UpdateParallelStepObjs;
         prevObj = null;
+
+        //ProcessRunner.Events.ChapterFinished += OnChapterFinished;
+
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
     {
         process = ProcessRunner.Current;
         initialization();
+        errorTracker.InitializeChapters(process.Data.Chapters); //recupera tutti i capitoli, messo da tommaso
     }
     private void OnStepStarted(object sender, ProcessEventArgs args)
     {
@@ -64,7 +73,14 @@ public class ExecutionOrderController : MonoBehaviour
 
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {
-        getCurrenteObjects(process.Data.Current);
+        //getCurrenteObjects(process.Data.Current);
+
+        if (previousChapter != null)
+        {
+            errorTracker.UpdateErrorPanel();
+        }
+        previousChapter = process.Data.Current;
+        
     }
 
     private void initialization()
@@ -124,7 +140,7 @@ public class ExecutionOrderController : MonoBehaviour
         bool attachListener = mode == StepObjectMode.Initialization;
         bool updatesg = mode == StepObjectMode.UpdateParallelStep;
 
-        if (isParallelStep || attachListener || updatesg) // se non è uno step group e non sto inizilizzando, allora guardo uno step per volta
+        if (isParallelStep || attachListener || updatesg) // se non ï¿½ uno step group e non sto inizilizzando, allora guardo uno step per volta
         {
             steps = chapter.Data.Steps;
         }
@@ -145,7 +161,7 @@ public class ExecutionOrderController : MonoBehaviour
                 foreach (ICondition condition in cconditions)
                 {
                     var properties = condition.Data.GetType().GetProperties(System.Reflection.BindingFlags.Public |
-                                                          System.Reflection.BindingFlags.Instance); // prendi tutte le proprietà in Data 
+                                                          System.Reflection.BindingFlags.Instance); // prendi tutte le proprietï¿½ in Data 
 
                     foreach (var prop in properties)
                     {
@@ -338,6 +354,11 @@ public class ExecutionOrderController : MonoBehaviour
         {
             DifferentStepWarningHighlight(go);
             //DifferentStepWarningUI(go);
+
+            //per rigistrare l'errore del capitolo, messo da tommaso
+            string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
+            string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
+            errorTracker.RegisterError(chapterName, stepName, go.name);
         }
     }
 

@@ -55,20 +55,23 @@ public class ProximitySpawner : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log($"{name}: Start called. localScale = {transform.localScale}, position = {transform.position}");
+
         if (prefabsToSpawn == null)
         {
-            Debug.LogWarning($"{name}: prefabToSpawn non assegnato, lo script non farà nulla.");
+            Debug.LogWarning($"{name}: prefabToSpawn non assegnato.");
             enabled = false;
             return;
         }
 
-        scaleDuration=scaleDurationClosedDoor;
+        scaleDuration = scaleDurationClosedDoor;
 
+        // Forza la scala iniziale a quella originale del prefab, ignorando
+        // qualsiasi scala "sporca" ereditata al momento dello spawn
+        initialScale = Vector3.one; // oppure la scala minima da cui vuoi partire
+        transform.localScale = initialScale; // <-- QUESTA è la riga chiave
 
-        initialScale = transform.localScale;
         StartCoroutine(ScaleThenSpawnRoutine());
-        //Debug.Log($"scaleduration:{scaleDuration}");
-        
     }
 
   
@@ -117,15 +120,16 @@ public class ProximitySpawner : MonoBehaviour
             {
                 GameObject randomPrefab = prefabsToSpawn[Random.Range(0, prefabsToSpawn.Count)];
                 GameObject spawned = Instantiate(randomPrefab, target.position, target.rotation);
+                Debug.Log($"prefabOriginalScales contiene: {prefabOriginalScales[randomPrefab]} per {randomPrefab.name}");
+                spawned.transform.localScale = Vector3.one * 0.04f; // hardcoded temporaneamente
+                Debug.Log($"Spawned {spawned.name}, scala dopo assign = {spawned.transform.localScale}");
 
-                //Debug.Log($"{name}: Avvio dissolvenza materiale su {target.name}");
 
-                if (prefabOriginalScales.ContainsKey(randomPrefab))
-                {
-                    spawned.transform.localScale = prefabOriginalScales[randomPrefab];
-                    //Debug.Log($"{name}: istanziato prefab '{randomPrefab.name}' vicino a {target.name} con scala {spawned.transform.localScale} e scala originale {prefabOriginalScales[randomPrefab]}");
-  
-                }
+                // Resetta immediatamente la scala al valore piccolo/iniziale
+                // così quando lo Start del figlio legge transform.localScale trova il valore corretto
+                spawned.transform.localScale = prefabOriginalScales.ContainsKey(randomPrefab) 
+                    ? prefabOriginalScales[randomPrefab] 
+                    : Vector3.one;
 
                 spawnedTargets.Add(target);
                 StartCoroutine(BurnMaterial(target.gameObject, burnDuration));
