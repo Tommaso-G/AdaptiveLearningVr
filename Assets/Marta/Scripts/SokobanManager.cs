@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +36,6 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
         joystickPos.x = x;
         current.moveWithJoystick(joystickPos.x, joystickPos.y);
     }
-
     public void Select(SokobanBox s)
     {
         if (current == s) return;
@@ -58,6 +57,13 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
         }
     }
 
+    public void Reset()
+    {
+        targetsReached = 0;
+        doneImg.enabled = false;
+        IsCompleted = false;
+
+    }
     public void StepBackCurrent()
     {
         if (current == null) return;

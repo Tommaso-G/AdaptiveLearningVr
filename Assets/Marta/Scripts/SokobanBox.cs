@@ -20,7 +20,7 @@ public class SokobanBox : MonoBehaviour
     [SerializeField]
     bool fillerBox = false;
 
-    private bool isMoving = true;
+    private bool isMoving = false;
     private bool targetReached = false;
 
 
@@ -47,13 +47,14 @@ public class SokobanBox : MonoBehaviour
     {
         if (isMoving) return;
         //print("x: " + x + ", y: " + y);
-        if(Mathf.Abs(x) > Mathf.Abs(y))
+        if (Mathf.Abs(x) > Mathf.Abs(y))
         {
-            if(x > 0.5f)
+            if (x > 0.5f)
             {
                 isMoving = true;
                 StartCoroutine(MoveRight());
-            }else if(x < -0.5f)
+            }
+            else if (x < -0.5f)
             {
                 isMoving = true;
                 StartCoroutine(MoveLeft());
@@ -76,6 +77,7 @@ public class SokobanBox : MonoBehaviour
 
     public IEnumerator MoveUp()
     {
+        print("blockUp da MoveUp(): " + blockUp + " da " + this.gameObject.name);
         if (!blockUp)
         {
             lastPos = transform.position;
@@ -108,7 +110,7 @@ public class SokobanBox : MonoBehaviour
 
     public IEnumerator MoveRight()
     {
-        print("blockRight da MoveRight(): " + blockRight);
+        print("blockRight da MoveRight(): " + blockRight + " da " + this.gameObject.name);
         if (!blockRight)
         {
             lastPos = transform.position;
@@ -132,10 +134,10 @@ public class SokobanBox : MonoBehaviour
         bool hitRight = Physics.Raycast(rightRay, out RaycastHit rightHit, size);
         bool hitLeft = Physics.Raycast(leftRay, out RaycastHit leftHit, size);
 
-        //bool boxUp = hitUp && upHit.collider != GetComponent<Collider>() && upHit.collider.CompareTag("Box");
-        //bool boxDown = hitDown && downHit.collider != GetComponent<Collider>() && downHit.collider.CompareTag("Box");
-        //bool boxRight = hitRight && rightHit.collider != GetComponent<Collider>() && rightHit.collider.CompareTag("Box");
-        //bool boxLeft = hitLeft && leftHit.collider != GetComponent<Collider>() && leftHit.collider.CompareTag("Box");
+        bool boxUp = hitUp && upHit.collider != GetComponent<Collider>() && upHit.collider.CompareTag("Box");
+        bool boxDown = hitDown && downHit.collider != GetComponent<Collider>() && downHit.collider.CompareTag("Box");
+        bool boxRight = hitRight && rightHit.collider != GetComponent<Collider>() && rightHit.collider.CompareTag("Box");
+        bool boxLeft = hitLeft && leftHit.collider != GetComponent<Collider>() && leftHit.collider.CompareTag("Box");
 
         if (Physics.Raycast(bottomRay, out RaycastHit bottomHit, size))
         {
@@ -157,7 +159,8 @@ public class SokobanBox : MonoBehaviour
                     blockLeft = true;
                 }
 
-            } else if (bottomHit.collider.transform == target && !targetReached)
+            }
+            else if (bottomHit.collider.transform == target && !targetReached)
             {
                 targetReached = true;
                 isMoving = true;
@@ -173,17 +176,18 @@ public class SokobanBox : MonoBehaviour
 
         if (hitUp || hitDown)
         {
-            //if (boxUp || boxDown)
-            //{
-            //    blockUp = hitUp;
-            //    blockDown = hitDown;
-            //    print("blockUp da Raycast(): " + blockUp + ", blockDown da Raycast(): " + blockDown);
-            //}
-            //else
+            if (boxUp || boxDown)
+            {
+                blockUp = boxUp;
+                blockDown = boxDown;
+                //print("blockUp da Raycast(): " + blockUp + " blockDown da Raycast(): " + blockDown);
+            }
+            else
             {
                 Debug.DrawRay(transform.position, referenceAxis.up * size, UnityEngine.Color.red);
                 blockUp = true;
                 blockDown = true;
+                //print("blocco parete");
             }
         }
         else
@@ -195,17 +199,18 @@ public class SokobanBox : MonoBehaviour
 
         if (hitRight || hitLeft)
         {
-            //if (boxRight || boxLeft)
-            //{
-            //    blockRight = hitRight;
-            //    blockLeft = hitLeft;
-            //    print("blockRight da Raycast(): " + blockRight + ", blockLeft da Raycast(): " + blockLeft);
-            //}
-            //else
+            if (boxRight || boxLeft)
+            {
+                blockRight = boxRight;
+                blockLeft = boxLeft;
+                //print("blockRight da Raycast(): " + blockRight + " blockLeft da Raycast(): " + blockLeft);
+            }
+            else
             {
                 Debug.DrawRay(transform.position, -referenceAxis.right * 0.5f * size, UnityEngine.Color.red);
                 blockRight = true;
                 blockLeft = true;
+                //print("Blocco parete sd/dx");
             }
         }
         else
@@ -242,9 +247,42 @@ public class SokobanBox : MonoBehaviour
 
     }
 
+    public void StartMoveUp()
+    {
+        print("da Up: " + isMoving);
+        if (isMoving) return;
+
+        isMoving = true;
+        StartCoroutine(MoveUp());
+    }
+
+    public void StartMoveDown()
+    {
+        if (isMoving) return;
+
+        isMoving = true;
+        StartCoroutine(MoveDown());
+    }
+
+    public void StartMoveLeft()
+    {
+        if (isMoving) return;
+
+        isMoving = true;
+        StartCoroutine(MoveLeft());
+    }
+
+    public void StartMoveRight()
+    {
+        if (isMoving) return;
+
+        isMoving = true;
+        StartCoroutine(MoveRight());
+    }
+
     public void StepBack()
     {
-        if(targetReached) return;
+        if (targetReached) return;
         transform.position = lastPos;
     }
 
