@@ -17,9 +17,14 @@ public class SequenceStep
 }
 
 
-public class GenericSequenceManager : MonoBehaviour, ICompletableStep
+public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameVisivoVerbale
 {
-    public bool IsCompleted { get; private set; } = false;
+    //ICompletableStep
+    public bool IsCompleted { get; private set; } = false; 
+
+    //ITrackableGameVisivoVerbale
+    public string GameID => "RememberSequence"; 
+    public event System.Action<RoundData> OnRoundFinished;
 
     [Tooltip("Lista di oggetti da completare con testo e immagine (verrà mescolata casualmente all’avvio)")]
     public List<SequenceStep> sequenza = new List<SequenceStep>();
@@ -50,7 +55,24 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
 
     private int indexToComplete=0;
 
-    public int timeToReatForCompletition;
+    [Header("Rounds")]
+    [Tooltip("Quante volte ripetere ogni modalità (immagini E testi)")]
+    public int roundsPerMode = 2;
+
+    private int currentRound = 0;
+    private int totalRounds;
+    private bool startWithImages;
+
+    //campi per i risultati 
+    private int errori = 0;
+    private float tempoStart;
+
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip suonoStepCorretto;
+    public AudioClip suonoStepSbagliato;
+    public AudioClip suonoRoundCompletato;
 
     private class StatoIniziale
     {
@@ -101,6 +123,10 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
         if (step.oggetto != null)
             step.nomeOriginale = step.oggetto.name;
         }
+
+        totalRounds = roundsPerMode * 2;
+        startWithImages = Random.value > 0.5f;
+        currentRound = 0;
     }
 
 
@@ -142,11 +168,19 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
 
     public void ResetSequence()
     {
-        if (indexToComplete == timeToReatForCompletition ) return;
-        RimpiazzaOggettiDistrutti();
+        if (currentRound >= totalRounds) return;
 
+        bool evenRound = (currentRound % 2 == 0);
+        usaImmagini = evenRound ? startWithImages : !startWithImages;
+
+        Debug.Log($"Round {currentRound + 1}/{totalRounds} — Modalità: {(usaImmagini ? "Immagini" : "Testi")}");
+
+        errori = 0;
+        tempoStart = Time.time;
+
+        RimpiazzaOggettiDistrutti();
         hasStarted = true;
-        
+
         if (sequenza.Count == 0)
         {
             Debug.LogWarning("Nessun oggetto nella sequenza da resettare!");
@@ -154,33 +188,60 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
         }
 
         MischiaEAvvia();
-        MostraSequenzaInLayout();
-        // Riporta gli oggetti alle posizioni iniziali
+        StartCoroutine(ResetConTransizione());
+
+        currentRound++;
+    }
+
+    private void RicollegaEventiBreakable()
+    {
+        foreach (var step in sequenza)
+        {
+            if (step.oggetto == null) continue;
+
+            Breakable breakable = step.oggetto.GetComponent<Breakable>();
+            if (breakable == null) continue;
+
+            // Rimuovi listener vecchi per evitare duplicati
+            breakable.onBreak.RemoveAllListeners();
+
+            // Ricollega: quando viene rotto, chiama StepCompletato con l'oggetto corrente
+            GameObject oggettoStep = step.oggetto;
+            breakable.onBreak.AddListener((collider, brokenVersion) =>
+            {
+                // Rinomina subito il clone con il nome originale
+                brokenVersion.name = step.nomeOriginale;
+                StepCompletato(oggettoStep);
+            });
+        }
+    }
+
+    private IEnumerator ResetConTransizione()
+    {
+        if (layoutImmagini != null) layoutImmagini.SetActive(false);
+        if (layoutTesti != null) layoutTesti.SetActive(false);
+
+        List<Coroutine> movimenti = new List<Coroutine>();
         foreach (var kvp in statiIniziali)
         {
-            GameObject obj = kvp.Key;
-            StatoIniziale stato = kvp.Value;
-
-            if (obj != null)
-                StartCoroutine(MuoviVersoPosizioneERotazione(obj, stato.posizione, stato.rotazione, 1.5f));
+            if (kvp.Key != null)
+                movimenti.Add(StartCoroutine(MuoviVersoPosizioneERotazione(
+                    kvp.Key, kvp.Value.posizione, kvp.Value.rotazione, 1.5f)));
         }
 
-        indexToComplete ++;
+        foreach (var c in movimenti)
+            yield return c;
 
+        RicollegaEventiBreakable(); // ← ricollega dopo che gli oggetti sono tornati a posto
+        MostraSequenzaInLayout();
     }
 
     private void MischiaEAvvia()
     {
         indiceCorrente = 0;
+        ultimoOggettoControllato = null; // ← forza il rinnovo in Update()
         Shuffle(sequenza);
 
-        //Debug.Log("🔀 Nuova sequenza mescolata:");
-        for (int i = 0; i < sequenza.Count; i++)
-        {
-           // Debug.Log($"Step {i + 1}: {sequenza[i].oggetto.name}");
-        }
-
-        //Debug.Log($"➡️ Inizia con: {sequenza[0].oggetto.name}");
     }
 
     public void StepCompletato(GameObject oggetto)
@@ -190,29 +251,57 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
 
         GameObject stepCorrente = sequenza[indiceCorrente].oggetto;
 
-
         if (oggetto == stepCorrente)
         {
-            
-            indiceCorrente++;
+            if (audioSource != null && suonoStepCorretto != null)
+                audioSource.PlayOneShot(suonoStepCorretto);
 
+            indiceCorrente++;
             if (indiceCorrente < sequenza.Count)
             {
                 Debug.Log($"Prossimo step: {sequenza[indiceCorrente].oggetto.name}");
             }
             else
             {
-                Debug.Log("Tutti gli step completati!");
-                IsCompleted = true;
+                Debug.Log($"Round {currentRound}/{totalRounds} completato!");
+
+                // Lancia l'evento con i dati del round
+                OnRoundFinished?.Invoke(new RoundData
+                {
+                    gameID = GameID,
+                    modalita = usaImmagini ? ModalitaGioco.Visivo : ModalitaGioco.Verbale,
+                    numeroRound = currentRound,
+                    errori = errori,
+                    tempoSecondi = Time.time - tempoStart
+                });
+
+                if (audioSource != null && suonoRoundCompletato != null)
+                {
+                    audioSource.Stop();
+                    audioSource.PlayOneShot(suonoRoundCompletato);
+                }
+
+                if (layoutImmagini != null) layoutImmagini.SetActive(false);
+                if (layoutTesti != null) layoutTesti.SetActive(false);
+
+                if (currentRound >= totalRounds)
+                {
+                    Debug.Log("Tutti i round completati!");
+                    IsCompleted = true;
+                }
             }
         }
         else
         {
-            //Debug.Log($"Hai attivato {oggetto.name}, ma ora serve {stepCorrente.name}");
+            errori++; // incrementa il contatore errori
+
+            if (audioSource != null && suonoStepSbagliato != null)
+                audioSource.PlayOneShot(suonoStepSbagliato);
+
             StartCoroutine(LampeggiaRosso(oggetto));
         }
     }
-
+    
     private void MostraSequenzaInLayout()
     {
         if (layoutImmagini == null || layoutTesti == null)
@@ -307,14 +396,14 @@ public class GenericSequenceManager : MonoBehaviour, ICompletableStep
             if (string.IsNullOrEmpty(nomeAtteso))
                 continue;
 
-            // Cerca un oggetto il cui nome CONTIENE il nome originale
             GameObject sostituto = tutti.FirstOrDefault(go =>
                 go.name.Contains(nomeAtteso) && go.scene.IsValid());
 
             if (sostituto != null)
             {
+                // Rinomina il sostituto con il nome originale pulito
+                sostituto.name = nomeAtteso;
                 step.oggetto = sostituto;
-                //Debug.Log($"🔁 [Step {i}] Rimpiazzato con '{sostituto.name}' (match parziale).");
             }
             else
             {

@@ -22,7 +22,7 @@ public class ObjectCompleteOnEnter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Ignora se già completato o se non c'è target
-        if (completato || colliderTarget == null) return;
+        //if (completato || colliderTarget == null) return;
 
         // Se il collider in cui è entrato è quello target
         if (other == colliderTarget)

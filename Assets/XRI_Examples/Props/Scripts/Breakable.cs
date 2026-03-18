@@ -57,6 +57,7 @@ namespace UnityEngine.XR.Content.Interaction
                 OnCollisionEnterEvent?.Invoke(collision);
                 m_Destroyed = true;
                 var brokenVersion = Instantiate(m_BrokenVersion, transform.position, transform.rotation);
+                brokenVersion.name = gameObject.name; // mantieni il nome originale
                 m_OnBreak.Invoke(collision.gameObject, brokenVersion);
                 Destroy(gameObject);
             }

@@ -16,22 +16,26 @@ public class CardFlipper : MonoBehaviour
     public MemoryManager memoryManager; 
     public string cardID; // identità della carta (nome immagine o parola)
 
-    
+    private Quaternion originalRotation;
+
 
     void Awake()
     {
+        originalRotation = transform.rotation; // salva la rotazione iniziale
+        
         interactable = GetComponent<XRBaseInteractable>();
         if (interactable != null)
             interactable.selectEntered.AddListener(OnSelected);
 
-        // Blocca la rotazione del Rigidbody per evitare interferenze XR
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | 
+                            RigidbodyConstraints.FreezeRotationY | 
+                            RigidbodyConstraints.FreezeRotationZ;
 
         isFlipped = false;
-
     }
+
 
     void OnDestroy()
     {
@@ -72,6 +76,20 @@ public class CardFlipper : MonoBehaviour
         transform.rotation = endRot;
         isFlipped = !isFlipped;
         isAnimating = false;
+    }
+
+    public IEnumerator ResetCardAnimated()
+    {
+        StopCoroutine(nameof(FlipCard)); // ferma solo eventuali flip in corso
+        isAnimating = false;
+        inGame = false;
+
+        if (isFlipped)
+        {
+            yield return StartCoroutine(FlipCard(-180f)); // torna alla posizione coperta
+        }
+
+        isFlipped = false;
     }
 
     // Normalizza l’angolo in [0,360)
