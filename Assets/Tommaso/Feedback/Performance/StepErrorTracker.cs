@@ -3,6 +3,18 @@ using TMPro;
 using UnityEngine;
 using VRBuilder.Core;
 
+public static class ErrorEvent
+{
+    public static IProcess process { get; private set; }
+
+    public static System.Action<string, string, string> OnError;
+
+    public static void SetProcess(IProcess p)
+    {
+        process = p;
+    }
+}
+
 [System.Serializable]
 public class StepError
 {
@@ -40,7 +52,10 @@ public class StepErrorTracker : MonoBehaviour
     public int TotalErrors { get; private set; } = 0;
     public IReadOnlyDictionary<string, ChapterErrorData> ChapterErrors => chapterErrors;
     public TMP_Text textPanel;
-
+    private void Start()
+    {
+        ErrorEvent.OnError += RegisterError;
+    }
 
     // Da chiamare all'avvio del processo, per registrare tutti i capitoli
     public void InitializeChapters(IList<IChapter> chapters)

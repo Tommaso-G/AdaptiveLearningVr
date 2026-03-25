@@ -10,6 +10,7 @@ using System.Linq;
 using VRBuilder.Core.Configuration;
 using System.Reflection;
 using VRBuilder.Core.SceneObjects;
+using Unity.VisualScripting.FullSerializer;
 
 [CreateAssetMenu(fileName = "FeedbackRepository", menuName = "VR Feedback/Unified Repository")]
 public class FeedbackRepository : ScriptableObject
@@ -24,6 +25,8 @@ public class FeedbackRepository : ScriptableObject
     [Header("Percorsi principali")]
     public PathGroup globalPath = new PathGroup();
     public PathGroup sequentialPath = new PathGroup();
+
+
 
     // ======================= CLASSI ANNIDATE =========================
 
@@ -87,7 +90,10 @@ public class FeedbackRepository : ScriptableObject
     [Serializable]
     public class FeedbackPage
     {
-        
+        [Tooltip("Tipologia del feedback (modello FSLSM")]
+        public LearningEnums.SequenzialeGlobale Sequenzale_Globale;
+        public LearningEnums.VisivoVerbale Visivo_Verbale;
+
         [Tooltip("Una singola immagine opzionale per la pagina.")]
         public Sprite image;
 
@@ -97,6 +103,8 @@ public class FeedbackRepository : ScriptableObject
         [Tooltip("Testo opzionale  della pagina.")]
         [TextArea(2, 5)]
         public string text;
+
+
     }
 
     // ======================= METODI GET =========================
@@ -227,7 +235,7 @@ public class FeedbackRepository : ScriptableObject
             var properties = data.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var prop in properties)
             {
-               // Debug.Log($"[StepHelpers] Analizzando property: {prop.Name} ({prop.PropertyType.Name}) in {ownerType}");
+                // Debug.Log($"[StepHelpers] Analizzando property: {prop.Name} ({prop.PropertyType.Name}) in {ownerType}");
 
                 // SingleSceneObjectReference
                 if (typeof(SingleSceneObjectReference).IsAssignableFrom(prop.PropertyType))
@@ -257,7 +265,7 @@ public class FeedbackRepository : ScriptableObject
                     var mspr = prop.GetValue(data);
                     if (mspr == null)
                     {
-                       // Debug.Log($"[StepHelpers] MultipleScenePropertyReference nullo in property '{prop.Name}'");
+                        // Debug.Log($"[StepHelpers] MultipleScenePropertyReference nullo in property '{prop.Name}'");
                         continue;
                     }
 
@@ -313,7 +321,52 @@ public class FeedbackRepository : ScriptableObject
         return null;
     }
 
+    private void OnValidate()
+    {
+        if (globalPath != null && sequentialPath != null)
+        {
+            UpdateAllFeedbackPages(globalPath, LearningEnums.SequenzialeGlobale.Globale);
+            UpdateAllFeedbackPages(sequentialPath, LearningEnums.SequenzialeGlobale.Sequenziale);
+        }
+    }
 
+    private void UpdateAllFeedbackPages(PathGroup pathGroup, LearningEnums.SequenzialeGlobale seqGlob)
+    {
+        if (pathGroup == null) return;
+
+        // VISUAL
+        UpdateChapters(pathGroup.visualPath.attivo, seqGlob, LearningEnums.VisivoVerbale.Visivo);
+        UpdateChapters(pathGroup.visualPath.riflessivo, seqGlob, LearningEnums.VisivoVerbale.Visivo);
+
+        // VERBAL
+        UpdateChapters(pathGroup.verbalPath.attivo, seqGlob, LearningEnums.VisivoVerbale.Verbale);
+        UpdateChapters(pathGroup.verbalPath.riflessivo, seqGlob, LearningEnums.VisivoVerbale.Verbale);
+    }
+
+    private void UpdateChapters(List<Chapter> chapters,
+        LearningEnums.SequenzialeGlobale seqGlob,
+        LearningEnums.VisivoVerbale visVerb)
+    {
+        if (chapters == null) return;
+
+        foreach (var chapter in chapters)
+        {
+            if (chapter.feedbacks == null) continue;
+
+            foreach (var feedback in chapter.feedbacks)
+            {
+                if (feedback.pages == null) continue;
+
+                foreach (var page in feedback.pages)
+                {
+                    if (page == null) continue;
+
+                    page.Sequenzale_Globale = seqGlob;
+                    page.Visivo_Verbale = visVerb;
+                }
+            }
+        }
+    }
 
 }
 

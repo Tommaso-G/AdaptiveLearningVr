@@ -36,6 +36,8 @@ public class FullScreenEffectsController : MonoBehaviour
 
     public IEnumerator FadeInScreenEffect()
     {
+        StartCoroutine(SmokeError());
+
         float elapsedTime = 0f;
         while(elapsedTime < _effectFadeTime)
         {
@@ -84,6 +86,13 @@ public class FullScreenEffectsController : MonoBehaviour
                 _animation.enabled = false;
             }
         }
+    }
+    private IEnumerator SmokeError()
+    {
+
+        yield return new WaitForSeconds(3);
+        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
+        ErrorEvent.OnError.Invoke(chapterName, "smoke", transform.name);
     }
 
     private void OnTriggerEnter(Collider other)

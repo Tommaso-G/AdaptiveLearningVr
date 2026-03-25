@@ -9,6 +9,7 @@ public class FireLiquid : MonoBehaviour
 {
     [SerializeField] private GameObject newFire;
     [SerializeField] private VisualEffect fireSplash;
+    [SerializeField] private Transform fireParent;
     private GameObject fire;
     private float time= 5.0f;
     private int numberOfSpawn = 1;
@@ -39,6 +40,7 @@ public class FireLiquid : MonoBehaviour
 
     public void SpawnFire()
     {
+        FireOnLiquidError();
         Vector3 randomOffset;
         do
         {
@@ -48,7 +50,7 @@ public class FireLiquid : MonoBehaviour
 
         Vector3 spawnPosition = transform.position + randomOffset;
 
-        fire = Instantiate(newFire, spawnPosition, Quaternion.identity);
+        fire = Instantiate(newFire, spawnPosition, Quaternion.identity, fireParent);
         fire.GetComponent<FireObject>().enabled = false;
         fire.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
         StartCoroutine(GrowOverTime(fire.transform, 5f));
@@ -72,4 +74,10 @@ public class FireLiquid : MonoBehaviour
         target.localScale = endScale; // assicurati che finisca preciso
     }
 
+    private void FireOnLiquidError()
+    {
+        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
+        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
+        ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
+    }
 }

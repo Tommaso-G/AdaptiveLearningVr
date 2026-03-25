@@ -68,10 +68,10 @@ public class SpawnArea : MonoBehaviour
         {
             SpawnEffect();
         }
-        else
-        {
-            ResetArea();
-        }
+        //else
+        //{
+        //    ResetArea();
+        //}
     }
 
     public void SpawnEffect()

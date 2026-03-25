@@ -23,10 +23,12 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public Button reflectiveButtonDeactivate;
 
-    public ScrollRect scrollable;  
+    public ScrollRect scrollable;
 
     public Scrollbar verticalScrollbar;
     public RectTransform content;
+
+    public SlidesDataSender sender;
 
     private void Start()
     {
@@ -59,9 +61,9 @@ public class FeedbackPrefabController : MonoBehaviour
         styleBehaviour?.resetVariables();
         // Avvia controllo distanza
         StartCoroutine(CheckDistanceRoutine());
-        
 
-        
+
+
     }
 
     private void HandleReflectiveButtons()
@@ -83,7 +85,7 @@ public class FeedbackPrefabController : MonoBehaviour
                 reflectiveButtonDeactivate.gameObject.SetActive(true);
                 Debug.Log("[FeedbackPrefabController] Bottone A cliccato, mostra B.");
                 styleBehaviour?.EnableFeature();
-                
+
             });
 
             // Quando clicchi B → mostra A e nasconde B
@@ -118,7 +120,7 @@ public class FeedbackPrefabController : MonoBehaviour
 
                 StartScaling(Vector3.one * maxScale);
                 styleBehaviour?.OnFeedbackOpened(this);
-                
+
             }
             else if (distance > activationDistance && isVisible)
             {
@@ -130,7 +132,7 @@ public class FeedbackPrefabController : MonoBehaviour
                 styleBehaviour?.OnFeedbackClosed(this);
             }
 
-            
+
 
             yield return null;
         }
@@ -188,7 +190,7 @@ public class FeedbackPrefabController : MonoBehaviour
             ResetScrollPosition();
             UpdateScrollState();
             yield return null;
-            
+
         }
 
         // Assicurati che arrivi esattamente al target
@@ -201,15 +203,15 @@ public class FeedbackPrefabController : MonoBehaviour
         {
             // Force rebuild layout **dopo che la scala è stata applicata**
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            
+
 
             Canvas.ForceUpdateCanvases();
         }
 
-        
-        
-       // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
-}
+
+
+        // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
+    }
 
 
     public void CloseFeedback()
@@ -233,10 +235,24 @@ public class FeedbackPrefabController : MonoBehaviour
             yield return null;
 
         Destroy(gameObject);
-    
+
     }
 
-    
+
+    private void OnDestroy()
+    {
+        foreach (RectTransform child in content)
+        {
+            SlideData sd = child.GetComponent<SlideData>();
+            if (sd != null)
+            {
+                sd.SendData();
+            }
+        }
+
+        sender.SendData();
+    }
+
 
 
 

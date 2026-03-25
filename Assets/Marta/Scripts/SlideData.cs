@@ -1,0 +1,140 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using System;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Overlays;
+
+public class SlideData: MonoBehaviour
+{
+    [SerializeField] SlidesDataSender sender;
+
+    //dati della slide
+    public string pageName;
+    private float focusTime;
+    public int opening;
+    public LearningEnums.SequenzialeGlobale seqGlob;
+    public LearningEnums.VisivoVerbale visVerb;
+
+    //variabili di servizio
+    public bool stopTimer = false;
+    private Coroutine activeCoroutine = null;
+    private float t = 0f;
+    private bool wasEnable = false;
+    private bool nameSet = false;
+
+    //Debug
+    [SerializeField] TMP_Text focusTimeTxt;
+
+    public event Action<SlideDataContainer> OnSlideDataUpdated;
+
+    public void setFocusTime(float t)
+    {
+        focusTime += t;
+    }
+    public void setOpening()
+    {
+        opening += 1;
+    }
+    public float getFocusTime()
+    {
+        return focusTime;
+    }
+    public int getOpening()
+    {
+        return opening;
+    }
+    public string getNamePage()
+    {
+        return pageName;
+    }
+
+    public void setLearningEnums (LearningEnums.SequenzialeGlobale sg, LearningEnums.VisivoVerbale vv)
+    {
+        seqGlob = sg;
+        visVerb = vv;
+        //Debug.Log("Impostati per pagina: " + pageName + " - " + seqGlob + " " + visVerb);
+    }
+    public IEnumerator StartTimer()
+    {
+        focusTimeTxt.text = "0";
+
+        if (!wasEnable)
+        {
+            setOpening();
+            wasEnable = true;
+        }
+
+        t = Time.time;
+
+        while (!stopTimer)
+        {
+            focusTimeTxt.text = (Time.time - t).ToString("F2");
+            yield return null;
+        }
+
+        t = Time.time - t;
+        setFocusTime(t);
+        activeCoroutine = null;
+        print("Aggiunti [" + t + "] alla pagina [" + pageName + "] ");
+        ////Debug.Log("Tempo di focus per " + transform.name + ": " + focusTime + "\nopening: " + opening + "\n(coroutine counter: " + coroutineCounter + ")");
+    }
+
+    public void GazeSelection()
+    {
+        if (activeCoroutine != null) return;
+
+        stopTimer = false;
+        activeCoroutine = StartCoroutine(StartTimer());
+
+        if (!wasEnable)
+        {
+            opening++;
+            wasEnable = true;
+        }
+    }
+
+    public void GazeDeselection()
+    {
+        if (activeCoroutine == null) return;
+
+        stopTimer = true;
+    }
+
+    private void OnDisable()
+    {
+        if (!nameSet)
+        {
+            pageName = gameObject.name;
+            nameSet = true;
+        }
+
+        if (activeCoroutine != null)
+        {
+            stopTimer = true;
+            t = Time.time - t;
+            setFocusTime(t);
+            activeCoroutine = null;
+            print("(ONDISABLE) Aggiunti [" + t + "] alla pagina [" + pageName + "] ");
+        }
+
+        wasEnable = false;
+
+        SendData();
+
+    }
+
+    public void SendData()
+    {
+        OnSlideDataUpdated?.Invoke(new SlideDataContainer
+        {
+            pageName = pageName,
+            focusTime = focusTime,
+            opening = opening,
+            seqGlob = seqGlob,
+            visVerb = visVerb,
+        });
+    }
+}
+

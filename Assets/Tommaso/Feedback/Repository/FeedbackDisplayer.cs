@@ -13,6 +13,7 @@ using System.ComponentModel.Design;
 using UnityEngine.UI;
 using static FeedbackRepository;
 using UnityEngine.Video;
+using UnityEditor.Overlays;
 
 public class FeedbackDisplayer : MonoBehaviour
 {
@@ -221,6 +222,9 @@ public class FeedbackDisplayer : MonoBehaviour
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
         if (videoContainer != null) videoContainer.gameObject.SetActive(false);
 
+        SlideData slideData = imageContainer.GetComponent<SlideData>();
+        slideData.setLearningEnums(page.Sequenzale_Globale, page.Visivo_Verbale);
+
         // ======= Validazione: immagine + video =======
         bool hasImage = page.image != null;
         bool hasVideo = page.video != null;
@@ -384,6 +388,10 @@ public class FeedbackDisplayer : MonoBehaviour
         var bodyTextTransform = page.Find(MULTI_PATH_BODY_TEXT);
         var imageContainer = page.Find(MULTI_PATH_IMAGE_CONTAINER);
         var videoContainer = page.Find(MULTI_PATH_VIDEO_CONTAINER);
+
+        SlideData slideData = page.GetComponent<SlideData>();
+        //Debug.Log("Pagina: " + page.name + " - " + pageData.Sequenzale_Globale + " " + pageData.Visivo_Verbale);
+        slideData.setLearningEnums(pageData.Sequenzale_Globale, pageData.Visivo_Verbale);
 
         var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
         var image = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();

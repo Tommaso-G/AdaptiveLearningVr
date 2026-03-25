@@ -64,6 +64,7 @@ public class ExecutionOrderController : MonoBehaviour
     {
         process = ProcessRunner.Current;
         initialization();
+        ErrorEvent.SetProcess(process);
         errorTracker.InitializeChapters(process.Data.Chapters); //recupera tutti i capitoli, messo da tommaso
     }
     private void OnStepStarted(object sender, ProcessEventArgs args)
