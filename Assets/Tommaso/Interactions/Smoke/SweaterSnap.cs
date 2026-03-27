@@ -3,28 +3,29 @@ using UnityEngine;
 
 public class PositionSwitcher : MonoBehaviour, ICompletableStep
 {
-    public bool IsCompleted { get; private set; }=false;
+    public bool IsCompleted { get; private set; } = false;
 
     [Header("Riferimenti di scena")]
-    public Collider areaControllata;     // collider di attivazione
-    public GameObject oggettoA;          // primo oggetto da muovere
-    public GameObject oggettoB;          // secondo oggetto da muovere
-    public Transform empty1;             // primo target
-    public Transform empty2;             // secondo target
-    public GameObject oggettoDaBloccare; // oggetto di cui impostare i rigidbody su isKinematic = true dopo l’animazione
+    public Collider areaControllata;
+    public GameObject oggettoCheScompare;
+    public GameObject oggettoCheCompare;
 
-    [Header("Impostazioni animazione")]
-    public float durataAnimazione = 1.5f; // durata del movimento in secondi
-    public AnimationCurve curvaAnimazione = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Header("Impostazioni dissolvenza")]
+    public float durataDissolvenza = 1.5f;
 
-    private bool movimentoInCorso = false;
+    private bool inCorso = false;
+
+    private void Start()
+    {
+    ImpostaAlpha(oggettoCheCompare, 0f);
+    }
 
     public void ControllaEPosiziona()
     {
-        if (movimentoInCorso)
+        if (inCorso || IsCompleted)
             return;
 
-        if (areaControllata == null || oggettoA == null || oggettoB == null || empty1 == null || empty2 == null)
+        if (areaControllata == null || oggettoCheScompare == null || oggettoCheCompare == null)
         {
             Debug.LogWarning("⚠️ Mancano riferimenti nello script PositionSwitcher!");
             return;
@@ -32,88 +33,60 @@ public class PositionSwitcher : MonoBehaviour, ICompletableStep
 
         if (areaControllata.bounds.Contains(transform.position))
         {
-            //Debug.Log("✅ Oggetto dentro il collider, avvio animazione.");
-
-            // Determina quale oggetto è più vicino a empty1
-            float distanzaA = Vector3.Distance(oggettoA.transform.position, empty1.position);
-            float distanzaB = Vector3.Distance(oggettoB.transform.position, empty1.position);
-
-            GameObject vicinoAEmpty1 = distanzaA <= distanzaB ? oggettoA : oggettoB;
-            GameObject vicinoAEmpty2 = vicinoAEmpty1 == oggettoA ? oggettoB : oggettoA;
-
-            // Avvia la routine combinata
-            StartCoroutine(MuoviEntrambiEOscuraFisica(vicinoAEmpty1, empty1.position, vicinoAEmpty2, empty2.position));
-        }
-        else
-        {
-            //Debug.Log("❌ Oggetto fuori dal collider, nessuna azione eseguita.");
+            StartCoroutine(EseguiDissolvenza());
         }
     }
 
-    /// <summary>
-    /// Muove entrambi gli oggetti in parallelo, poi imposta i Rigidbody come cinetici.
-    /// </summary>
-    private IEnumerator MuoviEntrambiEOscuraFisica(GameObject obj1, Vector3 dest1, GameObject obj2, Vector3 dest2)
+    private IEnumerator EseguiDissolvenza()
     {
-        movimentoInCorso = true;
+        inCorso = true;
 
-        // Avvia entrambi i movimenti
-        IEnumerator move1 = MuoviOggetto(obj1, dest1);
-        IEnumerator move2 = MuoviOggetto(obj2, dest2);
+        // Assicurati che oggettoCheScompare sia visibile e oggettoCheCompare sia invisibile
+        ImpostaAlpha(oggettoCheScompare, 1f);
+        ImpostaAlpha(oggettoCheCompare, 0f);
+        oggettoCheCompare.SetActive(true);
 
-        // Avviali in parallelo
-        Coroutine c1 = StartCoroutine(move1);
-        Coroutine c2 = StartCoroutine(move2);
-
-        // Attendi che entrambi finiscano
-        yield return c1;
-        yield return c2;
-
-        // Ora imposta i rigidbody come cinetici
-        ImpostaRigidBodyKinematic(oggettoDaBloccare);
-
-        movimentoInCorso = false;
-    }
-
-    /// <summary>
-    /// Muove un oggetto verso una destinazione con interpolazione dolce.
-    /// </summary>
-    private IEnumerator MuoviOggetto(GameObject oggetto, Vector3 destinazione)
-    {
-        Vector3 partenza = oggetto.transform.position;
         float tempo = 0f;
-
-        while (tempo < durataAnimazione)
+        while (tempo < durataDissolvenza)
         {
-            if (oggetto == null)
-                yield break;
-
             tempo += Time.deltaTime;
-            float t = curvaAnimazione.Evaluate(tempo / durataAnimazione);
-            oggetto.transform.position = Vector3.Lerp(partenza, destinazione, t);
+            float t = Mathf.Clamp01(tempo / durataDissolvenza);
+
+            ImpostaAlpha(oggettoCheScompare, 1f - t);
+            ImpostaAlpha(oggettoCheCompare, t);
+
             yield return null;
         }
 
-        oggetto.transform.position = destinazione;
-    }
+        ImpostaAlpha(oggettoCheScompare, 0f);
+        ImpostaAlpha(oggettoCheCompare, 1f);
 
-    /// <summary>
-    /// Imposta tutti i rigidbody su isKinematic = true.
-    /// </summary>
-    private void ImpostaRigidBodyKinematic(GameObject target)
-    {
-        if (target == null)
-        {
-            Debug.LogWarning("⚠️ Nessun oggetto da cui modificare i rigidbody!");
-            return;
-        }
-
-        Rigidbody[] rigidbodies = target.GetComponentsInChildren<Rigidbody>(true);
-        foreach (var rb in rigidbodies)
-            rb.isKinematic = true;
+        oggettoCheScompare.SetActive(false);
 
         IsCompleted = true;
+        inCorso = false;
+    }
 
-        //Debug.Log($"🔧 Impostati {rigidbodies.Length} Rigidbody su isKinematic=true su '{target.name}' e figli (dopo il movimento).");
+    private void ImpostaAlpha(GameObject obj, float alpha)
+    {
+        foreach (var renderer in obj.GetComponentsInChildren<Renderer>())
+        {
+            foreach (var mat in renderer.materials)
+            {
+                if (mat.HasProperty("_Color"))
+                {
+                    Color c = mat.color;
+                    c.a = alpha;
+                    mat.color = c;
+                }
+                else if (mat.HasProperty("_BaseColor")) // URP usa _BaseColor
+                {
+                    Color c = mat.GetColor("_BaseColor");
+                    c.a = alpha;
+                    mat.SetColor("_BaseColor", c);
+                }
+                // Se nessuna delle due esiste (come il tuo Outline Mask), salta silenziosamente
+            }
+        }
     }
 }

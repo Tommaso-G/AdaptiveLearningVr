@@ -6,6 +6,12 @@ using UnityEngine.Rendering;
 
 public class ProximitySpawner : MonoBehaviour
 {     
+    public ExecutionOrderController executionOrderController;
+    public StepErrorTracker errorTracker;
+    public GameObject objectToFlash;
+
+
+
     [Tooltip("Raggio entro cui cercare oggetti del layer target.")]
     public float detectionRadius = 5f;
 
@@ -27,31 +33,17 @@ public class ProximitySpawner : MonoBehaviour
 
     public float burnDuration = 6f;
 
+    [Tooltip("Scala iniziale forzata per tutti gli oggetti spawnati.")]
+    public float spawnInitialScale = 0.04f;
+
     private float scaleDuration;
 
-    
-
-    // Per evitare spawn doppi sugli stessi oggetti
     private static readonly HashSet<Transform> spawnedTargets = new HashSet<Transform>();
     
     private RoomFire currentRoom;
     private ClosableDoor currentDoor;
     private bool hasScaled = false;
     private Vector3 initialScale;
-
-    // cache delle scale originali dei prefab asset
-    private static readonly Dictionary<GameObject, Vector3> prefabOriginalScales = new Dictionary<GameObject, Vector3>();
-
-    private void Awake()
-    {
-        foreach(GameObject prefab in prefabsToSpawn)
-        {
-            if(prefab != null && !prefabOriginalScales.ContainsKey(prefab))
-            {
-                prefabOriginalScales[prefab] = prefab.transform.localScale;
-            }
-        }
-    }
 
     private void Start()
     {
@@ -66,15 +58,13 @@ public class ProximitySpawner : MonoBehaviour
 
         scaleDuration = scaleDurationClosedDoor;
 
-        // Forza la scala iniziale a quella originale del prefab, ignorando
-        // qualsiasi scala "sporca" ereditata al momento dello spawn
-        initialScale = Vector3.one; // oppure la scala minima da cui vuoi partire
-        transform.localScale = initialScale; // <-- QUESTA è la riga chiave
+        // Forza sempre la scala iniziale a un valore noto e pulito
+        initialScale = Vector3.one * spawnInitialScale;
+        transform.localScale = initialScale;
 
         StartCoroutine(ScaleThenSpawnRoutine());
     }
 
-  
     private IEnumerator ScaleThenSpawnRoutine()
     {
         yield return new WaitUntil(() => !RiflessivoFeatures.IsPaused);
@@ -84,7 +74,6 @@ public class ProximitySpawner : MonoBehaviour
 
         Vector3 targetScaleVector = Vector3.one * targetScale;
 
-        // Interpolazione lineare della scala nel tempo
         while (elapsed < scaleDuration)
         {
             elapsed += Time.deltaTime;
@@ -97,7 +86,6 @@ public class ProximitySpawner : MonoBehaviour
         transform.localScale = targetScaleVector;
 
         StartCoroutine(CheckNearbyObjects());
- 
     }
 
     private IEnumerator CheckNearbyObjects()
@@ -111,81 +99,89 @@ public class ProximitySpawner : MonoBehaviour
 
         foreach (Collider hit in hits)
         {   
-            yield return new WaitForSeconds(Random.Range(0.1f,4f));
+            yield return new WaitForSeconds(Random.Range(0.1f, 4f));
             Transform target = hit.transform;
-            
 
-            // Se non è già stato gestito, spawna un nuovo oggetto
             if (!spawnedTargets.Contains(target))
             {
                 GameObject randomPrefab = prefabsToSpawn[Random.Range(0, prefabsToSpawn.Count)];
                 GameObject spawned = Instantiate(randomPrefab, target.position, target.rotation);
-                Debug.Log($"prefabOriginalScales contiene: {prefabOriginalScales[randomPrefab]} per {randomPrefab.name}");
-                spawned.transform.localScale = Vector3.one * 0.04f; // hardcoded temporaneamente
+
+                // Scala iniziale sempre forzata a un valore noto, ignorando
+                // qualsiasi scala sporca ereditata dal prefab asset
+                spawned.transform.localScale = Vector3.one * spawnInitialScale;
                 Debug.Log($"Spawned {spawned.name}, scala dopo assign = {spawned.transform.localScale}");
-
-
-                // Resetta immediatamente la scala al valore piccolo/iniziale
-                // così quando lo Start del figlio legge transform.localScale trova il valore corretto
-                spawned.transform.localScale = prefabOriginalScales.ContainsKey(randomPrefab) 
-                    ? prefabOriginalScales[randomPrefab] 
-                    : Vector3.one;
 
                 spawnedTargets.Add(target);
                 StartCoroutine(BurnMaterial(target.gameObject, burnDuration));
-                
-                //Debug.Log($"{name}: istanziato prefab vicino a {target.name}");
             }
         }
 
-    if (currentDoor != null)
-    {
-        currentDoor.onDoorClosed.RemoveListener(OnDoorClosed);
-        currentDoor.onDoorOpened.RemoveListener(OnDoorOpened);
-    }
+        if (currentDoor != null)
+        {
+            currentDoor.onDoorClosed.RemoveListener(OnDoorClosed);
+            currentDoor.onDoorOpened.RemoveListener(OnDoorOpened);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log($"collisione con: {other.name}");
-        RoomFire roomFire= other.GetComponent<RoomFire>();
+        //CASO 1: Player
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player entrato nel trigger");
+
+            if (errorTracker == null)
+            {
+                Debug.LogWarning($"{name}: errorTracker non assegnato.");
+                return;
+            }
+
+            string chapterName = errorTracker.CurrentProcess?.Data.Current?.Data.Name ?? "Unknown Chapter";
+            string stepName = errorTracker.CurrentProcess?.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
+
+            errorTracker.RegisterError(chapterName, stepName, "Fuoco");
+
+            if (executionOrderController != null && objectToFlash != null)
+                executionOrderController.DifferentStepWarningHighlight(objectToFlash);
+
+            return; 
+        }
+
+        // CASO 2: RoomFire
+        RoomFire roomFire = other.GetComponent<RoomFire>();
         if (roomFire == null)
         {
             Debug.Log("NULLO");
             return;
         }
-        
+
         currentRoom = roomFire;
-        currentDoor = roomFire.Door;  
+        currentDoor = roomFire.Door;
 
-        //Debug.Log($"{name}: entrato nella stanza {roomFire.name}, porta = {(currentDoor ? currentDoor.name : "nessuna")}, IsClosed = {(currentDoor != null ? currentDoor.IsClosed.ToString() : "n/a")}");
-
-    if (currentDoor != null)
+        if (currentDoor != null)
         {
-        currentDoor.onDoorClosed.AddListener(OnDoorClosed);
-        currentDoor.onDoorOpened.AddListener(OnDoorOpened);
+            currentDoor.onDoorClosed.AddListener(OnDoorClosed);
+            currentDoor.onDoorOpened.AddListener(OnDoorOpened);
+
+            if (currentDoor.IsClosed)
+                scaleDuration = scaleDurationClosedDoor;
+            else
+                scaleDuration = scaleDurationOpenedDoor;
         }
-
-    if(currentDoor.IsClosed)  scaleDuration = scaleDurationClosedDoor;
-    else scaleDuration = scaleDurationOpenedDoor;
-
     }
-
     private void OnDoorClosed()
     {
         scaleDuration = scaleDurationClosedDoor;
-
     }
 
-        private void OnDoorOpened()
+    private void OnDoorOpened()
     {
         scaleDuration = scaleDurationOpenedDoor;
-
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Mostra il raggio di ricerca nell’editor
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
@@ -197,35 +193,25 @@ public class ProximitySpawner : MonoBehaviour
         Renderer targetRenderer = burnedobject.GetComponent<Renderer>();
 
         if (targetRenderer == null || burnedMaterial == null)
-        {
-            
             yield break;
-            
-        }
-        
 
         Material orginalMaterial = targetRenderer.material;
         Color originalColor = orginalMaterial.color;
         Color burnedColor = burnedMaterial.color;
 
         float elapsed = 0f;
-        while(elapsed < duration)
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            Color blendedColor = Color.Lerp(originalColor,burnedColor, t);
+            Color blendedColor = Color.Lerp(originalColor, burnedColor, t);
             targetRenderer.material.color = blendedColor;
 
             yield return null;  
         }
 
         targetRenderer.material = burnedMaterial;
-    }
-
-    private void CheckPause()
-    {
-
     }
 
 

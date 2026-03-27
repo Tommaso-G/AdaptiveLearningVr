@@ -365,7 +365,7 @@ public class ExecutionOrderController : MonoBehaviour
 
 
 
-    private void DifferentStepWarningHighlight(GameObject go)
+    public void DifferentStepWarningHighlight(GameObject go)
     {
         Debug.Log($"Oggetto interagito: {go.name}");
 

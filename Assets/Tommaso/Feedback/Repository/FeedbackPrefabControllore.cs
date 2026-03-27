@@ -30,6 +30,14 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public SlidesDataSender sender;
 
+    [Header("Canvas Transition")]
+    public GameObject canvasToDisable;
+    public GameObject canvasToEnable;
+
+    public float fadeDuration = 1f;
+
+    public AudioSource audioSource;
+
     private void Start()
     {
         // Trova la camera del giocatore
@@ -216,17 +224,38 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public void CloseFeedback()
     {
+        StartCoroutine(CloseFeedbackRoutine());
+
+    }
+
+    public IEnumerator CloseFeedbackRoutine()
+    {
+        if (audioSource != null)
+            audioSource.Play();
+
+        yield return StartCoroutine(FadeSwitch(canvasToDisable, canvasToEnable, fadeDuration));
+        yield return new WaitForSeconds(1f);
+
         if (scaleRoutine != null)
             StopCoroutine(scaleRoutine);
 
         if (waypointInstance != null)
+        {
+            foreach (Transform child in waypointInstance.GetComponentsInChildren<Transform>(true))
+            {
+                if (child.name == "Question") { child.gameObject.SetActive(false); Debug.Log("[CloseFeedbackRoutine] 'Question' disattivato."); }
+                if (child.name == "Check") { child.gameObject.SetActive(true); Debug.Log("[CloseFeedbackRoutine] 'Check' attivato."); }
+            }
+
+            yield return new WaitForSeconds(1f); // <-- lascia vedere il cambiamento
+
             Destroy(waypointInstance);
+        }
 
         scaleRoutine = StartCoroutine(SmoothScale(Vector3.zero));
         StartCoroutine(DestroyAfterClose());
 
         styleBehaviour?.OnFeedbackClosed(this);
-
     }
 
     private IEnumerator DestroyAfterClose()
@@ -251,6 +280,50 @@ public class FeedbackPrefabController : MonoBehaviour
         }
 
         sender.SendData();
+    }
+
+
+        private IEnumerator FadeSwitch(GameObject toDisable, GameObject toEnable, float duration)
+    {
+        if (toDisable == null || toEnable == null)
+            yield break;
+
+        CanvasGroup cgDisable = toDisable.GetComponent<CanvasGroup>();
+        CanvasGroup cgEnable = toEnable.GetComponent<CanvasGroup>();
+
+        if (cgDisable == null)
+            cgDisable = toDisable.AddComponent<CanvasGroup>();
+
+        if (cgEnable == null)
+            cgEnable = toEnable.AddComponent<CanvasGroup>();
+
+        toEnable.SetActive(true);
+
+        float elapsed = 0f;
+
+        float startAlphaDisable = cgDisable.alpha;
+        float startAlphaEnable = cgEnable.alpha;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            cgDisable.alpha = Mathf.Lerp(startAlphaDisable, 0f, t);
+            cgEnable.alpha = Mathf.Lerp(startAlphaEnable, 1f, t);
+
+            yield return null;
+        }
+
+        cgDisable.alpha = 0f;
+        cgEnable.alpha = 1f;
+
+        toDisable.SetActive(false);
+    }
+
+    public void SwitchCanvasWithFade()
+    {
+        StartCoroutine(FadeSwitch(canvasToDisable, canvasToEnable, fadeDuration));
     }
 
 

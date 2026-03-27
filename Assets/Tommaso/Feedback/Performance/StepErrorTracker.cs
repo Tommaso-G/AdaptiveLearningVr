@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using VRBuilder.Core;
 
 public static class ErrorEvent
@@ -52,6 +53,8 @@ public class StepErrorTracker : MonoBehaviour
     public int TotalErrors { get; private set; } = 0;
     public IReadOnlyDictionary<string, ChapterErrorData> ChapterErrors => chapterErrors;
     public TMP_Text textPanel;
+
+    public IProcess CurrentProcess => ProcessRunner.Current;
     private void Start()
     {
         ErrorEvent.OnError += RegisterError;
@@ -142,5 +145,8 @@ public class StepErrorTracker : MonoBehaviour
         }
 
         textPanel.text = sb.ToString();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(textPanel.rectTransform);
+
     }
 }
