@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
 
 /// <summary>
@@ -93,18 +94,53 @@ public class StepOutlineManager : MonoBehaviour
         IChapter chapter = process.Data.Current;
         if (chapter == null) return;
 
+        DisableAllActiveOutlines();
+
+        // Controlla se lo step corrente del capitolo contiene un ExecuteChaptersBehavior
+        // (step group / sotto-capitoli paralleli), esattamente come fa ExecutionOrderController
+        if (TryEnableOutlinesInSubChapters(chapter)) return;
+
+        // Capitolo normale: usa lo step corrente
         IStep step = chapter.Data.Current;
         if (step == null) return;
 
-        // Disattiva gli outline dello step precedente prima di attivare i nuovi
-        DisableAllActiveOutlines();
         EnableOutlinesForStep(step);
     }
 
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {
-        // Quando cambia capitolo disattiviamo eventuali outline rimasti attivi
         DisableAllActiveOutlines();
+    }
+
+    // -------------------------------------------------------------------------
+    // Ricerca dello step attivo (con supporto sotto-capitoli)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Se lo step corrente del capitolo ha un ExecuteChaptersBehavior,
+    /// cerca lo step attivo in ciascun sotto-capitolo e ne attiva gli outline.
+    /// Restituisce true se ha gestito lui la situazione, false se il capitolo è normale.
+    /// </summary>
+    private bool TryEnableOutlinesInSubChapters(IChapter chapter)
+    {
+        foreach (IStep step in chapter.Data.Steps)
+        {
+            IBehavior behavior = step.Data.Behaviors?.Data.Behaviors.FirstOrDefault();
+            if (behavior == null) continue;
+
+            if (behavior is ExecuteChaptersBehavior executeChaptersBehavior)
+            {
+                IEnumerable<IChapter> subChapters = executeChaptersBehavior.Data.GetChildren();
+                foreach (IChapter subChapter in subChapters)
+                {
+                    IStep activeStep = subChapter.Data.Current;
+                    if (activeStep != null)
+                        EnableOutlinesForStep(activeStep);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     // -------------------------------------------------------------------------

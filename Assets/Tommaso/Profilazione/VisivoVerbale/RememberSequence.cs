@@ -74,6 +74,9 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     public AudioClip suonoStepSbagliato;
     public AudioClip suonoRoundCompletato;
 
+    /// <summary>Oggetti che hanno già completato il loro step — non possono più generare errore.</summary>
+    private readonly HashSet<GameObject> oggettiGiaAccettati = new HashSet<GameObject>();
+
     private class StatoIniziale
     {
         public Vector3 posizione;
@@ -239,20 +242,25 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     private void MischiaEAvvia()
     {
         indiceCorrente = 0;
-        ultimoOggettoControllato = null; // ← forza il rinnovo in Update()
+        ultimoOggettoControllato = null;
+        oggettiGiaAccettati.Clear(); // ← reset a ogni nuovo round
         Shuffle(sequenza);
-
     }
-
     public void StepCompletato(GameObject oggetto)
     {
         if (indiceCorrente >= sequenza.Count || !hasStarted)
+            return;
+
+        // Se l'oggetto ha già completato il suo step, ignora qualsiasi segnale successivo
+        if (oggettiGiaAccettati.Contains(oggetto))
             return;
 
         GameObject stepCorrente = sequenza[indiceCorrente].oggetto;
 
         if (oggetto == stepCorrente)
         {
+            oggettiGiaAccettati.Add(oggetto);
+
             if (audioSource != null && suonoStepCorretto != null)
                 audioSource.PlayOneShot(suonoStepCorretto);
 
@@ -265,7 +273,6 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             {
                 Debug.Log($"Round {currentRound}/{totalRounds} completato!");
 
-                // Lancia l'evento con i dati del round
                 OnRoundFinished?.Invoke(new RoundData
                 {
                     gameID = GameID,
@@ -293,7 +300,7 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         }
         else
         {
-            errori++; // incrementa il contatore errori
+            errori++;
 
             if (audioSource != null && suonoStepSbagliato != null)
                 audioSource.PlayOneShot(suonoStepSbagliato);
