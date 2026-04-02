@@ -77,6 +77,18 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     /// <summary>Oggetti che hanno già completato il loro step — non possono più generare errore.</summary>
     private readonly HashSet<GameObject> oggettiGiaAccettati = new HashSet<GameObject>();
 
+    [Header("Gaze Tracking UI")]
+    public GameObject panelImmagini;  // assegna layoutImmagini
+    public GameObject panelTesti;     // assegna layoutTesti
+
+    private float tempoGuardatoImmagini = 0f;
+    private float tempoGuardatoTesti = 0f;
+
+    private float _gazeStart = 0f;
+    private Coroutine _gazeCoroutine = null;
+    private bool _gazeStopTimer = false;
+    private bool _gazeIsImmagini = false;
+
     private class StatoIniziale
     {
         public Vector3 posizione;
@@ -181,6 +193,9 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         errori = 0;
         tempoStart = Time.time;
 
+        tempoGuardatoImmagini = 0f;
+        tempoGuardatoTesti = 0f;
+
         RimpiazzaOggettiDistrutti();
         hasStarted = true;
 
@@ -273,13 +288,27 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             {
                 Debug.Log($"Round {currentRound}/{totalRounds} completato!");
 
+                if (_gazeCoroutine != null)
+                {
+                    float delta = Time.time - _gazeStart;
+                    if (_gazeIsImmagini) tempoGuardatoImmagini += delta;
+                    else tempoGuardatoTesti += delta;
+                    _gazeCoroutine = null;
+                }
+
                 OnRoundFinished?.Invoke(new RoundData
                 {
                     gameID = GameID,
                     modalita = usaImmagini ? ModalitaGioco.Visivo : ModalitaGioco.Verbale,
                     numeroRound = currentRound,
                     errori = errori,
-                    tempoSecondi = Time.time - tempoStart
+                    tempoSecondi = Time.time - tempoStart,
+
+                    parametriExtra = new Dictionary<string, float>
+                    {
+                        { "tempoGuardatoImmagini", tempoGuardatoImmagini },
+                        { "tempoGuardatoTesti",    tempoGuardatoTesti    }
+                    }
                 });
 
                 if (audioSource != null && suonoRoundCompletato != null)
@@ -568,6 +597,48 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         foreach (var kvp in statiKinematic)
             if (kvp.Key != null)
                 kvp.Key.isKinematic = kvp.Value;
+    }
+
+
+    //METODI GAZE
+    public void GazeSelectionImmagini()  => StartGaze(true);
+    public void GazeDeselectionImmagini() => StopGaze(true);
+    public void GazeSelectionTesti()     => StartGaze(false);
+    public void GazeDeselectionTesti()   => StopGaze(false);
+
+    private void StartGaze(bool isImmagini)
+    {
+        if (_gazeCoroutine != null) return;
+        
+        // Ignora il panel che non è attivo in questo round
+        if (isImmagini != usaImmagini) return;
+
+        _gazeIsImmagini = isImmagini;
+        _gazeStopTimer = false;
+        _gazeCoroutine = StartCoroutine(GazeTimer());
+    }
+
+    private void StopGaze(bool isImmagini)
+    {
+        if (_gazeCoroutine == null || _gazeIsImmagini != isImmagini) return;
+        _gazeStopTimer = true;
+    }
+
+    private IEnumerator GazeTimer()
+    {
+        _gazeStart = Time.time;
+
+        while (!_gazeStopTimer)
+            yield return null;
+
+        float delta = Time.time - _gazeStart;
+
+        if (_gazeIsImmagini)
+            tempoGuardatoImmagini += delta;
+        else
+            tempoGuardatoTesti += delta;
+
+        _gazeCoroutine = null;
     }
 
 }

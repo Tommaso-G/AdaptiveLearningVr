@@ -52,7 +52,8 @@ public class StepErrorTracker : MonoBehaviour
     private Dictionary<string, ChapterErrorData> chapterErrors = new Dictionary<string, ChapterErrorData>();
     public int TotalErrors { get; private set; } = 0;
     public IReadOnlyDictionary<string, ChapterErrorData> ChapterErrors => chapterErrors;
-    public TMP_Text textPanel;
+    public TMP_Text textPanelOnHand;
+    public TMP_Text textPanelOnStart;
 
     public IProcess CurrentProcess => ProcessRunner.Current;
     private void Start()
@@ -119,7 +120,7 @@ public class StepErrorTracker : MonoBehaviour
 
     public void UpdateErrorPanel()
     {
-        if (textPanel == null)
+        if (textPanelOnHand == null && textPanelOnStart)
         {
             Debug.LogWarning("[StepErrorTracker] textPanel non assegnato.");
             return;
@@ -127,7 +128,8 @@ public class StepErrorTracker : MonoBehaviour
 
         if (TotalErrors == 0)
         {
-            textPanel.text = "Nessun errore commesso.";
+            textPanelOnHand.text = "Nessun errore commesso.";
+            textPanelOnStart.text = "Nessun errore commesso.";
             return;
         }
 
@@ -144,9 +146,11 @@ public class StepErrorTracker : MonoBehaviour
             }
         }
 
-        textPanel.text = sb.ToString();
+        textPanelOnHand.text = sb.ToString();
+        textPanelOnStart.text = sb.ToString();
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(textPanel.rectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnStart.rectTransform);
 
     }
 }

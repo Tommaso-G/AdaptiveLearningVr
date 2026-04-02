@@ -350,17 +350,18 @@ public class ExecutionOrderController : MonoBehaviour
         if (proxy != null)
         {
             DifferentStepWarningHighlight(proxy);
+
         }
         else
         {
             DifferentStepWarningHighlight(go);
             //DifferentStepWarningUI(go);
 
-            //per rigistrare l'errore del capitolo, messo da tommaso
-            string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
-            string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
-            errorTracker.RegisterError(chapterName, stepName, go.name);
         }
+        string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
+        string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
+
+        errorTracker.RegisterError(chapterName, stepName, go.name);
     }
 
 

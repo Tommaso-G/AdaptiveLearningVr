@@ -11,6 +11,8 @@ public class VisivoVerbaleStatManager : MonoBehaviour
     {
         public float tempoTotale = 0f;
         public int erroriTotali = 0;
+        public Dictionary<string, float> parametriExtra = new Dictionary<string, float>();
+
     }
 
     // gameID → modalità → stats accumulate
@@ -35,20 +37,28 @@ public class VisivoVerbaleStatManager : MonoBehaviour
 
     private void OnRoundRicevuto(RoundData data)
     {
-        // Crea la voce per il gameID se non esiste
         if (!storico.ContainsKey(data.gameID))
             storico[data.gameID] = new Dictionary<ModalitaGioco, StatModalita>();
 
-        // Crea la voce per la modalità se non esiste
         if (!storico[data.gameID].ContainsKey(data.modalita))
             storico[data.gameID][data.modalita] = new StatModalita();
 
-        // Accumula
         storico[data.gameID][data.modalita].tempoTotale += data.tempoSecondi;
         storico[data.gameID][data.modalita].erroriTotali += data.errori;
+
+        // ← null check prima di iterare
+        if (data.parametriExtra != null)
+        {
+            var stat = storico[data.gameID][data.modalita];
+            foreach (var kv in data.parametriExtra)
+            {
+                if (!stat.parametriExtra.ContainsKey(kv.Key))
+                    stat.parametriExtra[kv.Key] = 0f;
+                stat.parametriExtra[kv.Key] += kv.Value;
+            }
+        }
     }
 
-    // Chiama questo metodo quando vuoi stampare il riepilogo
     public void StampaRiepilogo()
     {
         foreach (var gioco in storico)
@@ -57,11 +67,15 @@ public class VisivoVerbaleStatManager : MonoBehaviour
             foreach (var modalita in gioco.Value)
             {
                 Debug.Log($"  {modalita.Key}: " +
-                          $"tempo totale {modalita.Value.tempoTotale:F1}s, " +
-                          $"errori totali {modalita.Value.erroriTotali}");
+                        $"tempo totale {modalita.Value.tempoTotale:F1}s, " +
+                        $"errori totali {modalita.Value.erroriTotali}");
+
+                // ← stampa parametri extra se presenti
+                foreach (var kv in modalita.Value.parametriExtra)
+                    Debug.Log($"    {kv.Key}: {kv.Value:F1}s");
             }
         }
-    }
+}
 
     private void OnDestroy()
     {

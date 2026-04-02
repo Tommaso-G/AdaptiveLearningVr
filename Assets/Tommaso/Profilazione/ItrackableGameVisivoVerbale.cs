@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public interface ITrackableGameVisivoVerbale
 {
     string GameID { get; }        
@@ -13,6 +15,8 @@ public class RoundData
     public int numeroRound;
     public int errori;
     public float tempoSecondi;
+
+    public Dictionary<string, float> parametriExtra = new Dictionary<string, float>();
 }
 
 public enum ModalitaGioco

@@ -33,6 +33,9 @@ public class CorrectGridCell : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
+    [Header("Identificativo per il tracking")]
+    public int pezzoID; // assegna nell'Inspector (es. 1,2,3,4...)
+
     private void Awake()
     {
         interactable = GetComponent<XRGrabInteractable>();

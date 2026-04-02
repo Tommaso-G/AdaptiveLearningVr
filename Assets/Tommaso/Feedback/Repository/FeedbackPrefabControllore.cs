@@ -279,7 +279,14 @@ public class FeedbackPrefabController : MonoBehaviour
             }
         }
 
-        sender.SendData();
+        if (sender != null)
+        {
+            sender.SendData();
+        }
+        else
+        {
+            Debug.LogWarning("[OnDestroy] sender è NULL.");
+        }
     }
 
 
