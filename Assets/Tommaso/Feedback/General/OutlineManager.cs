@@ -43,6 +43,9 @@ public class StepOutlineManager : MonoBehaviour
     [Tooltip("Tipo di interpolazione per l'oscillazione dello spessore.")]
     [SerializeField] private PulseEasing easingType = PulseEasing.SineInOut;
 
+    [Header("Filtro capitoli")]
+    public FeedbackChapterFilter chapterFilter;
+
     // -------------------------------------------------------------------------
     // Enumerazione del tipo di easing
     // -------------------------------------------------------------------------
@@ -96,16 +99,18 @@ public class StepOutlineManager : MonoBehaviour
 
         DisableAllActiveOutlines();
 
-        // Controlla se lo step corrente del capitolo contiene un ExecuteChaptersBehavior
-        // (step group / sotto-capitoli paralleli), esattamente come fa ExecutionOrderController
+        // Controlla il filtro: outline attivo solo se feedbackLevel è 0 o 1
+        if (chapterFilter != null && chapterFilter.IsOutlineAllowed(chapter.Data.Name) == false)
+            return;
+
         if (TryEnableOutlinesInSubChapters(chapter)) return;
 
-        // Capitolo normale: usa lo step corrente
         IStep step = chapter.Data.Current;
         if (step == null) return;
 
         EnableOutlinesForStep(step);
     }
+
 
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {

@@ -59,14 +59,14 @@ public class FeedbackDisplayer : MonoBehaviour
                 GameObject tempGO = new GameObject($"Temp_{child.name}");
                 Transform temp = tempGO.transform;
 
-                // 1️⃣ Posizione globale identica al child
+                // Posizione globale identica al child
                 temp.position = child.position;
 
-                // 2️⃣ Rotazione corretta: resetta X e Z, mantieni Y come nell’Inspector
+                // Rotazione corretta: resetta X e Z, mantieni Y come nell’Inspector
                 Vector3 euler = child.eulerAngles;
                 temp.rotation = Quaternion.Euler(0f, euler.y, 0f);
 
-                // 3️⃣ Scala globale identica
+                // Scala globale identica
                 temp.localScale = child.lossyScale;
 
                 // Log del Transform pulito

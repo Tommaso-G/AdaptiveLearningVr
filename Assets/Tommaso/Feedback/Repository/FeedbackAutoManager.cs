@@ -22,6 +22,8 @@ public class FeedbackAutoManager : MonoBehaviour
 
     public FeedbackDisplayer feedbackDisplayer;
 
+    public FeedbackChapterFilter chapterFilter;
+
 
 
     private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
@@ -72,7 +74,7 @@ public class FeedbackAutoManager : MonoBehaviour
         LearningProfile profile = GetComponent<LearningProfile>();
 
         // ==============================
-        // 1️⃣ Usa ProfilingFeedbackRepository se è presente
+        // Usa ProfilingFeedbackRepository se è presente
         // ==============================
         if (feedbackHolder.ProfilingFeedbackRepository != null)
         {
@@ -80,7 +82,7 @@ public class FeedbackAutoManager : MonoBehaviour
             feedbackList = feedbackHolder.ProfilingFeedbackRepository.GetAllFeedbacks();
         }
         // ==============================
-        // 2️⃣ Altrimenti usa FeedbackRepository classico
+        // Altrimenti usa FeedbackRepository classico
         // ==============================
         else if (feedbackHolder.FeedbackRepository != null)
         {
@@ -223,6 +225,13 @@ public class FeedbackAutoManager : MonoBehaviour
 
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
+
+        if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
+        {
+            Debug.Log($"[FeedbackAutoManager] Feedback disabilitato per '{chapterName}'.");
+            return;
+        }
+        
         string stepName = step.Data.Name;
 
         // Mostra il feedback solo se è il primo step associato
