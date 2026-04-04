@@ -24,23 +24,36 @@ MonoBehaviour:
   sequentialPath:
     verbalPath:
       attivo:
-      - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
+      - ChapterName: Segnalazione incendio
         feedbacks:
         - FeedbackName: Chiama il personale addetto
-          pages: []
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            image: {fileID: 21300000, guid: 5a1ed72f8a870f243bea1916543817ca, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Grab telefono
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
-      - ChapterName: Attivazione allarme
-        feedbacks:
         - FeedbackName: Attiva allarme
-          pages: []
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            image: {fileID: 21300000, guid: 10c5611baef1f724f9d02fcb8db41ab6, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Chiama i vigili del fuoco
-          pages: []
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            image: {fileID: 21300000, guid: 61d02631a2dc24642bc658f317ba87db, type: 3}
+            video: {fileID: 0}
+            text: 
           StepForCompletition:
           - Grab telefono pompieri
           - completa Domande
@@ -134,7 +147,7 @@ MonoBehaviour:
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
       riflessivo:
-      - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
+      - ChapterName: Segnalazione incendio
         feedbacks:
         - FeedbackName: Chiama il personale addetto
           pages:
@@ -147,8 +160,6 @@ MonoBehaviour:
           - Grab telefono
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
-      - ChapterName: Attivazione allarme
-        feedbacks:
         - FeedbackName: Attiva allarme
           pages:
           - Sequenzale_Globale: 0
@@ -170,9 +181,9 @@ MonoBehaviour:
           - Grab telefono pompieri
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
-      - ChapterName: "Avvertimento personale + valutazione entit\xE0 incendio"
+      - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
-        - FeedbackName: Chiudi il Gas e spegni la corrente
+        - FeedbackName: "Disattiva Elettricit\xE0 e Gas"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1

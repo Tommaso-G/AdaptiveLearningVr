@@ -149,25 +149,29 @@ public class ProximitySpawner : MonoBehaviour
         }
 
         // CASO 2: RoomFire
-        RoomFire roomFire = other.GetComponent<RoomFire>();
-        if (roomFire == null)
-        {
-            Debug.Log("NULLO");
-            return;
-        }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Room")){
+            Debug.Log("Collisione con Stanza");
+        
+            RoomFire roomFire = other.GetComponent<RoomFire>();
+            if (roomFire == null)
+            {
+                Debug.Log("Stanza non trovata");
+                return;
+            }
 
-        currentRoom = roomFire;
-        currentDoor = roomFire.Door;
+            currentRoom = roomFire;
+            currentDoor = roomFire.Door;
 
-        if (currentDoor != null)
-        {
-            currentDoor.onDoorClosed.AddListener(OnDoorClosed);
-            currentDoor.onDoorOpened.AddListener(OnDoorOpened);
+            if (currentDoor != null)
+            {
+                currentDoor.onDoorClosed.AddListener(OnDoorClosed);
+                currentDoor.onDoorOpened.AddListener(OnDoorOpened);
 
-            if (currentDoor.IsClosed)
-                scaleDuration = scaleDurationClosedDoor;
-            else
-                scaleDuration = scaleDurationOpenedDoor;
+                if (currentDoor.IsClosed)
+                    scaleDuration = scaleDurationClosedDoor;
+                else
+                    scaleDuration = scaleDurationOpenedDoor;
+            }
         }
     }
     private void OnDoorClosed()
