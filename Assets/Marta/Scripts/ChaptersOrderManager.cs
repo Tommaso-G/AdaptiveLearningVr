@@ -40,6 +40,10 @@ public class ChaptersOrderManager : MonoBehaviour
     private bool nextChapter;
     private int currentNode;
     private Dictionary<string, int> chapterNameToIndex = new Dictionary<string, int>();
+    private Dictionary<string, ExecuteChaptersBehavior> subchapterNameToIndex = new Dictionary<string, ExecuteChaptersBehavior>();
+
+    [Tooltip("Ordine con cui sono inseriti i capitoli opzionali.")]
+    public List<ChapterLink> OptionalDefaultPosition;
 
     public List<ChapterLink> ChaptersToAddOrRemove; // (nome_nuovo_cap, nome_cap_precedente)
     [Tooltip("Inseriemento immediato dopo il capitolo corrente. Richiede si specificare solo il nome del nuovo capitolo.")]
@@ -86,7 +90,21 @@ public class ChaptersOrderManager : MonoBehaviour
             nodes.Add(node);
             chapterNameToIndex.Add(chapter.Data.Name, index);
 
-            if (chapter.Data.Name.Contains("Optional"))
+            IList<IStep> steps = chapter.Data.Steps;
+
+            foreach (IStep step in steps)
+            {
+                if (step.Data.Behaviors?.Data.Behaviors.FirstOrDefault() is ExecuteChaptersBehavior executeChaptersBehavior)
+                {
+                    List<SubChapter> subChapters = executeChaptersBehavior.Data.SubChapters;
+                    foreach (SubChapter subChapter in subChapters)
+                    {
+                        subchapterNameToIndex.Add(subChapter.Chapter.Data.Name, executeChaptersBehavior);
+                    }
+                }
+            }
+
+                if (chapter.Data.Name.Contains("Optional"))
             {
                 OptionalChapters.Add(chapter.Data.Name);
             }
@@ -114,10 +132,34 @@ public class ChaptersOrderManager : MonoBehaviour
     }
 
     // chiamata in inizializzazione
-    private void AddOptional(string chapterName, string prevName)
+    public void AddOptional(string chapterName, string prevName = null)
     {
         int newIndex = chapterNameToIndex[chapterName];
-        int prevIndex = chapterNameToIndex[prevName];
+
+        if (prevName == null)
+        {
+            foreach (var chapterCouple in OptionalDefaultPosition)
+            {
+                if (chapterCouple.newChapter == chapterName)
+                {
+                    prevName = chapterCouple.previousChapter;
+                }
+            }
+        }
+
+        if (!chapterNameToIndex.TryGetValue(prevName, out int prevIndex))
+        {
+            if (!subchapterNameToIndex.TryGetValue(prevName, out ExecuteChaptersBehavior executeChaptersBehavior))
+            {
+                Debug.LogWarning($"Capitolo non trovato: {prevName}");
+                return;
+            }
+            else
+            {
+                AddSubChapter(executeChaptersBehavior, newIndex);
+                return;
+            }
+        }
 
         Node prevNode = nodes[prevIndex];
         Node newNode = nodes[newIndex];
@@ -232,14 +274,14 @@ public class ChaptersOrderManager : MonoBehaviour
             executeChaptersBehavior.AddSubChapterAtRuntime(newChapter, false);
 
             OnSubChapterAdded.Invoke(newChapter);
-            foreach (IStep step in newChapter.Data.Steps)
-            {
-                print("nome: " + step.Data.Name);
-            }
+            //foreach (IStep step in newChapter.Data.Steps)
+            //{
+            //    print("nome: " + step.Data.Name);
+            //}
         }
     }
 
-    private void RemoveChapter(string prevName = "", string chapterToRemoveName = "", int prevId = -1)
+    public void RemoveChapter(string prevName = "", string chapterToRemoveName = "", int prevId = -1)
     {
         Node prevNode = null;
 

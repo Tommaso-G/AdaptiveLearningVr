@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using VRBuilder.Core;
+using System.Linq;
 
 public class FeedbackChapterFilter : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class FeedbackChapterFilter : MonoBehaviour
 
     public List<ChapterFeedbackSetting> chapterSettings = new List<ChapterFeedbackSetting>();
 
+    public void setFeedbackLevel(string chapterName, int level)
+    {
+        ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
+        chapter.feedbackLevel = level;
+        print("Capitolo: " +  chapterName + " , feedback level: " +  chapter.feedbackLevel);
+    }
     public void Initialize(IProcess process)
     {
         foreach (IChapter chapter in process.Data.Chapters)

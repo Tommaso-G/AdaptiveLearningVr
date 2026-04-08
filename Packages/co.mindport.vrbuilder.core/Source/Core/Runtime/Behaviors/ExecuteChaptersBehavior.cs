@@ -92,9 +92,10 @@ namespace VRBuilder.Core.Behaviors
                     return;
                 }
                 sc.Chapter.LifeCycle.Activate();
-                Data.SubChapters.Add(sc);
-                Data.addedSubChapter++;
             }
+
+            Data.SubChapters.Add(sc);
+            Data.addedSubChapter++;
         }
 
         private class ActivatingProcess : StageProcess<EntityData>
