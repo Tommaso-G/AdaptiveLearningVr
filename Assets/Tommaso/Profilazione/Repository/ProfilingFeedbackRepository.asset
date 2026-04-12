@@ -15,12 +15,158 @@ MonoBehaviour:
   SingleContainer: {fileID: 781630661673262138, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
   MultipleContainer: {fileID: 781630661673262138, guid: 4689bb12224f63240ac0e3056d230e01, type: 3}
   chapters:
+  - ChapterName: Cassaforte
+    feedbacks:
+    - FeedbackName: Apri la cassaforte
+      pages:
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "L\u2019unico problema \xE8 che le casseforti hanno il difetto di essere
+          chiuse a chiave quando non sono tue.\n\nMa ehi, non tutto \xE8 perduto!
+          il propietario potrebbe aver scritto la password da qualche parte. \n\nSu
+          un foglietto magari. Oppure costrunedo un complicato meccanismo di manopole
+          e cilindri numerati. "
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'Ruota le manopole per far scorrere i numeri sui cilidri.
+
+
+          Osserva
+          bene e trova i quattro numeri della password.'
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Quando pensi di aver trovato la giusta sequenza, digitala sulla tastiera
+          numerica della cassaforte.\n\nSe ci hai visto giusto si accender\xE0 una
+          luce verde.\n\nSe la luce \xE8 rossa hai sbagliato password,  ma potrai
+          riprovare quante volte vorrai."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Una volta inserita la giusta sequenza, afferra la maniglia con il
+          controller e apri la porta.\n\nGoditi i tuoi dollaroni, sei ufficialmente
+          la persona pi\xF9 ricca di questo mondo virtuale!"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Ehi, tu! Vuoi fare dei VERI soldi finti? Sto parlando di un mucchio
+          di sonanti quattrini digitali. \n\nDentro questa cassaforte troverai quello
+          che fa al caso tuo."
+      StepForCompletition:
+      - Interagisci con le manopole
+      - Inserisci la password
+      - Apri la porta
+      - Goditi il bottino
+      PersonalizedPrefab: {fileID: 0}
+  - ChapterName: Bloxorz
+    feedbacks:
+    - FeedbackName: Istruzione Bloxorz
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 461155601, guid: 3bdf3a0286f9d974ea9e7e7b08c68af4, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 1293262017, guid: d7d19b515f262c741aa7f5c61f8e8f04, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 771893295, guid: 61bda78ef1f77c44e99de6e8bc7ed2c3, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 1678165910, guid: eb561f21c077d024fb83b6380a760267, type: 3}
+        video: {fileID: 0}
+        text: 
+      StepForCompletition:
+      - Prima mossa (bloxorz)
+      - Gioca a bloxorz
+      PersonalizedPrefab: {fileID: 0}
+  - ChapterName: Sokoban
+    feedbacks:
+    - FeedbackName: Istruzione Sokoban
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 1087546110, guid: 63a0d8251b9469e4fb6d770f58527dce, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: -1165788943, guid: 816ebacac76124b4e9907520a923c15b, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: -91865526, guid: 2b8c813939ffb9747b10693806104b51, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: -953081798, guid: 96789e86cfe365c49b065a89be7c2910, type: 3}
+        video: {fileID: 0}
+        text: 
+      StepForCompletition:
+      - Prima mossa (sokoban)
+      - Gioca a sokoban
+      PersonalizedPrefab: {fileID: 0}
+  - ChapterName: Scalak
+    feedbacks:
+    - FeedbackName: Istruzione Scalak
+      pages:
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: -599817584, guid: a298791cb2bed7a47bde5162cbe24846, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: -2106344116, guid: f2e8fb313d9f3cd46aaf3d314575e724, type: 3}
+        video: {fileID: 0}
+        text: 
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 138023202, guid: 252368215e306d64b96542416cc74180, type: 3}
+        video: {fileID: 0}
+        text: 
+      StepForCompletition:
+      - Prima mossa (scalak)
+      - Gioca a scalak
+      PersonalizedPrefab: {fileID: 0}
   - ChapterName: RIcorda le parole
     feedbacks:
     - FeedbackName: Ricorda le parole
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 8375fedb6d2866642aee8ff138070b3f, type: 3}
         video: {fileID: 0}
         text: 
@@ -33,6 +179,7 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 25c6912790eb16a4da11170dbb1ad3da, type: 3}
         video: {fileID: 0}
         text: 
@@ -45,11 +192,13 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 3bdf848603cd2eb4e9048eb251f91e63, type: 3}
         video: {fileID: 0}
         text: 
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 823696daa6185704a959a4047c60a9ca, type: 3}
         video: {fileID: 0}
         text: 
@@ -60,125 +209,12 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 4eed9cdd229386c4d8f0623553b9769f, type: 3}
         video: {fileID: 0}
         text: 
       StepForCompletition:
       - Memory
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Sokoban
-    feedbacks:
-    - FeedbackName: Istruzione Sokoban
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 1087546110, guid: 63a0d8251b9469e4fb6d770f58527dce, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -1165788943, guid: 816ebacac76124b4e9907520a923c15b, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -91865526, guid: 2b8c813939ffb9747b10693806104b51, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -953081798, guid: 96789e86cfe365c49b065a89be7c2910, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Prima mossa (sokoban)
-      - Gioca a sokoban
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Bloxorz
-    feedbacks:
-    - FeedbackName: Istruzione Bloxorz
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 461155601, guid: 3bdf3a0286f9d974ea9e7e7b08c68af4, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 1293262017, guid: d7d19b515f262c741aa7f5c61f8e8f04, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 771893295, guid: 61bda78ef1f77c44e99de6e8bc7ed2c3, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 1678165910, guid: eb561f21c077d024fb83b6380a760267, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Prima mossa (bloxorz)
-      - Gioca a bloxorz
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Scalak
-    feedbacks:
-    - FeedbackName: Istruzione Scalak
-      pages:
-      - Sequenzale_Globale: 1
-        Visivo_Verbale: 1
-        image: {fileID: -599817584, guid: a298791cb2bed7a47bde5162cbe24846, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -2106344116, guid: f2e8fb313d9f3cd46aaf3d314575e724, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 138023202, guid: 252368215e306d64b96542416cc74180, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Prima mossa (scalak)
-      - Gioca a scalak
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Cassaforte
-    feedbacks:
-    - FeedbackName: Apri la cassaforte
-      pages:
-      - Sequenzale_Globale: 1
-        Visivo_Verbale: 1
-        image: {fileID: -2036728363, guid: e3ac8250d9a107149b7747591531e6da, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        image: {fileID: -242278841, guid: 58664119b17221c408919fdb555cd6fe, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: 1658841830, guid: be59c7d88a4ccac4ea0016686c7efb99, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -1650984576, guid: 6bbf008f5e6c16e42bc2f3cedff48e10, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        image: {fileID: -2038417116, guid: 3692e817c9d35ce439affe3932c2be05, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Interagisci con le manopole
-      - Inserisci la password
-      - Apri la porta
-      - Goditi il bottino
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Sintetizzatore Chimerico
     feedbacks:
@@ -186,16 +222,19 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: bd92f7a23de06d946a2a314fa44d2c77, type: 3}
         video: {fileID: 0}
         text: 
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: d65a06c12a1119746aae7ffb352f8d37, type: 3}
         video: {fileID: 0}
         text: 
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 3fdb05e6db4ad5447b0bbd40607ab3f8, type: 3}
         video: {fileID: 0}
         text: 
@@ -206,6 +245,7 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: b2aa899a062a3f1489493ee2218c8b56, type: 3}
         video: {fileID: 0}
         text: "Il sintetizzatore chimerico \xE8 diviso in tre componenti principali,
@@ -213,16 +253,19 @@ MonoBehaviour:
           secondari"
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: eb02bed23518b54448884585bae74d99, type: 3}
         video: {fileID: 0}
         text: 
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 5b63ada440b6e8c489028733c9a088e3, type: 3}
         video: {fileID: 0}
         text: 
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 4c4b95807a80e694b8c22c66ff34ae74, type: 3}
         video: {fileID: 0}
         text: 
@@ -233,6 +276,7 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: 48c9703cc4e6d6740afa85179f512963, type: 3}
         video: {fileID: 0}
         text: 
@@ -243,6 +287,7 @@ MonoBehaviour:
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 0
+        isIntroductory: 0
         image: {fileID: 21300000, guid: b3411cce27c37f74f8708b1fb2af4f38, type: 3}
         video: {fileID: 0}
         text: 

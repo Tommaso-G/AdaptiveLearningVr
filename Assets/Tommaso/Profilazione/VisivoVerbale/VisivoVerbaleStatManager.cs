@@ -7,7 +7,7 @@ public class VisivoVerbaleStatManager : MonoBehaviour
     public List<MonoBehaviour> giochi = new List<MonoBehaviour>();
 
     // Struttura interna per accumulare i dati per modalità
-    private class StatModalita
+    public class StatModalita
     {
         public float tempoTotale = 0f;
         public int erroriTotali = 0;
@@ -84,5 +84,18 @@ public class VisivoVerbaleStatManager : MonoBehaviour
             if (mb is ITrackableGameVisivoVerbale gioco)
                 gioco.OnRoundFinished -= OnRoundRicevuto;
         }
+    }
+
+    void Update()
+    {   
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            StampaRiepilogo();
+        }
+    }
+
+    public Dictionary<string, Dictionary<ModalitaGioco, StatModalita>> GetStorico()
+    {
+        return storico;
     }
 }

@@ -164,6 +164,9 @@ public class RiflessivoFeatures : LearningStyleFeatures
                         continue;
                     }
 
+                        if (interactable.CompareTag("Feedback"))
+                        continue;
+
                     //Debug.Log($"    - {interactable.GetType().Name} (enabled={interactable.enabled})");
 
                     if (interactable.enabled)

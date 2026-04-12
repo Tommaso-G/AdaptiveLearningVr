@@ -28,6 +28,8 @@ public class FeedbackPrefabController : MonoBehaviour
     public Scrollbar verticalScrollbar;
     public RectTransform content;
 
+    public GameObject buttonsCanvas;
+
     public SlidesDataSender sender;
 
     [Header("Canvas Transition")]
@@ -40,6 +42,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private void Start()
     {
+        HandleConditionalCanvas();
+
         // Trova la camera del giocatore
         playerCamera = Camera.main ?? FindFirstObjectByType<Camera>();
 
@@ -333,6 +337,25 @@ public class FeedbackPrefabController : MonoBehaviour
         StartCoroutine(FadeSwitch(canvasToDisable, canvasToEnable, fadeDuration));
     }
 
+    public void HandleConditionalCanvas()
+    {
+        if (buttonsCanvas == null) return;
+
+        FeedbackSetHolder holder = FindFirstObjectByType<FeedbackSetHolder>();
+
+        if (holder != null && holder.ProfilingFeedbackRepository != null)
+        {
+            buttonsCanvas.SetActive(false);
+        }
+        else
+        {
+            LearningProfile profile = FindFirstObjectByType<LearningProfile>();
+            if (profile != null && profile.enableLearningFeatures)
+                buttonsCanvas.SetActive(true);
+            else
+                buttonsCanvas.SetActive(false);
+        }
+    }
 
 
 

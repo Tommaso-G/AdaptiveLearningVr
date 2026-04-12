@@ -94,6 +94,8 @@ public class FeedbackRepository : ScriptableObject
         public LearningEnums.SequenzialeGlobale Sequenzale_Globale;
         public LearningEnums.VisivoVerbale Visivo_Verbale;
 
+        public bool isIntroductory = false;
+
         [Tooltip("Una singola immagine opzionale per la pagina.")]
         public Sprite image;
 

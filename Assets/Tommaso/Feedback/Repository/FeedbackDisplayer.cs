@@ -20,6 +20,7 @@ public class FeedbackDisplayer : MonoBehaviour
     [Header("Riferimenti")]
     public FeedbackSetHolder feedbackHolder;
 
+
     public List<Transform> FindFeedbackPositionChild(GameObject parent)
     {
         if (parent == null)
@@ -224,6 +225,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
         SlideData slideData = imageContainer.GetComponent<SlideData>();
         slideData.setLearningEnums(page.Sequenzale_Globale, page.Visivo_Verbale);
+        slideData.setIntrodactoryField(page.isIntroductory);
 
         // ======= Validazione: immagine + video =======
         bool hasImage = page.image != null;
@@ -336,7 +338,9 @@ public class FeedbackDisplayer : MonoBehaviour
         ClearOldPages(contentParent, basePage);
         ClearOldPages(navPanel, baseNavItem);
 
-        CreatePages(feedback.pages, contentParent, navPanel, basePage, baseNavItem, feedback.FeedbackName);
+        bool useGlobalOverviewLabels = feedbackHolder.ProfilingFeedbackRepository != null;
+
+        CreatePages(feedback.pages, contentParent, navPanel, basePage, baseNavItem, feedback.FeedbackName, useGlobalOverviewLabels);
         SetupNavigation(container, navPanel, contentParent);
         StartCoroutine(ForceLayoutNextFrame(contentParent));
     }
@@ -363,21 +367,28 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
     private void CreatePages(List<FeedbackRepository.FeedbackPage> pages,
-        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem, string feedbackName)
+        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem, string feedbackName, bool useGlobalOverviewLabels = false)
     {
         for (int i = 0; i < pages.Count; i++)
         {
             var (page, navItem) = (i == 0)
                 ? (basePage, baseNavItem)
                 : (UnityEngine.Object.Instantiate(basePage, contentParent),
-                   UnityEngine.Object.Instantiate(baseNavItem, navPanel));
+                UnityEngine.Object.Instantiate(baseNavItem, navPanel));
 
             page.name = $"Page {i + 1}";
             navItem.name = $"Nav Item Toggle {i + 1}";
 
             var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
             if (textComp != null)
-                textComp.text = (i == 0) ? "Start" : $"Step {i}";
+            {
+                if (i == 0)
+                    textComp.text = useGlobalOverviewLabels ? "INTRO" : "Start";
+                else if (useGlobalOverviewLabels && pages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
+                    textComp.text = "OVERVIEW";
+                else
+                    textComp.text = $"Step {i}";
+            }
 
             SetupPageContent(pages[i], page, feedbackName);
         }
@@ -392,6 +403,7 @@ public class FeedbackDisplayer : MonoBehaviour
         SlideData slideData = page.GetComponent<SlideData>();
         //Debug.Log("Pagina: " + page.name + " - " + pageData.Sequenzale_Globale + " " + pageData.Visivo_Verbale);
         slideData.setLearningEnums(pageData.Sequenzale_Globale, pageData.Visivo_Verbale);
+        slideData.setIntrodactoryField(pageData.isIntroductory);
 
         var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
         var image = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();

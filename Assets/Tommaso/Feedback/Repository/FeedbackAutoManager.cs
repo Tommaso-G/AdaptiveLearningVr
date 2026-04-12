@@ -25,7 +25,6 @@ public class FeedbackAutoManager : MonoBehaviour
     public FeedbackChapterFilter chapterFilter;
 
 
-
     private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
 
@@ -144,8 +143,10 @@ public class FeedbackAutoManager : MonoBehaviour
                     {
                         if (args.Stage == Stage.Activating)
                             OnStepActivated(step, chapterName, feedback);
-                        else if (args.Stage == Stage.Inactive)
+                        else if (args.Stage == Stage.Inactive){
+                            RegisterTempoPreStep(stepName, feedback);
                             HandleStepCompletion(stepName);
+                        }
                     };
 
                     totalStepCount++;
@@ -203,8 +204,10 @@ public class FeedbackAutoManager : MonoBehaviour
                                     {
                                         if (args.Stage == Stage.Activating)
                                             OnStepActivated(subStep, subChapterName, feedback);
-                                        else if (args.Stage == Stage.Inactive)
+                                        else if (args.Stage == Stage.Inactive){
+                                            RegisterTempoPreStep(subStepName, feedback);
                                             HandleStepCompletion(subStepName);
+                                        }
                                     };
 
                                     totalStepCount++;
@@ -330,6 +333,28 @@ public class FeedbackAutoManager : MonoBehaviour
 
         return feedbacksToRemove.Count() != 0 ? feedbacksToRemove : null;
 
+    }
+
+    //Metodo da usare per la registrazione agli eventi di lifecycle di uno step
+    private SlidesDataSender FindSender(string feedbackName)
+    {
+        var all = FindObjectsByType<SlidesDataSender>(FindObjectsSortMode.None);
+        return all.FirstOrDefault(s => s.FeedbackName.Contains(feedbackName));
+    }
+    private void RegisterTempoPreStep(string stepName, FeedbackRepository.FeedbackData feedback)
+    {
+        string firstStep = feedback.StepForCompletition.FirstOrDefault();
+        if (stepName != firstStep) return;
+
+        var sender = FindSender(feedback.FeedbackName);
+        if (sender != null)
+        {
+            float tempo = sender.GetCurrentTotalFocusTime();
+            Debug.Log($"[RegisterTempoPreStep] Sender trovato per '{feedback.FeedbackName}', tempo: {tempo}");
+            sender.SetTempoPreStep(tempo);
+        }
+        else
+            Debug.LogWarning($"[FeedbackAutoManager] Nessun sender trovato per '{feedback.FeedbackName}'");
     }
 
 

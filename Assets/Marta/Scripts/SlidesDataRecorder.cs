@@ -11,14 +11,18 @@ public class FeedbackDataContainer
 {
     public string feedbackName;
     public Dictionary<string, SlideDataContainer> slidesData = new Dictionary<string, SlideDataContainer>();
+    public float tempoOsservazionePreStep = 0f;
+    public List<int> visitHistory = new List<int>();
+
 }
+
 public class SlidesDataRecorder : MonoBehaviour
 {
-
     private Dictionary<string, FeedbackDataContainer> FeedbacksDataList = new Dictionary<string, FeedbackDataContainer>();
-    public void RecordData(string feedbackName, Dictionary<string, SlideDataContainer> slidesData)
+
+    public void RecordData(string feedbackName, Dictionary<string, SlideDataContainer> slidesData, float tempoPreStep, List<int> visitHistory)
     {
-        FeedbackDataContainer feedbackData;
+        FeedbackDataContainer feedbackData = null;
 
         foreach (var slideData in slidesData)
         {
@@ -39,7 +43,14 @@ public class SlidesDataRecorder : MonoBehaviour
                 FeedbacksDataList.Add(feedbackName, feedbackData);
                 Debug.Log("Dati del feedback: " + feedbackName + " salvati nel recorder");
             }
+
         }
+
+        if (feedbackData != null){
+            feedbackData.tempoOsservazionePreStep = tempoPreStep;
+            feedbackData.visitHistory = visitHistory;
+        }
+
     }
 
     private void printRecorderSavings()
@@ -55,11 +66,13 @@ public class SlidesDataRecorder : MonoBehaviour
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("FEEDBACK: " + feedbackdata.Value.feedbackName);
-
+            sb.AppendLine("tempo osservazione pre step: " + feedbackdata.Value.tempoOsservazionePreStep + "s");
+            sb.AppendLine("ordine apertura : " + string.Join(", ", feedbackdata.Value.visitHistory));
             foreach (var data in feedbackdata.Value.slidesData)
             {
                 sb.AppendLine("Pagina: " + data.Value.pageName);
                 sb.AppendLine("focus time: " + data.Value.focusTime);
+                sb.AppendLine("focus time normalizzato " + data.Value.normalizedFocusTime);
                 sb.AppendLine("opening: " + data.Value.opening);
                 sb.AppendLine("globale/sequenziale: " + data.Value.seqGlob);
                 sb.AppendLine("visivo/verbale: " + data.Value.visVerb);
@@ -77,4 +90,10 @@ public class SlidesDataRecorder : MonoBehaviour
             printRecorderSavings();
         }
     }
+
+    public IEnumerable<FeedbackDataContainer> GetAllFeedbacks()
+    {
+        return FeedbacksDataList.Values;
+    }
+
 }

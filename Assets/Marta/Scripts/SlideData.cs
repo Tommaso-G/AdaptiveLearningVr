@@ -17,6 +17,12 @@ public class SlideData: MonoBehaviour
     public LearningEnums.SequenzialeGlobale seqGlob;
     public LearningEnums.VisivoVerbale visVerb;
 
+    public bool isIntroductory = false;
+
+    public int wordCount;
+    [SerializeField] private TMP_Text slideText;
+
+
     //variabili di servizio
     public bool stopTimer = false;
     private Coroutine activeCoroutine = null;
@@ -55,6 +61,11 @@ public class SlideData: MonoBehaviour
         seqGlob = sg;
         visVerb = vv;
         //Debug.Log("Impostati per pagina: " + pageName + " - " + seqGlob + " " + visVerb);
+    }
+
+    public void setIntrodactoryField(bool iI)
+    {
+        isIntroductory = iI;
     }
     public IEnumerator StartTimer()
     {
@@ -125,15 +136,34 @@ public class SlideData: MonoBehaviour
 
     }
 
+
+    public int GetWordCount()
+    {
+        if (slideText == null) { wordCount = 0; return 0; }
+        if (string.IsNullOrWhiteSpace(slideText.text)) { wordCount = 0; return 0; }
+        wordCount = slideText.text.Split(new char[] { ' ', '\n', '\r' },
+            System.StringSplitOptions.RemoveEmptyEntries).Length;
+        return wordCount;
+    }
+
+    public float GetNormalizedFocusTime()
+    {
+        int wordCount = GetWordCount();
+        if (wordCount == 0) return focusTime;
+        return focusTime / wordCount;
+    }
+
     public void SendData()
     {
         OnSlideDataUpdated?.Invoke(new SlideDataContainer
         {
             pageName = pageName,
             focusTime = focusTime,
+            normalizedFocusTime = GetNormalizedFocusTime(),
             opening = opening,
             seqGlob = seqGlob,
             visVerb = visVerb,
+            isIntroductory = isIntroductory
         });
     }
 }

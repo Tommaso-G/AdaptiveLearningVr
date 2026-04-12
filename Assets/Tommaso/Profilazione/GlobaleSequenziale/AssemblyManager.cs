@@ -5,6 +5,10 @@ using UnityEngine.Events;
 
 public class AssemblyManager : MonoBehaviour, ICompletableStep
 {
+    [HideInInspector]
+    public float PunteggioSequenziale { get; private set; }
+    [HideInInspector]
+    public float PunteggioGlobale { get; private set; }
     public bool IsCompleted { get; private set; } = false;
 
     [Header("Contenitore principale degli oggetti")]
@@ -84,6 +88,8 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
                 sequenzaIdealeSequenziale,
                 sequenzaIdealeGlobale
             );
+            PunteggioSequenziale = risultato.punteggioSequenziale;
+            PunteggioGlobale = risultato.punteggioGlobale;
 
             Debug.Log($"Stile FSLSM → Sequenziale: {risultato.punteggioSequenziale:F2} | Globale: {risultato.punteggioGlobale:F2}");
                 OnAllCorrect?.Invoke();
