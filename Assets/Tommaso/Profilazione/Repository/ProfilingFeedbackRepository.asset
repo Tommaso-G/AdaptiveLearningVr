@@ -160,32 +160,6 @@ MonoBehaviour:
       - Prima mossa (scalak)
       - Gioca a scalak
       PersonalizedPrefab: {fileID: 0}
-  - ChapterName: RIcorda le parole
-    feedbacks:
-    - FeedbackName: Ricorda le parole
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 8375fedb6d2866642aee8ff138070b3f, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Test parole
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Ricorda le immagini
-    feedbacks:
-    - FeedbackName: Ricorda le Immagini
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 25c6912790eb16a4da11170dbb1ad3da, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Test  immagini
-      PersonalizedPrefab: {fileID: 0}
   - ChapterName: Visivo-Verbale
     feedbacks:
     - FeedbackName: Ricorda la sequenza
@@ -203,6 +177,7 @@ MonoBehaviour:
         video: {fileID: 0}
         text: 
       StepForCompletition:
+      - inizia a giocare a ricordaInteractable
       - Ricorda gli interactable
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: Memory
@@ -214,7 +189,20 @@ MonoBehaviour:
         video: {fileID: 0}
         text: 
       StepForCompletition:
+      - inizia a giocare a memory
       - Memory
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Ricorda le parole e le immagini
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'boss in pratica devi ricordati la sequenza di parole o di immagini '
+      StepForCompletition:
+      - inizia a giocare a ricordaInParoleImmagini
+      - Test parole
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Sintetizzatore Chimerico
     feedbacks:
@@ -240,37 +228,6 @@ MonoBehaviour:
         text: 
       StepForCompletition:
       - Il bottone che attiva la macchina infernale
-      PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: 'Sintetizzatore Chimerico: Istruzioni'
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: b2aa899a062a3f1489493ee2218c8b56, type: 3}
-        video: {fileID: 0}
-        text: "Il sintetizzatore chimerico \xE8 diviso in tre componenti principali,
-          ma puoi seguire l'ordine che preferisci per montarli, anche per i compoenti
-          secondari"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: eb02bed23518b54448884585bae74d99, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 5b63ada440b6e8c489028733c9a088e3, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 4c4b95807a80e694b8c22c66ff34ae74, type: 3}
-        video: {fileID: 0}
-        text: 
-      StepForCompletition:
-      - Inizia l'assemblaggio
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: 'La creazione '
       pages:

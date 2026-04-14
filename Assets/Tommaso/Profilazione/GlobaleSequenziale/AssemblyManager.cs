@@ -11,11 +11,15 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
     public float PunteggioGlobale { get; private set; }
     public bool IsCompleted { get; private set; } = false;
 
+    private int _riaperturePannello = 0;
+    private float _tempoInizio = -1f;
+    private bool _timerAttivo = false;
+
     [Header("Contenitore principale degli oggetti")]
-    public Transform piecesParent; //Oggetto padre che contiene tutti i pezzi da monitorare
+    public Transform piecesParent;
 
     [Header("Evento finale")]
-    public UnityEvent OnAllCorrect; //Viene chiamato quando tutto è completato
+    public UnityEvent OnAllCorrect;
 
     private readonly Dictionary<CorrectGridCell, bool> pieceStates = new();
 
@@ -25,6 +29,16 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
 
     private readonly List<int> _sequenzaUtente = new List<int>();
 
+    [Header("Area di attivazione")]
+    [Tooltip("Collider che definisce la zona in cui il pannello rimane visibile")]
+    public Collider zonaAttivazione;
+    [Tooltip("Transform del player da controllare")]
+    public Transform player;
+    [Tooltip("Pannello da mostrare/nascondere")]
+    public GameObject pannello;
+
+    private bool hasStarted = false;
+
     private void Awake()
     {
         if (piecesParent == null)
@@ -33,7 +47,6 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
             return;
         }
 
-        // Trova automaticamente tutti i CorrectGridCell nei figli del contenitore
         var pieces = piecesParent.GetComponentsInChildren<CorrectGridCell>(includeInactive: true);
 
         if (pieces.Length == 0)
@@ -45,36 +58,80 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
         foreach (var piece in pieces)
         {
             if (piece == null) continue;
-
-            // Inizializza stato
             pieceStates[piece] = false;
-
-            // Iscrizione all'evento del pezzo
             piece.OnCheckSnap.AddListener((isCorrect) => OnPieceStateChanged(piece, isCorrect));
         }
 
         Debug.Log($"AssemblyManager: trovati {pieces.Length} pezzi sotto '{piecesParent.name}'.");
     }
 
+    private void Update()
+    {
+        if (!hasStarted) return;
+        if (player == null || zonaAttivazione == null || pannello == null) return;
+
+        bool playerNellaZona = zonaAttivazione.bounds.Contains(player.position);
+        if (!playerNellaZona && pannello.activeSelf)
+        {
+            pannello.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Da collegare al pulsante.
+    /// - Prima volta → avvia il gioco e mostra il pannello.
+    /// - Volte successive → riattiva il pannello se il player è nella zona.
+    /// - Pannello già attivo → non fa nulla.
+    /// </summary>
+    public void AttivaOAvviaGioco()
+    {
+        if (player != null && zonaAttivazione != null)
+        {
+            bool playerNellaZona = zonaAttivazione.bounds.Contains(player.position);
+            if (!playerNellaZona)
+            {
+                Debug.Log("Il player non è nella zona di attivazione.");
+                return;
+            }
+        }
+
+        if (pannello != null && pannello.activeSelf)
+        {
+            Debug.Log("Pannello già attivo, nessuna azione.");
+            return;
+        }
+
+        if (!hasStarted)
+        {
+            hasStarted = true;
+            _tempoInizio = Time.time;
+            _timerAttivo = true;
+            Debug.Log("Gioco avviato per la prima volta.");
+        }
+        else
+        {
+            _riaperturePannello++;
+            Debug.Log($"Pannello riattivato. Riaperture: {_riaperturePannello}");
+        }
+
+        if (pannello != null)
+            pannello.SetActive(true);
+    }
+
     private void OnDestroy()
     {
-        // Pulizia dei listener
         foreach (var kvp in pieceStates)
-        {
             kvp.Key.OnCheckSnap.RemoveAllListeners();
-        }
     }
 
     private void OnPieceStateChanged(CorrectGridCell piece, bool isCorrect)
     {
-        if (!pieceStates.ContainsKey(piece))
-            return;
+        if (!pieceStates.ContainsKey(piece)) return;
 
-        bool eraCorretto = pieceStates[piece]; // salva PRIMA di aggiornare
+        bool eraCorretto = pieceStates[piece];
         pieceStates[piece] = isCorrect;
 
         Debug.Log($"AssemblyManager: {piece.name} -> {(isCorrect ? "CORRETTO" : "SBAGLIATO")}");
-
 
         if (isCorrect && !eraCorretto && !_sequenzaUtente.Contains(piece.pezzoID))
             _sequenzaUtente.Add(piece.pezzoID);
@@ -92,9 +149,8 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
             PunteggioGlobale = risultato.punteggioGlobale;
 
             Debug.Log($"Stile FSLSM → Sequenziale: {risultato.punteggioSequenziale:F2} | Globale: {risultato.punteggioGlobale:F2}");
-                OnAllCorrect?.Invoke();
-
-            IsCompleted= true;
+            OnAllCorrect?.Invoke();
+            IsCompleted = true;
         }
         else
         {
@@ -102,7 +158,6 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
         }
     }
 
-    //Se mancano meno di 4 pezzi, li stampa
     private void PrintMissingPiecesIfFew()
     {
         var missing = pieceStates.Where(kvp => kvp.Value == false)
@@ -121,72 +176,77 @@ public class AssemblyManager : MonoBehaviour, ICompletableStep
     private bool AllPiecesCorrect()
     {
         foreach (var state in pieceStates.Values)
-        {
-            if (!state)
-                return false;
-        }
-
+            if (!state) return false;
 
         return true;
     }
+
+    public float GetTempoTotale()
+    {
+        if (_tempoInizio < 0) return 0f;
+        return Time.time - _tempoInizio;
+    }
+
+    public int GetRiaperturePannello() => _riaperturePannello;
 }
 
-
-    public static class SequenceAnalyzer
+public static class SequenceAnalyzer
+{
+    public struct RisultatoStile
     {
-        public struct RisultatoStile
-        {
-            public float punteggioSequenziale;
-            public float punteggioGlobale;
-        }
-
-        public static RisultatoStile CalcolaStile(
-            List<int> sequenzaUtente,
-            List<int> sequenzaIdealeSequenziale,
-            List<int> sequenzaIdealeGlobale)
-        {
-            float punteggioSequenziale = Spearman(sequenzaUtente, sequenzaIdealeSequenziale);
-            float punteggioGlobale = Spearman(sequenzaUtente, sequenzaIdealeGlobale);
-
-            return new RisultatoStile
-            {
-                punteggioSequenziale = punteggioSequenziale,
-                punteggioGlobale     = punteggioGlobale
-            };
-        }
-
-        private static float Spearman(List<int> a, List<int> b)
-        {
-            int n = a.Count;
-            if (n <= 1) return 1f;
-
-            float[] ranghiA = CalcolaRanghi(a);
-            float[] ranghiB = CalcolaRanghi(b);
-
-            float sommaDiffQuadri = 0f;
-            for (int i = 0; i < n; i++)
-            {
-                float d = ranghiA[i] - ranghiB[i];
-                sommaDiffQuadri += d * d;
-            }
-
-            float spearman = 1f - (6f * sommaDiffQuadri) / (n * (n * n - 1));
-            return (spearman + 1f) / 2f;
-        }
-
-        private static float[] CalcolaRanghi(List<int> valori)
-        {
-            int n = valori.Count;
-            float[] ranghi = new float[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                int rango = 1;
-                for (int j = 0; j < n; j++)
-                    if (valori[j] < valori[i]) rango++;
-                ranghi[i] = rango;
-            }
-
-            return ranghi;
-        }
+        public float punteggioSequenziale;
+        public float punteggioGlobale;
     }
+
+    public static RisultatoStile CalcolaStile(
+        List<int> sequenzaUtente,
+        List<int> sequenzaIdealeSequenziale,
+        List<int> sequenzaIdealeGlobale)
+    {
+        float punteggioSequenziale = Spearman(sequenzaUtente, sequenzaIdealeSequenziale);
+        float punteggioGlobale = Spearman(sequenzaUtente, sequenzaIdealeGlobale);
+
+        return new RisultatoStile
+        {
+            punteggioSequenziale = punteggioSequenziale,
+            punteggioGlobale     = punteggioGlobale
+        };
+    }
+
+    private static float Spearman(List<int> a, List<int> b)
+    {
+        int n = a.Count;
+        if (n <= 1) return 1f;
+
+        float[] ranghiA = CalcolaRanghi(a);
+        float[] ranghiB = CalcolaRanghi(b);
+
+        float sommaDiffQuadri = 0f;
+        for (int i = 0; i < n; i++)
+        {
+            float d = ranghiA[i] - ranghiB[i];
+            sommaDiffQuadri += d * d;
+        }
+
+        float spearman = 1f - (6f * sommaDiffQuadri) / (n * (n * n - 1));
+        return (spearman + 1f) / 2f;
+    }
+
+    private static float[] CalcolaRanghi(List<int> valori)
+    {
+        int n = valori.Count;
+        float[] ranghi = new float[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            int rango = 1;
+            for (int j = 0; j < n; j++)
+                if (valori[j] < valori[i]) rango++;
+            ranghi[i] = rango;
+        }
+
+        return ranghi;
+    }
+
+    
+}

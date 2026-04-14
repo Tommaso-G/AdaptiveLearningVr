@@ -34,6 +34,8 @@ public class CentralStatsRecorder : MonoBehaviour
     {
         public float punteggioSequenziale;
         public float punteggioGlobale;
+        public float tempoTotaleSecondi;
+        public int riaperturePannello;
     }
 
     [System.Serializable]
@@ -198,7 +200,9 @@ public class CentralStatsRecorder : MonoBehaviour
         return new AssemblySessionData
         {
             punteggioSequenziale = assemblyManager.PunteggioSequenziale,
-            punteggioGlobale = assemblyManager.PunteggioGlobale
+            punteggioGlobale = assemblyManager.PunteggioGlobale,
+            tempoTotaleSecondi = assemblyManager.GetTempoTotale(),
+            riaperturePannello = assemblyManager.GetRiaperturePannello()
         };
     }
 

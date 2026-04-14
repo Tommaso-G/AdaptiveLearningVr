@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class DynamicEffectController : MonoBehaviour
 {
-    [Header("1️⃣ Oggetti che lampeggiano con emissione crescente")]
+    [Header("Oggetti che lampeggiano con emissione crescente")]
     public List<GameObject> emissionObjects = new List<GameObject>();
 
-    [Header("2️⃣ Oggetti che ruotano su se stessi")]
+    [Header("Oggetti che ruotano su se stessi")]
     public List<GameObject> rotatingObjects = new List<GameObject>();
 
-    [Header("3️⃣ Oggetti che tremano")]
+    [Header("Oggetti che tremano")]
     public List<GameObject> shakingObjects = new List<GameObject>();
 
-    [Header("4️⃣ Luci da accendere/spegnere")]
+    [Header("Luci da accendere/spegnere")]
     public List<Light> lights = new List<Light>();
 
-    [Header("5️⃣ Suono")]
+    [Header("Suono")]
     [Tooltip("Trascina qui l'AudioSource con il suono da modulare.")]
     public AudioSource audioSource;
     [Tooltip("Volume massimo raggiunto al picco.")]
     [Range(0f, 1f)] public float maxVolume = 1f;
 
-    [Header("6️⃣ Oggetto/i che si attivano alla fine")]
+    [Header("Oggetto/i che si attivano alla fine")]
     [Tooltip("Oggetto che verrà attivato alla fine e scalerà fino alla scala originale.")]
     public GameObject objectToActivate;
     [Tooltip("Durata dello scaling dell'oggetto finale.")]
     public float scaleDuration = 1f;
 
-    [Header("7️⃣ Oggetti che si rimpiccioliscono e disattivano all'inizio")]
+    [Header("Oggetti che si rimpiccioliscono e disattivano all'inizio")]
     [Tooltip("Lista di oggetti che si ridurranno e verranno disattivati all'inizio.")]
     public List<GameObject> objectsToShrink = new List<GameObject>();
     [Tooltip("Durata del rimpicciolimento iniziale.")]

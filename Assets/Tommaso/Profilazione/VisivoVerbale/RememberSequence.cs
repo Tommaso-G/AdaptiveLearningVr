@@ -64,6 +64,9 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     private int errori = 0;
     private float tempoStart;
 
+    private int _riapertureImmagini = 0;
+    private int _riapertureTesti = 0;
+
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip suonoStepCorretto;
@@ -183,6 +186,8 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         bool evenRound = (currentRound % 2 == 0);
         usaImmagini = evenRound ? startWithImages : !startWithImages;
 
+        hasStarted = true;
+
         Debug.Log($"Round {currentRound + 1}/{totalRounds} — Modalità: {(usaImmagini ? "Immagini" : "Testi")}");
 
         errori = 0;
@@ -191,7 +196,7 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         tempoGuardatoTesti = 0f;
 
         RimpiazzaOggettiDistrutti();
-        hasStarted = true;
+        
 
         if (sequenza.Count == 0)
         {
@@ -214,7 +219,6 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     /// </summary>
     public void AttivaOAvviaGioco()
     {
-        // Controllo zona: il player deve essere nel collider
         if (player != null && zonaAttivazione != null)
         {
             bool playerNellaZona = zonaAttivazione.bounds.Contains(player.position);
@@ -232,7 +236,17 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             return;
         }
 
-        // Caso 2: gioco attivo, pannello già visibile → nulla
+        // ✅ Caso 2: round completato → avvia il prossimo
+        if (indiceCorrente >= sequenza.Count)
+        {
+            if (currentRound < totalRounds)
+                ResetSequence();
+            else
+                Debug.Log("ℹ️ Tutti i round già completati.");
+            return;
+        }
+
+        // Caso 3: gioco attivo, pannello già visibile → nulla
         GameObject pannelloAttivo = usaImmagini ? layoutImmagini : layoutTesti;
         if (pannelloAttivo != null && pannelloAttivo.activeSelf)
         {
@@ -240,8 +254,10 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             return;
         }
 
-        // Caso 3: gioco attivo ma pannello nascosto → riattiva
+        // Caso 4: gioco attivo ma pannello nascosto → riattiva
         MostraSequenzaInLayout();
+        if (usaImmagini) _riapertureImmagini++;
+        else _riapertureTesti++;
         Debug.Log("✅ Pannello riattivato.");
     }
 
@@ -280,6 +296,12 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
 
         foreach (var c in movimenti)
             yield return c;
+
+        foreach (var step in sequenza)
+            {
+                if (step.oggetto != null)
+                    ResetLeva(step.oggetto);
+            }
 
         RicollegaEventiBreakable();
         MostraSequenzaInLayout();
@@ -334,8 +356,10 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
                     tempoSecondi = Time.time - tempoStart,
                     parametriExtra = new Dictionary<string, float>
                     {
-                        { "tempoGuardatoImmagini", tempoGuardatoImmagini },
-                        { "tempoGuardatoTesti",    tempoGuardatoTesti    }
+                        { "tempoGuardatoImmagini",   tempoGuardatoImmagini },
+                        { "tempoGuardatoTesti",      tempoGuardatoTesti    },
+                        { "riapertureImmagini",      _riapertureImmagini   },
+                        { "riapertureTesti",         _riapertureTesti      }
                     }
                 });
 
@@ -362,7 +386,13 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             if (audioSource != null && suonoStepSbagliato != null)
                 audioSource.PlayOneShot(suonoStepSbagliato);
 
-            StartCoroutine(LampeggiaRosso(oggetto));
+            //Registra la coroutine nel dizionario
+            Coroutine c = StartCoroutine(LampeggiaRosso(oggetto));
+            _lampeggiAttivi[oggetto] = c;
+
+            if (statiIniziali.TryGetValue(oggetto, out StatoIniziale stato))
+                StartCoroutine(ResetSingoloOggetto(oggetto, stato));
+
         }
     }
 
@@ -472,6 +502,8 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         }
     }
 
+    private Dictionary<GameObject, Coroutine> _lampeggiAttivi = new Dictionary<GameObject, Coroutine>();
+
     public IEnumerator LampeggiaRosso(GameObject oggetto, float durata = 2f, float frequenza = 4f)
     {
         if (oggetto == null)
@@ -480,23 +512,29 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             yield break;
         }
 
+        // ✅ Se sta già lampeggiando, ferma la coroutine precedente prima di iniziare
+        if (_lampeggiAttivi.TryGetValue(oggetto, out Coroutine vecchia) && vecchia != null)
+            StopCoroutine(vecchia);
+
         Renderer[] renderers = oggetto.GetComponentsInChildren<Renderer>();
         if (renderers.Length == 0)
         {
-            Debug.LogWarning($"⚠️ L'oggetto {oggetto.name} e i suoi figli non hanno Renderer!");
+            Debug.LogWarning($"⚠️ L'oggetto {oggetto.name} non ha Renderer!");
             yield break;
         }
 
+        // ✅ Usa sharedMaterial per leggere i colori originali, material solo per modificare
         List<Color> coloriOriginali = new List<Color>();
         List<Color> emissioniOriginali = new List<Color>();
         List<Material> materiali = new List<Material>();
 
         foreach (var r in renderers)
         {
-            Material mat = r.material;
-            materiali.Add(mat);
-            coloriOriginali.Add(mat.HasProperty("_Color") ? mat.color : Color.white);
-            emissioniOriginali.Add(mat.HasProperty("_EmissionColor") ? mat.GetColor("_EmissionColor") : Color.black);
+            // Leggi i valori originali dal sharedMaterial prima di istanziare la copia
+            Material shared = r.sharedMaterial;
+            coloriOriginali.Add(shared != null && shared.HasProperty("_Color") ? shared.color : Color.white);
+            emissioniOriginali.Add(shared != null && shared.HasProperty("_EmissionColor") ? shared.GetColor("_EmissionColor") : Color.black);
+            materiali.Add(r.material); // questo crea la copia istanziata
         }
 
         float tempo = 0f;
@@ -504,6 +542,9 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
 
         while (tempo < durata)
         {
+            // ✅ Se l'oggetto viene distrutto nel mezzo, esci pulito
+            if (oggetto == null) yield break;
+
             bool acceso = Mathf.FloorToInt(tempo / periodo) % 2 == 0;
 
             for (int i = 0; i < materiali.Count; i++)
@@ -531,6 +572,7 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             yield return null;
         }
 
+        // ✅ Ripristino garantito
         for (int i = 0; i < materiali.Count; i++)
         {
             Material mat = materiali[i];
@@ -538,6 +580,8 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
             if (mat.HasProperty("_Color")) mat.color = coloriOriginali[i];
             if (mat.HasProperty("_EmissionColor")) mat.SetColor("_EmissionColor", emissioniOriginali[i]);
         }
+
+        _lampeggiAttivi.Remove(oggetto);
     }
 
     private IEnumerator MuoviVersoPosizioneERotazione(GameObject oggetto, Vector3 destinazione, Quaternion rotazioneDestinazione, float durata)
@@ -584,6 +628,28 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
                 kvp.Key.isKinematic = kvp.Value;
     }
 
+    private IEnumerator ResetSingoloOggetto(GameObject oggetto, StatoIniziale stato)
+    {
+        // Disabilita la leva durante il lampeggio
+        XRLever leva = oggetto.GetComponentInChildren<XRLever>();
+        if (leva != null) leva.enabled = false;
+
+        if (_lampeggiAttivi.TryGetValue(oggetto, out Coroutine lampeggio) && lampeggio != null)
+            yield return lampeggio;
+
+        if (oggetto == null) yield break;
+
+        // Resetta il valore e riabilita la leva solo dopo il lampeggio
+        if (leva != null)
+        {
+            leva.value = false;
+            leva.enabled = true;
+        }
+
+        yield return StartCoroutine(MuoviVersoPosizioneERotazione(
+            oggetto, stato.posizione, stato.rotazione, 1.5f));
+    }
+
     // METODI GAZE
     public void GazeSelectionImmagini()  => StartGaze(true);
     public void GazeDeselectionImmagini() => StopGaze(true);
@@ -619,5 +685,14 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         else tempoGuardatoTesti += delta;
 
         _gazeCoroutine = null;
+    }
+
+    private void ResetLeva(GameObject oggetto)
+    {
+        XRLever leva = oggetto.GetComponentInChildren<XRLever>();
+        if (leva == null) return;
+
+        leva.value = true;
+        Debug.Log($"🔄 Leva resettata su {oggetto.name}");
     }
 }

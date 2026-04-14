@@ -184,6 +184,7 @@ public class FeedbackDisplayer : MonoBehaviour
     private readonly string SINGLE_PATH_IMAGE_CONTAINER = "Canvas/Scrollable/Content/Image Container";
     private readonly string SINGLE_PATH_VIDEO_CONTAINER = "Canvas/Scrollable/Content/Video Container";
     private readonly string SINGLE_PATH_LAYOUT_PARENT = "Canvas";
+    private readonly string SINGLE_PATH_SCROLLABLE = "Canvas/Scrollable";
 
     // ======= Metodo aggiornato =======
     private void FillSingleContainer(FeedbackData feedback, GameObject container)
@@ -215,6 +216,8 @@ public class FeedbackDisplayer : MonoBehaviour
 
         Transform imageContainer = container.transform.Find(SINGLE_PATH_IMAGE_CONTAINER);
         Transform videoContainer = container.transform.Find(SINGLE_PATH_VIDEO_CONTAINER);
+        Transform scrollableContainer = container.transform.Find(SINGLE_PATH_SCROLLABLE);
+
         VideoPlayer videoPlayer = container.GetComponentInChildren<VideoPlayer>();
         UnityEngine.UI.Image imageComponent = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
 
@@ -223,7 +226,7 @@ public class FeedbackDisplayer : MonoBehaviour
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
         if (videoContainer != null) videoContainer.gameObject.SetActive(false);
 
-        SlideData slideData = imageContainer.GetComponent<SlideData>();
+        SlideData slideData = scrollableContainer.GetComponent<SlideData>();
         slideData.setLearningEnums(page.Sequenzale_Globale, page.Visivo_Verbale);
         slideData.setIntrodactoryField(page.isIntroductory);
 

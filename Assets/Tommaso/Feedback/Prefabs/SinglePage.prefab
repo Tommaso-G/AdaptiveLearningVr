@@ -504,6 +504,7 @@ MonoBehaviour:
   scrollable: {fileID: 9088784922178284893}
   verticalScrollbar: {fileID: 7037563214638904762}
   content: {fileID: 2696181342263337201}
+  buttonsCanvas: {fileID: 6683176784420800347}
   sender: {fileID: 7397790369783881398}
   canvasToDisable: {fileID: 4947142089488580553}
   canvasToEnable: {fileID: 7465635043606177860}
@@ -523,14 +524,13 @@ GameObject:
   - component: {fileID: 3371810828008776961}
   - component: {fileID: 1673948631794976350}
   - component: {fileID: 2584366607246694951}
-  - component: {fileID: 3499216438153365469}
   m_Layer: 13
   m_Name: Image Container
   m_TagString: Feedback
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3771468885460663403
 RectTransform:
   m_ObjectHideFlags: 0
@@ -545,9 +545,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2696181342263337201}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 274.305, y: -168.725}
   m_SizeDelta: {x: 518.4, y: 319.45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7144389145911357429
@@ -638,7 +638,7 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3499216438153365469}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
         m_MethodName: GazeSelection
         m_Mode: 1
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3499216438153365469}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
         m_MethodName: GazeDeselection
         m_Mode: 1
@@ -719,25 +719,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 546.5395, y: 356.2755, z: 10}
   m_Center: {x: 1.317214, y: -2.6, z: 0}
---- !u!114 &3499216438153365469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884702528616762807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6f791088843674eb23dc1d1b5c3f1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sender: {fileID: 7397790369783881398}
-  pageName: 
-  opening: 0
-  seqGlob: 0
-  visVerb: 0
-  stopTimer: 0
-  focusTimeTxt: {fileID: 7342876339354910744}
 --- !u!1 &3927106257929472308
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8967184903971793227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -773,8 +754,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 274.305, y: -299.04}
-  m_SizeDelta: {x: 548.61, y: 270.88}
+  m_AnchoredPosition: {x: 279.805, y: -55.015}
+  m_SizeDelta: {x: 548.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4422483001514442349
 CanvasRenderer:
@@ -805,15 +786,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "<b>Introduzione</b>\r\nQuesto progetto dimostrativo mostra come gestire
-    la logica di gioco, l\u2019interfaccia utente e le transizioni di stato in Unity.\r\n\r\n<b>Obiettivi
-    principali</b>\r\n\u2022 Implementare un sistema di punti basato sulle azioni
-    del giocatore.  \r\n\u2022 Gestire il salvataggio dei dati tramite PlayerPrefs. 
-    \r\n\u2022 Creare un menu dinamico con pulsanti animati.\r\n\r\n<b>Struttura
-    del gioco</b>\r\n1. Scena di avvio \u2013 mostra il logo e carica le risorse. 
-    \r\n2. Menu principale \u2013 consente di avviare o uscire dal gioco.  \r\n3.
-    Scena di gioco \u2013 contiene il gameplay e la logica principale.  \r\n\r\n<b>Note
-    finali</b>\r\nRicordati di assegnare i riferimenti degli oggetti UI nel <i>Inspector</i>
-    e di testare le transizioni tra scene per evitare errori di riferimento null.\r\n"
+    la logica di gioco, l\u2019interfaccia utente e le transizioni di stato in Unity.\r\n\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -840,15 +813,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13.88
-  m_fontSizeBase: 13.88
+  m_fontSize: 20.15
+  m_fontSizeBase: 20.15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -879,7 +852,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 22.575912, y: 0, z: 13.892975, w: 0}
+  m_margin: {x: 22.575912, y: -7.8918953, z: 13.892975, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -990,6 +963,9 @@ GameObject:
   - component: {fileID: 9088784922178284893}
   - component: {fileID: 8506133035851089477}
   - component: {fileID: 6465140871084509145}
+  - component: {fileID: 2852562691416022437}
+  - component: {fileID: 270838848569109204}
+  - component: {fileID: 5393314621371185580}
   m_Layer: 13
   m_Name: Scrollable
   m_TagString: Untagged
@@ -1141,7 +1117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
-  m_Color: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 0.5019608}
+  m_Color: {r: 0.08627451, g: 0.27450982, b: 0.84313726, a: 0.65882355}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1158,6 +1134,145 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2852562691416022437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4947142089488580553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a6f791088843674eb23dc1d1b5c3f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sender: {fileID: 7397790369783881398}
+  pageName: 
+  opening: 0
+  seqGlob: 0
+  visVerb: 0
+  isIntroductory: 0
+  wordCount: 0
+  slideText: {fileID: 4054075968104988527}
+  stopTimer: 0
+  focusTimeTxt: {fileID: 7342876339354910744}
+--- !u!65 &270838848569109204
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4947142089488580553}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 549.02, y: 356.2755, z: 10}
+  m_Center: {x: 1.317214, y: -2.6, z: 0}
+--- !u!114 &5393314621371185580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4947142089488580553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 1
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2852562691416022437}
+        m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
+        m_MethodName: GazeSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2852562691416022437}
+        m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
+        m_MethodName: GazeDeselection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
 --- !u!1 &5972558723735808441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,8 +1311,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -0.0052337646}
-  m_SizeDelta: {x: 548.61, y: 0}
+  m_AnchoredPosition: {x: -0, y: 0.0017700195}
+  m_SizeDelta: {x: 559.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628609877651487099
 MonoBehaviour:
@@ -1351,7 +1466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2838863209387735856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1531,8 +1646,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3292046231320405482}
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99998784
+  m_Value: 0
+  m_Size: 0.9999943
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1585,9 +1700,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fff494f243f6ed4fb4081de488f2332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 2696181342263337201}
+  content: {fileID: 2916914963299574572}
   slidesDataRecorder: {fileID: 0}
   FinalDataCount: 0
+  tempoOsservazionePreStep: 0
+  visitHistory: 
 --- !u!1 &7274302098674028556
 GameObject:
   m_ObjectHideFlags: 0
