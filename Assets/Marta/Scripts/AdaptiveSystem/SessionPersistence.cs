@@ -4,7 +4,9 @@ using UnityEngine;
 public static class SessionPersistence
 {
     private const string KEY = "session_id";
+    private const string KEY_RESET = "reset_all";
 
+    // ===== SESSION ID =====
     public static void Save(string sessionId)
     {
         Debug.Log("Sessione saved");
@@ -24,4 +26,17 @@ public static class SessionPersistence
 
     public static bool HasSavedSession()
         => PlayerPrefs.HasKey(KEY);
+
+
+    // ===== RESET FLAG =====
+    public static void SetResetAll(bool value)
+    {
+        PlayerPrefs.SetInt(KEY_RESET, value ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public static bool GetResetAll()
+    {
+        return PlayerPrefs.GetInt(KEY_RESET, 1) == 1;
+    }
 }

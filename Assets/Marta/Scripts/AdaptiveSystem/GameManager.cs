@@ -6,35 +6,59 @@ using UnityEngine.SceneManagement;
 using VRBuilder.Core;
 using System.Linq;
 using VRBuilder.Core.Behaviors;
+using UnityEngine.UI;
+using static UnityEngine.XR.OpenXR.Features.Interactions.HandInteractionProfile;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Chapter Configuration")]
-    [SerializeField] private List<ChapterConfigData> allChapters;
+    public List<ChapterConfigData> allChapters;
     // Assegna nell'Inspector la lista completa di tutti i capitoli,
     // obbligatori e opzionali, nell'ordine in cui vuoi aggiungerli.
-    [SerializeField] private List<string> chaptersToExclude = new List<string>();
+    public List<ChapterConfigData> excludedChapters;
 
     [Header("Scene")]
     [SerializeField] private string gameSceneName = "ScenaUfficiale";
     [SerializeField] private ChaptersOrderManager chaptersOrderMgr = null;
     [SerializeField] private ChapterTracker chapterTracker = null;
     [SerializeField] private FeedbackChapterFilter feedbackChapterFilter = null;
+    [SerializeField] private DifficultyChapterFilter difficultyChapterFilter = null;
+
+    //[Header("Iteration Control")]
+    //[SerializeField] private Button endIterationButton = null;
+
+    [Header("Session Control")]
+    [SerializeField] public bool resetAll = false;
 
     private IProcess process;
-    public Dictionary<string, string> chaptersIdToName = new Dictionary<string, string>();
+    private Dictionary<string, string> chaptersIdToName = new Dictionary<string, string>();
 
-    public bool restartAll = false;
+    private int currentIterationNumber = 1;
+    private List<string> chaptersCompletedThisIteration = new List<string>();
+    private List<string> active_chapters = new List<string>();
 
     private void Start()
     {
+        chaptersOrderMgr = FindFirstObjectByType<ChaptersOrderManager>();
+        chapterTracker = FindFirstObjectByType<ChapterTracker>();
+        feedbackChapterFilter = FindFirstObjectByType<FeedbackChapterFilter>();
+        difficultyChapterFilter = FindFirstObjectByType<DifficultyChapterFilter>();
+
         AdaptiveSystemClient.OnDecisionReceived += HandleDecision;
-        if (restartAll)
+        AdaptiveSystemClient.OnSessionStarted += SaveActiveChapters;
+
+        if (resetAll)
         {
-            //restartAll = false;
+            Debug.Log("[GameManager] resetAll=true: Eliminando sessione precedente");
             SessionPersistence.Clear();
         }
-        chapterTracker.setChaptersToExclude(chaptersToExclude);
+
+        //if (endIterationButton != null)
+        //{
+        //    endIterationButton.onClick.AddListener(OnEndIterationButtonPressed);
+        //}
+
+        chapterTracker.setChaptersToExclude(excludedChapters);
         // Registriamo l'evento di VRBuilder
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
     }
@@ -47,21 +71,31 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeSession()
     {
-        if (SessionPersistence.HasSavedSession())
+        //bool resetAll = SessionPersistence.GetResetAll();
+
+        //if (resetAll || !SessionPersistence.HasSavedSession())
+        //{
+        //    Debug.Log("[GameManager] Nuova sessione");
+        //    SessionPersistence.SetResetAll(false); // IMPORTANTISSIMO
+        //    yield return StartCoroutine(StartNewSession());
+        //}
+        //else
+        //{
+        //    Debug.Log("[GameManager] Riprendo sessione esistente");
+        //    string sessionId = SessionPersistence.Load();
+        //    yield return StartCoroutine(RestoreAndInitialize(sessionId));
+        //}
+
+        if (resetAll || !SessionPersistence.HasSavedSession())
         {
-            print("RE-inizializzazione sessione");            // Run successiva alla prima: recupera lo stato dal server
-            string sessionId = SessionPersistence.Load();
-            yield return StartCoroutine(
-                RestoreAndInitialize(sessionId)
-            );
+            Debug.Log("[GameManager] resetAll=true: Avviando nuova sessione");
+            yield return StartCoroutine(StartNewSession());
         }
         else
         {
-            print("Prima inizializzazione sessione");
-            // Prima run: avvia nuova sessione
-            yield return StartCoroutine(
-                StartNewSession()
-            );
+            Debug.Log("[GameManager] resetAll=false: Riprendendo sessione esistente");
+            string sessionId = SessionPersistence.Load();
+            yield return StartCoroutine(RestoreAndInitialize(sessionId));
         }
     }
 
@@ -69,57 +103,49 @@ public class GameManager : MonoBehaviour
     {
         bool done = false;
 
-        if (allChapters.Count == 0)
+        if (allChapters != null)
         {
-            allChapters = new List<ChapterConfigData>();
 
-            for (int i = 0; i < process.Data.Chapters.Count; i++)
-            {
-                var c = process.Data.Chapters[i];
-
-                if (chaptersToExclude.Contains(c.Data.Name))
-                {
-                    continue;
-                }
-
-                allChapters.Add(new ChapterConfigData
-                {
-                    chapter_id = c.ChapterMetadata.Guid.ToString(), // ID del capitolo VRBuilder
-                    name = c.Data.Name,                // Nome del capitolo
-                    is_mandatory = !c.Data.Name.Trim()
-                         .ToLower()
-                         .Contains("optional"), // Se è obbligatorio
-                    weight = 1.0f // Puoi aggiungere weight e max_iterations se vuoi
-                });
-                chaptersIdToName[c.ChapterMetadata.Guid.ToString()] = c.Data.Name;
-            }
-        }
-        else
-        {
             foreach (var chapter in allChapters)
             {
                 chaptersIdToName[chapter.chapter_id] = chapter.name;
             }
-        }
 
             AdaptiveSystemClient.Instance.StartSession(
-                allChapters.ToArray(),
-                activeChapters =>
-                {
-                    // Salva solo il session_id
-                    SessionPersistence.Save(
-                        AdaptiveSystemClient.Instance.GetSessionId()
-                    );
-
-                    //FlowManager.Instance.InitializeWithChapters(activeChapters);
-                    // feedback massimo per tutti alla prima run
-                    foreach (var chapter in feedbackChapterFilter.chapterSettings)
+                    allChapters.ToArray(),
+                    true,
+                    activeChapters =>
                     {
-                        chapter.feedbackLevel = 0;
+                        // Salva solo il session_id
+                        SessionPersistence.Save(
+                            AdaptiveSystemClient.Instance.GetSessionId()
+                        );
+
+                        // Resetta i dati dell'iterazione corrente
+                        currentIterationNumber = 1;
+                        chaptersCompletedThisIteration.Clear();
+
+                        // feedback massimo per tutti alla prima run
+                        foreach (var chapter in feedbackChapterFilter.chapterSettings)
+                        {
+                            chapter.feedbackLevel = 0;
+                        }
+
+                        // versione difficoltà minima per la prima run
+                        //foreach (var chapter in difficultyChapterFilter.chapterSettings)
+                        //{
+                        //    chapter.difficultyLevel = 0;
+                        //}
+
+                        done = true;
                     }
-                    done = true;
-                }
-            );
+                );
+        }
+        else
+        {
+            print("[GameManager] Lista all chapters vuota");
+        }
+
         yield return new WaitUntil(() => done);
     }
 
@@ -128,6 +154,7 @@ public class GameManager : MonoBehaviour
         bool done = false;
         AdaptiveSystemClient.Instance.RestoreSession(
             sessionId,
+            false,
             state => {
                 if (state == null)
                 {
@@ -145,10 +172,9 @@ public class GameManager : MonoBehaviour
                     return;
                 }
 
-                // Inizializza VRBuilder con i capitoli attivi
-                //FlowManager.Instance.InitializeWithChapters(
-                //    state.active_chapters
-                //);
+                currentIterationNumber = state.iteration_number;
+                chaptersCompletedThisIteration.Clear();
+                Debug.Log($"[GameManager] Iterazione {currentIterationNumber} ripresa");
 
                 if (allChapters.Count == 0)
                 {
@@ -166,33 +192,92 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                // Imposta il feedback per ogni capitolo
+
+
+                // Imposta il feedback e la difficoltà per ogni capitolo
                 foreach (var chapterData in state.chapter_details)
                 {
                     if (chaptersIdToName.TryGetValue(chapterData.chapter_id, out string name))
                     {
                         feedbackChapterFilter.setFeedbackLevel(name, chapterData.feedback_level);
                     }
+
+                    if (difficultyChapterFilter != null)
+                    {
+                        difficultyChapterFilter.SetDifficultyLevel(name, chapterData.difficulty_level);
+                    }
                 }
 
-                string message = "Capitoli attivi per l'iterazione: \n";
                 List<string> chapterToAdd = new List<string>();
                 foreach (string ac in state.active_chapters)
                 {
-                    message += "- Capitolo: " + chaptersIdToName[ac] + "\n";
                     if (chaptersIdToName[ac].Contains("Optional"))
                     {
                         chapterToAdd.Add(ac);
                     }
                 }
 
-                AddOptionalChapter(chapterToAdd);
+                string message = "[GameManager] Prior per capitoli: \n";
+                foreach (var chapter in state.chapter_details)
+                {
+                    message += $"- capitolo {chaptersIdToName[chapter.chapter_id]} -> prior: {string.Join(", ", chapter.chapter_prior)}\n";
+                }
 
                 print(message);
-                done = true;
+
+                AddOptionalChapter(chapterToAdd);
+
+                AdaptiveSystemClient.Instance.StartSession(
+                   allChapters.ToArray(),
+                   false
+               );
             }
         );
         yield return new WaitUntil(() => done);
+    }
+
+    private void OnEndIterationButtonPressed()
+    {
+        Debug.Log("[GameManager] Bottone End Iteration premuto");
+
+        string message = "[GameManager] Capitoli attivi alla FINE dell'iterazione: \n";
+        foreach (var chapter in active_chapters)
+        {
+            message += $"- Capitolo {chaptersIdToName[chapter]}\n";
+        }
+
+        print(message);
+
+        StartCoroutine(EndIterationCoroutine(active_chapters));
+    }
+
+    // ===== NUOVO: Chiama il server per marcare fine iterazione =====
+    private IEnumerator EndIterationCoroutine(List<string> activeChapters)
+    {
+        yield return StartCoroutine(
+            AdaptiveSystemClient.Instance.EndIteration(
+                activeChapters.ToArray(),
+                result =>
+                {
+                    if (result.status == "iteration_complete")
+                    {
+                        Debug.Log(
+                            $"[GameManager] ✓ Iterazione {result.iteration_number} COMPLETA! " +
+                            $"Prossima: {result.next_iteration}"
+                        );
+                        currentIterationNumber = result.next_iteration;
+                    }
+                    else if (result.status == "iteration_incomplete")
+                    {
+                        Debug.LogWarning(
+                            $"[GameManager] ⚠️ Iterazione INCOMPLETA! " +
+                            $"Mancanti: {string.Join(", ", result.incomplete_chapters)}"
+                        );
+                    }
+                }
+            )
+        );
+        //ReloadSceneForNextIteration();
     }
 
     /// <summary>
@@ -204,6 +289,8 @@ public class GameManager : MonoBehaviour
         // Lo stato è già salvato sul server Python.
         // Basta ricaricare la scena: GameManager.Start()
         // troverà la sessione salvata e recupererà lo stato aggiornato.
+        Debug.Log("[GameManager] Ricaricare la scena per l'iterazione successiva...");
+        //SessionPersistence.SetResetAll(false);
         SceneManager.LoadScene(gameSceneName);
     }
 
@@ -222,9 +309,14 @@ public class GameManager : MonoBehaviour
             feedbackChapterFilter.setFeedbackLevel(chaptersIdToName[decision.chapter_id], decision.feedback_level);
         }
 
+        if (decision.difficulty_changed)
+        {
+            // cambia la versione del capitolo se presente
+        }
+
         if (decision.add_optional)
         {
-            Debug.Log("[ChapterTracker] Nuovo capitolo opzionale attivato");
+            Debug.Log("[GameManager] Nuovo capitolo opzionale attivato");
         }
 
 
@@ -232,7 +324,8 @@ public class GameManager : MonoBehaviour
         if (decision.remove_optional)
         {
             chaptersOrderMgr.RemoveChapter(chapterToRemoveName: chaptersIdToName[decision.removed_chapter_id]);
-            Debug.Log("[ChapterTracker] Capitolo opzionale rimosso: " + chaptersIdToName[decision.removed_chapter_id]);
+            active_chapters.Remove(chaptersIdToName[decision.removed_chapter_id]);
+            Debug.Log("[GameManager] Capitolo opzionale rimosso: " + chaptersIdToName[decision.removed_chapter_id]);
         }
 
         //// Se il capitolo è padroneggiato, puoi mostrare un feedback positivo
@@ -243,18 +336,49 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    private void SaveActiveChapters(string[] response)
+    {
+
+        string message = "[GameManager] Capitoli attivi all'INIZIO dell'iterazione: \n";
+        foreach (var chapter in response)
+        {
+            message += $"- Capitolo {chaptersIdToName[chapter]}\n";
+            active_chapters.Add(chapter);
+        }
+        print(message);
+    }
+
     private void Update()
     {
+        // ===== MODIFICATO: Spazio per ricaricare la scena =====
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            Debug.Log("[GameManager] Spazio premuto: ricaricare scena");
             ReloadSceneForNextIteration();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            Debug.Log("[GameManager] Chiamata End Iteraction");
+            OnEndIterationButtonPressed();
+        }
+
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            Debug.Log("[GameManager] Nuova sessione richiesta");
+
+            SessionPersistence.Clear();
+            SessionPersistence.SetResetAll(true);
+
+            SceneManager.LoadScene(gameSceneName);
         }
     }
 
     private void AddOptionalChapter(List<string> chapterToAdd)
     {
-        foreach(string id in chapterToAdd)
+        foreach (string id in chapterToAdd)
         {
+            print("[GameManager] Capitolo da aggiungere: " + chaptersIdToName[id]);
             chaptersOrderMgr.AddOptional(chaptersIdToName[id]);
         }
     }
@@ -262,5 +386,10 @@ public class GameManager : MonoBehaviour
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
         AdaptiveSystemClient.OnDecisionReceived -= HandleDecision;
+
+        //if (endIterationButton != null)
+        //{
+        //    endIterationButton.onClick.RemoveListener(OnEndIterationButtonPressed);
+        //}
     }
 }

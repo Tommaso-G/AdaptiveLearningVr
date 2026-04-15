@@ -16,15 +16,17 @@ public class ObstaclesSpawner : MonoBehaviour
     public List<SpawnArea> currentSpawnAreas = new List<SpawnArea>();
     private List<SpawnArea> spawnAreas;
 
-    [Header("Spawn Settings")]
-    [SerializeField] private int maxAttemps = 100;
-    [SerializeField] private float spawnRadius = 1.2f;
-    [SerializeField] private float heightOfCheck = 10f;
-    [SerializeField] private float rangeOfCheck = 30f;
-    [SerializeField] private LayerMask layerMask;
-    [SerializeField] private LayerMask obstacleMask;
+    //[Header("Spawn Settings")]
+    //[SerializeField] private int maxAttemps = 100;
+    //[SerializeField] private float spawnRadius = 1.2f;
+    //[SerializeField] private float heightOfCheck = 10f;
+    //[SerializeField] private float rangeOfCheck = 30f;
+    //[SerializeField] private LayerMask layerMask;
+    //[SerializeField] private LayerMask obstacleMask;
 
     [SerializeField] private Transform childEmpty;
+    [SerializeField] private Transform spawnAreasParent;
+    private bool activateAreaEffect = false;
     private SpawnableObj spawnableObj;
     private bool reset = true;
 
@@ -42,10 +44,42 @@ public class ObstaclesSpawner : MonoBehaviour
     {
         spawnAreas = new List<SpawnArea>(currentSpawnAreas);
         childEmpty.gameObject.SetActive(true);
+        pickRandomArea();
         foreach (SpawnArea spawnArea in spawnAreas)
         {
             SpawnResources(spawnArea);
         }
+    }
+
+    private void pickRandomArea(int amount = 1)
+    {
+        while (amount > 0)
+        {
+            int count = spawnAreasParent.childCount;
+            SpawnArea selectedArea = null;
+
+            if (count > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, count);
+
+                Transform pickedChild = spawnAreasParent.GetChild(randomIndex);
+
+                selectedArea = pickedChild.GetComponent<SpawnArea>();
+            }
+
+            amount -= 1;
+            if (activateAreaEffect)
+            {
+                selectedArea.effectActive = true;
+            }
+
+            spawnAreas.Add(selectedArea);
+        }
+    }
+
+    public void ActivateAreaEffect()
+    {
+        activateAreaEffect = true;
     }
 
     private void Update()

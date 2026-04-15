@@ -18,7 +18,7 @@ public class ChapterTracker : MonoBehaviour
     private int _errorToRegister = 0;
 
     private int currentIdx = -1;
-    private int idxToRegister = -1; 
+    private int idxToRegister = -1;
 
     private IProcess process;
     private List<string> chaptersToExclude = new List<string>();
@@ -34,14 +34,17 @@ public class ChapterTracker : MonoBehaviour
         process = ProcessRunner.Current;
     }
 
-    public void setChaptersToExclude(List<string> chapters)
+    public void setChaptersToExclude(List<ChapterConfigData> chapters)
     {
-        chaptersToExclude = chapters;
+        foreach (ChapterConfigData chapter in chapters)
+        {
+            chaptersToExclude.Add(chapter.name);
+        }
     }
 
     public void OnChapterStarted(object sender, ProcessEventArgs args)
     {   // registra gli errori del capitolo precedente se presente
-        if (currentChapterName != null) 
+        if (currentChapterName != null)
         {
             chapterIdToRegister = currentChapterName;
             idxToRegister = currentIdx;

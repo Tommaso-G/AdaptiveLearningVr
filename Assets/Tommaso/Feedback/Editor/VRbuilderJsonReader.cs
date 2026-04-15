@@ -42,132 +42,132 @@ public static class VRBuilderJsonReader
         return (chapters, steps);
     }
 
-private static void CollectChapterRecursive(
-    JToken chapter,
-    List<string> chapters,
-    List<string> steps,
-    Dictionary<string, JToken> idMap,
-    Dictionary<string, string> guidToName)
-{
-    string chapterName = chapter["Data"]?["Name"]?.ToString();
-    if (string.IsNullOrEmpty(chapterName))
-        return;
-
-    chapters.Add(chapterName);
-    steps.Add($"--- {chapterName.ToUpper()} ---");
-
-    var stepsToken = chapter.SelectToken("Data.Steps.$values");
-    if (stepsToken != null)
+    private static void CollectChapterRecursive(
+        JToken chapter,
+        List<string> chapters,
+        List<string> steps,
+        Dictionary<string, JToken> idMap,
+        Dictionary<string, string> guidToName)
     {
-        foreach (var stepRef in stepsToken)
-        {
-            JToken step = ResolveRef(stepRef, idMap);
-            if (step == null) continue;
+        string chapterName = chapter["Data"]?["Name"]?.ToString();
+        if (string.IsNullOrEmpty(chapterName))
+            return;
 
-            // Prima inseriamo eventuali subchapter
-            var behaviorsToken = step.SelectToken("Data.Behaviors.Data.Behaviors.$values");
-            if (behaviorsToken != null)
+        chapters.Add(chapterName);
+        steps.Add($"--- {chapterName.ToUpper()} ---");
+
+        var stepsToken = chapter.SelectToken("Data.Steps.$values");
+        if (stepsToken != null)
+        {
+            foreach (var stepRef in stepsToken)
             {
-                foreach (var behavior in behaviorsToken)
+                JToken step = ResolveRef(stepRef, idMap);
+                if (step == null) continue;
+
+                // Prima inseriamo eventuali subchapter
+                var behaviorsToken = step.SelectToken("Data.Behaviors.Data.Behaviors.$values");
+                if (behaviorsToken != null)
                 {
-                    string type = behavior["$type"]?.ToString() ?? "";
-                    if (type.Contains("ExecuteChaptersBehavior"))
+                    foreach (var behavior in behaviorsToken)
                     {
-                        var subChaptersToken = behavior.SelectToken("Data.SubChapters.$values");
-                        if (subChaptersToken != null)
+                        string type = behavior["$type"]?.ToString() ?? "";
+                        if (type.Contains("ExecuteChaptersBehavior"))
                         {
-                            foreach (var sub in subChaptersToken)
+                            var subChaptersToken = behavior.SelectToken("Data.SubChapters.$values");
+                            if (subChaptersToken != null)
                             {
-                                JToken subChapter = ResolveRef(sub["Chapter"], idMap);
-                                if (subChapter != null)
+                                foreach (var sub in subChaptersToken)
                                 {
-                                    CollectSubChapterRecursive(subChapter, chapters, steps, idMap, guidToName, 1);
+                                    JToken subChapter = ResolveRef(sub["Chapter"], idMap);
+                                    if (subChapter != null)
+                                    {
+                                        CollectSubChapterRecursive(subChapter, chapters, steps, idMap, guidToName, 1);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            // Poi inseriamo lo step principale
-            string guid = step.SelectToken("StepMetadata.Guid")?.ToString();
-            if (!string.IsNullOrEmpty(guid) && guidToName.TryGetValue(guid, out string name))
-                steps.Add(name);
-            else if (!string.IsNullOrEmpty(guid))
-                steps.Add($"Step {guid.Substring(0, 8)}");
+                // Poi inseriamo lo step principale
+                string guid = step.SelectToken("StepMetadata.Guid")?.ToString();
+                if (!string.IsNullOrEmpty(guid) && guidToName.TryGetValue(guid, out string name))
+                    steps.Add(name);
+                else if (!string.IsNullOrEmpty(guid))
+                    steps.Add($"Step {guid.Substring(0, 8)}");
+            }
         }
     }
-}
 
-private static void CollectSubChapterRecursive(
-    JToken chapter,
-    List<string> chapters,
-    List<string> steps,
-    Dictionary<string, JToken> idMap,
-    Dictionary<string, string> guidToName,
-    int indentLevel)
-{
-    // 1. Nome del capitolo corrente
-    string chapterName = chapter["Data"]?["Name"]?.ToString();
-    if (string.IsNullOrEmpty(chapterName))
-        return;
-
-    chapters.Add(chapterName);
-    steps.Add($"{new string(' ', indentLevel * 4)}--- {chapterName.ToUpper()} ---");
-
-    // 2. Recupera gli step di questo capitolo
-    var stepsToken = chapter.SelectToken("Data.Steps.$values");
-    if (stepsToken == null)
-        return;
-
-    // 3. Scorri tutti gli step del capitolo nell’ordine originale
-    foreach (var stepRef in stepsToken)
+    private static void CollectSubChapterRecursive(
+        JToken chapter,
+        List<string> chapters,
+        List<string> steps,
+        Dictionary<string, JToken> idMap,
+        Dictionary<string, string> guidToName,
+        int indentLevel)
     {
-        JToken step = ResolveRef(stepRef, idMap);
-        if (step == null)
-            continue;
+        // 1. Nome del capitolo corrente
+        string chapterName = chapter["Data"]?["Name"]?.ToString();
+        if (string.IsNullOrEmpty(chapterName))
+            return;
 
-        // === A. Nome dello step ===
-        string guid = step.SelectToken("StepMetadata.Guid")?.ToString();
-        string stepName = null;
-        if (!string.IsNullOrEmpty(guid))
+        chapters.Add(chapterName);
+        steps.Add($"{new string(' ', indentLevel * 4)}--- {chapterName.ToUpper()} ---");
+
+        // 2. Recupera gli step di questo capitolo
+        var stepsToken = chapter.SelectToken("Data.Steps.$values");
+        if (stepsToken == null)
+            return;
+
+        // 3. Scorri tutti gli step del capitolo nell’ordine originale
+        foreach (var stepRef in stepsToken)
         {
-            if (guidToName.TryGetValue(guid, out string resolvedName))
-                stepName = resolvedName;
-            else
-                stepName = $"Step {guid.Substring(0, 8)}";
-        }
-        else
-        {
-            stepName = "(Step senza GUID)";
-        }
-
-        steps.Add(stepName);
-
-        // === B. Dopo aver aggiunto lo step, controlla se ha subchapter ===
-        var behaviorsToken = step.SelectToken("Data.Behaviors.Data.Behaviors.$values");
-        if (behaviorsToken == null)
-            continue;
-
-        foreach (var behavior in behaviorsToken)
-        {
-            string type = behavior["$type"]?.ToString() ?? "";
-            if (!type.Contains("ExecuteChaptersBehavior"))
+            JToken step = ResolveRef(stepRef, idMap);
+            if (step == null)
                 continue;
 
-            var subChaptersToken = behavior.SelectToken("Data.SubChapters.$values");
-            if (subChaptersToken == null)
-                continue;
-
-            foreach (var sub in subChaptersToken)
+            // === A. Nome dello step ===
+            string guid = step.SelectToken("StepMetadata.Guid")?.ToString();
+            string stepName = null;
+            if (!string.IsNullOrEmpty(guid))
             {
-                JToken subChapter = ResolveRef(sub["Chapter"], idMap);
-                if (subChapter != null)
-                    CollectSubChapterRecursive(subChapter, chapters, steps, idMap, guidToName, indentLevel + 1);
+                if (guidToName.TryGetValue(guid, out string resolvedName))
+                    stepName = resolvedName;
+                else
+                    stepName = $"Step {guid.Substring(0, 8)}";
+            }
+            else
+            {
+                stepName = "(Step senza GUID)";
+            }
+
+            steps.Add(stepName);
+
+            // === B. Dopo aver aggiunto lo step, controlla se ha subchapter ===
+            var behaviorsToken = step.SelectToken("Data.Behaviors.Data.Behaviors.$values");
+            if (behaviorsToken == null)
+                continue;
+
+            foreach (var behavior in behaviorsToken)
+            {
+                string type = behavior["$type"]?.ToString() ?? "";
+                if (!type.Contains("ExecuteChaptersBehavior"))
+                    continue;
+
+                var subChaptersToken = behavior.SelectToken("Data.SubChapters.$values");
+                if (subChaptersToken == null)
+                    continue;
+
+                foreach (var sub in subChaptersToken)
+                {
+                    JToken subChapter = ResolveRef(sub["Chapter"], idMap);
+                    if (subChapter != null)
+                        CollectSubChapterRecursive(subChapter, chapters, steps, idMap, guidToName, indentLevel + 1);
+                }
             }
         }
     }
-}
 
 
 
@@ -217,5 +217,41 @@ private static void CollectSubChapterRecursive(
         }
 
         return token;
+    }
+
+    public static List<(string guid, string name)> ParseChaptersWithGuid(string processJsonPath)
+    {
+        var result = new List<(string guid, string name)>();
+
+        if (!File.Exists(processJsonPath))
+        {
+            Debug.LogError($"[VRBuilderJsonReader] File non trovato: {processJsonPath}");
+            return result;
+        }
+
+        string json = File.ReadAllText(processJsonPath);
+        JObject root = JObject.Parse(json);
+
+        Dictionary<string, JToken> idMap = new();
+        BuildIdMap(root, idMap);
+        var guidToName = BuildGuidToNameMap(root);
+
+        JToken chaptersToken = root.SelectToken("Process.Data.Chapters.$values");
+        if (chaptersToken == null)
+            return result;
+
+        foreach (var chapterRef in chaptersToken)
+        {
+            JToken chapter = ResolveRef(chapterRef, idMap);
+            if (chapter != null)
+            {
+                string name = chapter["Data"]?["Name"]?.ToString();
+                string guid = chapter["ChapterMetadata"]?["Guid"]?.ToString();
+                if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(guid))
+                    result.Add((guid, name));
+            }
+        }
+
+        return result;
     }
 }

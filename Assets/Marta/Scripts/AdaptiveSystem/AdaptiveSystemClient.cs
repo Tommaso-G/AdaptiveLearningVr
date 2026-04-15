@@ -12,6 +12,7 @@ public class StartSessionRequest
 {
     public string session_id;
     public ChapterConfigData[] chapters;
+    public bool reset_all = true;
 }
 
 [Serializable]
@@ -22,6 +23,9 @@ public class ChapterConfigData
     public bool is_mandatory;
     public float weight = 1.0f;
     public int max_iterations = 5;
+    public int max_errors = 0;
+    public float min_time_sec = 0.0f;
+    public float max_time_sec = 0.0f;
 }
 
 [Serializable]
@@ -43,7 +47,9 @@ public class DecisionResponse
     public float posterior_intermediate;
     public float posterior_novice;
     public int feedback_level;       // 0=nessuno, 1=highlight, 2=istruzioni
+    public int difficulty_level;     // 0=base, 1=avanzato,
     public bool feedback_changed;
+    public bool difficulty_changed;
     public bool add_optional;
     public string added_chapter_id; // null se nessun capitolo è aggiunto
     public string removed_chapter_id;  // null se nessun capitolo rimosso
@@ -51,6 +57,9 @@ public class DecisionResponse
     public bool chapter_mastered;
     public string[] active_chapters;
     public string message;
+    public int iteration_number;
+    public string iteration_status;  // Stato iterazione (complete, incomplete, in_progress)
+
 }
 
 [Serializable]
@@ -67,6 +76,8 @@ public class ChapterDetail
     public string chapter_id;
     public bool is_active;
     public int feedback_level;
+    public int difficulty_level;
+    public float[] chapter_prior;
 }
 
 [Serializable]
@@ -76,8 +87,27 @@ public class SessionStateResponse
     public string[] active_chapters;
     public ChapterDetail[] chapter_details;
     public bool is_complete;
+    public int iteration_number;
+    public int last_complete_iteration;
+    public string iteration_state;
 }
 
+[System.Serializable]
+public class EndIterationRequest
+{
+    public string session_id;
+    public string[] active_chapters;
+}
+
+[Serializable]
+public class EndIterationResponse
+{
+    public string status;  // "iteration_complete" o "iteration_incomplete"
+    public int iteration_number;
+    public int next_iteration;
+    public string[] completed_chapters;
+    public string[] incomplete_chapters;
+}
 
 // ── Client principale ────────────────────────────────────────────────────
 
@@ -95,6 +125,8 @@ public class AdaptiveSystemClient : MonoBehaviour
 
     // Singleton semplice per accesso globale
     public static AdaptiveSystemClient Instance { get; private set; }
+
+    private string[] currentActiveChapters;
 
     private void Awake()
     {
@@ -116,17 +148,18 @@ public class AdaptiveSystemClient : MonoBehaviour
     /// Chiama questo metodo all'avvio dell'esperienza, passando la lista
     /// dei capitoli definiti in VRBuilder.
     /// </summary>
-    public void StartSession(ChapterConfigData[] chapters, Action<string[]> callback = null)
+    public void StartSession(ChapterConfigData[] chapters, bool resetAll = false, Action<string[]> callback = null)
     {
-        StartCoroutine(StartSessionCoroutine(chapters, callback));
+        StartCoroutine(StartSessionCoroutine(chapters, resetAll, callback));
     }
 
-    private IEnumerator StartSessionCoroutine(ChapterConfigData[] chapters, Action<string[]> callback = null)
+    private IEnumerator StartSessionCoroutine(ChapterConfigData[] chapters, bool resetAll, Action<string[]> callback = null)
     {
         var requestData = new StartSessionRequest
         {
             session_id = _sessionId,
-            chapters = chapters
+            chapters = chapters,
+            reset_all = resetAll
         };
 
         string json = JsonUtility.ToJson(requestData);
@@ -145,8 +178,7 @@ public class AdaptiveSystemClient : MonoBehaviour
             var response = JsonUtility.FromJson<StartSessionResponse>(
                 request.downloadHandler.text
             );
-            Debug.Log($"[AdaptiveSystem] Sessione avviata. " +
-                      $"Capitoli attivi: {string.Join(", ", response.active_chapters)}");
+            Debug.Log($"[AdaptiveSystem] Sessione {response.session_id} avviata.");
             OnSessionStarted?.Invoke(response.active_chapters);
             callback?.Invoke(response.active_chapters);
         }
@@ -162,14 +194,14 @@ public class AdaptiveSystemClient : MonoBehaviour
     /// Recupera lo stato corrente della sessione dal server.
     /// Chiamato all'inizio di ogni run dopo la prima.
     /// </summary>
-    public void RestoreSession(string sessionId,
+    public void RestoreSession(string sessionId, bool resetAll = false,
                                Action<SessionStateResponse> callback = null)
     {
         _sessionId = sessionId;
-        StartCoroutine(RestoreSessionCoroutine(sessionId, callback));
+        StartCoroutine(RestoreSessionCoroutine(sessionId, resetAll, callback));
     }
 
-    private IEnumerator RestoreSessionCoroutine(string sessionId,
+    private IEnumerator RestoreSessionCoroutine(string sessionId, bool resetAll,
                                                  Action<SessionStateResponse> callback)
     {
         using var request = UnityWebRequest.Get(
@@ -182,9 +214,7 @@ public class AdaptiveSystemClient : MonoBehaviour
             var state = JsonUtility.FromJson<SessionStateResponse>(
                 request.downloadHandler.text
             );
-            Debug.Log($"[AdaptiveSystem] Stato sessione recuperato. " +
-                      $"Capitoli attivi: {string.Join(", ", state.active_chapters)}");
-            //OnSessionStateRestored?.Invoke(state);
+            Debug.Log($"[AdaptiveSystem] Stato sessione {state.session_id} recuperato.");
             callback?.Invoke(state);
         }
         else
@@ -251,7 +281,8 @@ public class AdaptiveSystemClient : MonoBehaviour
                       $"skill={response.skill_label} " +
                       $"feedback={response.feedback_level} " +
                       $"add_optional={response.add_optional} " +
-                      $"remove_optional={response.remove_optional}");
+                      $"remove_optional={response.remove_optional}" +
+                      $"difficulty={response.difficulty_level}");
 
             // Notifica tutti i listener tramite evento statico
             OnDecisionReceived?.Invoke(response);
@@ -263,6 +294,61 @@ public class AdaptiveSystemClient : MonoBehaviour
         {
             Debug.LogError($"[AdaptiveSystem] Errore observe: " +
                            $"{request.error}\n{request.downloadHandler.text}");
+        }
+    }
+
+    public IEnumerator EndIteration(
+        string[] activeChapters,
+        Action<EndIterationResponse> callback = null)
+    {
+        var requestData = new EndIterationRequest
+        {
+            session_id = _sessionId,
+            active_chapters = activeChapters
+        };
+
+        string json = JsonUtility.ToJson(requestData);
+
+        using var request = new UnityWebRequest(
+            $"{serverUrl}/session/{_sessionId}/end_iteration",
+            "POST"
+        );
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            var response = JsonUtility.FromJson<EndIterationResponse>(
+                request.downloadHandler.text
+            );
+
+            if (response.status == "iteration_complete")
+            {
+                Debug.Log(
+                    $"[AdaptiveSystem] ✓ Iterazione {response.iteration_number} COMPLETA! " +
+                    $"Prossima: {response.next_iteration}"
+                );
+            }
+            else if (response.status == "iteration_incomplete")
+            {
+                Debug.LogWarning(
+                    $"[AdaptiveSystem] ⚠️ Iterazione INCOMPLETA! " +
+                    $"Mancanti: {string.Join(", ", response.incomplete_chapters)}"
+                );
+            }
+
+            callback?.Invoke(response);
+        }
+        else
+        {
+            Debug.LogError(
+                $"[AdaptiveSystem] Errore end_iteration: {request.error}\n" +
+                $"{request.downloadHandler.text}"
+            );
         }
     }
 
