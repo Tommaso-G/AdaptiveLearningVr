@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System;
 
 public class PageToggleLinkerIndexed : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class PageToggleLinkerIndexed : MonoBehaviour
     public ScrollRect scrollable;  
 
     public Scrollbar verticalScrollbar;
+
+    public event Action<int> OnPageChanged; // index della pagina attivata
+
 
     private void Awake()
     {
@@ -68,6 +72,8 @@ public class PageToggleLinkerIndexed : MonoBehaviour
 
         // Coroutine per rebuild posticipato
         StartCoroutine(ForceLayoutNextFrame(pages[index]));
+
+        OnPageChanged?.Invoke(index);
         
 
     }

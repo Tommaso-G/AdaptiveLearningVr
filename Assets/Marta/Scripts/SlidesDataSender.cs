@@ -108,8 +108,13 @@ public class SlidesDataSender : MonoBehaviour
             if (filteredHistory.Count >= nonIntroCount)
                 filteredHistory.RemoveRange(filteredHistory.Count - nonIntroCount, nonIntroCount);
 
+            // calcola tempo totale escludendo le slide introductive
+            float tempoTotale = slidesData.Values
+                .Where(s => !s.isIntroductory)
+                .Sum(s => s.focusTime);
+
             var copy = new Dictionary<string, SlideDataContainer>(slidesData);
-            slidesDataRecorder.RecordData(feedbackName, copy, tempoOsservazionePreStep, filteredHistory);
+            slidesDataRecorder.RecordData(feedbackName, copy, tempoOsservazionePreStep, filteredHistory, tempoTotale);
             slidesData.Clear();
         }
     }
@@ -146,5 +151,10 @@ public class SlidesDataSender : MonoBehaviour
         }
         Debug.Log($"[GetCurrentTotalFocusTime] Totale: {total}");
         return total;
+    }
+
+    public float GetTotalFocusTime()
+    {
+        return slidesData.Values.Sum(s => s.focusTime);
     }
 }

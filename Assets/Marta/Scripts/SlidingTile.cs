@@ -25,6 +25,8 @@ public class SlidingTile : MonoBehaviour
 
     public bool on {  get; private set; }
     public bool onTarget = false;
+
+    public MinigameDataSender dataSender;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -170,6 +172,7 @@ public class SlidingTile : MonoBehaviour
         transform.position = t.position;
         checkPos();
         Deselected();
+        dataSender?.AddMove();
     }
 
     private void checkPos()

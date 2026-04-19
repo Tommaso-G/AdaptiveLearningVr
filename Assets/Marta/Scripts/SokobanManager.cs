@@ -15,6 +15,9 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
     private Vector2 joystickPos;
     private SokobanBox current;
 
+    public MinigameDataSender dataSender;
+
+
     [SerializeField]
     private Image doneImg;
     public void Register(SokobanBox s)
@@ -54,6 +57,7 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
         {
             doneImg.enabled = true;
             IsCompleted = true;
+            dataSender?.Complete();
         }
     }
 
@@ -62,6 +66,9 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
         targetsReached = 0;
         doneImg.enabled = false;
         IsCompleted = false;
+        dataSender?.AddError();
+        dataSender?.AddError();
+        dataSender?.AddError();
 
     }
     public void StepBackCurrent()
@@ -69,5 +76,6 @@ public class SokobanManager : MonoBehaviour, ICompletableStep
         if (current == null) return;
 
         current.StepBack();
+        dataSender?.AddError();
     }
 }

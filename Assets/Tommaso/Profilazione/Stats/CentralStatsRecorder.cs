@@ -16,10 +16,24 @@ public class CentralStatsRecorder : MonoBehaviour
     [System.Serializable]
     public class ProfilingSessionData
     {
+        public GenericSessionData genericData;  
         public LearningSessionSlidesData slidesData;
         public VisivoVerbaleSessionData visivoVerbaleData;
         public AssemblySessionData assemblyData;
+        public MinigamesSessionData minigamesData; 
+
     }
+
+
+    [System.Serializable]
+    public class GenericSessionData
+    {
+        public float sessionTimeSeconds;
+        public float feedbackTimeSeconds;
+
+    }
+
+    
 
     [System.Serializable]
     public class LearningSessionSlidesData
@@ -44,6 +58,16 @@ public class CentralStatsRecorder : MonoBehaviour
         public string modalita;
         public float tempoTotale;
         public int erroriTotali;
+
+        public List<ParametroExtraEntry> parametriExtra = new List<ParametroExtraEntry>();
+
+    }
+
+    [System.Serializable]
+    public class ParametroExtraEntry
+    {
+        public string nome;
+        public float valore;
     }
 
     [System.Serializable]
@@ -51,6 +75,21 @@ public class CentralStatsRecorder : MonoBehaviour
     {
         public string gameID;
         public List<ModalitaEntry> modalita = new List<ModalitaEntry>();
+    }
+
+    [System.Serializable]
+    public class MinigameEntry
+    {
+        public string minigameChapterName;
+        public float completitionTime;
+        public int errors;
+        public int moves;
+    }
+
+    [System.Serializable]
+    public class MinigamesSessionData
+    {
+        public List<MinigameEntry> minigames = new List<MinigameEntry>();
     }
 
     [System.Serializable]
@@ -62,6 +101,9 @@ public class CentralStatsRecorder : MonoBehaviour
     [SerializeField] private SlidesDataRecorder slidesDataRecorder;
     [SerializeField] private VisivoVerbaleStatManager visivoVerbaleStatManager;
     [SerializeField] private AssemblyManager assemblyManager;
+    [SerializeField] private EventTimer sessionTimer;
+    [SerializeField] private MinigameDataRecorder minigameDataRecorder;
+
 
     public LearningSessionSlidesData CalcolaMediaSlidesData()
     {
@@ -176,17 +218,23 @@ public class CentralStatsRecorder : MonoBehaviour
 
             foreach (var modalita in gioco.Value)
             {
-                gameData.modalita.Add(new ModalitaEntry
+                var entry = new ModalitaEntry
                 {
                     modalita = modalita.Key.ToString(),
                     tempoTotale = modalita.Value.tempoTotale,
                     erroriTotali = modalita.Value.erroriTotali
-                });
+                };
 
-                Debug.Log($"[CentralStatsRecorder] Gioco: {gioco.Key} | " +
-                          $"Modalità: {modalita.Key} | " +
-                          $"Tempo totale: {modalita.Value.tempoTotale:F2}s | " +
-                          $"Errori: {modalita.Value.erroriTotali}");
+                foreach (var kv in modalita.Value.parametriExtra)
+                {
+                    entry.parametriExtra.Add(new ParametroExtraEntry
+                    {
+                        nome = kv.Key,
+                        valore = kv.Value
+                    });
+                }
+
+                gameData.modalita.Add(entry);
             }
 
             sessionData.giochi.Add(gameData);
@@ -209,7 +257,7 @@ public class CentralStatsRecorder : MonoBehaviour
     public void SalvaJson(ProfilingSessionData data)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine(Application.persistentDataPath, "ProfilingSessionData.json");
+        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione", "ProfilingSessionData.json");
         System.IO.File.WriteAllText(path, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {path}");
     }
@@ -218,16 +266,53 @@ public class CentralStatsRecorder : MonoBehaviour
     {
         var result = new ProfilingSessionData();
 
+        // inizializza container
+        result.genericData = new GenericSessionData();
+
+        // STOP + READ TIMER
+        if (sessionTimer != null)
+        {
+            sessionTimer.StopTimer();
+            result.genericData.sessionTimeSeconds = sessionTimer.GetTime();
+        }
+
+        // statistiche esistenti
         result.slidesData = CalcolaMediaSlidesData();
         result.visivoVerbaleData = CalcolaMediaGiochi();
         result.assemblyData = GetAssemblyData();
+        result.minigamesData = GetMinigamesData(); 
+
+
+        // somma tutti i tempi totali di osservazione dei feedback
+        result.genericData.feedbackTimeSeconds = slidesDataRecorder.GetAllFeedbacks()
+            .Sum(f => f.tempoTotaleOsservazione);
 
         SalvaJson(result);
 
-        Debug.Log("[CentralStatsRecorder] CalcolaStatisticheFinali completato.");
+        Debug.Log($"[CentralStatsRecorder] Sessione chiusa. Tempo: {result.genericData.sessionTimeSeconds:F2}s");
 
         return result;
     }
+
+    public MinigamesSessionData GetMinigamesData()
+    {
+        var result = new MinigamesSessionData();
+
+        foreach (var kvp in minigameDataRecorder.minigameDataList)
+        {
+            result.minigames.Add(new MinigameEntry
+            {
+                minigameChapterName = kvp.Value.minigameChapterName,
+                completitionTime = kvp.Value.completitionTime,
+                errors = kvp.Value.errors,
+                moves = kvp.Value.moves
+            });
+        }
+
+        return result;
+    }
+
+    
 
     void Update()
     {

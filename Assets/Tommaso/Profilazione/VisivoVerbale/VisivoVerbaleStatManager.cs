@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VisivoVerbaleStatManager : MonoBehaviour
@@ -66,9 +67,11 @@ public class VisivoVerbaleStatManager : MonoBehaviour
             Debug.Log($"── {gioco.Key} ──");
             foreach (var modalita in gioco.Value)
             {
-                Debug.Log($"  {modalita.Key}: " +
-                        $"tempo totale {modalita.Value.tempoTotale:F1}s, " +
-                        $"errori totali {modalita.Value.erroriTotali}");
+            Debug.Log($"[CentralStatsRecorder] Gioco: {gioco.Key} | " +
+                    $"Modalità: {modalita.Key} | " +
+                    $"Tempo totale: {modalita.Value.tempoTotale:F2}s | " +
+                    $"Errori: {modalita.Value.erroriTotali} | " +
+                    $"Parametri extra: {string.Join(", ", modalita.Value.parametriExtra.Select(kv => $"{kv.Key}: {kv.Value:F2}"))}");
 
                 // ← stampa parametri extra se presenti
                 foreach (var kv in modalita.Value.parametriExtra)

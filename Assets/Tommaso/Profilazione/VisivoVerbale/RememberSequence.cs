@@ -93,6 +93,9 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
     private bool _gazeStopTimer = false;
     private bool _gazeIsImmagini = false;
 
+    private Dictionary<GameObject, float> _ultimoErroreTime = new Dictionary<GameObject, float>();
+    public float cooldownErrore = 2f; // secondi di cooldown, configurabile da inspector
+
     private class StatoIniziale
     {
         public Vector3 posizione;
@@ -312,6 +315,7 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         indiceCorrente = 0;
         ultimoOggettoControllato = null;
         oggettiGiaAccettati.Clear();
+        _ultimoErroreTime.Clear(); // ← aggiungi
         Shuffle(sequenza);
     }
 
@@ -354,13 +358,17 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
                     numeroRound = currentRound,
                     errori = errori,
                     tempoSecondi = Time.time - tempoStart,
-                    parametriExtra = new Dictionary<string, float>
-                    {
-                        { "tempoGuardatoImmagini",   tempoGuardatoImmagini },
-                        { "tempoGuardatoTesti",      tempoGuardatoTesti    },
-                        { "riapertureImmagini",      _riapertureImmagini   },
-                        { "riapertureTesti",         _riapertureTesti      }
-                    }
+                    parametriExtra = usaImmagini
+                        ? new Dictionary<string, float>
+                        {
+                            { "tempoGuardatoImmagini", tempoGuardatoImmagini },
+                            { "riapertureImmagini",    _riapertureImmagini   }
+                        }
+                        : new Dictionary<string, float>
+                        {
+                            { "tempoGuardatoTesti", tempoGuardatoTesti },
+                            { "riapertureTesti",    _riapertureTesti   }
+                        }
                 });
 
                 if (audioSource != null && suonoRoundCompletato != null)
@@ -381,18 +389,24 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
         }
         else
         {
+            // controlla cooldown
+            if (_ultimoErroreTime.TryGetValue(oggetto, out float ultimoTempo))
+            {
+                if (Time.time - ultimoTempo < cooldownErrore)
+                    return; // troppo presto, ignora
+            }
+
+            _ultimoErroreTime[oggetto] = Time.time;
             errori++;
 
             if (audioSource != null && suonoStepSbagliato != null)
                 audioSource.PlayOneShot(suonoStepSbagliato);
 
-            //Registra la coroutine nel dizionario
             Coroutine c = StartCoroutine(LampeggiaRosso(oggetto));
             _lampeggiAttivi[oggetto] = c;
 
             if (statiIniziali.TryGetValue(oggetto, out StatoIniziale stato))
                 StartCoroutine(ResetSingoloOggetto(oggetto, stato));
-
         }
     }
 
@@ -630,7 +644,6 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
 
     private IEnumerator ResetSingoloOggetto(GameObject oggetto, StatoIniziale stato)
     {
-        // Disabilita la leva durante il lampeggio
         XRLever leva = oggetto.GetComponentInChildren<XRLever>();
         if (leva != null) leva.enabled = false;
 
@@ -639,7 +652,14 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
 
         if (oggetto == null) yield break;
 
-        // Resetta il valore e riabilita la leva solo dopo il lampeggio
+        // aspetta che l'oggetto non sia più in mano
+        var interactable = oggetto.GetComponentInChildren<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        if (interactable != null)
+        {
+            while (interactable.isSelected)
+                yield return null;
+        }
+
         if (leva != null)
         {
             leva.value = false;
@@ -648,7 +668,7 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
 
         yield return StartCoroutine(MuoviVersoPosizioneERotazione(
             oggetto, stato.posizione, stato.rotazione, 1.5f));
-    }
+}
 
     // METODI GAZE
     public void GazeSelectionImmagini()  => StartGaze(true);

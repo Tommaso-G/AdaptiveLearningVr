@@ -20,6 +20,7 @@ public class SokobanBox : MonoBehaviour
     [SerializeField]
     bool fillerBox = false;
 
+
     private bool isMoving = false;
     private bool targetReached = false;
 
@@ -82,6 +83,8 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position + referenceAxis.up * size;
+            sokobanManager.dataSender?.AddMove(); 
+
         }
         yield return new WaitForSeconds(1f);
         isMoving = false;
@@ -92,6 +95,8 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position - referenceAxis.up * size;
+            sokobanManager.dataSender?.AddMove(); 
+
         }
         yield return new WaitForSeconds(1f);
         isMoving = false;
@@ -102,6 +107,8 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position - referenceAxis.right * size;
+            sokobanManager.dataSender?.AddMove();
+
         }
 
         yield return new WaitForSeconds(1f);
@@ -115,6 +122,7 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position + referenceAxis.right * size;
+            sokobanManager.dataSender?.AddMove();
         }
 
         yield return new WaitForSeconds(1f);

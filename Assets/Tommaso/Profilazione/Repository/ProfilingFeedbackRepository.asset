@@ -24,6 +24,14 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
+        text: "Ehi, tu! Vuoi fare dei VERI soldi finti? Sto parlando di un mucchio
+          di sonanti quattrini digitali. \n\nDentro questa cassaforte troverai quello
+          che fa al caso tuo."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
         text: "L\u2019unico problema \xE8 che le casseforti hanno il difetto di essere
           chiuse a chiave quando non sono tue.\n\nMa ehi, non tutto \xE8 perduto!
           il propietario potrebbe aver scritto la password da qualche parte. \n\nSu
@@ -48,22 +56,20 @@ MonoBehaviour:
           numerica della cassaforte.\n\nSe ci hai visto giusto si accender\xE0 una
           luce verde.\n\nSe la luce \xE8 rossa hai sbagliato password,  ma potrai
           riprovare quante volte vorrai."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Una volta inserita la giusta sequenza, afferra la maniglia con il
-          controller e apri la porta.\n\nGoditi i tuoi dollaroni, sei ufficialmente
-          la persona pi\xF9 ricca di questo mondo virtuale!"
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Ehi, tu! Vuoi fare dei VERI soldi finti? Sto parlando di un mucchio
-          di sonanti quattrini digitali. \n\nDentro questa cassaforte troverai quello
-          che fa al caso tuo."
+        text: "Ti trovi di fronte a una cassaforte che custodisce una grande quantit\xE0
+          di denaro virtuale. Il tuo obiettivo \xE8 riuscire ad aprirla individuando
+          la corretta combinazione numerica.\r\n\r\ni cilindri sulla destra contengono
+          degli indizi, usa le manopole per osservare i numeri presenti su di essi\r\n\r\nUna
+          volta individuata la combinazione, potrai inserirla tramite la tastiera
+          numerica. Se la sequenza inserita non \xE8 corretta, potrai riprovare quante
+          volte vorrai.\r\n\r\nQuando la combinazione sar\xE0 giusta, avrai accesso
+          all\u2019apertura della cassaforte e potrai finalmente ottenere la ricompensa
+          contenuta al suo interno: una grande quantit\xE0 di denaro virtuale."
       StepForCompletition:
       - Interagisci con le manopole
       - Inserisci la password
@@ -250,4 +256,90 @@ MonoBehaviour:
         text: 
       StepForCompletition:
       - Osserva la chimera
+      PersonalizedPrefab: {fileID: 0}
+  - ChapterName: Introduzione
+    feedbacks:
+    - FeedbackName: Introduzione 1
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Questa che stai leggendo \xE8 una delle tante diapositive che ti guider\xE0
+          per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
+          su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
+          questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
+          devi andare. \n\nUna volta completato uno step, vedrai comparire un \"check\"
+          sull'icona o sulla diapositiva. \n\nProva ad allontanarti dalla diapositiva."
+      StepForCompletition:
+      - Guarda il primo feedback
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 2
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Ottimo lavoro, stai imparando in fretta. \n\nQuesta che vedi \xE8
+          una diapositiva pi\xF9 complessa. Contiene diverse slide che potrai navigare
+          nell'ordine che preferisci.\n\nClicca sul bottone corrispondente alla pagina
+          2, sulla sinistra"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Fantastico! Non \xE8 da tutti cliccare cos\xEC bene un bottone. Sei
+          davvero portato!"
+      StepForCompletition:
+      - Clicca sulla seconda pagina
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 3
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Tra le pagine presenti, quella che si chiama \"Overview\" ti da informazioni
+          generiche sui task da svolgere, ed \xE8 solitamente l'ultima pagina.\n\nPuoi
+          navigare tra le pagine nell'ordine che vuoi, quindi assicurati di guardare
+          prima quella se vuoi avere subito un quadro generale.\n\nClicca sulla slide
+          \"Overview\"."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Sei fuori strada fratello, questa non \xE8 la slide \"Overview\""
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Stai sbagliando bello, questa \xE8 una slide per persone sequenziali,
+          che sono chiuse mentalmente e monotone e hanno bisogno di avere tutto il
+          futuro programmato nei minimi dettagli"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Porca vacca ma cosa cazzo ti danno da mangiare?! Sei un fenomeno!
+      StepForCompletition:
+      - Clicca su slide globale
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 4
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "ok figliolo, \xE8 il momento di aprire le ali. C'\xE8 tutto un mondo
+          di minigiochi ancora da esplorare. Voltati e segui le icone"
+      StepForCompletition:
+      - dirigiti fuori
       PersonalizedPrefab: {fileID: 0}

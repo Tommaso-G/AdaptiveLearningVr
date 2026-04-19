@@ -13,6 +13,7 @@ public class FeedbackDataContainer
     public Dictionary<string, SlideDataContainer> slidesData = new Dictionary<string, SlideDataContainer>();
     public float tempoOsservazionePreStep = 0f;
     public List<int> visitHistory = new List<int>();
+    public float tempoTotaleOsservazione = 0f;
 
 }
 
@@ -20,7 +21,7 @@ public class SlidesDataRecorder : MonoBehaviour
 {
     private Dictionary<string, FeedbackDataContainer> FeedbacksDataList = new Dictionary<string, FeedbackDataContainer>();
 
-    public void RecordData(string feedbackName, Dictionary<string, SlideDataContainer> slidesData, float tempoPreStep, List<int> visitHistory)
+    public void RecordData(string feedbackName, Dictionary<string, SlideDataContainer> slidesData, float tempoPreStep, List<int> visitHistory, float tempoTotale)
     {
         FeedbackDataContainer feedbackData = null;
 
@@ -46,9 +47,11 @@ public class SlidesDataRecorder : MonoBehaviour
 
         }
 
-        if (feedbackData != null){
+        if (feedbackData != null)
+        {
             feedbackData.tempoOsservazionePreStep = tempoPreStep;
             feedbackData.visitHistory = visitHistory;
+            feedbackData.tempoTotaleOsservazione = tempoTotale;
         }
 
     }
@@ -67,6 +70,7 @@ public class SlidesDataRecorder : MonoBehaviour
 
             sb.AppendLine("FEEDBACK: " + feedbackdata.Value.feedbackName);
             sb.AppendLine("tempo osservazione pre step: " + feedbackdata.Value.tempoOsservazionePreStep + "s");
+            sb.AppendLine("tempo totale osservazione: " + feedbackdata.Value.tempoTotaleOsservazione + "s");
             sb.AppendLine("ordine apertura : " + string.Join(", ", feedbackdata.Value.visitHistory));
             foreach (var data in feedbackdata.Value.slidesData)
             {

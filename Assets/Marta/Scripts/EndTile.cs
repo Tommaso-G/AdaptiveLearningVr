@@ -9,6 +9,9 @@ public class EndTile : SpecialTile, ICompletableStep
     AudioSource audio;
     [SerializeField]
     VisualEffect effect;
+
+    public MinigameDataSender dataSender;
+
     public override void TileEffect()
     {
         if (!SingleSupport)
@@ -35,6 +38,9 @@ public class EndTile : SpecialTile, ICompletableStep
         audio.Play();
         effect.enabled = true;
         boxPlayer.gameObject.SetActive(false);
+        dataSender?.Complete();
         IsCompleted = true;
+        
+
     }
 }

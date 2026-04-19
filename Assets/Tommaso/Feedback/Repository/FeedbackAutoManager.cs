@@ -339,8 +339,9 @@ public class FeedbackAutoManager : MonoBehaviour
     private SlidesDataSender FindSender(string feedbackName)
     {
         var all = FindObjectsByType<SlidesDataSender>(FindObjectsSortMode.None);
-        return all.FirstOrDefault(s => s.FeedbackName.Contains(feedbackName));
+        return all.FirstOrDefault(s => s != null && !string.IsNullOrEmpty(s.FeedbackName) && s.FeedbackName.Contains(feedbackName));
     }
+
     private void RegisterTempoPreStep(string stepName, FeedbackRepository.FeedbackData feedback)
     {
         string firstStep = feedback.StepForCompletition.FirstOrDefault();

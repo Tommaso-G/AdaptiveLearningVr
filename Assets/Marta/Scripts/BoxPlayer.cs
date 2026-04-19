@@ -36,6 +36,10 @@ public class BoxPlayer : MonoBehaviour
 
     private SpecialTile lastTileHit = null;
 
+    public MinigameDataSender dataSender;
+
+    private bool hasStarted = false;
+
     private enum Direction
     {
         UP,
@@ -47,6 +51,8 @@ public class BoxPlayer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+
         movingObj = transform;
         if (movingObj != null)
         {
@@ -72,11 +78,16 @@ public class BoxPlayer : MonoBehaviour
         ////rightButton.onRelease.AddListener();
     }
 
+    
+
     private void CallMoveRight()
     {
         if(coroutine == null && canMove)
         {
+            TryStartTracking();
             coroutine = StartCoroutine("MoveRight");
+            dataSender?.AddMove(); 
+
         }
     }
 
@@ -84,7 +95,10 @@ public class BoxPlayer : MonoBehaviour
     {
         if (coroutine == null && canMove)
         {
+            TryStartTracking();
             coroutine = StartCoroutine("MoveLeft");
+            dataSender?.AddMove(); 
+
         }
     }
 
@@ -92,7 +106,10 @@ public class BoxPlayer : MonoBehaviour
     {
         if (coroutine == null && canMove)
         {
+            TryStartTracking();
             coroutine = StartCoroutine("MoveUp");
+            dataSender?.AddMove(); 
+
         }
     }
 
@@ -100,7 +117,10 @@ public class BoxPlayer : MonoBehaviour
     {
         if (coroutine == null && canMove)
         {
+            TryStartTracking();
             coroutine = StartCoroutine("MoveDown");
+            dataSender?.AddMove(); 
+
         }
     }
     private IEnumerator MoveRight()
@@ -404,6 +424,8 @@ public class BoxPlayer : MonoBehaviour
                 tile.TileEffect();
                 print("Hit tile UP");
                 canMove = false;
+                dataSender?.AddError(); 
+
             }
         }else if (Physics.Raycast(downRay, out RaycastHit downHit, width) && downHit.collider.CompareTag("FallTile"))
         {
@@ -416,10 +438,21 @@ public class BoxPlayer : MonoBehaviour
                 tile.TileEffect();
                 print("Hit tile DOWN");
                 canMove = false;
+                dataSender?.AddError(); 
+
             }
         }
 
     }
+
+        private void TryStartTracking()
+        {
+            if (!hasStarted)
+            {
+                hasStarted = true;
+                dataSender?.StartTracking();
+            }
+        }
 
     // Update is called once per frame
     void Update()

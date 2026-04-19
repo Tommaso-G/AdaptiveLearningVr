@@ -9,6 +9,8 @@ public class SlidingTilesMgr : MonoBehaviour, ICompletableStep
     private List<SlidingTile> slidingTiles = new List<SlidingTile>();
     private int onTarget = 0;
     [SerializeField] private List<MySocket> XRSockets = new List<MySocket>();
+
+    public MinigameDataSender dataSender;
     private int formOnTarget = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,6 +43,7 @@ public class SlidingTilesMgr : MonoBehaviour, ICompletableStep
             }
 
             IsCompleted = true;
+            dataSender?.Complete();
         }
         else
         {

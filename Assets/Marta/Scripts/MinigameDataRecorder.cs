@@ -29,6 +29,7 @@ public class MinigameDataRecorder : MonoBehaviour
             minigameDataList.Add(container.minigameChapterName, data);
             Debug.Log("Dati del minigame: " + data.minigameChapterName + " salvati nel recorder");
         }
+        printRecorderSavings();
     }
 
     public void printRecorderSavings()

@@ -28,6 +28,8 @@ public class MinigameDataSender : MonoBehaviour
     private void Start()
     {
         recorder = FindFirstObjectByType<MinigameDataRecorder>();
+        UnityEngine.Debug.Log(recorder);
+        
     }
     public void StartTracking()
     {
@@ -93,7 +95,6 @@ public class MinigameDataSender : MonoBehaviour
         if (!isRunning) return;
 
         isRunning = false;
-
         container.completitionTime = Time.time - startTime;
         container.errors = errorCount;
         container.moves = moveCount;
