@@ -137,6 +137,17 @@ public class GameManager : MonoBehaviour
                         //    chapter.difficultyLevel = 0;
                         //}
 
+                        List<string> chapterToAdd = new List<string>();
+                        foreach (string ac in activeChapters)
+                        {
+                            if (chaptersIdToName[ac].Contains("Optional"))
+                            {
+                                chapterToAdd.Add(ac);
+                            }
+                        }
+
+                        AddOptionalChapter(chapterToAdd);
+
                         done = true;
                     }
                 );
