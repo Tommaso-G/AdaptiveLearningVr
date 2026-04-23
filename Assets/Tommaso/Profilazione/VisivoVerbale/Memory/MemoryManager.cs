@@ -144,7 +144,6 @@ public class MemoryManager : MonoBehaviour, ICompletableStep, ITrackableGameVisi
 
         canInteract = true;
         errori = 0;
-        tempoStart = Time.time;
         gameStarted = false;
     }
 
@@ -175,6 +174,9 @@ public class MemoryManager : MonoBehaviour, ICompletableStep, ITrackableGameVisi
                 flipper.inGame = true;
             }
         }
+
+        tempoStart = Time.time;
+
     }
     void AssignImages()
     {

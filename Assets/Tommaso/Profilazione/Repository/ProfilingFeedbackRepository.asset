@@ -15,6 +15,92 @@ MonoBehaviour:
   SingleContainer: {fileID: 781630661673262138, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
   MultipleContainer: {fileID: 781630661673262138, guid: 4689bb12224f63240ac0e3056d230e01, type: 3}
   chapters:
+  - ChapterName: Introduzione
+    feedbacks:
+    - FeedbackName: Introduzione 1
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Questa che stai leggendo \xE8 una delle tante diapositive che ti guider\xE0
+          per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
+          su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
+          questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
+          devi andare. \n\nUna volta completato uno step, vedrai comparire un \"check\"
+          sull'icona o sulla diapositiva. \n\nProva ad allontanarti dalla diapositiva."
+      StepForCompletition:
+      - Guarda il primo feedback
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 2
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Ottimo lavoro, stai imparando in fretta. \n\nQuesta che vedi \xE8
+          una diapositiva pi\xF9 complessa. Contiene diverse slide che potrai navigare
+          nell'ordine che preferisci.\n\nClicca sul bottone corrispondente alla pagina
+          2, sulla sinistra"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Fantastico! Non \xE8 da tutti cliccare cos\xEC bene un bottone. Sei
+          davvero portato!"
+      StepForCompletition:
+      - Clicca sulla seconda pagina
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 3
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Tra le pagine presenti, quella che si chiama \"Overview\" ti da informazioni
+          generiche sui task da svolgere, ed \xE8 solitamente l'ultima pagina.\n\nPuoi
+          navigare tra le pagine nell'ordine che vuoi, quindi assicurati di guardare
+          prima quella se vuoi avere subito un quadro generale.\n\nClicca sulla slide
+          \"Overview\"."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Sei fuori strada fratello, questa non \xE8 la slide \"Overview\""
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Stai sbagliando bello, questa \xE8 una slide per persone sequenziali,
+          che sono chiuse mentalmente e monotone e hanno bisogno di avere tutto il
+          futuro programmato nei minimi dettagli"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Porca vacca ma cosa cazzo ti danno da mangiare?! Sei un fenomeno!
+      StepForCompletition:
+      - Clicca su slide globale
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 4
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Ok figliolo, \xE8 il momento di aprire le ali. C'\xE8 tutto un mondo
+          di minigiochi ancora da esplorare. \n\nVoltati e segui le icone."
+      StepForCompletition:
+      - dirigiti fuori
+      PersonalizedPrefab: {fileID: 0}
   - ChapterName: Cassaforte
     feedbacks:
     - FeedbackName: Apri la cassaforte
@@ -81,29 +167,54 @@ MonoBehaviour:
     - FeedbackName: Istruzione Bloxorz
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 461155601, guid: 3bdf3a0286f9d974ea9e7e7b08c68af4, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "L\u2019obiettivo del gioco \xE8 far entrare la pedina nel buco in
+          fondo al campo."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 1293262017, guid: d7d19b515f262c741aa7f5c61f8e8f04, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Usa i pulsanti per far rotolare la pedina nelle 4 direzioni: su, gi\xF9,
+          sinistra e destra."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 771893295, guid: 61bda78ef1f77c44e99de6e8bc7ed2c3, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Se fai sporgere la pedina dai bordi del campo, questa cadr\xE0 e dovrai
+          ricominciare da capo."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 1678165910, guid: eb561f21c077d024fb83b6380a760267, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Usa le caselle colorare per aprire i ponti che collegano le piattaforme.\n\nCasella
+          blu: per attivare l\u2019effetto basta passarci sopra con la pedina\n\nCasella
+          rossa: per attivare l\u2019effetto la pedina deve trovarsi sopra la casella
+          verticalmente, senza toccare quelle circostanti."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'Per centrare il buco e vincere il gioco, la pedina deve cadere verticalmente
+          nel foro. '
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'Usa i pulsanti per far rotolare la pedina nelle quattro direzioni,
+          centra le caselle colorate per aprire i ponti, fai cadere la pedina del
+          foro.
+
+
+          Se fai cadere la pedina dai bordi della piattaforma,
+          dovrai ricominciare'
       StepForCompletition:
       - Prima mossa (bloxorz)
       - Gioca a bloxorz
@@ -113,29 +224,51 @@ MonoBehaviour:
     - FeedbackName: Istruzione Sokoban
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 1087546110, guid: 63a0d8251b9469e4fb6d770f58527dce, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "L\u2019obiettivo del gioco \xE8 portare le pedine numerate sulle caselle
+          corrette."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: -1165788943, guid: 816ebacac76124b4e9907520a923c15b, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: Seleziona una pedina con il raycast e muovila con il joystick davanti
+          a te.
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: -91865526, guid: 2b8c813939ffb9747b10693806104b51, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Puoi muovere una pedina su due assi: in alto o in basso, a destra
+          o sinistra.\n\nSe la pedina selezionata tocca una parete del campo o un\u2019altra
+          pedina, il movimento sull\u2019asse corrispondente sar\xE0 bloccato."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: -953081798, guid: 96789e86cfe365c49b065a89be7c2910, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Se la pedina passa sopra un buco, ci cadr\xE0 dentro e non potrai
+          pi\xF9 muoverla.\n\nUsa le pedine rosse per riempire i buchi."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Se sbagli mossa, puoi tornare indietro di un solo passo con il pulsante
+          \u201CBack\u201D. \n\nSe la situazione \xE8 pi\xF9 complicata, premi il
+          pulsante \u201CReset\u201D e ricomincia da capo."
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Seleziona le pedine numerate e portale sulle caselle corrette utilizzando
+          il joystick. Usa le pedine rosse per coprire i buchi. Puoi muovere le pedine
+          solo se non sono bloccate dalle pareti o da altre pedine. Se rimani incastrato
+          puoi tornare indietro di una mossa o resettare la partita.
       StepForCompletition:
       - Prima mossa (sokoban)
       - Gioca a sokoban
@@ -144,24 +277,52 @@ MonoBehaviour:
     feedbacks:
     - FeedbackName: Istruzione Scalak
       pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "L\u2019obiettivo del gioco \xE8 quello di riordinare le tessere  verdi.\n"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "L\u2019ordine corretto \xE8 quello che riproduce la sequenza di forme
+          sulla destra.\n"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'Puoi spostare una tessera solo in certi punti del campo, in base alla
+          sua posizione e a quella delle altre tessere.
+
+
+          Seleziona una
+          tessera con il raycast o toccandola con il controller.'
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "I volumi che compaiono indicano le posizione che la tessera pu\xF2
+          occupare. Selezionali per spostare la tessera.\n"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Una volta riordinate le tessere, posiziona le forme sulla destra all\u2019interno
+          dei fori corrispondenti."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: -599817584, guid: a298791cb2bed7a47bde5162cbe24846, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: -2106344116, guid: f2e8fb313d9f3cd46aaf3d314575e724, type: 3}
-        video: {fileID: 0}
-        text: 
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 138023202, guid: 252368215e306d64b96542416cc74180, type: 3}
-        video: {fileID: 0}
-        text: 
+        text: Riordina le tessere secondo l'ordine mostrato dalle forme sulla destra.
+          Seleziona una tessera e spostala in una delle caselle illuminate. Una volta
+          riordinate posiziona le forme sui fori corrispondenti.
       StepForCompletition:
       - Prima mossa (scalak)
       - Gioca a scalak
@@ -171,17 +332,57 @@ MonoBehaviour:
     - FeedbackName: Ricorda la sequenza
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 3bdf848603cd2eb4e9048eb251f91e63, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "L'obbiettivo \xE8 quello di replicare la sequenza mostrata interagendo
+          con gli oggetti. Prima di iniziare, puoi interagire con gli oggetti per
+          provarli."
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 21300000, guid: 823696daa6185704a959a4047c60a9ca, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Schiaccia il pulsante per far comparire una sequenza sullo schermo.\nLa
+          sequenza pu\xF2 essere composta da immagini o parole"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Una volta memorizzata, prova a replicarla interagendo con gli oggetti
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Se ti accorgi di non ricordarti pi\xF9 la sequenza, puoi ritornare
+          dallo schermo e ri-schiacciare il pulsante per visualizzare la sequenza"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Se interagisci con un oggetto nel momento sbagliato, questo lampegger\xE0
+          di rosso, mostrandoti l'errore."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Una volta finito un round, premi nuovamente il pulsante per passare
+          all'altra modalit\xE0, in modo da completare sia la sequenza fatta da parole
+          che da immagini."
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Premi il pulsante e memorizza la sequenza sullo schermo. Replica la
+          sequenza interagendo con gli oggetti e torna dallo schermo a premere il
+          pulsante se non ricordi l'ordine. Completa entrambe le modalit\xE0 per
+          concludere il gioco"
       StepForCompletition:
       - inizia a giocare a ricordaInteractable
       - Ricorda gli interactable
@@ -189,11 +390,42 @@ MonoBehaviour:
     - FeedbackName: Memory
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 4eed9cdd229386c4d8f0623553b9769f, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "L'obbiettivo del gioco \xE8 girare le coppie di carte uguali, dopo
+          averle memorizzate"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Una volta premuto il pulsante, le carte verrano scoperte per alcuni
+          secondi. Cerca di memorizzare le coppie prima che queste tornino ad essere
+          coperte
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Seleziona le carte con il controller, se selezioni due carte uguali,
+          queste rimarrano scoperte fino alla fine del gioco.
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Una volta finito il round, premi di nuovo il pulsante per passare
+          all'altra modalit\xE0"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: 'Memorizza le coppie di carte, che siano parole o immagini. Premi il
+          pulsante per scoprire le carte. Una volta tornate coperte, seleziona le
+          carte uguali. '
       StepForCompletition:
       - inizia a giocare a memory
       - Memory
@@ -201,11 +433,35 @@ MonoBehaviour:
     - FeedbackName: Ricorda le parole e le immagini
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "L'obbiettivo del gioco \xE8 ricordare l'ordine con cui sono comparse
+          le parole o le immagini"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: 'boss in pratica devi ricordati la sequenza di parole o di immagini '
+        text: Premi il bottone per mostrare la sequenza di elementi e cerca di memorizzare
+          l'ordine di comparsa
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Terminata la sequenza, seleziona gli elementi con il controller nell'ordine
+          in cui sono comparsi. Premi nuovamente il bottone per passare all'altra
+          modalit\xE0"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: Memorizza l'ordine della sequenza di elementi. Premi il bottone per
+          mostrare la seqeuenza e seleziona poi gli elementi nell'ordine in cui sono
+          comparsi.
       StepForCompletition:
       - inizia a giocare a ricordaInParoleImmagini
       - Test parole
@@ -215,131 +471,81 @@ MonoBehaviour:
     - FeedbackName: Sintetizzatore Chimerico
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: bd92f7a23de06d946a2a314fa44d2c77, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Pare che questa macchina possa fondere assieme creature appertenti
+          al mondo animale. E\u2019 molto utile se per esempio... Vabb\xE8 tu costruiscila
+          e basta. Non fare domande. "
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 21300000, guid: d65a06c12a1119746aae7ffb352f8d37, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: 'iIn questa stanza troverai i componenti necessari e le istruzioni
+          per montarli assieme. '
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
+        Visivo_Verbale: 1
         isIntroductory: 0
-        image: {fileID: 21300000, guid: 3fdb05e6db4ad5447b0bbd40607ab3f8, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Ma attenzione, non potrai tenerle sempre sottomano, dovrai memorizzarle.\n
+          \nMeno tempo ci metterai a montare la macchina e pi\xF9 punti otterrai.
+          \n\nSe metterai i componenti nel posto sbagliato, otterrai una penalit\xE0."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Premi il pulsante per vedere le istruzioni, memorizza la posizione
+          dei componenti e monta il Sintetizzatore Chimerico. \n\nSe ti dimentichi
+          qualcosa, puoi tornare dallo schermo e ri-premere il pulsante."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "La macchina \xE8 divisa tre scompartimenti principali, come puoi vedere
+          dalle istruzioni. Ogni scompartimento \xE8 composto da elementi principali
+          e elementi secondari.\n\nNon c'\xE8 un ordine giusto di montaggio, puoi
+          deciderlo tu in base alle tue preferenze, ma alcuni componenti pi\xF9 piccoli
+          hanno bisogno del componente principale per essere montato\n"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Premi il pulsante per vedere le istruzioni, memorizza la posizione
+          dei componenti e monta il Sintetizzatore Chimerico nell'ordine che preferisci.
+          \n\nSe ti dimentichi qualcosa, puoi tornare dallo schermo e ri-premere
+          il pulsante."
       StepForCompletition:
       - Il bottone che attiva la macchina infernale
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: 'La creazione '
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: 48c9703cc4e6d6740afa85179f512963, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Non \xE8 ppssibile, ha funzionato davvero... Premi il bottone e attiva
+          il Sintetizzatore Chimerico"
       StepForCompletition:
       - Premi il bottone e raggiungi gli dei
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: La Chimera
       pages:
       - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 21300000, guid: b3411cce27c37f74f8708b1fb2af4f38, type: 3}
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
         video: {fileID: 0}
-        text: 
+        text: "Mio Dio... che cosa abbiamo fatto... \xE9 un abominio.\n\nNon dire
+          a nessuno di quello che \xE8 successo. Chiamer\xF2 personalmente i Pulitori
+          per sistemare questo macello e rimuovere ogni traccia. \n\nTu non sei mai
+          stato qu\xEC. Addio."
       StepForCompletition:
       - Osserva la chimera
-      PersonalizedPrefab: {fileID: 0}
-  - ChapterName: Introduzione
-    feedbacks:
-    - FeedbackName: Introduzione 1
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Questa che stai leggendo \xE8 una delle tante diapositive che ti guider\xE0
-          per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
-          su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
-          questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
-          devi andare. \n\nUna volta completato uno step, vedrai comparire un \"check\"
-          sull'icona o sulla diapositiva. \n\nProva ad allontanarti dalla diapositiva."
-      StepForCompletition:
-      - Guarda il primo feedback
-      PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: Introduzione 2
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Ottimo lavoro, stai imparando in fretta. \n\nQuesta che vedi \xE8
-          una diapositiva pi\xF9 complessa. Contiene diverse slide che potrai navigare
-          nell'ordine che preferisci.\n\nClicca sul bottone corrispondente alla pagina
-          2, sulla sinistra"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Fantastico! Non \xE8 da tutti cliccare cos\xEC bene un bottone. Sei
-          davvero portato!"
-      StepForCompletition:
-      - Clicca sulla seconda pagina
-      PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: Introduzione 3
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Tra le pagine presenti, quella che si chiama \"Overview\" ti da informazioni
-          generiche sui task da svolgere, ed \xE8 solitamente l'ultima pagina.\n\nPuoi
-          navigare tra le pagine nell'ordine che vuoi, quindi assicurati di guardare
-          prima quella se vuoi avere subito un quadro generale.\n\nClicca sulla slide
-          \"Overview\"."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Sei fuori strada fratello, questa non \xE8 la slide \"Overview\""
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Stai sbagliando bello, questa \xE8 una slide per persone sequenziali,
-          che sono chiuse mentalmente e monotone e hanno bisogno di avere tutto il
-          futuro programmato nei minimi dettagli"
-      - Sequenzale_Globale: 1
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: Porca vacca ma cosa cazzo ti danno da mangiare?! Sei un fenomeno!
-      StepForCompletition:
-      - Clicca su slide globale
-      PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: Introduzione 4
-      pages:
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "ok figliolo, \xE8 il momento di aprire le ali. C'\xE8 tutto un mondo
-          di minigiochi ancora da esplorare. Voltati e segui le icone"
-      StepForCompletition:
-      - dirigiti fuori
       PersonalizedPrefab: {fileID: 0}

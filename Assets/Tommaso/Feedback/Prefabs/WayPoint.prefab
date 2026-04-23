@@ -554,6 +554,8 @@ GameObject:
   - component: {fileID: 5154181363226074021}
   - component: {fileID: 5154181363226074022}
   - component: {fileID: 5154181363226074023}
+  - component: {fileID: 6766432498107218004}
+  - component: {fileID: 6818617971207221077}
   m_Layer: 9
   m_Name: WayPoint
   m_TagString: Untagged
@@ -612,3 +614,28 @@ MonoBehaviour:
   m_ClampMin: 1
   m_ZoneSize: 0.5
   m_DefaultScale: 1
+--- !u!225 &6766432498107218004
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5154181363226074016}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &6818617971207221077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5154181363226074016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96073c4103bad44e8672301568e1e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 1

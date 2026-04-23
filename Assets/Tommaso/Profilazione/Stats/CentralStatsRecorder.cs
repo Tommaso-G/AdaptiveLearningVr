@@ -34,7 +34,6 @@ public class CentralStatsRecorder : MonoBehaviour
     }
 
     
-
     [System.Serializable]
     public class LearningSessionSlidesData
     {
@@ -98,11 +97,40 @@ public class CentralStatsRecorder : MonoBehaviour
         public List<GameVisivoVerbaleData> giochi = new List<GameVisivoVerbaleData>();
     }
 
+    [System.Serializable]
+    public class SlideEntry
+    {
+        public string pageName;
+        public float focusTime;
+        public float normalizedFocusTime;
+        public int opening;
+        public string seqGlob;
+        public string visVerb;
+    }
+
+    [System.Serializable]
+    public class FeedbackEntry
+    {
+        public string feedbackName;
+        public float tempoOsservazionePreStep;
+        public float tempoTotaleOsservazione;
+        public List<int> visitHistory;
+        public List<SlideEntry> slides = new List<SlideEntry>();
+    }
+
+    [System.Serializable]
+    public class FeedbacksSessionData
+    {
+        public List<FeedbackEntry> feedbacks = new List<FeedbackEntry>();
+    }
+
     [SerializeField] private SlidesDataRecorder slidesDataRecorder;
     [SerializeField] private VisivoVerbaleStatManager visivoVerbaleStatManager;
     [SerializeField] private AssemblyManager assemblyManager;
     [SerializeField] private EventTimer sessionTimer;
     [SerializeField] private MinigameDataRecorder minigameDataRecorder;
+    [SerializeField] private List<string> feedbackDaEscludere = new List<string>();
+
 
 
     public LearningSessionSlidesData CalcolaMediaSlidesData()
@@ -257,7 +285,7 @@ public class CentralStatsRecorder : MonoBehaviour
     public void SalvaJson(ProfilingSessionData data)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione", "ProfilingSessionData.json");
+        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione/Dati", "ProfilingSessionData.json");
         System.IO.File.WriteAllText(path, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {path}");
     }
@@ -288,7 +316,7 @@ public class CentralStatsRecorder : MonoBehaviour
             .Sum(f => f.tempoTotaleOsservazione);
 
         SalvaJson(result);
-
+        SalvaJsonFeedbacks();
         Debug.Log($"[CentralStatsRecorder] Sessione chiusa. Tempo: {result.genericData.sessionTimeSeconds:F2}s");
 
         return result;
@@ -310,6 +338,44 @@ public class CentralStatsRecorder : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void SalvaJsonFeedbacks()
+    {
+        var data = new FeedbacksSessionData();
+
+        foreach (var feedback in slidesDataRecorder.GetAllFeedbacks())
+        {
+            if (feedbackDaEscludere.Contains(feedback.feedbackName)) continue;
+
+            var entry = new FeedbackEntry
+            {
+                feedbackName = feedback.feedbackName,
+                tempoOsservazionePreStep = feedback.tempoOsservazionePreStep,
+                tempoTotaleOsservazione = feedback.tempoTotaleOsservazione,
+                visitHistory = feedback.visitHistory
+            };
+
+            foreach (var slide in feedback.slidesData.Values)
+            {
+                entry.slides.Add(new SlideEntry
+                {
+                    pageName = slide.pageName,
+                    focusTime = slide.focusTime,
+                    normalizedFocusTime = slide.normalizedFocusTime,
+                    opening = slide.opening,
+                    seqGlob = slide.seqGlob.ToString(),
+                    visVerb = slide.visVerb.ToString()
+                });
+            }
+
+            data.feedbacks.Add(entry);
+        }
+
+        string json = JsonUtility.ToJson(data, prettyPrint: true);
+        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione/Dati", "FeedbacksSessionData.json");
+        System.IO.File.WriteAllText(path, json);
+        Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {path}");
     }
 
     
