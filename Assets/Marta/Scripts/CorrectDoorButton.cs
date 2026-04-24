@@ -127,6 +127,7 @@ public class CorrectDoorButton : MonoBehaviour
             else
             {
                 resultImage.sprite = wrongImage;
+                wrongButtonSelected();
             }
 
             resultImage.gameObject.SetActive(true);
@@ -134,6 +135,13 @@ public class CorrectDoorButton : MonoBehaviour
             cliked = true;
         }
 
+    }
+
+    private void wrongButtonSelected()
+    {
+        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
+        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
+        ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
     }
 
     public void setBlockedDoor()

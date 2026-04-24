@@ -129,6 +129,7 @@ class ChapterState:
     difficulty_version: int = 0  # 0=base, 1=avanzato
     # Il capitolo è attualmente attivo nella sessione?
     is_active: bool = True
+    seen_this_iter: bool = False
     optional_status: OptionalStatus = OptionalStatus.NEVER_SHOWN
 
 
@@ -396,7 +397,7 @@ class AdaptiveTrainingManager:
     InitialActivationPolicy.INTERMEDIATE: InitialProfileConfig(
         name=InitialActivationPolicy.INTERMEDIATE,
         optional_to_activate=2,
-        starting_phase=TrainingPhase.CONSOLIDATION,
+        starting_phase=TrainingPhase.AUTOMATION,
         description="Alcuni opzionali attivi, ma fase ancora guidata"
     ),
     InitialActivationPolicy.ADVANCED: InitialProfileConfig(
@@ -588,6 +589,7 @@ class AdaptiveTrainingManager:
         state.skill_posterior = new_posterior
         state.observations.append((errors, time_sec))
         state.iteration_count += 1
+        state.seen_this_iter = True
 
         # ── 3. Feedback locale ───────────────────────────────────────────
         # Il feedback dipende solo dalla posterior di questo capitolo.
@@ -710,6 +712,7 @@ class AdaptiveTrainingManager:
             self._had_struggle_this_iter = {cid: False for cid in self.configs}
             self._early_remove_done_this_iter = False
             self.phase_iteration_count += 1
+            self.reset_seen_chapters()
             self._check_phase_transition(self.PHASE_CONFIGS[self.current_phase])
 
         early_remove = False  # sempre inizializzata
@@ -765,6 +768,10 @@ class AdaptiveTrainingManager:
             chapter_mastered=chapter_mastered,
             message=message
         )
+    
+    def reset_seen_chapters(self):
+        for cid, state in self.chapter_states.items():
+            state.seen_this_iter = False
 
     def get_active_chapters(self) -> List[str]:
         """Restituisce gli ID dei capitoli attualmente attivi."""
@@ -853,9 +860,21 @@ class AdaptiveTrainingManager:
         ]
         if not active_optionals:
             return None
+        
+        not_completed_optionals = [
+            cid for cid in self.optional_ids
+            if (self.chapter_states[cid].is_active
+                and self.chapter_states[cid].optional_status != OptionalStatus.MASTERED
+                and not self.chapter_states[cid].seen_this_iter)
+        ]
+
+        if not_completed_optionals:
+            eligible_optionals = not_completed_optionals
+        else:
+            eligible_optionals = active_optionals
 
         best = max(
-            active_optionals,
+            eligible_optionals,
             key=lambda cid: self.chapter_states[cid].skill_posterior[
                 SkillLevel.EXPERT.value
             ]

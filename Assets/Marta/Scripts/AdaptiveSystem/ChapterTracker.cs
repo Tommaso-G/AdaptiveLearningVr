@@ -23,11 +23,17 @@ public class ChapterTracker : MonoBehaviour
     private IProcess process;
     private List<string> chaptersToExclude = new List<string>();
 
+    private ChaptersOrderManager co_mgr;
+
+    private bool ChapterSkipped = false;
+
 
     private void Start()
     {
+        co_mgr = FindAnyObjectByType<ChaptersOrderManager>();
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
+        co_mgr.OnRemoveCurrent += HandleChapterSkipped;
     }
     private void OnProcessStarted(object sender, ProcessEventArgs args)
     {
@@ -76,16 +82,29 @@ public class ChapterTracker : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[ChapterTracker] Capitolo {chapterIdToRegister} completato. " +
-                    $"Errori: {_errorToRegister}, Tempo: {_timeToRegister:F2} min");
+        if (!ChapterSkipped)
+        {
+            Debug.Log($"[ChapterTracker] Capitolo {chapterIdToRegister} completato. " +
+                        $"Errori: {_errorToRegister}, Tempo: {_timeToRegister:F2} sec");
 
-        // Invia al sistema adattivo e gestisci la risposta
-        AdaptiveSystemClient.Instance.SendObservation(
-            chapterId: process.Data.Chapters[idxToRegister].ChapterMetadata.Guid.ToString(),
-            chapterName: process.Data.Chapters[idxToRegister].Data.Name,
-            errors: _errorToRegister,
-            timeSec: _timeToRegister
-        );
+            // Invia al sistema adattivo e gestisci la risposta
+            AdaptiveSystemClient.Instance.SendObservation(
+                chapterId: process.Data.Chapters[idxToRegister].ChapterMetadata.Guid.ToString(),
+                chapterName: process.Data.Chapters[idxToRegister].Data.Name,
+                errors: _errorToRegister,
+                timeSec: _timeToRegister
+            );
+        }
+        else
+        {
+            print("[ChapterTracker] il capitolo è stato saltato perchè rimosso");
+            ChapterSkipped = false;
+        }
+    }
+
+    private void HandleChapterSkipped()
+    {
+        ChapterSkipped = true;
     }
 
     private void OnDestroy()

@@ -10,14 +10,15 @@ public class QuizManager : MonoBehaviour
     public UnityEvent OnEnd;
 
 
-    public void CorrectAnswer() {
+    public void CorrectAnswer()
+    {
 
-        if (currentquestion +1 < questions.Length) 
+        if (currentquestion + 1 < questions.Length)
         {
             questions[currentquestion].SetActive(false);
             currentquestion++;
             questions[currentquestion].SetActive(true);
-        } 
+        }
         else
         {
 
@@ -26,5 +27,11 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-
+    public void WrongAnswer()
+    {
+        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
+        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
+        ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
+        CorrectAnswer();
+    }
 }

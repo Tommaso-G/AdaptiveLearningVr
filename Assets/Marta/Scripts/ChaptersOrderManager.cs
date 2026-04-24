@@ -53,6 +53,7 @@ public class ChaptersOrderManager : MonoBehaviour
     public int prevId;
 
     public event Action OnListChanged;
+    public event Action OnRemoveCurrent;
     public event Action<IChapter> OnSubChapterAdded;
 
     public List<string> OptionalChapters { get; private set; } = new List<string>();
@@ -104,7 +105,7 @@ public class ChaptersOrderManager : MonoBehaviour
                 }
             }
 
-                if (chapter.Data.Name.Contains("Optional"))
+            if (chapter.Data.Name.Contains("Optional"))
             {
                 OptionalChapters.Add(chapter.Data.Name);
             }
@@ -147,6 +148,8 @@ public class ChaptersOrderManager : MonoBehaviour
             }
         }
 
+        print("[ChapterManager] Capitolo prevName: " + prevName);
+
         if (!chapterNameToIndex.TryGetValue(prevName, out int prevIndex))
         {
             if (!subchapterNameToIndex.TryGetValue(prevName, out ExecuteChaptersBehavior executeChaptersBehavior))
@@ -157,6 +160,7 @@ public class ChaptersOrderManager : MonoBehaviour
             else
             {
                 AddSubChapter(executeChaptersBehavior, newIndex);
+                print("Aggiunto Capitolo: " + chapterName + " come sottocapitolo in un'esecuzione parallela");
                 return;
             }
         }
@@ -317,10 +321,30 @@ public class ChaptersOrderManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.Log("Nodo non trovato o non opzionale");
+            RemoveCurrent(chapterToRemoveName);
         }
     }
 
+    private void RemoveCurrent(string chapterToRemoveName = "")
+    {
+        if (chapterToRemoveName != "")
+        {
+            IChapter current = process.Data.Current;
+            if (current.Data.Name == chapterToRemoveName)
+            {
+                OnRemoveCurrent?.Invoke();
+                UnityEngine.Debug.Log("Rimosso capitolo corrente");
+            }
+            else
+            {
+                UnityEngine.Debug.Log("Capitolo non trovato o non opzionale");
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Nome del capitolo passato a RemoveCurrent è null");
+        }
+    }
     // Nel caso il capitolo Xop fosse già stato aggiunto più avanti nella lista,
     // creo un clone per non perdere il primo inserimento
     private Node cloneNode(Node originalNode)

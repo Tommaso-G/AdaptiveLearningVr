@@ -11,6 +11,7 @@ using static UnityEngine.Rendering.GPUSort;
 using JetBrains.Annotations;
 using UnityEngine.Rendering;
 using VRBuilder.Core.Behaviors;
+using System.Collections;
 
 
 public enum AddChapter
@@ -28,6 +29,8 @@ public class EditProcess : MonoBehaviour
     private IChapter chapter;
     public int lastChapterId { get; private set; }
 
+    bool skipCurrent = false;
+
     private void Start()
     {
         UnityEngine.Debug.Log("Inizio modifica processo...");
@@ -35,6 +38,7 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         ProcessRunner.Events.StepStarted += OnStepStarted;
         co_mgr.OnListChanged += CheckNextChapter;
+        co_mgr.OnRemoveCurrent += skipCurrentChapter;
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
@@ -98,6 +102,22 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.SkipChapters(co_mgr.OptionalChapters.Count - co_mgr.OptionalChapters.IndexOf(chapter)); // salta i capitoli opzionali rimasti
     }
 
+    public void skipCurrentChapter()
+    {
+        StartCoroutine(skipCurrentCoroutine());
+    }
+
+    public IEnumerator skipCurrentCoroutine()
+    {
+        while (process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Active)
+        {
+            yield return null;
+        }
+
+        ProcessRunner.SkipChapters(1);
+        UnityEngine.Debug.Log("[EDITPROCESS] current chapter skipped");
+    }
+
     private void setNextChapter(Node currentNode)
     {
         if (process != null && co_mgr != null)
@@ -132,5 +152,6 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.Events.ChapterStarted -= OnChapterStarted;
         ProcessRunner.Events.StepStarted -= OnStepStarted;
         co_mgr.OnListChanged -= CheckNextChapter;
+        co_mgr.OnRemoveCurrent -= skipCurrentChapter;
     }
 }
