@@ -6,8 +6,8 @@ public class ColliderTimer : MonoBehaviour
     [Tooltip("L'oggetto da monitorare")]
     public GameObject targetObject;
 
-    [Tooltip("Il collider che funge da trigger")]
-    public Collider triggerCollider;
+    [Tooltip("Il collider iniziale che funge da trigger")]
+    public Collider initialTriggerCollider;
 
     [Header("Stato Timer")]
     [SerializeField] private float elapsedTime = 0f;
@@ -16,17 +16,17 @@ public class ColliderTimer : MonoBehaviour
     private void Start()
     {
         // Assicuriamoci che il collider sia impostato come trigger
-        if (triggerCollider != null && !triggerCollider.isTrigger)
+        if (initialTriggerCollider!= null && initialTriggerCollider.isTrigger)
         {
-            triggerCollider.isTrigger = true;
-            Debug.LogWarning("[ColliderTimer] Il collider è stato impostato come trigger automaticamente.");
+            initialTriggerCollider.isTrigger = true;
+            Debug.LogWarning("[ColliderTimer] Il collider iniziale è stato impostato come trigger automaticamente.");
         }
 
         if (targetObject == null)
             Debug.LogError("[ColliderTimer] Nessun oggetto target assegnato!");
 
-        if (triggerCollider == null)
-            Debug.LogError("[ColliderTimer] Nessun trigger collider assegnato!");
+        if (initialTriggerCollider== null)
+            Debug.LogError("[ColliderTimer] Nessun trigger collider iniziale assegnato!");
     }
 
     private void Update()

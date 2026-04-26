@@ -1,4 +1,6 @@
 ﻿// ChapterTracker.cs - attaccato al GameObject del capitolo in VRBuilder
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -27,6 +29,11 @@ public class ChapterTracker : MonoBehaviour
 
     private bool ChapterSkipped = false;
 
+    private bool waitForData = false;
+    private List<(string, float)> timeChanges = new List<(string, float)>();
+
+    public Action<string, string, int, float> ObservationDataReady;
+    public static System.Action<string, float> ChangeTime;
 
     private void Start()
     {
@@ -34,6 +41,7 @@ public class ChapterTracker : MonoBehaviour
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         co_mgr.OnRemoveCurrent += HandleChapterSkipped;
+        ChangeTime += HandleTimeChange;
     }
     private void OnProcessStarted(object sender, ProcessEventArgs args)
     {
@@ -55,7 +63,7 @@ public class ChapterTracker : MonoBehaviour
             chapterIdToRegister = currentChapterName;
             idxToRegister = currentIdx;
             _timeToRegister = (Time.time - _startTime);
-            OnChapterComplete();
+            OnChapterComplete(chapterIdToRegister, idxToRegister, _timeToRegister);
         }
         currentChapterName = process.Data.Current.Data.Name;
         currentIdx = process.Data.Chapters.IndexOf(process.Data.Current);
@@ -65,41 +73,64 @@ public class ChapterTracker : MonoBehaviour
     }
 
     // ── Chiamato da VRBuilder quando il capitolo finisce ─────────────────
-    public void OnChapterComplete()
+    public void OnChapterComplete(string chapter_name, int chapter_idx, float time)
     {
-        if (chaptersToExclude.Contains(chapterIdToRegister))
+        if (chaptersToExclude.Contains(chapter_name))
         {
             return;
         }
 
-        if (stepErrorTracker.ChapterErrors.TryGetValue(chapterIdToRegister, out var error))
+        int errors = 0;
+
+        if (stepErrorTracker.ChapterErrors.TryGetValue(chapter_name, out var error))
         {
-            _errorToRegister = error.TotalErrors;
+            errors = error.TotalErrors;
         }
         else
         {
-            Debug.Log($"[ChapterTracker] Capitolo {chapterIdToRegister} non presente in ChapterErrors di StepErrorTracker");
+            Debug.Log($"[ChapterTracker] Capitolo {chapter_name} non presente in ChapterErrors di StepErrorTracker");
             return;
         }
 
         if (!ChapterSkipped)
         {
-            Debug.Log($"[ChapterTracker] Capitolo {chapterIdToRegister} completato. " +
-                        $"Errori: {_errorToRegister}, Tempo: {_timeToRegister:F2} sec");
 
-            // Invia al sistema adattivo e gestisci la risposta
-            AdaptiveSystemClient.Instance.SendObservation(
-                chapterId: process.Data.Chapters[idxToRegister].ChapterMetadata.Guid.ToString(),
-                chapterName: process.Data.Chapters[idxToRegister].Data.Name,
-                errors: _errorToRegister,
-                timeSec: _timeToRegister
-            );
+            StartCoroutine(prepareData(chapter_idx, time, errors));
         }
         else
         {
             print("[ChapterTracker] il capitolo è stato saltato perchè rimosso");
             ChapterSkipped = false;
         }
+    }
+
+    private IEnumerator prepareData(int chapter_idx, float time, int errors)
+    {
+        while (waitForData)
+        {
+            yield return null;
+        }
+
+        string chapter_name = process.Data.Chapters[chapter_idx].Data.Name;
+
+        var element = timeChanges.FirstOrDefault(e => e.Item1 == chapter_name);
+        float time_change = element.Item1 != null ? element.Item2 : 0f;
+
+        ObservationDataReady?.Invoke(
+            process.Data.Chapters[chapter_idx].ChapterMetadata.Guid.ToString(),
+            chapter_name,
+            errors,
+            time+time_change);
+
+        Debug.Log($"[ChapterTracker] Capitolo {chapter_name} completato. " +
+            $"Errori: {errors}, Tempo: {time+time_change:F2} sec");
+    }
+    private void HandleTimeChange(string chapter_name, float timeDelta)
+    {
+        waitForData = true;
+        timeChanges.Add((chapter_name, timeDelta));
+        waitForData = false;
+        Debug.Log($"[ChapterTracker] Aggiunti {timeDelta:F2} sec al tempo del capitolo {chapter_name}.");
     }
 
     private void HandleChapterSkipped()
@@ -111,5 +142,6 @@ public class ChapterTracker : MonoBehaviour
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
         ProcessRunner.Events.ChapterStarted -= OnChapterStarted;
+        ChangeTime += HandleTimeChange;
     }
 }

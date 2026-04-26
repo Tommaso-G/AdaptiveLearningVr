@@ -42,24 +42,23 @@ public class CheckTimerBehavior : Behavior<CheckTimerBehavior.EntityData>
                 Debug.LogWarning("[CheckTimerBehavior] Nessun ColliderTimer trovato in scena.");
                 return;
             }
+            // Recupera il capitolo corrente dal processo attivo
+            IProcess process = ProcessRunner.Current;
+            string chapterName = "Capitolo sconosciuto";
+
+            if (process != null && process.Data.Current != null)
+                chapterName = process.Data.Current.Data.Name;
+
+            // Il nome dello step corrente come "wrong step"
+            string currentStepName = "Step sconosciuto";
+            if (process?.Data.Current?.Data.Current != null)
+                currentStepName = process.Data.Current.Data.Current.Data.Name;
 
             float elapsed = colliderTimer.GetTime();
             Debug.Log($"[CheckTimerBehavior] Tempo rilevato: {elapsed:F2}s | Soglia: {Data.TimeThreshold:F2}s");
 
             if (elapsed > Data.TimeThreshold)
             {
-                // Recupera il capitolo corrente dal processo attivo
-                IProcess process = ProcessRunner.Current;
-                string chapterName = "Capitolo sconosciuto";
-
-                if (process != null && process.Data.Current != null)
-                    chapterName = process.Data.Current.Data.Name;
-
-                // Il nome dello step corrente come "wrong step"
-                string currentStepName = "Step sconosciuto";
-                if (process?.Data.Current?.Data.Current != null)
-                    currentStepName = process.Data.Current.Data.Current.Data.Name;
-
                 ErrorEvent.OnError?.Invoke(chapterName, currentStepName, Data.InteractedObjectName);
 
                 Debug.Log($"[CheckTimerBehavior] Soglia superata — errore registrato. " +
@@ -68,6 +67,7 @@ public class CheckTimerBehavior : Behavior<CheckTimerBehavior.EntityData>
             }
             else
             {
+                ChapterTracker.ChangeTime?.Invoke(chapterName, elapsed);
                 Debug.Log("[CheckTimerBehavior] Tempo nella norma, nessun errore registrato.");
             }
         }

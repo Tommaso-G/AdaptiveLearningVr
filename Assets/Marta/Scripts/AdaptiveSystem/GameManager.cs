@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private List<string> chaptersCompletedThisIteration = new List<string>();
     private List<string> active_chapters = new List<string>();
 
+
     private void Start()
     {
         chaptersOrderMgr = FindFirstObjectByType<ChaptersOrderManager>();
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
 
         AdaptiveSystemClient.OnDecisionReceived += HandleDecision;
         AdaptiveSystemClient.OnSessionStarted += SaveActiveChapters;
+        chapterTracker.ObservationDataReady += SendObservation;
 
         if (resetAll)
         {
@@ -71,20 +73,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeSession()
     {
-        //bool resetAll = SessionPersistence.GetResetAll();
-
-        //if (resetAll || !SessionPersistence.HasSavedSession())
-        //{
-        //    Debug.Log("[GameManager] Nuova sessione");
-        //    SessionPersistence.SetResetAll(false); // IMPORTANTISSIMO
-        //    yield return StartCoroutine(StartNewSession());
-        //}
-        //else
-        //{
-        //    Debug.Log("[GameManager] Riprendo sessione esistente");
-        //    string sessionId = SessionPersistence.Load();
-        //    yield return StartCoroutine(RestoreAndInitialize(sessionId));
-        //}
 
         if (resetAll || !SessionPersistence.HasSavedSession())
         {
@@ -130,12 +118,6 @@ public class GameManager : MonoBehaviour
                         {
                             chapter.feedbackLevel = 0;
                         }
-
-                        // versione difficoltà minima per la prima run
-                        //foreach (var chapter in difficultyChapterFilter.chapterSettings)
-                        //{
-                        //    chapter.difficultyLevel = 0;
-                        //}
 
                         List<string> chapterToAdd = new List<string>();
                         foreach (string ac in activeChapters)
@@ -393,10 +375,22 @@ public class GameManager : MonoBehaviour
             chaptersOrderMgr.AddOptional(chaptersIdToName[id]);
         }
     }
+
+    private void SendObservation(string chapter_id, string chapter_name, int errors, float time)
+    {
+        // Invia al sistema adattivo e gestisci la risposta
+        AdaptiveSystemClient.Instance.SendObservation(
+            chapterId: chapter_id,
+            chapterName: chapter_name,
+            errors: errors,
+            timeSec: time
+        );
+    }
     private void OnDestroy()
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
         AdaptiveSystemClient.OnDecisionReceived -= HandleDecision;
+        chapterTracker.ObservationDataReady -= SendObservation;
 
         //if (endIterationButton != null)
         //{
