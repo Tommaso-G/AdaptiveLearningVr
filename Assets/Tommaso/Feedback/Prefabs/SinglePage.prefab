@@ -496,9 +496,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypointPrefab: {fileID: 5154181363226074016, guid: 37f15095cf94f7643b8990408e720ed6, type: 3}
+  OptionalWayPoint: {fileID: 5154181363226074016, guid: b8ad35a20b337dc4aabbbdaaa9f0814d, type: 3}
   activationDistance: 2.5
   scaleSpeed: 15
   maxScale: 0.002
+  isOptionalFeedback: 0
   reflectiveButtonActivate: {fileID: 1526074378693752191}
   reflectiveButtonDeactivate: {fileID: 7166359737066246707}
   scrollable: {fileID: 9088784922178284893}
@@ -1311,7 +1313,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.0012207031}
+  m_AnchoredPosition: {x: -0, y: -0.0020751953}
   m_SizeDelta: {x: 559.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628609877651487099
@@ -1646,8 +1648,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3292046231320405482}
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999909
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

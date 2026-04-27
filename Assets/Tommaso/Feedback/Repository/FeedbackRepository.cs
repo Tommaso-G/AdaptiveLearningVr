@@ -26,6 +26,9 @@ public class FeedbackRepository : ScriptableObject
     public PathGroup globalPath = new PathGroup();
     public PathGroup sequentialPath = new PathGroup();
 
+    [Header("Feedback Eccezionali")]
+    public List<ExceptionFeedbackEntry> exceptionFeedbacks = new List<ExceptionFeedbackEntry>();
+
 
 
     // ======================= CLASSI ANNIDATE =========================
@@ -102,12 +105,20 @@ public class FeedbackRepository : ScriptableObject
         [Tooltip("Un singolo video opzionale per la pagina.")]
         public VideoClip video;
 
-        [Tooltip("Testo opzionale  della pagina.")]
+        [Tooltip("Testo opzionale della pagina.")]
         [TextArea(2, 5)]
         public string text;
-
-
     }
+
+    [Serializable]
+    public class ExceptionFeedbackEntry
+    {
+        [Header("Percorsi per profilo (stessa struttura di globalPath / sequentialPath)")]
+        public PathGroup globalPath = new PathGroup();
+        public PathGroup sequentialPath = new PathGroup();
+    }
+
+
 
     // ======================= METODI GET =========================
 
@@ -170,7 +181,6 @@ public class FeedbackRepository : ScriptableObject
 
         if (feedback != null)
         {
-            //Debug.Log($"[FeedbackRepository] Feedback '{feedback.FeedbackName}' trovato per lo step '{stepName}' nel capitolo '{chapter.ChapterName}'.");
             return feedback;
         }
         else
@@ -217,7 +227,100 @@ public class FeedbackRepository : ScriptableObject
         return allFeedbacks;
     }
 
+    /// <summary>
+    /// Cerca in exceptionFeedbacks il FeedbackData con il nome specificato,
+    /// selezionando il percorso corretto in base al profilo.
+    /// </summary>
+    public FeedbackData GetExceptionFeedback(
+        string feedbackName,
+        (LearningEnums.AttivoRiflessivo attivoRiflessivo,
+         LearningEnums.SensitivoIntuitivo _,
+         LearningEnums.VisivoVerbale visivoVerbale,
+         LearningEnums.SequenzialeGlobale sequenzialeGlobale) profileTuple)
+    {
+        if (string.IsNullOrEmpty(feedbackName))
+        {
+            Debug.LogWarning("[FeedbackRepository] feedbackName nullo o vuoto.");
+            return null;
+        }
 
+        var chapters = GetExceptionChapters(profileTuple);
+        if (chapters == null) return null;
+
+        foreach (var chapter in chapters)
+        {
+            var feedback = chapter.feedbacks?.FirstOrDefault(f =>
+                string.Equals(f.FeedbackName, feedbackName, StringComparison.OrdinalIgnoreCase));
+
+            if (feedback != null) return feedback;
+        }
+
+        Debug.LogWarning($"[FeedbackRepository] Nessun feedback eccezionale con nome '{feedbackName}' trovato nel percorso selezionato.");
+        return null;
+    }
+
+    /// <summary>
+    /// Restituisce il chapterName del capitolo che contiene il feedback con il nome specificato,
+    /// selezionando il percorso corretto in base al profilo.
+    /// Usato da ExceptionFeedbackHandler per il controllo su FeedbackChapterFilter.
+    /// </summary>
+    public string GetExceptionChapterName(
+        string feedbackName,
+        (LearningEnums.AttivoRiflessivo attivoRiflessivo,
+         LearningEnums.SensitivoIntuitivo _,
+         LearningEnums.VisivoVerbale visivoVerbale,
+         LearningEnums.SequenzialeGlobale sequenzialeGlobale) profileTuple)
+    {
+        var chapters = GetExceptionChapters(profileTuple);
+        if (chapters == null) return null;
+
+        foreach (var chapter in chapters)
+        {
+            bool found = chapter.feedbacks?.Any(f =>
+                string.Equals(f.FeedbackName, feedbackName, StringComparison.OrdinalIgnoreCase)) ?? false;
+
+            if (found) return chapter.ChapterName;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Seleziona la lista di capitoli corretta dall'unico ExceptionFeedbackEntry
+    /// in base al profilo FSLSM.
+    /// </summary>
+    private List<Chapter> GetExceptionChapters(
+        (LearningEnums.AttivoRiflessivo attivoRiflessivo,
+         LearningEnums.SensitivoIntuitivo _,
+         LearningEnums.VisivoVerbale visivoVerbale,
+         LearningEnums.SequenzialeGlobale sequenzialeGlobale) profileTuple)
+    {
+        if (exceptionFeedbacks == null || exceptionFeedbacks.Count == 0)
+        {
+            Debug.LogWarning("[FeedbackRepository] exceptionFeedbacks è vuoto.");
+            return null;
+        }
+
+        var entry = exceptionFeedbacks[0];
+        var (attivoRiflessivo, _, visivoVerbale, sequenzialeGlobale) = profileTuple;
+
+        PathGroup branch = (sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale)
+            ? entry.globalPath
+            : entry.sequentialPath;
+
+        if (visivoVerbale == LearningEnums.VisivoVerbale.Visivo)
+            return (attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo)
+                ? branch.visualPath.attivo
+                : branch.visualPath.riflessivo;
+        else
+            return (attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo)
+                ? branch.verbalPath.attivo
+                : branch.verbalPath.riflessivo;
+    }
+
+
+
+    // ======================= STATIC HELPERS =========================
 
     public static GameObject GetFirstGameObjectFromStep(IStep step)
     {
@@ -237,17 +340,11 @@ public class FeedbackRepository : ScriptableObject
             var properties = data.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var prop in properties)
             {
-                // Debug.Log($"[StepHelpers] Analizzando property: {prop.Name} ({prop.PropertyType.Name}) in {ownerType}");
-
                 // SingleSceneObjectReference
                 if (typeof(SingleSceneObjectReference).IsAssignableFrom(prop.PropertyType))
                 {
                     var reference = prop.GetValue(data) as SingleSceneObjectReference;
-                    if (reference == null)
-                    {
-                        //Debug.Log($"[StepHelpers] SingleSceneObjectReference nullo in property '{prop.Name}'");
-                        continue;
-                    }
+                    if (reference == null) continue;
 
                     var sceneObject = reference.Value;
                     if (sceneObject != null && sceneObject.GameObject != null)
@@ -265,33 +362,19 @@ public class FeedbackRepository : ScriptableObject
                          prop.PropertyType.GetGenericTypeDefinition() == typeof(MultipleScenePropertyReference<>))
                 {
                     var mspr = prop.GetValue(data);
-                    if (mspr == null)
-                    {
-                        // Debug.Log($"[StepHelpers] MultipleScenePropertyReference nullo in property '{prop.Name}'");
-                        continue;
-                    }
+                    if (mspr == null) continue;
 
-                    // Recupera la proprietà "Guids"
                     var guidsProp = prop.PropertyType.GetProperty("Guids");
-                    if (guidsProp == null)
-                    {
-                        //Debug.Log($"[StepHelpers] Proprietà 'Guids' non trovata in '{prop.Name}'");
-                        continue;
-                    }
+                    if (guidsProp == null) continue;
 
                     var guids = guidsProp.GetValue(mspr) as IEnumerable<Guid>;
-                    if (guids == null)
-                    {
-                        //Debug.Log($"[StepHelpers] Nessun GUID trovato in MultipleScenePropertyReference '{prop.Name}'");
-                        continue;
-                    }
+                    if (guids == null) continue;
 
                     foreach (var guid in guids)
                     {
                         var sceneObject = registry.GetObjects(guid).FirstOrDefault();
                         if (sceneObject != null && sceneObject.GameObject != null)
                         {
-                            //Debug.Log($"[StepHelpers] Trovato GameObject '{sceneObject.GameObject.name}' in MultipleScenePropertyReference '{prop.Name}'");
                             return sceneObject.GameObject;
                         }
                     }
@@ -311,7 +394,6 @@ public class FeedbackRepository : ScriptableObject
         // 2️⃣ Controlla Conditions
         foreach (var transition in step.Data.Transitions.Data.Transitions)
         {
-            //Debug.Log($"[StepHelpers] Analizzando transition: {transition.Data.GetType().Name}");
             foreach (var condition in transition.Data.Conditions)
             {
                 var go = CheckProperties(condition.Data, $"condition '{condition.Data.GetType().Name}'");
@@ -323,12 +405,27 @@ public class FeedbackRepository : ScriptableObject
         return null;
     }
 
+
+
+    // ======================= ONVALIDATE =========================
+
     private void OnValidate()
     {
         if (globalPath != null && sequentialPath != null)
         {
             UpdateAllFeedbackPages(globalPath, LearningEnums.SequenzialeGlobale.Globale);
             UpdateAllFeedbackPages(sequentialPath, LearningEnums.SequenzialeGlobale.Sequenziale);
+        }
+
+        // Aggiorna anche i percorsi interni agli exception feedbacks
+        if (exceptionFeedbacks != null)
+        {
+            foreach (var entry in exceptionFeedbacks)
+            {
+                if (entry == null) continue;
+                UpdateAllFeedbackPages(entry.globalPath, LearningEnums.SequenzialeGlobale.Globale);
+                UpdateAllFeedbackPages(entry.sequentialPath, LearningEnums.SequenzialeGlobale.Sequenziale);
+            }
         }
     }
 
@@ -369,10 +466,4 @@ public class FeedbackRepository : ScriptableObject
             }
         }
     }
-
 }
-
-
-
-
-

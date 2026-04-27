@@ -50,6 +50,7 @@ public class FollowPlayerBehavior : Behavior<FollowPlayerBehavior.EntityData>
 
                 return;
             }
+            Debug.Log($"[FollowPlayerBehavior] Invoco evento — follower: {follower?.name}, player: {player?.name}");
 
             // Emetti l'evento
             OnFollowPlayerTriggered?.Invoke(follower, player);

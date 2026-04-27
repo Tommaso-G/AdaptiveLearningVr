@@ -18,7 +18,7 @@ public class InteractionListener : MonoBehaviour
         XRLever lever = this.GetComponentInParent<XRLever>(true);
         Button buttonUI = this.GetComponentInParent<Button>(true);
         ClosableDoor door = this.GetComponentInParent<ClosableDoor>(true);
-        FollowerAgent npc = this.GetComponentInParent<FollowerAgent>(true);
+        FollowerAgentWithCheck npc = this.GetComponentInParent<FollowerAgentWithCheck>(true);
         visualProxy = this.GetComponentInParent<VisualProxy>(true);
 
 

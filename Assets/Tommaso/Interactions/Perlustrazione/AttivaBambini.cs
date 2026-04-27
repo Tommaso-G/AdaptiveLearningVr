@@ -7,7 +7,7 @@ public class AttivatoreCasuale : MonoBehaviour
     public GameObject[] oggetti; // Lista di oggetti da assegnare nell’Inspector
 
     [Header("Numero di oggetti da attivare")]
-    [Range(0, 100)]
+    [Range(0, 4)]
     public int quantitaDaAttivare = 1;
 
     void OnValidate()
@@ -25,7 +25,7 @@ public class AttivatoreCasuale : MonoBehaviour
 
     void Start()
     {
-        AttivaOggettiCasuali();
+      AttivaOggettiCasuali();
     }
 
     [ContextMenu("Attiva Oggetti Casuali")]

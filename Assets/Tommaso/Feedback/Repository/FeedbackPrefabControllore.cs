@@ -7,9 +7,12 @@ public class FeedbackPrefabController : MonoBehaviour
 {
     [Header("Parametri generali (configurabili da Inspector)")]
     public GameObject waypointPrefab;
+    public GameObject OptionalWayPoint;
     public float activationDistance = 1f;
     public float scaleSpeed = 3f;
     public float maxScale = 0.004f;
+
+    public bool isOptionalFeedback = false;
 
     private LearningStyleFeatures styleBehaviour;
     private LearningProfile profile;
@@ -60,8 +63,15 @@ public class FeedbackPrefabController : MonoBehaviour
             }
         }
 
-        // Istanzia il waypoint
-        if (waypointPrefab != null)
+        if (isOptionalFeedback)
+        {
+            if (OptionalWayPoint != null)
+            {
+                waypointInstance = Instantiate(OptionalWayPoint, transform.position, Quaternion.identity);
+                waypointInstance.name = $"OptionalWaypoint_{name}";
+                waypointInstance.SetActive(true);
+            }
+        }else if (waypointPrefab != null)
         {
             waypointInstance = Instantiate(waypointPrefab, transform.position, Quaternion.identity);
             waypointInstance.name = $"Waypoint_{name}";

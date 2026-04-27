@@ -299,9 +299,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypointPrefab: {fileID: 5154181363226074016, guid: 37f15095cf94f7643b8990408e720ed6, type: 3}
+  OptionalWayPoint: {fileID: 5154181363226074016, guid: b8ad35a20b337dc4aabbbdaaa9f0814d, type: 3}
   activationDistance: 2.5
   scaleSpeed: 15
   maxScale: 0.002
+  isOptionalFeedback: 0
   reflectiveButtonActivate: {fileID: 1526074378693752191}
   reflectiveButtonDeactivate: {fileID: 7166359737066246707}
   scrollable: {fileID: 9088784922178284893}
@@ -653,7 +655,7 @@ GameObject:
   - component: {fileID: 38567041152473165}
   - component: {fileID: 1698442719061225831}
   - component: {fileID: 3754805070118954415}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Nav Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +961,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1667874852831791699}
   m_HandleRect: {fileID: 4298046036347282925}
   m_Direction: 2
-  m_Value: 0.9999952
+  m_Value: 0.99998987
   m_Size: 0.5873182
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1343,7 +1345,7 @@ GameObject:
   - component: {fileID: 5313309312092617369}
   - component: {fileID: 3430538351493948208}
   - component: {fileID: 6477221681635628442}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: On Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1593,7 +1595,7 @@ GameObject:
   - component: {fileID: 1041234505918690020}
   - component: {fileID: 6190538468130161842}
   - component: {fileID: 1010156289021638268}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Nav Item Toggle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2503,7 +2505,7 @@ GameObject:
   - component: {fileID: 850099176419909281}
   - component: {fileID: 4625626829782712407}
   - component: {fileID: 9138986492808778726}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
