@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections;
+using VRBuilder.BasicInteraction.Editor.UI.MenuItems;
 
 public class interviewPhone : MonoBehaviour
 {
@@ -9,12 +10,14 @@ public class interviewPhone : MonoBehaviour
     private AudioSource audioSource;
     private bool grabbedOnce;
     [SerializeField] private HandMenuRequester menuRequester;
+    [SerializeField] private QuizManager quizManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         grabbedOnce = false;
         renderer = GetComponent<MeshRenderer>();
         audioSource = GetComponentInChildren<AudioSource>();
+        quizManager.OnEnd.AddListener(onGrabbedEnd);
     }
 
     public void onGrabbed()
