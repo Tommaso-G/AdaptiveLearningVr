@@ -555,7 +555,6 @@ GameObject:
   - component: {fileID: 5154181363226074022}
   - component: {fileID: 5154181363226074023}
   - component: {fileID: 6766432498107218004}
-  - component: {fileID: 6818617971207221077}
   m_Layer: 9
   m_Name: OptionalWayPoint
   m_TagString: Untagged
@@ -626,16 +625,3 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &6818617971207221077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5154181363226074016}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a96073c4103bad44e8672301568e1e5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeDuration: 1
