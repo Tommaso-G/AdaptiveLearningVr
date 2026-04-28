@@ -25,7 +25,7 @@ public class AttivatoreCasuale : MonoBehaviour
 
     void Start()
     {
-      AttivaOggettiCasuali();
+      //AttivaOggettiCasuali();
     }
 
     [ContextMenu("Attiva Oggetti Casuali")]
