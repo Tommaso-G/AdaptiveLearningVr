@@ -31,6 +31,8 @@ public class SpawnArea : MonoBehaviour
     public static event Action<SpawnArea, bool> onSpawnAreaChange;
 
     public Transform feedbackPos;
+    public Transform effectFeedbackPos;
+    public Transform checkFumo;
 
     public Bounds AreaBounds => areaBounds;
     private void Awake()
@@ -99,6 +101,9 @@ public class SpawnArea : MonoBehaviour
         // Istanzia e fa partire il particle system
         GameObject instance = Instantiate(areaPSEffect, Vector3.zero, Quaternion.identity, this.transform);
         instance.GetComponent<ParticleSystem>().Play();
+        checkFumo.position = effectFeedbackPos.position;
+        checkFumo.rotation = effectFeedbackPos.rotation;
+        checkFumo.gameObject.SetActive(false);
 
         if (effectsController != null)
         {

@@ -278,6 +278,17 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: Estintore generico Optional
         feedbacks:
+        - FeedbackName: "C'\xE8 del fumo!"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "C'\xE8 del fumo nella stanza. Abbassati per non inalarlo."
+          StepForCompletition:
+          - Mostra Feedback fumo
+          PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
