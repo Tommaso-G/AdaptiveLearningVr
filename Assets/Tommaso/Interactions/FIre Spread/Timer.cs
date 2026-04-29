@@ -9,6 +9,9 @@ public class ColliderTimer : MonoBehaviour
     [Tooltip("Il collider iniziale che funge da trigger")]
     public Collider initialTriggerCollider;
 
+    public FirePropagationEvaluator propagationEvaluator;
+
+
     [Header("Stato Timer")]
     [SerializeField] private float elapsedTime = 0f;
     [SerializeField] private bool isRunning = false;
@@ -57,9 +60,12 @@ public class ColliderTimer : MonoBehaviour
     public void StopTimer()
     {
         isRunning = false;
-        Debug.Log("[ColliderTimer] Timer fermato.");
-    }
 
+        if (propagationEvaluator != null)
+            elapsedTime += propagationEvaluator.GetGlobalPropagationLevel();
+
+        Debug.Log($"[ColliderTimer] Timer fermato. Tempo finale (con propagazione): {elapsedTime}");
+    }
     public void ResetTimer()
     {
         isRunning = false;
