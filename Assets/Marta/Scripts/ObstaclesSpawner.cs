@@ -8,6 +8,8 @@ using UnityEngine.Localization.Settings;
 using System;
 using System.Collections;
 using Unity.XR.CoreUtils;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class ObstaclesSpawner : MonoBehaviour
 {
@@ -16,19 +18,11 @@ public class ObstaclesSpawner : MonoBehaviour
     public List<SpawnArea> currentSpawnAreas = new List<SpawnArea>();
     private List<SpawnArea> spawnAreas;
 
-    //[Header("Spawn Settings")]
-    //[SerializeField] private int maxAttemps = 100;
-    //[SerializeField] private float spawnRadius = 1.2f;
-    //[SerializeField] private float heightOfCheck = 10f;
-    //[SerializeField] private float rangeOfCheck = 30f;
-    //[SerializeField] private LayerMask layerMask;
-    //[SerializeField] private LayerMask obstacleMask;
-
     [SerializeField] private Transform childEmpty;
     [SerializeField] private Transform spawnAreasParent;
     private bool activateAreaEffect = false;
     private SpawnableObj spawnableObj;
-    private bool reset = true;
+    private bool Initialized = true;
 
     public Transform multifeedbackPos;
     private bool HasActiveSpawnedObjects => childEmpty.childCount > 0;
@@ -49,6 +43,8 @@ public class ObstaclesSpawner : MonoBehaviour
         {
             SpawnResources(spawnArea);
         }
+
+        Initialized = true;
     }
 
     private void pickRandomArea(int amount = 1)
@@ -98,21 +94,6 @@ public class ObstaclesSpawner : MonoBehaviour
     void SpawnResources(SpawnArea spawnArea)
     {
         bool spawned = false;
-        //for (int attempts = 0; attempts < maxAttemps; attempts++)
-        //{
-        //    Vector2 bounds = spawnArea.GetRandomPoint();
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(new Vector3(bounds.x, heightOfCheck, bounds.y), Vector3.down, out hit, rangeOfCheck, layerMask))
-        //    {
-        //        if (IsSpaceFree(hit.point, spawnRadius, obstacleMask))
-        //        {
-        //            spawnableObj.Instantiate(spawnablePrefab, spawnArea, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)), childEmpty.transform);
-        //            spawned = true;
-        //            Debug.Log("Trovato punto random dopo " + attempts + " tentativi");
-        //            break;
-        //        }
-        //    }
-        //}
 
         if (!spawned)
         {
@@ -133,7 +114,6 @@ public class ObstaclesSpawner : MonoBehaviour
         }
 
         spawnArea.SetFeedbackParent(multifeedbackPos);
-
     }
 
     public void OnSpawnedObjDestroyed(SpawnableObj obj, SpawnArea spawnArea)
@@ -152,10 +132,21 @@ public class ObstaclesSpawner : MonoBehaviour
 
     public void ResetSpawner()
     {
+        StartCoroutine(ResetCoroutine());
+    }
+
+    private IEnumerator ResetCoroutine()
+    {
+        while(!Initialized)
+        {
+            yield return null;
+        }
 
         for (int i = childEmpty.childCount - 1; i >= 0; i--)
         {
             Destroy(childEmpty.GetChild(i).gameObject);
         }
+
+        Initialized = false;
     }
 }

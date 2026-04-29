@@ -31,6 +31,8 @@ public class EditProcess : MonoBehaviour
 
     bool skipCurrent = false;
 
+    [SerializeField] private ChapterSkipHandler skipHandler;
+
     private void Start()
     {
         UnityEngine.Debug.Log("Inizio modifica processo...");
@@ -113,8 +115,9 @@ public class EditProcess : MonoBehaviour
         {
             yield return null;
         }
-
+        string currentName = process.Data.Current.Data.Name;
         ProcessRunner.SkipChapters(1);
+        skipHandler.NotifyChapterSkipped(currentName);
         UnityEngine.Debug.Log("[EDITPROCESS] current chapter skipped");
     }
 
