@@ -288,7 +288,8 @@ class AdaptiveDecisionEngine:
         posterior: List[float],
         current_level: int,
         had_recent_struggle: bool,
-        phase_config: PhaseConfig
+        phase_config: PhaseConfig,
+        mastered: bool = False
     ) -> int:
         p_novice = posterior[SkillLevel.NOVICE.value]
         p_intermediate = posterior[SkillLevel.INTERMEDIATE.value]
@@ -303,6 +304,9 @@ class AdaptiveDecisionEngine:
             if  (p_intermediate > p_novice):
                 return 1
             return current_level
+        
+        if mastered:
+            return 0
         
         # ===== FASE 2 e 3: Feedback variabile =====
         # nelle altre due fasi può cambiare liberamente
@@ -396,7 +400,7 @@ class AdaptiveTrainingManager:
     ),
     InitialActivationPolicy.INTERMEDIATE: InitialProfileConfig(
         name=InitialActivationPolicy.INTERMEDIATE,
-        optional_to_activate=2,
+        optional_to_activate=1,
         starting_phase=TrainingPhase.AUTOMATION,
         description="Alcuni opzionali attivi, ma fase ancora guidata"
     ),
@@ -746,7 +750,11 @@ class AdaptiveTrainingManager:
             self.chapter_states[chapter_id].optional_status = OptionalStatus.MASTERED
             self.chapter_states[chapter_id].difficulty_version = 1
             new_difficulty = 1
-
+            # cambia di nuovo il feedback
+            new_feedback = AdaptiveDecisionEngine.determine_feedback_level(
+                new_posterior, old_feedback, had_struggle, phase_config= self.PHASE_CONFIGS[self.current_phase], mastered=True)
+            
+            state.feedback_level = new_feedback
         # ── Costruisci il messaggio di log ───────────────────────────────
         message = self._build_message(
             chapter_id, chapter_name, new_posterior, new_feedback, old_feedback, old_difficulty, new_difficulty,
