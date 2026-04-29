@@ -138,42 +138,61 @@ public class CentralStatsRecorder : MonoBehaviour
         var result = new LearningSessionSlidesData();
         var feedbacks = slidesDataRecorder.GetAllFeedbacks().ToList();
 
-        if (feedbacks.Count == 0) return result;
+        if (feedbacks.Count == 0)
+            return result;
 
-        float totaleScore = 0f;
-        float totalePreStep = 0f;
+        float sommaPesataScore = 0f;
+        float sommaPesataPreStep = 0f;
+        float sommaPesi = 0f;
+
         float totaleOpeningSequenziale = 0f;
         float totaleOpeningGlobale = 0f;
 
-        foreach (var feedback in feedbacks)
+        for (int i = 0; i < feedbacks.Count; i++)
         {
+            var feedback = feedbacks[i];
+
             float score = CalcolaScoreFeedback(feedback);
-            totaleScore += score;
 
             var slideSeq = feedback.slidesData.Values
                 .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Sequenziale)
                 .ToList();
+
             var slideGlob = feedback.slidesData.Values
                 .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Globale)
                 .ToList();
 
-            totaleOpeningSequenziale += slideSeq.Count > 0 ? (float)slideSeq.Average(s => s.opening) : 0f;
-            totaleOpeningGlobale += slideGlob.Count > 0 ? (float)slideGlob.Average(s => s.opening) : 0f;
-            totalePreStep += feedback.tempoOsservazionePreStep;
+            totaleOpeningSequenziale += slideSeq.Count > 0
+                ? (float)slideSeq.Average(s => s.opening)
+                : 0f;
 
-            Debug.Log($"[CentralStatsRecorder] Feedback: {feedback.feedbackName} → score globale: {score:F2}");
+            totaleOpeningGlobale += slideGlob.Count > 0
+                ? (float)slideGlob.Average(s => s.opening)
+                : 0f;
+
+            float t = (feedbacks.Count == 1)
+                ? 1f
+                : (float)i / (feedbacks.Count - 1);
+
+            float peso = 0.5f + Mathf.Pow(t, 2f);
+
+            sommaPesataScore += score * peso;
+            sommaPesataPreStep += feedback.tempoOsservazionePreStep * peso;
+            sommaPesi += peso;
+
+            Debug.Log($"[CentralStatsRecorder] Feedback: {feedback.feedbackName} → score: {score:F2}, peso: {peso:F2}");
         }
 
-        int count = feedbacks.Count;
-        result.scoreGlobaleSequenziale = totaleScore / count; // 0=seq, 1=glob
-        result.mediaTempoPreStep = totalePreStep / count;
+        result.scoreGlobaleSequenziale = sommaPesataScore / sommaPesi;
+        result.mediaTempoPreStep = sommaPesataPreStep / sommaPesi;
 
-        Debug.Log($"[CentralStatsRecorder] Score globale/sequenziale medio: {result.scoreGlobaleSequenziale:F2}");
-        Debug.Log($"[CentralStatsRecorder] Media tempo pre-step: {result.mediaTempoPreStep:F2}s");
-
+        Debug.Log($"[CentralStatsRecorder] Score medio pesato: {result.scoreGlobaleSequenziale:F2}");
+        Debug.Log($"[CentralStatsRecorder] Tempo pre-step medio pesato: {result.mediaTempoPreStep:F2}s");
 
         return result;
     }
+
+    
     private float CalcolaScoreFeedback(FeedbackDataContainer feedback)
     {
         var slideSeq = feedback.slidesData.Values
