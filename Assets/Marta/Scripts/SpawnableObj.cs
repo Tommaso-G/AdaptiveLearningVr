@@ -13,6 +13,11 @@ public class SpawnableObj : MonoBehaviour
     public void Initialize(SpawnArea area)
     {
         spawnArea = area;
+        //spawnArea.SetOccupied(true);
+    }
+
+    private void Start()
+    {
         spawnArea.SetOccupied(true);
     }
 

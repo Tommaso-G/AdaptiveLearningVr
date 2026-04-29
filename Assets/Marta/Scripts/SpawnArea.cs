@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class SpawnArea : MonoBehaviour
@@ -70,10 +71,10 @@ public class SpawnArea : MonoBehaviour
         {
             SpawnEffect();
         }
-        //else
-        //{
-        //    ResetArea();
-        //}
+        else
+        {
+            ResetArea();
+        }
     }
 
     public void SpawnEffect()
@@ -123,9 +124,10 @@ public class SpawnArea : MonoBehaviour
 
         for (int i = transform.childCount - 1; i > 0; i--)
         {
-            if (transform.GetChild(i).GetComponent<ParticleSystem>() != null)
+            ParticleSystem ps = transform.GetChild(i).GetComponent<ParticleSystem>();
+            if (ps!= null)
             {
-                Destroy(transform.GetChild(i).gameObject);
+                StartCoroutine(EffectOff(ps));
                 break;
             }
         }
@@ -134,5 +136,17 @@ public class SpawnArea : MonoBehaviour
         {
             effectsController.SetCanActivate(false);
         }
+    }
+
+    private IEnumerator EffectOff(ParticleSystem ps)
+    {
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        while (ps.IsAlive(true))
+        {
+            yield return null;
+        }
+
+        Destroy(ps.gameObject);
     }
 }

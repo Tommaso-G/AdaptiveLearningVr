@@ -3,12 +3,15 @@ using UnityEngine.UI;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using VRBuilder.Core;
 
 public class InteractionListener : MonoBehaviour
 {
     private GameObject lastInteractable;
     public ExecutionOrderController executionOrderController;
     private VisualProxy visualProxy;
+    private string chapter_name;
+    private IProcess process;
 
     void Start()
     {
@@ -20,7 +23,6 @@ public class InteractionListener : MonoBehaviour
         ClosableDoor door = this.GetComponentInParent<ClosableDoor>(true);
         FollowerAgentWithCheck npc = this.GetComponentInParent<FollowerAgentWithCheck>(true);
         visualProxy = this.GetComponentInParent<VisualProxy>(true);
-
 
         if (button != null)
         {
@@ -56,53 +58,64 @@ public class InteractionListener : MonoBehaviour
             Debug.Log("Impossobile attivare listener a: " + gameObject.name);
         }
     }
+    public void Initialize(IProcess process)
+    {
+        this.process = process;
+    }
 
     private void OnDoorClosed()
     {
-        executionOrderController.checkForObjInStep(gameObject);
+        chapter_name = process.Data.Current.Data.Name;
+        executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
         Debug.Log("Interazione con: " + gameObject.name);
 
     }
 
     private void OnButtonUIClicked()
     {
-        executionOrderController.checkForObjInStep(gameObject);
+        chapter_name = process.Data.Current.Data.Name;
+        executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
         //Debug.Log("Interazione con: " + gameObject.name);
     }
 
     private void OnInteraction(BaseInteractionEventArgs args)
     {
+        chapter_name = process.Data.Current.Data.Name;
         if (args.interactorObject.transform.gameObject.name == "Near-Far Interactor")
         {
-            executionOrderController.checkForObjInStep(gameObject);
+            executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
             //Debug.Log("Interazione con: " + args.interactableObject.transform.gameObject.name);
         }
     }
 
     private void OnButtonPressed()
     {
-        executionOrderController.checkForObjInStep(gameObject);
+        chapter_name = process.Data.Current.Data.Name;
+        executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
         //Debug.Log("Interazione con: " + gameObject.name);
     }
 
     private void OnLeverActivated()
     {
-        executionOrderController.checkForObjInStep(gameObject);
+        chapter_name = process.Data.Current.Data.Name;
+        executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
         //Debug.Log("Interazione con: " + gameObject.name);
     }
 
     private void onFollowPlayer(GameObject follower, GameObject player)
     {
+        chapter_name = process.Data.Current.Data.Name;
         if (follower == this.gameObject)
         {
-            executionOrderController.checkForObjInStep(follower);
+            executionOrderController.checkForObjInStep(follower, chapter_name: chapter_name);
             Debug.Log("Interazione con: " + follower.name);
         }
     }
 
     public void onGrabbedProxy()
     {
-        executionOrderController.checkForObjInStep(gameObject, visualProxy.activeproxy);
+        chapter_name = process.Data.Current.Data.Name;
+        executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name, visualProxy.activeproxy);
     }
     private void OnDisable()
     {

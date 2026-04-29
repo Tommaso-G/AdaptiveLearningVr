@@ -3,8 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using VRBuilder.Core;
+using VRBuilder.Core.Behaviors;
 
 public class ChapterTracker : MonoBehaviour
 {
@@ -57,7 +59,7 @@ public class ChapterTracker : MonoBehaviour
     }
 
     public void OnChapterStarted(object sender, ProcessEventArgs args)
-    {   // registra gli errori del capitolo precedente se presente
+    {   // registra gli errori del capitolo precedente se presenti
         if (currentChapterName != null)
         {
             chapterIdToRegister = currentChapterName;
@@ -65,12 +67,46 @@ public class ChapterTracker : MonoBehaviour
             _timeToRegister = (Time.time - _startTime);
             OnChapterComplete(chapterIdToRegister, idxToRegister, _timeToRegister);
         }
+
         currentChapterName = process.Data.Current.Data.Name;
         currentIdx = process.Data.Chapters.IndexOf(process.Data.Current);
         _errorCount = 0;
         _startTime = Time.time;
+
         Debug.Log($"[ChapterTracker] Capitolo {currentChapterName} iniziato");
+
+        if (co_mgr.ChapterWithExecuteBehavior.TryGetValue(currentChapterName, out ExecuteChaptersBehavior executeChaptersBehavior))
+        {
+            Debug.Log($"[ChapterTracker] Capitolo {currentChapterName} contiene un esecuzione parallela");
+
+            if (executeChaptersBehavior.Data.addedSubChapter > 0)
+            {
+                foreach (SubChapter sc in executeChaptersBehavior.Data.AddedSubChapters)
+                {
+                    StartCoroutine(SubChapterTracker(sc.Chapter));
+                }
+            }
+        }
     }
+
+    public IEnumerator SubChapterTracker(IChapter subChapter)
+    {
+
+        string subChapterName = subChapter.Data.Name;
+        int subIdx = process.Data.Chapters.IndexOf(subChapter);
+        int errorCount = 0;
+        float startTime = Time.time;
+        Debug.Log($"[ChapterTracker] Sottocapitolo {subChapter.Data.Name} iniziato");
+        while (subChapter.LifeCycle.Stage != Stage.Active)
+        {
+            yield return null;
+        }
+
+        float timeToRegister = Time.time - startTime;
+        OnChapterComplete(subChapterName, subIdx, timeToRegister);
+
+    }
+
 
     // ── Chiamato da VRBuilder quando il capitolo finisce ─────────────────
     public void OnChapterComplete(string chapter_name, int chapter_idx, float time)
@@ -120,10 +156,10 @@ public class ChapterTracker : MonoBehaviour
             process.Data.Chapters[chapter_idx].ChapterMetadata.Guid.ToString(),
             chapter_name,
             errors,
-            time+time_change);
+            time + time_change);
 
         Debug.Log($"[ChapterTracker] Capitolo {chapter_name} completato. " +
-            $"Errori: {errors}, Tempo: {time+time_change:F2} sec");
+            $"Errori: {errors}, Tempo: {time + time_change:F2} sec");
     }
     private void HandleTimeChange(string chapter_name, float timeDelta)
     {

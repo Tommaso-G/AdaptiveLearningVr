@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 
-[CustomPropertyDrawer(typeof(ChapterLink))]
+//[CustomPropertyDrawer(typeof(ChapterLink))]
 public class ChapterLinkDrawer : PropertyDrawer
 {
     private string defaultPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json";

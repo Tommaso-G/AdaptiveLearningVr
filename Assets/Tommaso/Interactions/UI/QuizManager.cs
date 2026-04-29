@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -160,8 +161,7 @@ public class QuizManager : MonoBehaviour
         if (currentquestion + 1 < questions.Length)
         {
             questions[currentquestion].SetActive(false);
-            currentquestion++;
-            questions[currentquestion].SetActive(true);
+            StartCoroutine(NextQuestion());
         }
         else
         {
@@ -171,6 +171,13 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    private IEnumerator NextQuestion()
+    {
+        yield return new WaitForSeconds(1);
+        currentquestion++;
+        questions[currentquestion].SetActive(true);
+
+    }
     public void WrongAnswer()
     {
         string chapterName = ErrorEvent.process.Data.Current.Data.Name;

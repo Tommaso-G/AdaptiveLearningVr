@@ -41,6 +41,8 @@ public class ChaptersOrderManager : MonoBehaviour
     private int currentNode;
     private Dictionary<string, int> chapterNameToIndex = new Dictionary<string, int>();
     private Dictionary<string, ExecuteChaptersBehavior> subchapterNameToIndex = new Dictionary<string, ExecuteChaptersBehavior>();
+    private Dictionary<string, ExecuteChaptersBehavior> chapterWithExecuteBehavior = new Dictionary<string, ExecuteChaptersBehavior>();
+    public Dictionary<string, ExecuteChaptersBehavior> ChapterWithExecuteBehavior => chapterWithExecuteBehavior;
 
     [Tooltip("Ordine con cui sono inseriti i capitoli opzionali.")]
     public List<ChapterLink> OptionalDefaultPosition;
@@ -54,7 +56,7 @@ public class ChaptersOrderManager : MonoBehaviour
 
     public event Action OnListChanged;
     public event Action OnRemoveCurrent;
-    public event Action<IChapter> OnSubChapterAdded;
+    public event Action<string, IChapter> OnSubChapterAdded;
 
     public List<string> OptionalChapters { get; private set; } = new List<string>();
     public List<Node> nodes { get; private set; } = new List<Node>();
@@ -91,6 +93,7 @@ public class ChaptersOrderManager : MonoBehaviour
             nodes.Add(node);
             chapterNameToIndex.Add(chapter.Data.Name, index);
 
+
             IList<IStep> steps = chapter.Data.Steps;
 
             foreach (IStep step in steps)
@@ -101,6 +104,11 @@ public class ChaptersOrderManager : MonoBehaviour
                     foreach (SubChapter subChapter in subChapters)
                     {
                         subchapterNameToIndex.Add(subChapter.Chapter.Data.Name, executeChaptersBehavior);
+                    }
+
+                    if (!chapterWithExecuteBehavior.ContainsKey(chapter.Data.Name))
+                    {
+                        chapterWithExecuteBehavior.Add(chapter.Data.Name, executeChaptersBehavior);
                     }
                 }
             }
@@ -159,13 +167,26 @@ public class ChaptersOrderManager : MonoBehaviour
             }
             else
             {
-                AddSubChapter(executeChaptersBehavior, newIndex);
+                var match = chapterWithExecuteBehavior.FirstOrDefault(key => key.Value == executeChaptersBehavior);
+
+                if (match.Key == null)
+                {
+                    Debug.LogError("❌ Nessun match trovato in chapterWithExecuteBehavior!");
+                    return;
+                }
+
+                string main_Chapter_name = match.Key;
+                AddSubChapter(executeChaptersBehavior, newIndex, main_Chapter_name);
                 print("Aggiunto Capitolo: " + chapterName + " come sottocapitolo in un'esecuzione parallela");
                 return;
             }
         }
+        else
+        {
+            print($"[ChapterOrderManager] capitolo {prevName}, idex {prevIndex}");
+        }
 
-        Node prevNode = nodes[prevIndex];
+            Node prevNode = nodes[prevIndex];
         Node newNode = nodes[newIndex];
         Node clNode = newNode;
 
@@ -225,7 +246,7 @@ public class ChaptersOrderManager : MonoBehaviour
 
         if (process.Data.Current.Data.Current.Data.Behaviors?.Data.Behaviors.FirstOrDefault() is ExecuteChaptersBehavior executeChaptersBehavior)
         {
-            AddSubChapter(executeChaptersBehavior, newIndex);
+            AddSubChapter(executeChaptersBehavior, newIndex, process.Data.Current.Data.Name);
             return;
         }
         // controllo che non sia l'ultimo capitolo
@@ -268,7 +289,7 @@ public class ChaptersOrderManager : MonoBehaviour
         }
     }
 
-    private void AddSubChapter(ExecuteChaptersBehavior executeChaptersBehavior, int newIndex)
+    private void AddSubChapter(ExecuteChaptersBehavior executeChaptersBehavior, int newIndex, string main_chapter_name)
     {
         List<SubChapter> subch = executeChaptersBehavior.Data.SubChapters;
         if (subch != null)
@@ -277,7 +298,7 @@ public class ChaptersOrderManager : MonoBehaviour
 
             executeChaptersBehavior.AddSubChapterAtRuntime(newChapter, false);
 
-            OnSubChapterAdded.Invoke(newChapter);
+            OnSubChapterAdded.Invoke(main_chapter_name, newChapter);
             //foreach (IStep step in newChapter.Data.Steps)
             //{
             //    print("nome: " + step.Data.Name);
@@ -407,7 +428,7 @@ public class ChaptersOrderManager : MonoBehaviour
     }
     void Update()
     {
-        if (process.Data.Current != null)
+        if (process?.Data.Current != null)
         {
             UpdateList();
         }

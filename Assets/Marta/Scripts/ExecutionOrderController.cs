@@ -32,6 +32,7 @@ public class ExecutionOrderController : MonoBehaviour
     [SerializeField] private List<ParallelStep> parallelStepObjs;
     [SerializeField] private ChaptersOrderManager co_mgr;
     [SerializeField] private StepErrorTracker errorTracker;
+    private Dictionary<string, List<GameObject>> subChapterObjesToMainChapter = new Dictionary<string, List<GameObject>>();
 
 
     private IChapter previousChapter = null;
@@ -81,7 +82,7 @@ public class ExecutionOrderController : MonoBehaviour
             errorTracker.UpdateErrorPanel();
         }
         previousChapter = process.Data.Current;
-        
+
     }
 
     private void initialization()
@@ -112,9 +113,10 @@ public class ExecutionOrderController : MonoBehaviour
         }
     }
 
-    private void UpdateParallelStepObjs(IChapter newSubChapter)
+    private void UpdateParallelStepObjs(string main_chapter_name, IChapter newSubChapter)
     {
-        CollectStepObjects(newSubChapter, StepObjectMode.UpdateParallelStep);
+        Debug.Log("[ExecutionChapterController] Chiamato UpdateParallelStepObjs");
+        CollectStepObjects(newSubChapter, StepObjectMode.UpdateParallelStep, main_chapter_name);
     }
 
     public void GetStepObjects(IChapter chapter)
@@ -135,7 +137,7 @@ public class ExecutionOrderController : MonoBehaviour
         CollectStepObjects(chapter, StepObjectMode.ParallelStep);
     }
 
-    private void CollectStepObjects(IChapter chapter, StepObjectMode mode)
+    private void CollectStepObjects(IChapter chapter, StepObjectMode mode, string main_chapter_name = "NESSUN_MAIN_CHAPTER_NAME")
     {
         bool isParallelStep = mode == StepObjectMode.ParallelStep;
         bool attachListener = mode == StepObjectMode.Initialization;
@@ -168,12 +170,12 @@ public class ExecutionOrderController : MonoBehaviour
                     {
                         if (typeof(SingleSceneObjectReference).IsAssignableFrom(prop.PropertyType))
                         {
-                            getSSO(prop, condition, isParallelStep, attachListener, updatesg);
+                            getSSO(prop, condition, isParallelStep, attachListener, updatesg, main_chapter_name);
 
                         }
                         else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(MultipleScenePropertyReference<>))
                         {
-                            getMSPR(prop, condition, isParallelStep, attachListener, updatesg);
+                            getMSPR(prop, condition, isParallelStep, attachListener, updatesg, main_chapter_name);
                         }
                     }
                 }
@@ -181,7 +183,7 @@ public class ExecutionOrderController : MonoBehaviour
         }
     }
 
-    private void getSSO(PropertyInfo prop, ICondition condition, bool isParallelStep, bool attachListener, bool updatesg)
+    private void getSSO(PropertyInfo prop, ICondition condition, bool isParallelStep, bool attachListener, bool updatesg, string main_chapter_name)
     {
         SingleSceneObjectReference ssor = prop.GetValue(condition.Data) as SingleSceneObjectReference;
         if (ssor != null)
@@ -193,13 +195,13 @@ public class ExecutionOrderController : MonoBehaviour
 
                 foreach (ISceneObject sceneObject in sceneObjects)
                 {
-                    HandleProcessObj(sceneObject, isParallelStep, attachListener, updatesg);
+                    HandleProcessObj(sceneObject, isParallelStep, attachListener, updatesg, main_chapter_name);
                 }
             }
         }
     }
 
-    private void getMSPR(PropertyInfo prop, ICondition condition, bool isParallelStep, bool attachListener, bool updatesg)
+    private void getMSPR(PropertyInfo prop, ICondition condition, bool isParallelStep, bool attachListener, bool updatesg, string main_chapter_name)
     {
         object multiReference = prop.GetValue(condition.Data);
         if (multiReference != null)
@@ -215,14 +217,14 @@ public class ExecutionOrderController : MonoBehaviour
 
                     foreach (ISceneObject sceneObject in sceneObjects)
                     {
-                        HandleProcessObj(sceneObject, isParallelStep, attachListener, updatesg);
+                        HandleProcessObj(sceneObject, isParallelStep, attachListener, updatesg, main_chapter_name);
                     }
                 }
             }
         }
     }
 
-    private void HandleProcessObj(ISceneObject sceneObject, bool isParallelStep, bool attachListener, bool updatesg)
+    private void HandleProcessObj(ISceneObject sceneObject, bool isParallelStep, bool attachListener, bool updatesg, string main_chapter_name)
     {
         ProcessSceneObject s = sceneObject as ProcessSceneObject;
         if (s == null) return;
@@ -232,6 +234,7 @@ public class ExecutionOrderController : MonoBehaviour
         if (attachListener && s.GameObject.GetComponent<InteractionListener>() == null)
         {
             InteractionListener interactionListeners = s.GameObject.AddComponent<InteractionListener>();
+            interactionListeners.Initialize(process);
             interactionListeners.executionOrderController = this;
         }
 
@@ -255,11 +258,21 @@ public class ExecutionOrderController : MonoBehaviour
 
         if (updatesg)
         {
-            if (optionalSubChapterObjs.Contains(go))
+            //if (optionalSubChapterObjs.Contains(go))
+            //{
+            //    return;
+            //}
+            //optionalSubChapterObjs.Add(go);
+            if (subChapterObjesToMainChapter.ContainsKey(main_chapter_name))
             {
-                return;
+                subChapterObjesToMainChapter[main_chapter_name].Add(go);
             }
-            optionalSubChapterObjs.Add(go);
+            else
+            {
+                List<GameObject> gos = new List<GameObject>();
+                gos.Add(go);
+                subChapterObjesToMainChapter.Add(main_chapter_name, gos);
+            }
         }
     }
 
@@ -299,7 +312,7 @@ public class ExecutionOrderController : MonoBehaviour
         return false;
     }
 
-    public void checkForObjInStep(GameObject go, GameObject proxy = null)
+    public void checkForObjInStep(GameObject go, string chapter_name, GameObject proxy = null)
     {
         if (parallelStepObjs.Count == 1)
         {
@@ -332,10 +345,18 @@ public class ExecutionOrderController : MonoBehaviour
             }
         }
 
-        if (optionalSubChapterObjs.Contains(go))
+        //if (optionalSubChapterObjs.Contains(go))
+        //{
+        //    Debug.Log("Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+        //    return;
+        //}
+        if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
         {
-            Debug.Log("Oggetto " + go.gameObject.name + " nello step(subChAdded).");
-            return;
+            if (chapterOptionalObjecs.Contains(go))
+            {
+                Debug.Log("Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+                return;
+            }
         }
 
         if (ParallelStepIndex != -1)

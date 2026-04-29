@@ -57,7 +57,7 @@ public class InstantiateObjBehavior : Behavior<InstantiateObjBehavior.EntityData
                 return;
             }
 
-            obSpawner.initializeSpawn();
+            obSpawner.ActivateChildren();
         }
 
         public override IEnumerator Update()

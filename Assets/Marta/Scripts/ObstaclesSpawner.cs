@@ -33,6 +33,8 @@ public class ObstaclesSpawner : MonoBehaviour
         {
             childEmpty.gameObject.SetActive(true);
         }
+
+        initializeSpawn();
     }
     public void initializeSpawn()
     {
@@ -128,6 +130,15 @@ public class ObstaclesSpawner : MonoBehaviour
     bool IsSpaceFree(Vector3 position, float radius, LayerMask mask)
     {
         return Physics.OverlapSphere(position, radius, mask).Length == 0;
+    }
+
+    public void ActivateChildren()
+    {
+
+        for (int i = childEmpty.childCount - 1; i >= 0; i--)
+        {
+            childEmpty.GetChild(i).gameObject.SetActive(true);
+        }
     }
 
     public void ResetSpawner()

@@ -42,6 +42,9 @@ namespace VRBuilder.Core.Behaviors
             [IgnoreDataMember]
 
             public int addedSubChapter = 0;
+
+            public List<SubChapter> AddedSubChapters = new List<SubChapter>();
+
             public string Name => "Execute Chapters";
 
             public override IEnumerable<IChapter> GetChildren()
@@ -96,6 +99,7 @@ namespace VRBuilder.Core.Behaviors
 
             Data.SubChapters.Add(sc);
             Data.addedSubChapter++;
+            Data.AddedSubChapters.Add(sc);
         }
 
         private class ActivatingProcess : StageProcess<EntityData>

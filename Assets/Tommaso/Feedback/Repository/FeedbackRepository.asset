@@ -449,7 +449,7 @@ MonoBehaviour:
               fiamme</b> ed eroga il getto. Una volta spento il fuoco, <b>prosegui
               immediatamente</b> con l'evacuazione."
           StepForCompletition:
-          - Grab extiguisher
+          - Prendi l'estintore
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Rimuovi la sicura
           pages:
@@ -462,7 +462,7 @@ MonoBehaviour:
               Finch\xE9 rimane inserita, il dispositivo \xE8 bloccato e <b>non eroga
               alcun getto</b>. Solo dopo averla tolta potrai azionare l'estintore."
           StepForCompletition:
-          - Sfaty catch removal
+          - Rimuovi la sicura
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Afferra l'ugello
           pages:
@@ -476,7 +476,7 @@ MonoBehaviour:
               alla superficie</b>: un getto diretto potrebbe schizzare il liquido
               e <b>propagare le fiamme</b>.'
           StepForCompletition:
-          - grab ejector
+          - Prendi l'eiettore
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Spegni il fuoco
           pages:
@@ -490,7 +490,7 @@ MonoBehaviour:
               non \xE8 completamente estinto. Rilasciare troppo presto rischia di
               far <b>riprendere le fiamme</b>."
           StepForCompletition:
-          - Extinguish fire
+          - Estingui il fuoco
           PersonalizedPrefab: {fileID: 0}
       riflessivo:
       - ChapterName: Segnalazione incendio
