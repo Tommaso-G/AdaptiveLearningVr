@@ -71,8 +71,11 @@ public class SlidesDataSender : MonoBehaviour
         if (string.IsNullOrEmpty(container.pageName))
             return;
 
+
+
         if (_slideIndexMap.TryGetValue(container.pageName, out int slideIndex) && !container.isIntroductory)
             visitHistory.Add(slideIndex);
+            
 
         if (slidesData.TryGetValue(container.pageName, out data))
         {
@@ -90,33 +93,57 @@ public class SlidesDataSender : MonoBehaviour
     }
     public void SendData()
     {
-        if (slidesDataRecorder != null)
+        if (slidesDataRecorder == null)
+            return;
+
+
+        if (!string.IsNullOrEmpty(feedbackName) && feedbackName.Contains("Introduzione"))
         {
-            // trova gli indici delle slide introductive
-            var introIndexes = slidesData.Values
-                .Where(s => s.isIntroductory)
-                .Select(s => _slideIndexMap.TryGetValue(s.pageName, out int idx) ? idx : -1)
-                .ToHashSet();
-
-            // filtra visitHistory rimuovendo le slide introductive
-            var filteredHistory = visitHistory
-                .Where(idx => !introIndexes.Contains(idx))
-                .ToList();
-
-            // rimuovi le ultime N entries della chiusura
-            int nonIntroCount = _slideIndexMap.Count - introIndexes.Count;
-            if (filteredHistory.Count >= nonIntroCount)
-                filteredHistory.RemoveRange(filteredHistory.Count - nonIntroCount, nonIntroCount);
-
-            // calcola tempo totale escludendo le slide introductive
-            float tempoTotale = slidesData.Values
-                .Where(s => !s.isIntroductory)
-                .Sum(s => s.focusTime);
-
-            var copy = new Dictionary<string, SlideDataContainer>(slidesData);
-            slidesDataRecorder.RecordData(feedbackName, copy, tempoOsservazionePreStep, filteredHistory, tempoTotale);
             slidesData.Clear();
+            visitHistory.Clear();
+            return;
         }
+
+        var introIndexes = slidesData.Values
+            .Where(s => s.isIntroductory)
+            .Select(s => _slideIndexMap.TryGetValue(s.pageName, out int idx) ? idx : -1)
+            .Where(idx => idx >= 0)
+            .ToHashSet();
+
+        var filteredHistory = visitHistory
+            .Where(idx => !introIndexes.Contains(idx))
+            .ToList();
+
+        int nonIntroCount = _slideIndexMap.Count - introIndexes.Count;
+
+        if (filteredHistory.Count > nonIntroCount)
+        {
+            filteredHistory.RemoveRange(
+                filteredHistory.Count - nonIntroCount,
+                nonIntroCount
+            );
+        }
+
+        float tempoTotale = slidesData.Values
+            .Where(s => !s.isIntroductory)
+            .Sum(s => s.focusTime);
+
+        var filteredSlidesData = slidesData
+            .Where(kvp => !kvp.Value.isIntroductory)
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        var copy = new Dictionary<string, SlideDataContainer>(filteredSlidesData);
+
+        slidesDataRecorder.RecordData(
+            feedbackName,
+            copy,
+            tempoOsservazionePreStep,
+            filteredHistory,
+            tempoTotale
+        );
+
+        slidesData.Clear();
+        visitHistory.Clear();
     }
 
     private void OnDestroy()

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class SlidingTile : MonoBehaviour
 {
@@ -162,8 +163,21 @@ public class SlidingTile : MonoBehaviour
     private void InstatiateNextPos(Vector3 nextPos)
     {
         GameObject newPos = Instantiate(nextPosPrefab, nextPos, Quaternion.identity, transform.parent);
-        Button btn = newPos.GetComponentInChildren<Button>();
-        btn.onClick.AddListener(() => MoveToNextPos(newPos.transform));
+        
+        XRSimpleInteractable interactable = newPos.GetComponentInChildren<XRSimpleInteractable>();
+        if (interactable != null)
+        {
+            interactable.selectEntered.AddListener(_ =>
+            {
+                Debug.Log("SELECT FUNZIONA");
+                MoveToNextPos(newPos.transform);
+            });
+        }
+        else
+        {
+            Debug.LogError("XRSimpleInteractable non trovato!");
+        }
+        
         instatiatedPoses.Add(newPos);
     }
 

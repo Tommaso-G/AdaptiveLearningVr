@@ -139,7 +139,7 @@ MonoBehaviour:
           - "Si c'\xE8 Paolina"
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: "non c'\xE8 nessuno"
+        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -150,7 +150,7 @@ MonoBehaviour:
               porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
               e protegge le aree adiacenti.'
           StepForCompletition:
-          - "No, non c'\xE8 nessuno"
+          - "No, non c'\xE8 nessuno in Aula Computer"
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: Aula 2(in fondo a sinistra)
@@ -166,8 +166,8 @@ MonoBehaviour:
               porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
               e protegge le aree adiacenti.'
           StepForCompletition:
-          - "C'\xE9 qualcuno il Aula 2?"
-          - No, chiudi la porta di aula 2
+          - "No, non c'\xE8 nessuno in Aula 2"
+          - Chiudi Porta Aula 2
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Porta Paolina 2 in salvo
           pages:
@@ -217,7 +217,7 @@ MonoBehaviour:
           - "Si. c'\xE8 Paolina in sedie a rotelle"
           - Portala fuori
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: "Non c'\xE8 nessuno in mensa"
+        - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -228,7 +228,7 @@ MonoBehaviour:
               porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
               e protegge le aree adiacenti.'
           StepForCompletition:
-          - 'No, esci '
+          - "No, Non c'\xE8 nessuo in Biblioteca "
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: 'Mensa '
         feedbacks:
@@ -247,7 +247,7 @@ MonoBehaviour:
           - "Si c'\xE8 Michelle"
           - Porta Michelle all'uscita
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: "Non c'\xE8 nessuno qui"
+        - FeedbackName: "Non c'\xE8 nessuno in mensa"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
