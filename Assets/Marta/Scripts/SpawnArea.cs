@@ -116,6 +116,7 @@ public class SpawnArea : MonoBehaviour
     {
         if (feedbackPos != null)
             feedbackPos.parent = newParent;
+        print($"[SpawnArea] Posizione feedback {feedbackPos.gameObject.name}");
     }
 
     public void ResetArea()

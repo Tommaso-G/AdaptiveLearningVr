@@ -97,6 +97,18 @@ public class ObstaclesSpawner : MonoBehaviour
     {
         bool spawned = false;
 
+        if (spawnArea == null)
+        {
+            print("[ObstaclesSpawner] spawnArea null");
+            return;
+        }
+
+        if (spawnArea.SafePoint == null)
+        {
+            print("[ObstaclesSpawner] spawnArea safe point null");
+            return;
+        }
+
         if (!spawned)
         {
             GameObject instance = Instantiate(
@@ -116,6 +128,7 @@ public class ObstaclesSpawner : MonoBehaviour
         }
 
         spawnArea.SetFeedbackParent(multifeedbackPos);
+        
     }
 
     public void OnSpawnedObjDestroyed(SpawnableObj obj, SpawnArea spawnArea)

@@ -304,7 +304,7 @@ public class CentralStatsRecorder : MonoBehaviour
     public void SalvaJson(ProfilingSessionData data)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione/Dati", "ProfilingSessionData.json");
+        string path = System.IO.Path.Combine("D:\\lab2a\\Documents\\cosenostre\\AdaptiveLearningVr\\Assets\\Tommaso\\Profilazione\\Dati", "DamianoProfilingSessionData.json");
         System.IO.File.WriteAllText(path, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {path}");
     }
@@ -392,7 +392,7 @@ public class CentralStatsRecorder : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine("C:/Users/utente/OneDrive/Documenti/Tesi/Profilazione/Dati", "FeedbacksSessionData.json");
+        string path = System.IO.Path.Combine("D:\\lab2a\\Documents\\cosenostre\\AdaptiveLearningVr\\Assets\\Tommaso\\Profilazione\\Dati", "DamianoFeedbacksSessionData.json");
         System.IO.File.WriteAllText(path, json);
         Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {path}");
     }
