@@ -85,7 +85,7 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Porca vacca ma cosa cazzo ti danno da mangiare?! Sei un fenomeno!
+        text: Porca vacca ma cosa ti danno da mangiare?! Sei un fenomeno!
       StepForCompletition:
       - Clicca su slide globale
       PersonalizedPrefab: {fileID: 0}
@@ -147,15 +147,13 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Ti trovi di fronte a una cassaforte che custodisce una grande quantit\xE0
-          di denaro virtuale. Il tuo obiettivo \xE8 riuscire ad aprirla individuando
-          la corretta combinazione numerica.\r\n\r\ni cilindri sulla destra contengono
-          degli indizi, usa le manopole per osservare i numeri presenti su di essi\r\n\r\nUna
-          volta individuata la combinazione, potrai inserirla tramite la tastiera
-          numerica. Se la sequenza inserita non \xE8 corretta, potrai riprovare quante
-          volte vorrai.\r\n\r\nQuando la combinazione sar\xE0 giusta, avrai accesso
-          all\u2019apertura della cassaforte e potrai finalmente ottenere la ricompensa
-          contenuta al suo interno: una grande quantit\xE0 di denaro virtuale."
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Individuare
+          la combinazione numerica corretta per aprire la cassaforte e ottenere la
+          ricompensa.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Ruotare le manopole per osservare i numeri sui cilindri\n- Leggere gli
+          indizi per dedurre la combinazione\n- Inserire la sequenza tramite tastiera
+          numerica</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Puoi riprovare quante volte vuoi senza penalit\xE0</size>"
       StepForCompletition:
       - Interagisci con le manopole
       - Inserisci la password
@@ -208,13 +206,12 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: 'Usa i pulsanti per far rotolare la pedina nelle quattro direzioni,
-          centra le caselle colorate per aprire i ponti, fai cadere la pedina del
-          foro.
-
-
-          Se fai cadere la pedina dai bordi della piattaforma,
-          dovrai ricominciare'
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Guidare
+          la pedina attraverso la piattaforma, attraversare i ponti e cadere nel
+          foro corretto.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Premere i pulsanti direzionali per muovere la pedina\n- Centrare le caselle
+          colorate per aprire i ponti\n- Far cadere la pedina nel foro target</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Cadere dai bordi della piattaforma reimposta il livello</size>"
       StepForCompletition:
       - Prima mossa (bloxorz)
       - Gioca a bloxorz
@@ -265,10 +262,13 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Seleziona le pedine numerate e portale sulle caselle corrette utilizzando
-          il joystick. Usa le pedine rosse per coprire i buchi. Puoi muovere le pedine
-          solo se non sono bloccate dalle pareti o da altre pedine. Se rimani incastrato
-          puoi tornare indietro di una mossa o resettare la partita.
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Portare
+          ogni pedina numerata sulla casella corretta; usare le rosse per coprire
+          i buchi.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Selezionare una pedina con il joystick\n- Spostarla sulla casella corretta\n-
+          Usare le pedine rosse per coprire i buchi</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Le pedine non si muovono se bloccate da pareti o altre pedine\n- Se incastrato
+          puoi tornare indietro di una mossa o resettare la partita</size>"
       StepForCompletition:
       - Prima mossa (sokoban)
       - Gioca a sokoban
@@ -320,9 +320,11 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Riordina le tessere secondo l'ordine mostrato dalle forme sulla destra.
-          Seleziona una tessera e spostala in una delle caselle illuminate. Una volta
-          riordinate posiziona le forme sui fori corrispondenti.
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Riordinare
+          le tessere secondo il pattern mostrato, poi posizionare le forme sui fori.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Osservare l'ordine delle forme mostrato a destra\n- Selezionare una tessera
+          e spostarla nelle caselle illuminate\n- Posizionare le forme sui fori corrispondenti</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Le forme vanno posizionate sui fori solo dopo aver riordinato le tessere</size>"
       StepForCompletition:
       - Prima mossa (scalak)
       - Gioca a scalak
@@ -379,10 +381,13 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Premi il pulsante e memorizza la sequenza sullo schermo. Replica la
-          sequenza interagendo con gli oggetti e torna dallo schermo a premere il
-          pulsante se non ricordi l'ordine. Completa entrambe le modalit\xE0 per
-          concludere il gioco"
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Memorizzare
+          la sequenza mostrata e replicarla interagendo con gli oggetti.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Premere il pulsante per vedere la sequenza sullo schermo\n- Interagire
+          con gli oggetti nell'ordine memorizzato</size>\n- Ripremere il pulsante
+          una votlta finito un round per passare alla prossima modalit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Puoi tornare allo schermo in qualsiasi momento per rivedere la sequenza\n-
+          Entrambe le modalit\xE0 devono essere completate per concludere il gioco</size>"
       StepForCompletition:
       - inizia a giocare a ricordaInteractable
       - Ricorda gli interactable
@@ -423,9 +428,11 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: 'Memorizza le coppie di carte, che siano parole o immagini. Premi il
-          pulsante per scoprire le carte. Una volta tornate coperte, seleziona le
-          carte uguali. '
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Abbinare
+          tutte le coppie di carte uguali scoprendole a memoria.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Premere il pulsante per scoprire tutte le carte\n- Memorizzare la posizione
+          delle coppie\n- Selezionare le carte uguali una volta coperte</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Le carte possono essere parole o immagini</size>"
       StepForCompletition:
       - inizia a giocare a memory
       - Memory
@@ -459,9 +466,11 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Memorizza l'ordine della sequenza di elementi. Premi il bottone per
-          mostrare la seqeuenza e seleziona poi gli elementi nell'ordine in cui sono
-          comparsi.
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Ricordare
+          l'ordine in cui gli elementi compaiono e selezionarli nella stessa sequenza.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Premere il bottone per mostrare la sequenza\n- Selezionare gli elementi
+          nell'ordine in cui sono comparsi</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          L'ordine di comparsa \xE8 l'unico criterio, non la posizione degli elementi</size>"
       StepForCompletition:
       - inizia a giocare a ricordaInParoleImmagini
       - Test parole
@@ -516,10 +525,14 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Premi il pulsante per vedere le istruzioni, memorizza la posizione
-          dei componenti e monta il Sintetizzatore Chimerico nell'ordine che preferisci.
-          \n\nSe ti dimentichi qualcosa, puoi tornare dallo schermo e ri-premere
-          il pulsante."
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Montare
+          il Sintetizzatore Chimerico posizionando tutti i componenti correttamente.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Premere il pulsante per vedere le istruzioni\n- Montare i componenti principali
+          nell'ordine preferito\n- Aggiungere i componenti secondari dopo il rispettivo
+          componente principale</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Alcuni componenti pi\xF9 piccoli richiedono che il componente principale
+          sia gi\xE0 posizionato\n- Puoi tornare alle istruzioni in qualsiasi momento
+          per rivedere la posizione dei componenti</size>"
       StepForCompletition:
       - Il bottone che attiva la macchina infernale
       PersonalizedPrefab: {fileID: 0}
