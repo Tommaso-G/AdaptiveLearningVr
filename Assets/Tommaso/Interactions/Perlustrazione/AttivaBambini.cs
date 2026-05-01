@@ -4,15 +4,16 @@ using System.Collections.Generic;
 public class AttivatoreCasuale : MonoBehaviour
 {
     [Header("Oggetti da gestire")]
-    public GameObject[] oggetti; // Lista di oggetti da assegnare nell’Inspector
+    public GameObject[] oggetti;
 
     [Header("Numero di oggetti da attivare")]
     [Range(0, 4)]
     public int quantitaDaAttivare = 1;
 
+    public bool IsActiveCondition = false;
+
     void OnValidate()
     {
-        // Se ci sono oggetti assegnati, imposta il limite massimo dinamicamente
         if (oggetti != null && oggetti.Length > 0)
         {
             quantitaDaAttivare = Mathf.Clamp(quantitaDaAttivare, 0, oggetti.Length);
@@ -23,21 +24,21 @@ public class AttivatoreCasuale : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-      //AttivaOggettiCasuali();
-    }
-
     [ContextMenu("Attiva Oggetti Casuali")]
     public void AttivaOggettiCasuali()
     {
+
+        if (!IsActiveCondition)
+        {
+            return;
+        }
+
         if (oggetti == null || oggetti.Length == 0)
         {
             Debug.LogWarning("Nessun oggetto assegnato!");
             return;
         }
 
-        // Disattiva tutti gli oggetti
         foreach (var obj in oggetti)
         {
             if (obj != null)
@@ -46,7 +47,6 @@ public class AttivatoreCasuale : MonoBehaviour
 
         int n = Mathf.Min(quantitaDaAttivare, oggetti.Length);
 
-        // Seleziona indici casuali unici
         HashSet<int> indici = new HashSet<int>();
         while (indici.Count < n)
         {
@@ -54,7 +54,6 @@ public class AttivatoreCasuale : MonoBehaviour
             indici.Add(randomIndex);
         }
 
-        // Attiva gli oggetti selezionati
         foreach (int i in indici)
         {
             if (oggetti[i] != null)
@@ -62,5 +61,15 @@ public class AttivatoreCasuale : MonoBehaviour
         }
 
         Debug.Log($"Attivati {n} oggetti casuali su {oggetti.Length} totali.");
+    }
+
+    public void SetIsActiveConditionTrue()
+    {
+        IsActiveCondition = true;
+    }
+
+    public void SetIsActiveConditionFalse()
+    {
+        IsActiveCondition = false;
     }
 }

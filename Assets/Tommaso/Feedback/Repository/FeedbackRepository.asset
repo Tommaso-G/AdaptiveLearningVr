@@ -230,7 +230,7 @@ MonoBehaviour:
           StepForCompletition:
           - "No, Non c'\xE8 nessuo in Biblioteca "
           PersonalizedPrefab: {fileID: 0}
-      - ChapterName: 'Mensa '
+      - ChapterName: Starting Point
         feedbacks:
         - FeedbackName: "C'\xE8 michelle che balla..."
           pages:
@@ -1034,82 +1034,4 @@ MonoBehaviour:
     visualPath:
       attivo: []
       riflessivo: []
-  exceptionFeedbacks:
-  - globalPath:
-      verbalPath:
-        attivo:
-        - ChapterName: Fuoco che si propaga Optional
-          feedbacks:
-          - FeedbackName: Il fuoco si propaga!
-            pages:
-            - Sequenzale_Globale: 1
-              Visivo_Verbale: 1
-              isIntroductory: 0
-              image: {fileID: 0}
-              video: {fileID: 0}
-              text: "Il fuoco si propaga rapidamente: <b>chiudi subito le porte</b>
-                delle stanze adiacenti prima di allontanarti. Una porta chiusa riduce
-                il <b>flusso d'aria</b> che alimenta le fiamme e rallenta la diffusione
-                verso le aree vicine. Inizia dalle porte <b>pi\xF9 vicine all'incendio</b>
-                e procedi verso l'esterno."
-            StepForCompletition: []
-            PersonalizedPrefab: {fileID: 0}
-        riflessivo:
-        - ChapterName: Fuoco che si propaga Optional
-          feedbacks:
-          - FeedbackName: Il fuoco si propaga!
-            pages:
-            - Sequenzale_Globale: 1
-              Visivo_Verbale: 1
-              isIntroductory: 0
-              image: {fileID: 0}
-              video: {fileID: 0}
-              text: "Il fuoco si propaga rapidamente: <b>chiudi subito le porte</b>
-                delle stanze adiacenti prima di allontanarti. Una porta chiusa riduce
-                il <b>flusso d'aria</b> che alimenta le fiamme e rallenta la diffusione
-                verso le aree vicine. Inizia dalle porte <b>pi\xF9 vicine all'incendio</b>
-                e procedi verso l'esterno."
-            StepForCompletition: []
-            PersonalizedPrefab: {fileID: 0}
-      visualPath:
-        attivo: []
-        riflessivo: []
-    sequentialPath:
-      verbalPath:
-        attivo:
-        - ChapterName: Fuoco che si propaga Optional
-          feedbacks:
-          - FeedbackName: Il fuoco si propaga!
-            pages:
-            - Sequenzale_Globale: 0
-              Visivo_Verbale: 1
-              isIntroductory: 0
-              image: {fileID: 0}
-              video: {fileID: 0}
-              text: "Il fuoco si propaga rapidamente: <b>chiudi subito le porte</b>
-                delle stanze adiacenti prima di allontanarti. Una porta chiusa riduce
-                il <b>flusso d'aria</b> che alimenta le fiamme e rallenta la diffusione
-                verso le aree vicine. Inizia dalle porte <b>pi\xF9 vicine all'incendio</b>
-                e procedi verso l'esterno."
-            StepForCompletition: []
-            PersonalizedPrefab: {fileID: 0}
-        riflessivo:
-        - ChapterName: Fuoco che si propaga Optional
-          feedbacks:
-          - FeedbackName: Il fuoco si propaga!
-            pages:
-            - Sequenzale_Globale: 0
-              Visivo_Verbale: 1
-              isIntroductory: 0
-              image: {fileID: 0}
-              video: {fileID: 0}
-              text: "Il fuoco si propaga rapidamente: <b>chiudi subito le porte</b>
-                delle stanze adiacenti prima di allontanarti. Una porta chiusa riduce
-                il <b>flusso d'aria</b> che alimenta le fiamme e rallenta la diffusione
-                verso le aree vicine. Inizia dalle porte <b>pi\xF9 vicine all'incendio</b>
-                e procedi verso l'esterno."
-            StepForCompletition: []
-            PersonalizedPrefab: {fileID: 0}
-      visualPath:
-        attivo: []
-        riflessivo: []
+  exceptionFeedbacks: []

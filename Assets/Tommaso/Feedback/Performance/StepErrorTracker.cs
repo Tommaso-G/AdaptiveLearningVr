@@ -120,7 +120,7 @@ public class StepErrorTracker : MonoBehaviour
 
     public void UpdateErrorPanel()
     {
-        if (textPanelOnHand == null && textPanelOnStart)
+        if (textPanelOnHand == null || textPanelOnStart)
         {
             Debug.LogWarning("[StepErrorTracker] textPanel non assegnato.");
             return;

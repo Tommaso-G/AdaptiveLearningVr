@@ -272,6 +272,27 @@ public class FeedbackPrefabController : MonoBehaviour
         styleBehaviour?.OnFeedbackClosed(this);
     }
 
+    public void CloseFeedbackWithoutCompletion()
+    {
+        StartCoroutine(CloseFeedbackWithoutCompletionRoutine());
+    }
+
+    private IEnumerator CloseFeedbackWithoutCompletionRoutine()
+    {
+        if (scaleRoutine != null)
+            StopCoroutine(scaleRoutine);
+
+        if (waypointInstance != null)
+            Destroy(waypointInstance);
+
+        scaleRoutine = StartCoroutine(SmoothScale(Vector3.zero));
+
+        while (transform.localScale.magnitude > 0.0001f)
+            yield return null;
+
+        Destroy(gameObject);
+    }
+
     private IEnumerator DestroyAfterClose()
     {
         while (transform.localScale.magnitude > 0.0001f)

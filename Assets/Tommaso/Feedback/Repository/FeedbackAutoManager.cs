@@ -19,16 +19,15 @@ public class FeedbackAutoManager : MonoBehaviour
 {
     [Header("Riferimenti")]
     public FeedbackSetHolder feedbackHolder;
-
     public FeedbackDisplayer feedbackDisplayer;
-
     public FeedbackChapterFilter chapterFilter;
 
-
-    private Dictionary<FeedbackRepository.FeedbackData, HashSet<string>> activeFeedbackSteps = new();
+    // Struttura aggiornata: tiene traccia anche del capitolo di appartenenza
+    private Dictionary<FeedbackRepository.FeedbackData, (HashSet<string> steps, string chapterName)> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
 
     private IProcess process;
+
     private void OnEnable()
     {
         if (ProcessRunner.Current != null)
@@ -80,7 +79,7 @@ public class FeedbackAutoManager : MonoBehaviour
         {
             if (profile == null)
             {
-                Debug.LogWarning("[FeedbackAutoManager] LearningProfile non trovato sul GameObject. Impossibile determinare il profilo per il repository standard.");
+                Debug.LogWarning("[FeedbackAutoManager] LearningProfile non trovato sul GameObject.");
                 return;
             }
 
@@ -110,8 +109,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
         foreach (var chapter in process.Data.Chapters)
         {
-            if (chapter == null)
-                continue;
+            if (chapter == null) continue;
 
             mainChapterCount++;
             string chapterName = chapter.Data.Name;
@@ -121,8 +119,7 @@ public class FeedbackAutoManager : MonoBehaviour
                 if (stepChild is IStep step)
                 {
                     string stepName = step.Data.Name;
-                    if (!feedbackMap.ContainsKey(stepName))
-                        continue;
+                    if (!feedbackMap.ContainsKey(stepName)) continue;
 
                     var feedback = feedbackMap[stepName];
 
@@ -147,15 +144,13 @@ public class FeedbackAutoManager : MonoBehaviour
         Debug.Log($"[FeedbackAutoManager] Registrati {mainChapterCount} capitoli principali, {subChapterCount} sottocapitoli e {totalStepCount} step con feedback associato.");
     }
 
-
     private void RegisterSubChaptersWithSeparateCount(
         IChapter chapter,
         Dictionary<string, FeedbackRepository.FeedbackData> feedbackMap,
         ref int subChapterCount,
         ref int totalStepCount)
     {
-        if (chapter?.Data?.Steps == null)
-            return;
+        if (chapter?.Data?.Steps == null) return;
 
         foreach (var stepChild in chapter.Data.Steps)
         {
@@ -167,8 +162,7 @@ public class FeedbackAutoManager : MonoBehaviour
                     {
                         foreach (var sub in exec.Data.SubChapters)
                         {
-                            if (sub?.Chapter == null)
-                                continue;
+                            if (sub?.Chapter == null) continue;
 
                             var subChapter = sub.Chapter;
                             subChapterCount++;
@@ -180,8 +174,7 @@ public class FeedbackAutoManager : MonoBehaviour
                                     string subStepName = subStep.Data.Name;
                                     string subChapterName = subChapter.Data.Name;
 
-                                    if (!feedbackMap.ContainsKey(subStepName))
-                                        continue;
+                                    if (!feedbackMap.ContainsKey(subStepName)) continue;
 
                                     var feedback = feedbackMap[subStepName];
 
@@ -208,7 +201,6 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
-
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
         if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
@@ -220,23 +212,16 @@ public class FeedbackAutoManager : MonoBehaviour
         string stepName = step.Data.Name;
 
         string firstStep = feedback.StepForCompletition.FirstOrDefault();
-        if (stepName != firstStep)
-            return;
+        if (stepName != firstStep) return;
 
-        if (shownFeedbacks.Contains(feedback))
-            return;
+        if (shownFeedbacks.Contains(feedback)) return;
 
         GameObject target = GetFirstGameObjectFromStep(step);
-
-        if (target == null)
-            return;
+        if (target == null) return;
 
         List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
         feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
 
-        // Segna il feedback come opzionale se il capitolo contiene "Optional",
-        // prima che Start() venga eseguito così FeedbackPrefabController
-        // istanzierà OptionalWayPoint invece di waypointPrefab
         GameObject instance = feedbackHolder.activeFeedbackInstance;
         if (instance != null)
         {
@@ -245,12 +230,12 @@ public class FeedbackAutoManager : MonoBehaviour
                 controller.isOptionalFeedback = chapterName.Contains("Optional");
         }
 
+        // Struttura aggiornata: salva anche il chapterName
         if (!activeFeedbackSteps.ContainsKey(feedback))
-            activeFeedbackSteps[feedback] = new HashSet<string>(feedback.StepForCompletition);
+            activeFeedbackSteps[feedback] = (new HashSet<string>(feedback.StepForCompletition), chapterName);
 
         shownFeedbacks.Add(feedback);
     }
-
 
     private void HandleStepCompletion(string stepName)
     {
@@ -259,7 +244,7 @@ public class FeedbackAutoManager : MonoBehaviour
         foreach (var kvp in activeFeedbackSteps)
         {
             var feedback = kvp.Key;
-            var remainingSteps = kvp.Value;
+            var remainingSteps = kvp.Value.steps;
 
             if (remainingSteps.Contains(stepName))
                 remainingSteps.Remove(stepName);
@@ -267,7 +252,6 @@ public class FeedbackAutoManager : MonoBehaviour
             if (remainingSteps.Count == 0)
             {
                 List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
-
                 if (prefabs != null)
                 {
                     for (int i = prefabs.Count - 1; i >= 0; i--)
@@ -285,19 +269,58 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Disabilita tutti i feedback per il capitolo indicato (anche sottocapitoli)
+    /// e chiude quelli già mostrati in scena.
+    /// </summary>
+    public void DisableAllFeedbackForChapter(string chapterName)
+    {
+
+        // 1. Disabilita i feedback futuri tramite chapterFilter
+        if (chapterFilter != null)
+            chapterFilter.setFeedbackLevel(chapterName, 2);
+
+        // 2. Trova tutti i feedback attivi che appartengono al capitolo
+        var feedbacksToClose = activeFeedbackSteps
+            .Where(kvp => kvp.Value.chapterName == chapterName)
+            .Select(kvp => kvp.Key)
+            .ToList();
+
+        if (feedbacksToClose.Count == 0)
+        {
+            Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
+            return;
+        }
+
+        // 3. Chiudi i prefab in scena e pulisci lo stato interno
+        foreach (var feedback in feedbacksToClose)
+        {
+            List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
+            if (prefabs != null)
+            {
+                for (int i = prefabs.Count - 1; i >= 0; i--)
+                    prefabs[i].CloseFeedbackWithoutCompletion();
+            }
+
+            activeFeedbackSteps.Remove(feedback);
+            shownFeedbacks.Remove(feedback);
+        }
+
+        Debug.Log($"[FeedbackAutoManager] Disabilitati e chiusi {feedbacksToClose.Count} feedback per il capitolo '{chapterName}'.");
+    }
+
     private List<FeedbackPrefabController> FindFeedbackInstance(string feedbackName)
     {
         FeedbackPrefabController[] allFeedbacks = FindObjectsByType<FeedbackPrefabController>(FindObjectsSortMode.None);
 
         List<FeedbackPrefabController> feedbacksToRemove = new List<FeedbackPrefabController>();
-
         foreach (var fb in allFeedbacks)
         {
             if (fb.name.Contains(feedbackName))
                 feedbacksToRemove.Add(fb);
         }
 
-        return feedbacksToRemove.Count() != 0 ? feedbacksToRemove : null;
+        return feedbacksToRemove.Count != 0 ? feedbacksToRemove : null;
     }
 
     private SlidesDataSender FindSender(string feedbackName)
