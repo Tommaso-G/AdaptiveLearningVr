@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections;
 using VRBuilder.Core.Behaviors;
 using static UnityEngine.UI.Image;
+using UnityEditor.Rendering.LookDev;
 
 [System.Serializable]
 public struct ChapterLink
@@ -56,6 +57,7 @@ public class ChaptersOrderManager : MonoBehaviour
 
     public event Action OnListChanged;
     public event Action OnRemoveCurrent;
+    public event Action<string> OnRemoveSubChapter;
     public event Action<string, IChapter> OnSubChapterAdded;
 
     public List<string> OptionalChapters { get; private set; } = new List<string>();
@@ -177,6 +179,7 @@ public class ChaptersOrderManager : MonoBehaviour
 
                 string main_Chapter_name = match.Key;
                 AddSubChapter(executeChaptersBehavior, newIndex, main_Chapter_name);
+                subchapterNameToIndex.Add(chapterName, executeChaptersBehavior);
                 print("Aggiunto Capitolo: " + chapterName + " come sottocapitolo in un'esecuzione parallela");
                 return;
             }
@@ -186,7 +189,7 @@ public class ChaptersOrderManager : MonoBehaviour
             print($"[ChapterOrderManager] capitolo {prevName}, idex {prevIndex}");
         }
 
-            Node prevNode = nodes[prevIndex];
+        Node prevNode = nodes[prevIndex];
         Node newNode = nodes[newIndex];
         Node clNode = newNode;
 
@@ -328,6 +331,12 @@ public class ChaptersOrderManager : MonoBehaviour
             prevNode = head;
         }
 
+        if (subchapterNameToIndex.TryGetValue(chapterToRemoveName, out ExecuteChaptersBehavior executeChaptersBehavior))
+        {
+            RemoveSubChapter(chapterToRemoveName, executeChaptersBehavior);
+            return;
+        }
+
         if (prevNode != null && prevNode.OptionalNext != null && prevNode.OptionalNext.Id > (process.Data.Chapters.Count - OptionalChapters.Count - 1))
         {
             Node nodeToRemove = prevNode.OptionalNext;
@@ -365,6 +374,17 @@ public class ChaptersOrderManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("Nome del capitolo passato a RemoveCurrent è null");
         }
+    }
+
+    private void RemoveSubChapter(string subChapterToRemoveName, ExecuteChaptersBehavior executeChaptersBehavior)
+    {
+        SubChapter subChapterToRemove = executeChaptersBehavior.Data.AddedSubChapters.FirstOrDefault(sc => sc.Chapter.Data.Name == subChapterToRemoveName);
+        subChapterToRemove.IsOptional = true;
+        executeChaptersBehavior.Data.AddedSubChapters.Remove(subChapterToRemove);
+        subchapterNameToIndex.Remove(subChapterToRemoveName);
+        OnRemoveSubChapter?.Invoke(subChapterToRemoveName);
+        var match = chapterWithExecuteBehavior.FirstOrDefault(key => key.Value == executeChaptersBehavior);
+        UnityEngine.Debug.Log($"[ChapterOrderManager] Rimosso capitolo {subChapterToRemoveName} dall'esecuzione parallela di {match.Key}");
     }
     // Nel caso il capitolo Xop fosse già stato aggiunto più avanti nella lista,
     // creo un clone per non perdere il primo inserimento

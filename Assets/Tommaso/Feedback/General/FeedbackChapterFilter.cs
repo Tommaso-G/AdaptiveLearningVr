@@ -29,6 +29,17 @@ public class FeedbackChapterFilter : MonoBehaviour
         }
         chapter.feedbackLevel = level;
     }
+
+    public void TemporaryDisableFeedback(string chapterName)
+    {
+        ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
+        if (chapter == null)
+        {
+            Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' non trovato in chapterSettings.");
+            return;
+        }
+        chapter.feedbackLevel = 2;
+    }
 /*
     private void Start()
     {

@@ -41,6 +41,7 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.Events.StepStarted += OnStepStarted;
         co_mgr.OnListChanged += CheckNextChapter;
         co_mgr.OnRemoveCurrent += skipCurrentChapter;
+        co_mgr.OnRemoveSubChapter += removedSubChapter;
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
@@ -119,6 +120,12 @@ public class EditProcess : MonoBehaviour
         ProcessRunner.SkipChapters(1);
         skipHandler.NotifyChapterSkipped(currentName);
         UnityEngine.Debug.Log("[EDITPROCESS] current chapter skipped");
+    }
+
+    public void removedSubChapter(string subChapterName)
+    {
+        skipHandler.NotifyChapterSkipped(subChapterName);
+        UnityEngine.Debug.Log($"[EDITPROCESS] subchapter {subChapterName} skipped");
     }
 
     private void setNextChapter(Node currentNode)

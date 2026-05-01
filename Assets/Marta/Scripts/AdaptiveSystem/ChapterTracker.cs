@@ -83,23 +83,29 @@ public class ChapterTracker : MonoBehaviour
             {
                 foreach (SubChapter sc in executeChaptersBehavior.Data.AddedSubChapters)
                 {
-                    StartCoroutine(SubChapterTracker(sc.Chapter));
+                    StartCoroutine(SubChapterTracker(sc));
                 }
             }
         }
     }
 
-    public IEnumerator SubChapterTracker(IChapter subChapter)
+    public IEnumerator SubChapterTracker(SubChapter subChapter)
     {
-
-        string subChapterName = subChapter.Data.Name;
-        int subIdx = process.Data.Chapters.IndexOf(subChapter);
+        IChapter chapter = subChapter.Chapter;
+        string subChapterName = chapter.Data.Name;
+        int subIdx = process.Data.Chapters.IndexOf(chapter);
         int errorCount = 0;
         float startTime = Time.time;
-        Debug.Log($"[ChapterTracker] Sottocapitolo {subChapter.Data.Name} iniziato");
-        while (subChapter.LifeCycle.Stage != Stage.Active)
+        Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} iniziato");
+        while (chapter.LifeCycle.Stage != Stage.Active)
         {
             yield return null;
+        }
+
+        if (subChapter.IsOptional)
+        {
+            Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} è stato rimosso, i dati non verranno inviati alla rete.");
+            yield break;
         }
 
         float timeToRegister = Time.time - startTime;

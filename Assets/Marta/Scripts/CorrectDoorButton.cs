@@ -141,7 +141,7 @@ public class CorrectDoorButton : MonoBehaviour
     {
         string chapterName = ErrorEvent.process.Data.Current.Data.Name;
         string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
+        ErrorEvent.OnError.Invoke("Vie di fuga Optional", stepName, transform.name);
     }
 
     public void setBlockedDoor()

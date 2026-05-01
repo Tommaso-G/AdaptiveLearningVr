@@ -153,7 +153,6 @@ public class ObstaclesSpawner : MonoBehaviour
             childEmpty.GetChild(i).gameObject.SetActive(true);
         }
     }
-
     public void ResetSpawner()
     {
         StartCoroutine(ResetCoroutine());
