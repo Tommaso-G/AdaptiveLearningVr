@@ -78,6 +78,6 @@ public class FireLiquid : MonoBehaviour
     {
         string chapterName = ErrorEvent.process.Data.Current.Data.Name;
         string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke("Fuoco che si propaga Optional", stepName, transform.name);
+        ErrorEvent.OnError.Invoke("Fuoco su liquido Optional", stepName, transform.name);
     }
 }

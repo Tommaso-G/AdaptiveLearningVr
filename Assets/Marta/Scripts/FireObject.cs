@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -91,8 +91,5 @@ public class FireObject : MonoBehaviour
         yield return new WaitForSeconds(3f);
         isExtinguishing = false;
     }
-
-
-
 
 }
