@@ -7,21 +7,15 @@ public class ExtinguisherStream : MonoBehaviour
 {
     public Transform ShootingPoint;
     public ParticleSystem FoamPS;
+    public ErrorReporter ErrorReporter;
 
     private bool safetyCatch = false;
     private FireObject fire;
     private FireObject lastHit;
     private FireLiquid fireLiquid;
     private FireLiquid lastFireLiquid;
-    public ExecutionOrderController executionOrderController;
-    public GameObject objectToFlash;
 
     //private  GameObject FoamStream;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        executionOrderController = FindAnyObjectByType<ExecutionOrderController>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -107,12 +101,14 @@ public class ExtinguisherStream : MonoBehaviour
         Debug.Log("Chiamato start foam");
         if (!safetyCatch)
         {
-            string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-            string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-            ErrorEvent.OnError.Invoke("Estintore generico Optional", stepName, transform.name);
-
-            if (executionOrderController != null && objectToFlash != null)
-                executionOrderController.DifferentStepWarningHighlight(objectToFlash);
+            if(ErrorReporter != null)
+            {
+                ErrorReporter.RegisterError(gameObject.name);
+            }
+            else
+            {
+                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+            }
         }
         else if(!FoamPS.isPlaying && safetyCatch)
         {

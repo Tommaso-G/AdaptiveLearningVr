@@ -14,6 +14,7 @@ public class FireLiquid : MonoBehaviour
     private float time= 5.0f;
     private int numberOfSpawn = 1;
     public bool isHit = false;
+    public ErrorReporter ErrorReporter;
 
     private void Update()
     {
@@ -52,7 +53,7 @@ public class FireLiquid : MonoBehaviour
 
         fire = Instantiate(newFire, spawnPosition, Quaternion.identity, fireParent);
         fire.GetComponent<FireObject>().enabled = false;
-        fire.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        fire.transform.localScale = Vector3.zero;
         StartCoroutine(GrowOverTime(fire.transform, 5f));
 
     }
@@ -76,8 +77,13 @@ public class FireLiquid : MonoBehaviour
 
     private void FireOnLiquidError()
     {
-        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke("Fuoco su liquido Optional", stepName, transform.name);
+        if (ErrorReporter != null)
+        {
+            ErrorReporter.RegisterError(gameObject.name);
+        }
+        else
+        {
+            Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+        }
     }
 }

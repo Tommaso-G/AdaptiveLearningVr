@@ -23,10 +23,9 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     [Tooltip("Nome dello step sbagliato da passare all'ErrorEvent")]
     public string wrongStepName = "l'uscita non era la più vicina";
 
-    [Tooltip("Riferimento all'ExecutionOrderController per il lampeggio rosso")]
-    public ExecutionOrderController executionOrderController;
-
     private Collider _closestCollider;
+
+    public ErrorReporter ErrorReporter;
 
     // ─────────────────────────────────────────────────────────────
     void Awake()
@@ -120,10 +119,14 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         {
             Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider sbagliato: '{other.name}', più vicino era '{_closestCollider?.name}'");
 
-            if (executionOrderController != null)
-                executionOrderController.DifferentStepWarningHighlight(gameObject);
-
-            ErrorEvent.OnError?.Invoke(chapterName, wrongStepName, gameObject.name);
+            if (ErrorReporter != null)
+            {
+                ErrorReporter.RegisterError(gameObject.name);
+            }
+            else
+            {
+                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+            }
         }
 
         // In entrambi i casi: step completato e movimento fermato

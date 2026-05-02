@@ -26,6 +26,8 @@ public class FullScreenEffectsController : MonoBehaviour
     private bool effectActive = false;  // stato reale dell’effetto
     private Coroutine coroutine;
 
+    public ErrorReporter ErrorReporter;
+
 
     private void Start()
     {
@@ -91,8 +93,15 @@ public class FullScreenEffectsController : MonoBehaviour
     {
 
         yield return new WaitForSeconds(3);
-        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke(chapterName, "smoke", transform.name);
+
+        if (ErrorReporter != null)
+        {
+            ErrorReporter.RegisterError(gameObject.name);
+        }
+        else
+        {
+            Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+        }
     }
 
     private void OnTriggerEnter(Collider other)

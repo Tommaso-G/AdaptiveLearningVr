@@ -17,6 +17,8 @@ public class ReportManager : MonoBehaviour
     [Header("Dialoghi per insegnanti (ordine fisso 1-2-3)")]
     public List<DialogueLine> teacherDialogues = new List<DialogueLine>(); // size 3
 
+    public ErrorReporter ErrorReporter;
+
     void Start()
     {
         teachers = GetComponentsInChildren<Teacher>();
@@ -120,61 +122,6 @@ public class ReportManager : MonoBehaviour
             }
         }
     }
-    private void assignDialogue(Teacher[] teacher)
-    {
-        int lastIndex = -1;
-        for (int i = 0; i < teacher.Length; i++)
-        {
-            Transform informationUI = teacher[i].transform.Find("Information");
-            if (informationUI != null)
-            {
-                Transform dialogueUI = informationUI.Find("Dialogue");
-                if (dialogueUI != null)
-                {
-                    int randomIndex = lastIndex;
-                    while (randomIndex == lastIndex)
-                    {
-                        randomIndex = UnityEngine.Random.Range(0, ReportDialogue.dialogueOptions.Count);
-                    }
-                    lastIndex = randomIndex;
-                    DialogueLine randomLine = ReportDialogue.dialogueOptions[randomIndex];
-                    TextMeshProUGUI textBox = dialogueUI.GetComponent<TextMeshProUGUI>();
-                    teacher[i].setCorrectInputs((randomLine.present, randomLine.evacuated, randomLine.missing));
-                    //Debug.Log(i + ", correct inputs: " + teacher[i].getCorrectInputs());
-                    if (textBox != null)
-                    {
-                        textBox.text = randomLine.text;
-                    }
-
-                }
-                else
-                {
-                    Debug.Log("DialogueUI not found");
-                }
-
-                Transform classIdUI = informationUI.Find("ClassId");
-                if (classIdUI != null)
-                {
-                    TextMeshProUGUI textBox = classIdUI.GetComponent<TextMeshProUGUI>();
-                    if (textBox != null)
-                    {
-                        textBox.text = "Class " + teacher[i].getClassId();
-                    }
-
-                }
-                else
-                {
-                    Debug.Log("classIdUI not found");
-                }
-
-            }
-            else
-            {
-                Debug.Log("information not found");
-            }
-        }
-    }
-
 
     private void Update()
     {
@@ -193,6 +140,18 @@ public class ReportManager : MonoBehaviour
         {
             results++;
         }
+        else
+        {
+            if (ErrorReporter != null)
+            {
+                ErrorReporter.RegisterError(gameObject.name);
+            }
+            else
+            {
+                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+            }
+        }
+
         t.done = false;
         Debug.Log(t.getId() + ", correct inputs: " + t.getCorrectInputs() + " , user inputs:" + t.getUserInputs() + " result: " + results);
     }

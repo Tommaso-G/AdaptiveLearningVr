@@ -69,6 +69,9 @@ public class HandMenu : MonoBehaviour
     private float minToggleInterval = 0.2f;
     private float sideDotMargin = 0.05f;
 
+    [SerializeField]
+    private List<string> menuQueue = new List<string>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -108,6 +111,8 @@ public class HandMenu : MonoBehaviour
         if (currentMenu != null && currentMenu.MenuId != menuId) // non si sovrappongo due richieste diverse di apertura
         {
             print("Due richieste di apertura");
+            HighlightController();
+            menuQueue.Add(menuId);
             return;
         }
 
@@ -252,6 +257,7 @@ public class HandMenu : MonoBehaviour
         if (!controller || currentMenu == null)
             return;
 
+
         float now = Time.time;
 
         // Calcola le soglie in dot
@@ -301,6 +307,19 @@ public class HandMenu : MonoBehaviour
         if (isMenuActive)
         {
             UpdateUI();
+        }
+
+        if (currentMenu == null)
+        {
+            if (menuQueue.Count > 0)
+            {
+                RequestOpen(menuQueue[0]);
+                menuQueue.RemoveAt(0);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

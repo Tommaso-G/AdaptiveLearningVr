@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AttivatoreCasuale : MonoBehaviour
+public class AttivaBambini : MonoBehaviour
 {
     [Header("Oggetti da gestire")]
     public GameObject[] oggetti;

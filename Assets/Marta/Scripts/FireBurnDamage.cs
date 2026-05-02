@@ -3,36 +3,21 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics;
 
 public class FireBurnDamage : MonoBehaviour
 {
-    public ExecutionOrderController executionOrderController;
-    public GameObject objectToFlash;
-    [Header("A quale capitolo registrare l'errore")]
-    public string chapterErrorName;
+    public ErrorReporter ErrorReporter;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        executionOrderController = FindAnyObjectByType<ExecutionOrderController>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-            string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-
-            if (chapterName != null)
+            if (ErrorReporter != null)
             {
-                ErrorEvent.OnError.Invoke(chapterErrorName, stepName, transform.name);
+                ErrorReporter.RegisterError(gameObject.name);
             }
             else
             {
-                ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
+                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
             }
-
-                objectToFlash = other.gameObject.GetComponentInChildren<HapticImpulsePlayer>().gameObject;
-
-            if (executionOrderController != null && objectToFlash != null)
-                executionOrderController.DifferentStepWarningHighlight(objectToFlash);
         }
     }
 }

@@ -18,6 +18,8 @@ public class ColliderSequenceChecker : MonoBehaviour, ICompletableStep
 
     private Collider _piuVicinoCorrente;
 
+    public ErrorReporter ErrorReporter;
+
     private void Start()
     {
         if (colliders == null || colliders.Count == 0) return;
@@ -59,7 +61,14 @@ public class ColliderSequenceChecker : MonoBehaviour, ICompletableStep
             if (executionOrderController != null)
                 executionOrderController.DifferentStepWarningHighlight(gameObject);
 
-            ErrorEvent.OnError?.Invoke(chapterName, wrongStepName, gameObject.name);
+            if (ErrorReporter != null)
+            {
+                ErrorReporter.RegisterError(gameObject.name);
+            }
+            else
+            {
+                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+            }
         }
 
         IsCompleted = true;

@@ -38,6 +38,8 @@ public class CorrectDoorButton : MonoBehaviour
 
     [SerializeField] private Transform feedbackPos;
 
+    public ErrorReporter ErrorReporter;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -139,9 +141,14 @@ public class CorrectDoorButton : MonoBehaviour
 
     private void wrongButtonSelected()
     {
-        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke("Vie di fuga Optional", stepName, transform.name);
+        if (ErrorReporter != null)
+        {
+            ErrorReporter.RegisterError(gameObject.name);
+        }
+        else
+        {
+            Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+        }
     }
 
     public void setBlockedDoor()

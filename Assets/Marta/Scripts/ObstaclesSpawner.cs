@@ -20,6 +20,8 @@ public class ObstaclesSpawner : MonoBehaviour
 
     [SerializeField] private Transform childEmpty;
     [SerializeField] private Transform spawnAreasParent;
+    [Tooltip("Inidicare una spawn area sicura per lo spawn")]
+    [SerializeField] private SpawnArea safeSpawnArea;
     private bool activateAreaEffect = false;
     private SpawnableObj spawnableObj;
     private bool Initialized = true;
@@ -99,14 +101,15 @@ public class ObstaclesSpawner : MonoBehaviour
 
         if (spawnArea == null)
         {
-            print("[ObstaclesSpawner] spawnArea null");
-            return;
-        }
-
-        if (spawnArea.SafePoint == null)
-        {
-            print("[ObstaclesSpawner] spawnArea safe point null");
-            return;
+            if (safeSpawnArea != null)
+            {
+                spawnArea = safeSpawnArea;
+            }
+            else
+            {
+                print("[ObstaclesSpawner] spawnArea null");
+                return;
+            }
         }
 
         if (!spawned)

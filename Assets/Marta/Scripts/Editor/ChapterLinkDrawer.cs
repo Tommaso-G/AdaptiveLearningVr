@@ -1,138 +1,80 @@
 using UnityEngine;
 using UnityEditor;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
-//[CustomPropertyDrawer(typeof(ChapterLink))]
+[CustomPropertyDrawer(typeof(ChapterLink))]
 public class ChapterLinkDrawer : PropertyDrawer
 {
+    private static List<string> allChapters;
+    private static List<string> optionalChapters;
+    private static bool initialized = false;
+
     private string defaultPath = "Assets/StreamingAssets/Processes/Extinguisher/Extinguisher.json";
+
+    private void Init()
+    {
+        if (initialized) return;
+
+        var data = VRBuilderJsonReader.ParseProcessJson(defaultPath);
+        allChapters = data.chapters ?? new List<string>();
+
+        optionalChapters = allChapters
+            .Where(c => c.Contains("Optional"))
+            .ToList();
+
+        initialized = true;
+    }
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        Init();
+
         EditorGUI.BeginProperty(position, label, property);
 
-        // Trova lo script principale (quello che contiene OptionalChapters e nodes)
-        var target = property.serializedObject.targetObject as ChaptersOrderManager;
+        var newChapterProp = property.FindPropertyRelative("newChapter");
+        var previousChapterProp = property.FindPropertyRelative("previousChapter");
 
-        if (target == null)
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+        float spacing = 4f;
+
+        Rect newRect = new Rect(position.x, position.y, position.width, lineHeight);
+        Rect prevRect = new Rect(position.x, position.y + lineHeight + spacing, position.width, lineHeight);
+
+        if (allChapters == null || allChapters.Count == 0)
         {
-            EditorGUI.LabelField(position, "ChaptersOrderManager not found");
+            EditorGUI.LabelField(newRect, "No chapters found");
+            EditorGUI.EndProperty();
             return;
         }
 
-        var newChapterProp = property.FindPropertyRelative("newChapter"); // cerca proprietà newChapter di ChapterLink
-        var previousChapterProp = property.FindPropertyRelative("previousChapter");// cerca proprietà previusChapter di ChapterLink
-
-        // crea le due colonne per i drawer
-        float lineHeight = EditorGUIUtility.singleLineHeight;
-        float spacing = 2f;
-
-        float halfWidth = position.width / 2;
-
-        // colonne base
-        Rect leftColumn = new Rect(position.x, position.y, halfWidth - 5, position.height);
-        Rect rightColumn = new Rect(position.x + halfWidth + 5, position.y, halfWidth - 5, position.height);
-
-        // titoli
-        Rect leftTitleRect = new Rect(leftColumn.x, leftColumn.y, leftColumn.width, lineHeight);
-        Rect rightTitleRect = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, lineHeight);
-
-        // popup sotto il titolo
-        Rect leftRect = new Rect(leftColumn.x, leftColumn.y + lineHeight + spacing, leftColumn.width, lineHeight);
-        Rect rightRect = new Rect(rightColumn.x, rightColumn.y + lineHeight + spacing, rightColumn.width, lineHeight);
-
-        // disegna titoli
-        EditorGUI.LabelField(leftTitleRect, "New Chapter", EditorStyles.boldLabel);
-        EditorGUI.LabelField(rightTitleRect, "Previous Chapter", EditorStyles.boldLabel);
-
-        var optionalChaptersList = new List<string>(); ;
-        var previousChaptersList = new List<string>(); ;
-        string[] optionalChapters = null; 
-        string[] previousChapters = null;
-
-        if (Application.isPlaying)
-        {
-            if (target.EditorChaptersReady)
-            {
-                optionalChaptersList = new List<string>(target.OptionalChapters);
-
-                if (!optionalChaptersList.Contains("None"))
-                    optionalChaptersList.Add("None");
-
-                optionalChapters = optionalChaptersList.ToArray();
-
-                optionalChapters = optionalChaptersList.ToArray();
-                previousChaptersList = target.AvailablePreviousChapters.ToList();
-                previousChapters = previousChaptersList.ToArray();
-            }
-        }
-        else
-        {
-            string pathToUse = defaultPath;
-            var data = VRBuilderJsonReader.ParseProcessJson(pathToUse);
-            previousChaptersList = data.chapters;
-            previousChapters = previousChaptersList.ToArray();
-
-            foreach (string chapter in previousChaptersList)
-            {
-                if (chapter.Contains("Optional"))
-                {
-                    optionalChaptersList.Add(chapter);
-                }
-            }
-
-            optionalChapters = optionalChaptersList.ToArray();
-        }
-
-        if (optionalChapters == null || previousChapters == null) return;
-
-        int newIndex = System.Array.IndexOf(optionalChapters, newChapterProp.stringValue); // cerca indice corrispondente a newChapter scelto
-
-        if (newIndex < 0)
-        {
-            newIndex = 0;
-            if (optionalChapters.Length > 0)
-                newChapterProp.stringValue = optionalChapters[0];
-        }
-
-        newIndex = EditorGUI.Popup(leftRect, newIndex, optionalChapters);
-
-        if (optionalChaptersList.Count > 0)
-            if (optionalChapters[newIndex] == "None")
-            {
-                newChapterProp.stringValue = "";
-            }
-            else
-            {
-                newChapterProp.stringValue = optionalChapters[newIndex];
-            }
-
-        int prevIndex = System.Array.IndexOf(previousChapters, previousChapterProp.stringValue);
-
-        if (prevIndex < 0)
-        {
-            prevIndex = 0;
-            if (previousChapters.Length > 0)
-                previousChapterProp.stringValue = previousChapters[0];
-        }
-
-        prevIndex = EditorGUI.Popup(rightRect, prevIndex, previousChapters);
-
-        if (previousChaptersList.Count > 0)
-        {
-            if (previousChapters[prevIndex] == "None")
-                previousChapterProp.stringValue = "";
-            else
-                previousChapterProp.stringValue = previousChapters[prevIndex];
-        }
+        DrawPopup(newRect, newChapterProp, "New Chapter", optionalChapters);
+        DrawPopup(prevRect, previousChapterProp, "Previous Chapter", allChapters);
 
         EditorGUI.EndProperty();
+    }
+
+    private void DrawPopup(Rect rect, SerializedProperty property, string label, List<string> source)
+    {
+        if (source == null || source.Count == 0)
+        {
+            EditorGUI.LabelField(rect, label, "(none)");
+            return;
+        }
+
+        int index = Mathf.Max(0, source.IndexOf(property.stringValue));
+        int newIndex = EditorGUI.Popup(rect, label, index, source.ToArray());
+
+        if (newIndex >= 0 && newIndex < source.Count)
+        {
+            property.stringValue = source[newIndex];
+        }
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         float lineHeight = EditorGUIUtility.singleLineHeight;
-        float spacing = 2f;
+        float spacing = 4f;
 
         return (lineHeight * 2) + spacing;
     }

@@ -32,6 +32,8 @@ public class QuizManager : MonoBehaviour
 
     public Button correctOptionButton;
     public Button fakeOptionButton;
+
+    public ErrorReporter ErrorReporter;
     void Start()
     {
         SetupQuestion1();
@@ -180,9 +182,14 @@ public class QuizManager : MonoBehaviour
     }
     public void WrongAnswer()
     {
-        string chapterName = ErrorEvent.process.Data.Current.Data.Name;
-        string stepName = ErrorEvent.process.Data.Current.Data.Current.Data.Name;
-        ErrorEvent.OnError.Invoke(chapterName, stepName, transform.name);
+        if (ErrorReporter != null)
+        {
+            ErrorReporter.RegisterError(gameObject.name);
+        }
+        else
+        {
+            Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+        }
         CorrectAnswer();
     }
 }
