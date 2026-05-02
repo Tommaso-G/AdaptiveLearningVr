@@ -99,26 +99,26 @@ public class HandMenu : MonoBehaviour
     }
     public void RequestOpen(string menuId)
     {
-        if (!menuMap.ContainsKey(menuId)) // il menù è presente in elenco
+        if (!menuMap.ContainsKey(menuId)) // il menï¿½ ï¿½ presente in elenco
         {
-            //print("menu non presente");
+            print("menu non presente");
             return;
         }
 
         if (currentMenu != null && currentMenu.MenuId != menuId) // non si sovrappongo due richieste diverse di apertura
         {
-            //print("Due richieste di apertura");
+            print("Due richieste di apertura");
             return;
         }
 
-        if (currentMenu == null) // apri il menù
+        if (currentMenu == null) // apri il menï¿½
         {
             currentMenu = menuMap[menuId]; // seleziona il Menu panel
             OnMenuOpened();
         }
         else
         {
-            //print("Menù non null");
+            //print("Menï¿½ non null");
             return;
         }
     }

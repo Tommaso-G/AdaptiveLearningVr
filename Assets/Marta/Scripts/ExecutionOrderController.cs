@@ -77,10 +77,6 @@ public class ExecutionOrderController : MonoBehaviour
     {
         //getCurrenteObjects(process.Data.Current);
 
-        if (previousChapter != null)
-        {
-            errorTracker.UpdateErrorPanel();
-        }
         previousChapter = process.Data.Current;
 
     }
