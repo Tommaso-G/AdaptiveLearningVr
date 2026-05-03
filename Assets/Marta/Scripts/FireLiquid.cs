@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.VFX;
 using UnityEngine.XR.ARSubsystems;
 using System.Collections;
@@ -7,11 +7,12 @@ using System.Linq;
 
 public class FireLiquid : MonoBehaviour
 {
-    [SerializeField] private GameObject newFire;
+    //[SerializeField] private GameObject newFire;
     [SerializeField] private VisualEffect fireSplash;
     [SerializeField] private Transform fireParent;
+    [SerializeField] private Transform spawnableFire;
     private GameObject fire;
-    private float time= 5.0f;
+    private float time= 3.0f;
     private int numberOfSpawn = 1;
     public bool isHit = false;
     public ErrorReporter ErrorReporter;
@@ -41,27 +42,38 @@ public class FireLiquid : MonoBehaviour
 
     public void SpawnFire()
     {
-        FireOnLiquidError();
-        Vector3 randomOffset;
-        do
+        // Se non ha figli → esci
+        if (spawnableFire == null || spawnableFire.childCount == 0)
+            return;
+
+        // Scegli un indice random
+        int randomIndex = Random.Range(0, spawnableFire.childCount);
+
+        // Prendi il figlio
+        Transform selectedFire = spawnableFire.GetChild(randomIndex);
+
+        if (selectedFire == null)
         {
-            randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-        } while (Mathf.Abs(randomOffset.x) < 0.2f && Mathf.Abs(randomOffset.z) < 0.2f);
+            print("[FireLiquid] Errore nella selezione del fire da spawnare (null)");
+            return;
+        }
+        // Tranform iniziale
+        Vector3 targetScale = selectedFire.transform.localScale;
+        selectedFire.localScale = Vector3.zero;
+        // Cambia parent
+        selectedFire.SetParent(fireParent);
 
+        selectedFire.gameObject.GetComponent<FireObject>().enabled = false;
+        selectedFire.gameObject.SetActive(true);
+        StartCoroutine(GrowOverTime(selectedFire, targetScale, 5f));
 
-        Vector3 spawnPosition = transform.position + randomOffset;
-
-        fire = Instantiate(newFire, spawnPosition, Quaternion.identity, fireParent);
-        fire.GetComponent<FireObject>().enabled = false;
-        fire.transform.localScale = Vector3.zero;
-        StartCoroutine(GrowOverTime(fire.transform, 5f));
 
     }
 
-    private IEnumerator GrowOverTime(Transform target, float duration)
+    private IEnumerator GrowOverTime(Transform target, Vector3 targetScale, float duration)
     {
         Vector3 startScale = Vector3.zero;
-        Vector3 endScale = new Vector3(0.7f, 0.7f, 0.7f);
+        Vector3 endScale = targetScale;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -71,7 +83,7 @@ public class FireLiquid : MonoBehaviour
             yield return null;
         }
 
-        fire.GetComponent<FireObject>().enabled = true;
+        target.gameObject.GetComponent<FireObject>().enabled = true;
         target.localScale = endScale; // assicurati che finisca preciso
     }
 
