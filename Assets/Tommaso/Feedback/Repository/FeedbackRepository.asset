@@ -323,10 +323,7 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Prendi l''<b>ugello</b> e punta il tubo verso le fiamme. Se il
-              fuoco si trova su un <b>liquido infiammabile</b>, tieni il flusso <b>parallelo
-              alla superficie</b>: un getto diretto potrebbe schizzare il liquido
-              e <b>propagare le fiamme</b>.'
+            text: 'Prendi l''<b>ugello</b> e punta il tubo verso la base delle fiamme. '
           StepForCompletition:
           - grab ejector
           PersonalizedPrefab: {fileID: 0}
@@ -437,21 +434,20 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: Prendi l'estintore LIQUIDO
+        - FeedbackName: Trova l'estintore a CO2
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Il fuoco blocca il percorso ma sembra gestibile: usa l'<b>estintore</b>.
-              Ce n'\xE8 uno in <b>ogni aula</b>. Prendilo, puntalo alla <b>base delle
-              fiamme</b> ed eroga il getto. Una volta spento il fuoco, <b>prosegui
-              immediatamente</b> con l'evacuazione."
+            text: "Del <b>liquido infiammabile<b> ha preso fuoco. Questa volta per
+              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
+              l'estintore nella stanza."
           StepForCompletition:
-          - Prendi l'estintore
+          - Prendi l'estintore (CO2)
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Rimuovi la sicura LIQUIDO
+        - FeedbackName: Estrai la sicura
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -462,23 +458,22 @@ MonoBehaviour:
               Finch\xE9 rimane inserita, il dispositivo \xE8 bloccato e <b>non eroga
               alcun getto</b>. Solo dopo averla tolta potrai azionare l'estintore."
           StepForCompletition:
-          - Rimuovi la sicura
+          - Rimuovi la sicura (CO2)
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Afferra l'ugello LIQUIDO
+        - FeedbackName: Afferra l'erogatore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Prendi l''<b>ugello</b> e punta il tubo verso le fiamme. Se il
-              fuoco si trova su un <b>liquido infiammabile</b>, tieni il flusso <b>parallelo
-              alla superficie</b>: un getto diretto potrebbe schizzare il liquido
-              e <b>propagare le fiamme</b>.'
+            text: 'Prendi l''<b>ugello</b> e punta il tubo verso le fiamme. Tieni
+              il flusso <b>parallelo alla superficie</b>: un getto diretto potrebbe
+              schizzare il liquido e <b>propagare le fiamme</b>.'
           StepForCompletition:
-          - Prendi l'eiettore
+          - Prendi l'eiettore (CO2)
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Spegni il fuoco LIQUIDO
+        - FeedbackName: Spegni il fuoco su liquido
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -490,7 +485,7 @@ MonoBehaviour:
               non \xE8 completamente estinto. Rilasciare troppo presto rischia di
               far <b>riprendere le fiamme</b>."
           StepForCompletition:
-          - Estingui il fuoco
+          - Estingui il fuoco liquido
           PersonalizedPrefab: {fileID: 0}
       riflessivo:
       - ChapterName: Segnalazione incendio
@@ -959,77 +954,58 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: Prendi l'estintore
+        - FeedbackName: Prendi l'estintore a CoO2
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Quando il fuoco blocca il percorso ma \xE8 di dimensioni contenute,
-              usare un <b>estintore</b> \xE8 la scelta giusta. Gli estintori sono
-              posizionati in <b>ogni aula</b> proprio per situazioni come questa.
-              \xC8 importante puntare il getto alla <b>base delle fiamme</b> e non
-              alle fiamme stesse: \xE8 l\xEC che si trova la fonte di combustione.
-              Agire con rapidit\xE0 e precisione permette di liberare il <b>percorso
-              di evacuazione</b> senza esporsi inutilmente al pericolo. Se il fuoco
-              non si spegne in pochi secondi, abbandonare il tentativo e cercare
-              una <b>via alternativa</b> rimane sempre la priorit\xE0."
+            text: "Del <b>liquido infiammabile<b> ha preso fuoco.  Questa volta per
+              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
+              l'estintore nella stanza."
           StepForCompletition:
-          - Grab extiguisher
+          - Prendi l'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Rimuovi la sicura
+        - FeedbackName: Estrai la sicura
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "La <b>chiave di sicurezza</b> \xE8 un dispositivo di protezione
-              che impedisce l'attivazione accidentale dell'estintore durante il trasporto
-              o lo stoccaggio. In una situazione di emergenza \xE8 fondamentale ricordarsi
-              di rimuoverla per prima cosa: finch\xE9 rimane inserita, il meccanismo
-              di erogazione \xE8 <b>completamente bloccato</b> e premere la leva
-              non produrr\xE0 alcun effetto. Conoscere questa procedura in anticipo
-              evita momenti di <b>confusione preziosi</b> durante un intervento."
+            text: "Prima di tutto, <b>rimuovi la chiave di sicurezza</b> dall'estintore.
+              Finch\xE9 rimane inserita, il dispositivo \xE8 bloccato e <b>non eroga
+              alcun getto</b>. Solo dopo averla tolta potrai azionare l'estintore."
           StepForCompletition:
-          - Sfaty catch removal
+          - Rimuovi la sicura (CO2)
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Afferra l'ugello
+        - FeedbackName: Afferra l'erogatore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Puntare correttamente l'<b>ugello</b> \xE8 essenziale per spegnere
-              il fuoco in modo efficace. Nel caso di un incendio su <b>liquidi infiammabili</b>,
-              un getto diretto e perpendicolare alla superficie pu\xF2 schizzare
-              il liquido acceso in altre direzioni, <b>allargando l'incendio</b>
-              invece di spegnerlo. Mantenere il flusso <b>parallelo alla superficie</b>
-              permette all'agente estinguente di coprire progressivamente l'area
-              senza creare turbolenze pericolose. Conoscere questa distinzione pu\xF2
-              fare la differenza tra un intervento riuscito e una situazione che
-              peggiora."
+            text: 'Prendi l''<b>ugello</b> e punta il tubo verso le fiamme. Tieni
+              il flusso <b>parallelo alla superficie</b>: un getto diretto potrebbe
+              schizzare il liquido e <b>propagare le fiamme</b>.'
           StepForCompletition:
-          - grab ejector
+          - Prendi l'eiettore (CO2)
           PersonalizedPrefab: {fileID: 0}
-        - FeedbackName: Spegni il fuoco
+        - FeedbackName: Spegni il fuoco su liquido
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Premere il <b>trigger</b> avvia l'erogazione dell'agente estinguente,
-              ma la fase pi\xF9 critica \xE8 mantenere il <b>flusso costante</b>
-              fino alla completa estinzione. Interrompere il getto prematuramente
-              \xE8 uno degli errori pi\xF9 comuni: il fuoco pu\xF2 sembrare spento
-              in superficie ma mantenere ancora una <b>fonte di calore</b> sufficiente
-              a riprendere. Continuare fino alla completa estinzione garantisce che
-              non rimangano <b>focolai nascosti</b> pronti a riattivarsi."
+            text: "Premi il <b>trigger</b> per azionare il getto di schiuma. Mantieni
+              la leva premuta e <b>non interrompere il flusso</b> finch\xE9 il fuoco
+              non \xE8 completamente estinto. Rilasciare troppo presto rischia di
+              far <b>riprendere le fiamme</b>."
           StepForCompletition:
-          - Extinguish fire
+          - Estingui il fuoco liquido
           PersonalizedPrefab: {fileID: 0}
     visualPath:
       attivo: []
