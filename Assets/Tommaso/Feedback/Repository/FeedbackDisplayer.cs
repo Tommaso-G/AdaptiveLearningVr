@@ -20,7 +20,6 @@ public class FeedbackDisplayer : MonoBehaviour
     [Header("Riferimenti")]
     public FeedbackSetHolder feedbackHolder;
 
-
     public List<Transform> FindFeedbackPositionChild(GameObject parent)
     {
         if (parent == null)
@@ -30,7 +29,6 @@ public class FeedbackDisplayer : MonoBehaviour
         }
 
         List<Transform> children = new List<Transform>();
-
         Transform feedbackPosition = parent.transform.Find("feedbackPosition");
 
         if (feedbackPosition.childCount > 0)
@@ -50,28 +48,15 @@ public class FeedbackDisplayer : MonoBehaviour
             List<Transform> temps = new List<Transform>();
             foreach (Transform child in children)
             {
-                //Debug.Log($"[FeedbackAutoManager] Figlio 'feedbackPosition' trovato in '{parent.name}'.");
-
-                // Log dettagliati del child originale
-                //Debug.Log($"[FeedbackAutoManager] CHILD LOCAL Position: {child.localPosition}, LOCAL Rotation: {child.localEulerAngles}, LOCAL Scale: {child.localScale}");
-                //Debug.Log($"[FeedbackAutoManager] CHILD GLOBAL Position: {child.position}, GLOBAL Rotation: {child.eulerAngles}, GLOBAL Scale: {child.lossyScale}");
-
-                // Crea un Transform temporaneo non parentato
                 GameObject tempGO = new GameObject($"Temp_{child.name}");
                 Transform temp = tempGO.transform;
 
-                // Posizione globale identica al child
                 temp.position = child.position;
 
-                // Rotazione corretta: resetta X e Z, mantieni Y come nell’Inspector
                 Vector3 euler = child.eulerAngles;
                 temp.rotation = Quaternion.Euler(0f, euler.y, 0f);
 
-                // Scala globale identica
                 temp.localScale = child.lossyScale;
-
-                // Log del Transform pulito
-                //Debug.Log($"[FeedbackAutoManager] TEMP Transform Position: {temp.position}, Rotation: {temp.eulerAngles}, Scale: {temp.localScale}");
 
                 temps.Add(temp);
             }
@@ -85,6 +70,18 @@ public class FeedbackDisplayer : MonoBehaviour
         }
     }
 
+    // ======= Versione sincrona mantenuta per compatibilità =======
+    public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, List<Transform> feedbackPositions, FeedbackSetHolder holder)
+    {
+        if (feedback == null || holder == null)
+        {
+            Debug.LogWarning("[FeedbackRepository] Parametri non validi in PrepareAndDisplayFeedback.");
+            return null;
+        }
+
+        ChooseFeedback(feedback, feedbackPositions, holder);
+        return holder.activeFeedbackInstance;
+    }
 
     public void ChooseFeedback(FeedbackData feedback, List<Transform> positions, FeedbackSetHolder holder)
     {
@@ -102,19 +99,14 @@ public class FeedbackDisplayer : MonoBehaviour
 
         foreach (Transform position in positions)
         {
-
-            // ======= Caso speciale: prefab personalizzato =======
             if (feedback.PersonalizedPrefab != null)
             {
                 GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
                 customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
                 holder.activeFeedbackInstance = customInstance;
-
-                //Debug.Log($"[FeedbackDisplayer] Istanza prefab personalizzato per feedback '{feedback.FeedbackName}'.");
-                return; // Ignora tutto il resto
+                return;
             }
 
-            // ======= Scegli repository attivo (Profiling ha priorità) =======
             var activeRepo = holder.ProfilingFeedbackRepository != null
                 ? holder.ProfilingFeedbackRepository as ScriptableObject
                 : holder.FeedbackRepository as ScriptableObject;
@@ -125,14 +117,12 @@ public class FeedbackDisplayer : MonoBehaviour
                 return;
             }
 
-            // ======= Verifica pagine =======
             if (feedback.pages == null || feedback.pages.Count == 0)
             {
                 Debug.LogWarning($"[FeedbackDisplayer] Il feedback '{feedback.FeedbackName}' non contiene pagine.");
                 return;
             }
 
-            // ======= Risolvi i prefab dal repository corretto =======
             GameObject singlePrefab = null;
             GameObject multiplePrefab = null;
 
@@ -153,7 +143,6 @@ public class FeedbackDisplayer : MonoBehaviour
                 return;
             }
 
-            // ======= Istanzia il container corretto in base al numero di pagine =======
             GameObject containerInstance;
 
             if (feedback.pages.Count == 1)
@@ -170,14 +159,8 @@ public class FeedbackDisplayer : MonoBehaviour
             }
 
             holder.activeFeedbackInstance = containerInstance;
-
-            //Debug.Log($"[FeedbackDisplayer] Mostrato feedback '{feedback.FeedbackName}' con {feedback.pages.Count} pagina/e.");
         }
     }
-
-
-
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private readonly string SINGLE_PATH_TITLE_TEXT = "Canvas/Title Text";
     private readonly string SINGLE_PATH_BODY_TEXT = "Canvas/Scrollable/Content/Body Text";
@@ -186,7 +169,6 @@ public class FeedbackDisplayer : MonoBehaviour
     private readonly string SINGLE_PATH_LAYOUT_PARENT = "Canvas";
     private readonly string SINGLE_PATH_SCROLLABLE = "Canvas/Scrollable";
 
-    // ======= Metodo aggiornato =======
     private void FillSingleContainer(FeedbackData feedback, GameObject container)
     {
         if (feedback == null || container == null)
@@ -203,14 +185,12 @@ public class FeedbackDisplayer : MonoBehaviour
 
         var page = feedback.pages[0];
 
-        // ======= Imposta titolo =======
         var headerText = container.transform.Find(SINGLE_PATH_TITLE_TEXT)?.GetComponent<TMPro.TMP_Text>();
         if (headerText != null)
             headerText.text = feedback.FeedbackName;
         else
             Debug.LogWarning($"[FeedbackRepository] '{SINGLE_PATH_TITLE_TEXT}' non trovato nel prefab.");
 
-        // ======= Trova riferimenti =======
         Transform bodyTextTransform = container.transform.Find(SINGLE_PATH_BODY_TEXT);
         var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
 
@@ -221,7 +201,6 @@ public class FeedbackDisplayer : MonoBehaviour
         VideoPlayer videoPlayer = container.GetComponentInChildren<VideoPlayer>();
         UnityEngine.UI.Image imageComponent = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
 
-        // Disattiva tutto
         if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
         if (videoContainer != null) videoContainer.gameObject.SetActive(false);
@@ -230,18 +209,15 @@ public class FeedbackDisplayer : MonoBehaviour
         slideData.setLearningEnums(page.Sequenzale_Globale, page.Visivo_Verbale);
         slideData.setIntrodactoryField(page.isIntroductory);
 
-        // ======= Validazione: immagine + video =======
         bool hasImage = page.image != null;
         bool hasVideo = page.video != null;
 
         if (hasImage && hasVideo)
         {
-            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedback.FeedbackName}' contiene sia un'immagine che un video. " +
-                           "Ogni pagina deve contenere solo uno dei due.");
+            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedback.FeedbackName}' contiene sia un'immagine che un video.");
             return;
         }
 
-        // ======= Testo =======
         if (bodyTextTransform != null && bodyText != null)
         {
             if (!string.IsNullOrEmpty(page.text))
@@ -255,7 +231,6 @@ public class FeedbackDisplayer : MonoBehaviour
             }
         }
 
-        // ======= Immagine =======
         if (hasImage)
         {
             if (imageContainer != null && imageComponent != null)
@@ -269,7 +244,6 @@ public class FeedbackDisplayer : MonoBehaviour
             }
         }
 
-        // ======= Video =======
         if (hasVideo)
         {
             if (videoContainer != null && videoPlayer != null)
@@ -284,26 +258,17 @@ public class FeedbackDisplayer : MonoBehaviour
             }
         }
 
-        // ======= Forza re-layout =======
         Transform layoutParent = container.transform.Find(SINGLE_PATH_LAYOUT_PARENT);
         if (layoutParent != null)
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(layoutParent.GetComponent<RectTransform>());
     }
 
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
     private readonly string MULTI_PATH_CONTENT = "Layout/Canvas/Scrollable/Content";
     private readonly string MULTI_PATH_NAV_PANEL = "Layout/Nav Panel";
     private readonly string MULTI_PATH_HEADER_TEXT = "Layout/Canvas/Title Text";
-
     private readonly string MULTI_PATH_BODY_TEXT = "Body Text";
     private readonly string MULTI_PATH_IMAGE_CONTAINER = "Image Container";
     private readonly string MULTI_PATH_VIDEO_CONTAINER = "Video Container";
-
-    // ===============================================================
-    // MULTI-PAGE FEEDBACK
-    // ===============================================================
 
     private void FillMultipleContainer(FeedbackData feedback, GameObject container)
     {
@@ -348,10 +313,6 @@ public class FeedbackDisplayer : MonoBehaviour
         StartCoroutine(ForceLayoutNextFrame(contentParent));
     }
 
-    // ===============================================================
-    // SUPPORT METHODS
-    // ===============================================================
-
     private void SetHeader(GameObject container, string title)
     {
         var header = container.transform.Find(MULTI_PATH_HEADER_TEXT)?.GetComponent<TMPro.TMP_Text>();
@@ -370,14 +331,15 @@ public class FeedbackDisplayer : MonoBehaviour
     }
 
     private void CreatePages(List<FeedbackRepository.FeedbackPage> pages,
-        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem, string feedbackName, bool useGlobalOverviewLabels = false)
+        Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem,
+        string feedbackName, bool useGlobalOverviewLabels = false)
     {
         for (int i = 0; i < pages.Count; i++)
         {
             var (page, navItem) = (i == 0)
                 ? (basePage, baseNavItem)
                 : (UnityEngine.Object.Instantiate(basePage, contentParent),
-                UnityEngine.Object.Instantiate(baseNavItem, navPanel));
+                   UnityEngine.Object.Instantiate(baseNavItem, navPanel));
 
             page.name = $"Page {i + 1}";
             navItem.name = $"Nav Item Toggle {i + 1}";
@@ -404,7 +366,6 @@ public class FeedbackDisplayer : MonoBehaviour
         var videoContainer = page.Find(MULTI_PATH_VIDEO_CONTAINER);
 
         SlideData slideData = page.GetComponent<SlideData>();
-        //Debug.Log("Pagina: " + page.name + " - " + pageData.Sequenzale_Globale + " " + pageData.Visivo_Verbale);
         slideData.setLearningEnums(pageData.Sequenzale_Globale, pageData.Visivo_Verbale);
         slideData.setIntrodactoryField(pageData.isIntroductory);
 
@@ -412,7 +373,6 @@ public class FeedbackDisplayer : MonoBehaviour
         var image = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
         var player = videoContainer?.GetComponentInChildren<VideoPlayer>();
 
-        // ======= Disattiva tutto all'inizio =======
         if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
         if (videoContainer != null) videoContainer.gameObject.SetActive(false);
@@ -421,22 +381,18 @@ public class FeedbackDisplayer : MonoBehaviour
         bool hasImage = pageData.image != null;
         bool hasVideo = pageData.video != null;
 
-        // ======= Validazione: immagine + video non ammessi =======
         if (hasImage && hasVideo)
         {
-            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedbackName}' contiene sia un'immagine che un video. " +
-                        "Ogni pagina deve contenere solo uno dei due.");
+            Debug.LogError($"[FeedbackRepository] La pagina del feedback '{feedbackName}' contiene sia un'immagine che un video.");
             return;
         }
 
-        // ======= Testo =======
         if (bodyText != null && hasText)
         {
             bodyText.text = pageData.text;
             bodyTextTransform.gameObject.SetActive(true);
         }
 
-        // ======= Immagine =======
         if (hasImage)
         {
             if (imageContainer != null && image != null)
@@ -450,7 +406,6 @@ public class FeedbackDisplayer : MonoBehaviour
             }
         }
 
-        // ======= Video =======
         if (hasVideo)
         {
             if (videoContainer != null && player != null)
@@ -465,11 +420,9 @@ public class FeedbackDisplayer : MonoBehaviour
             }
         }
 
-        // ======= Re-layout =======
         if (page.TryGetComponent(out RectTransform rect))
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
     }
-
 
     private void SetupNavigation(GameObject container, Transform navPanel, Transform contentParent)
     {
@@ -496,7 +449,6 @@ public class FeedbackDisplayer : MonoBehaviour
 
         linker.StartCoroutine(DelayedRefresh(linker));
 
-        // Attiva solo la prima pagina
         for (int i = 0; i < contentParent.childCount; i++)
             contentParent.GetChild(i).gameObject.SetActive(i == 0);
 
@@ -508,48 +460,21 @@ public class FeedbackDisplayer : MonoBehaviour
         }
     }
 
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
-
-    public GameObject PrepareAndDisplayFeedback(FeedbackData feedback, List<Transform> feedbackPositions, FeedbackSetHolder holder)
-    {
-        if (feedback == null || holder == null)
-        {
-            Debug.LogWarning("[FeedbackRepository] Parametri non validi in PrepareAndDisplayFeedback.");
-            return null;
-        }
-
-        // Istanzia e visualizza il feedback
-        ChooseFeedback(feedback, feedbackPositions, holder);
-
-
-        return holder.activeFeedbackInstance;
-    }
-
-
-    // 🔁 Coroutine per refreshare dopo un frame
     private IEnumerator DelayedRefresh(PageToggleLinkerIndexed linker)
     {
-        yield return null; // Attendi che Unity completi l'instanziazione
+        yield return null;
         linker.RefreshLists();
-        // Debug.Log("[FeedbackRepository] PageToggleLinkerIndexed aggiornato dopo la creazione dinamica delle pagine.");
     }
 
     private IEnumerator ForceLayoutNextFrame(Transform contentParent)
     {
-        // Forza subito un refresh del canvas
         Canvas.ForceUpdateCanvases();
-
-        // Attendi un frame per permettere a Unity di aggiornare la gerarchia UI
         yield return null;
 
         if (contentParent != null && contentParent.TryGetComponent(out RectTransform rect))
         {
-            // Ricostruisce il layout solo dopo che le pagine sono effettivamente attive
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
             Canvas.ForceUpdateCanvases();
         }
     }
-
-
 }

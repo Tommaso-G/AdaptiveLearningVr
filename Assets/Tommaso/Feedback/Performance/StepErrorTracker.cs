@@ -161,8 +161,8 @@ public class StepErrorTracker : MonoBehaviour
 
             textPanelOnHand.text = custom != null
                 ? custom.customMessage
-                : $"Prima di interagire con {lastError.interactedObjectName} " +
-                  $"devi eseguire lo step {lastError.missedStepName}";
+                : $"Ora non è il momento di interagire con {lastError.interactedObjectName} " +
+                  $"devi invece eseguire lo step {lastError.missedStepName}";
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);
             handMenuRequester?.OpenMenu();

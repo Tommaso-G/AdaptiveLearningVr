@@ -74,19 +74,34 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
-        - FeedbackName: "Disattiva Elettricit\xE0 e Gas"
+        - FeedbackName: "Disattiva l'elettricit\xE0"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Prima di lasciare l'area, <b>interrompi il gas e l'elettricit\xE0</b>:
-              gira la <b>manopola del gas</b> e solleva gli <b>interruttori elettrici</b>.
-              Queste azioni riducono il rischio di <b>esplosioni</b> e <b>cortocircuiti</b>,
-              evitando che l'incendio si aggravi ulteriormente."
+            text: "Prima di lasciare l\u2019area, <b>interrompi l\u2019elettricit\xE0</b>
+              agendo sul quadro elettrico: <b>solleva o abbassa l\u2019interruttore
+              generale</b>.\nQuesta azione elimina la corrente e riduce il rischio
+              di <b>cortocircuiti</b> o inneschi elettrici che potrebbero aggravare
+              l\u2019incendio."
           StepForCompletition:
-          - Switch the levers
+          - "Disattiva l'elettricit\xE0"
+          PersonalizedPrefab: {fileID: 0}
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> fino alla posizione di chiusura (di solito
+              perpendicolare al tubo).\nIn questo modo si blocca il flusso, riducendo
+              il rischio di <b>esplosioni</b> e fughe pericolose."
+          StepForCompletition:
+          - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
       - ChapterName: Isola Incendio
         feedbacks:
@@ -285,7 +300,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "C'\xE8 del fumo nella stanza. Abbassati per non inalarlo."
+            text: "In presenza di <b>fumo</b>, <b>abbassati immediatamente</b> e
+              procedi vicino al pavimento. Il fumo tende a salire verso l\u2019alto,
+              quindi restando in basso puoi respirare aria pi\xF9 pulita e ridurre
+              il rischio di <b>intossicazione</b>. Se possibile, <b>copri naso e
+              bocca</b> con un panno e <b>prosegui rapidamente</b> verso l\u2019uscita."
           StepForCompletition:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
@@ -297,9 +316,12 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "Il fuoco blocca il percorso ma sembra gestibile: usa l'<b>estintore</b>.
-              Ce n'\xE8 uno in <b>ogni aula</b>. Prendilo, puntalo alla <b>base delle
-              fiamme</b> ed eroga il getto. Una volta spento il fuoco, <b>prosegui
-              immediatamente</b> con l'evacuazione."
+              Ce n'\xE8 uno <b>nelle vicinanze</b>. Prendilo, puntalo alla <b>base
+              delle fiamme</b> ed eroga il getto.\nSe stanno bruciando <b>materiali
+              solidi</b> (come carta, legno o arredi) e <b>non sono coinvolti impianti
+              elettrici</b>, puoi usare un <b>estintore ad acqua</b>, adatto a questo
+              tipo di incendio.\nUna volta spento il fuoco, <b>prosegui immediatamente</b>
+              con l'evacuazione."
           StepForCompletition:
           - Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
@@ -443,9 +465,9 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "Del <b>liquido infiammabile<b> ha preso fuoco. Questa volta per
               spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
-              l'estintore nella stanza."
+              l'estintore a Co2 nella stanza."
           StepForCompletition:
-          - Prendi l'estintore (CO2)
+          - Prendi l'estintore
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Estrai la sicura
           pages:

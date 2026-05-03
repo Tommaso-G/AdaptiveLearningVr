@@ -22,9 +22,16 @@ public class FeedbackAutoManager : MonoBehaviour
     public FeedbackDisplayer feedbackDisplayer;
     public FeedbackChapterFilter chapterFilter;
 
+    [Header("Impostazioni Delay")]
+    [Tooltip("Secondi di attesa tra chiusura e apertura di un feedback sulla stessa posizione")]
+    public float feedbackPositionDelay = 3f;
+
     // Struttura aggiornata: tiene traccia anche del capitolo di appartenenza
     private Dictionary<FeedbackRepository.FeedbackData, (HashSet<string> steps, string chapterName)> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
+
+    // Chiave: posizione world arrotondata, Valore: timestamp di fine cooldown
+    private Dictionary<Vector3Int, float> positionCooldowns = new();
 
     private IProcess process;
 
@@ -201,6 +208,16 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
+    // Arrotonda a 10cm per tollerare piccole variazioni di posizione
+    private Vector3Int PositionKey(Vector3 worldPos)
+    {
+        return new Vector3Int(
+            Mathf.RoundToInt(worldPos.x * 10),
+            Mathf.RoundToInt(worldPos.y * 10),
+            Mathf.RoundToInt(worldPos.z * 10)
+        );
+    }
+
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
         if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
@@ -210,16 +227,53 @@ public class FeedbackAutoManager : MonoBehaviour
         }
 
         string stepName = step.Data.Name;
-
         string firstStep = feedback.StepForCompletition.FirstOrDefault();
         if (stepName != firstStep) return;
-
         if (shownFeedbacks.Contains(feedback)) return;
 
         GameObject target = GetFirstGameObjectFromStep(step);
         if (target == null) return;
 
         List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
+        if (feedbackPositions == null) return;
+
+        // Calcola il delay massimo tra tutte le posizioni target
+        float delay = 0f;
+        foreach (var pos in feedbackPositions)
+        {
+            Vector3Int key = PositionKey(pos.position);
+            if (positionCooldowns.TryGetValue(key, out float until))
+            {
+                float remaining = until - Time.time;
+                if (remaining > delay)
+                    delay = remaining;
+            }
+        }
+
+        // Segna subito come shown per evitare doppi trigger durante l'attesa
+        shownFeedbacks.Add(feedback);
+
+        if (!activeFeedbackSteps.ContainsKey(feedback))
+            activeFeedbackSteps[feedback] = (new HashSet<string>(feedback.StepForCompletition), chapterName);
+
+        StartCoroutine(ShowFeedbackAfterDelay(delay, chapterName, feedback, feedbackPositions));
+    }
+
+    private IEnumerator ShowFeedbackAfterDelay(
+        float delay,
+        string chapterName,
+        FeedbackRepository.FeedbackData feedback,
+        List<Transform> feedbackPositions)
+    {
+        if (delay > 0f)
+        {
+            Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
+            yield return new WaitForSeconds(delay);
+        }
+
+        // Se nel frattempo il feedback è stato annullato (es. capitolo disabilitato)
+        if (!shownFeedbacks.Contains(feedback)) yield break;
+
         feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
 
         GameObject instance = feedbackHolder.activeFeedbackInstance;
@@ -229,12 +283,6 @@ public class FeedbackAutoManager : MonoBehaviour
             if (controller != null)
                 controller.isOptionalFeedback = chapterName.Contains("Optional");
         }
-
-        // Struttura aggiornata: salva anche il chapterName
-        if (!activeFeedbackSteps.ContainsKey(feedback))
-            activeFeedbackSteps[feedback] = (new HashSet<string>(feedback.StepForCompletition), chapterName);
-
-        shownFeedbacks.Add(feedback);
     }
 
     private void HandleStepCompletion(string stepName)
@@ -255,7 +303,14 @@ public class FeedbackAutoManager : MonoBehaviour
                 if (prefabs != null)
                 {
                     for (int i = prefabs.Count - 1; i >= 0; i--)
+                    {
+                        // Registra cooldown sulla posizione world prima di chiudere
+                        Vector3Int key = PositionKey(prefabs[i].transform.position);
+                        positionCooldowns[key] = Time.time + feedbackPositionDelay;
+                        Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
+
                         prefabs[i].CloseFeedback();
+                    }
                 }
 
                 feedbacksToRemove.Add(feedback);
@@ -275,7 +330,6 @@ public class FeedbackAutoManager : MonoBehaviour
     /// </summary>
     public void DisableAllFeedbackForChapter(string chapterName)
     {
-
         // 1. Disabilita i feedback futuri tramite chapterFilter
         if (chapterFilter != null)
             chapterFilter.setFeedbackLevel(chapterName, 2);

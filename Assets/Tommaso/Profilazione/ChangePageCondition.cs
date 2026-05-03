@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Net.Mail;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
@@ -62,6 +63,8 @@ public class FeedbackPageChangedConditionActiveProcess : StageProcess<FeedbackPa
             return;
         }
 
+        Debug.LogWarning("[FeedbackPageChangedCondition] trovato linker: ."+ _linker);
+
         _linker.OnPageChanged += OnPageChanged;
     }
 
@@ -79,7 +82,7 @@ public class FeedbackPageChangedConditionActiveProcess : StageProcess<FeedbackPa
 
     private IEnumerator DelayedCompletion()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
 
         Debug.Log("Attesa completata → condition completata.");
         Data.IsCompleted = true;

@@ -8,7 +8,6 @@ public class FeedbackIconController : MonoBehaviour
     public Sprite visivoSprite;
 
     [Header("Verbale")]
-    [TextArea]
     public string verbaleText;
 
     private Transform feedbackRoot;
