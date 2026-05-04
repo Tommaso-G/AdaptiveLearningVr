@@ -1,5 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class SafeDoor : MonoBehaviour, ICompletableStep
 {
@@ -14,8 +17,9 @@ public class SafeDoor : MonoBehaviour, ICompletableStep
     public AudioClip wrong;
     public AudioClip correct;
 
-    private AudioSource AudioFeedback;
+    [SerializeField] private List<XRSimpleInteractable> buttons; // assegna i pulsanti dall'Inspector
 
+    private AudioSource AudioFeedback;
     private string stringPassword;
     private bool ischecking = false;
     private string psw = "";
@@ -48,10 +52,10 @@ public class SafeDoor : MonoBehaviour, ICompletableStep
             }
         }
     }
+
     public void CheckPassword()
     {
         ischecking = true;
-        print("pws: " + psw + ", password: " + password);
         if (stringPassword == psw)
         {
             greenLight.material = green;
@@ -79,16 +83,24 @@ public class SafeDoor : MonoBehaviour, ICompletableStep
             AudioFeedback.clip = wrong;
             AudioFeedback.Play();
 
-            StartCoroutine("ResetPad");
+            StartCoroutine(ResetPad());
         }
     }
 
     private IEnumerator ResetPad()
     {
+        SetButtonsEnabled(false);
         yield return new WaitForSeconds(2);
         redLight.material = startLightMat;
         psw = "";
         insertedDigits = 0;
         ischecking = false;
+        SetButtonsEnabled(true);
+    }
+
+    private void SetButtonsEnabled(bool enabled)
+    {
+        foreach (var button in buttons)
+            button.enabled = enabled;
     }
 }

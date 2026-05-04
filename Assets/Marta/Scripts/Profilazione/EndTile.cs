@@ -18,6 +18,7 @@ public class EndTile : SpecialTile, ICompletableStep
         {
             boxPlayer.GetComponent<Rigidbody>().isKinematic = false;
             StartCoroutine(Win());
+            return; // <- aggiunto
         }
         if (boxPlayer.isDownRL || boxPlayer.isDownUD)
         {

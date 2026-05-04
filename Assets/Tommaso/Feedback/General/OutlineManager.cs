@@ -179,12 +179,21 @@ public class StepOutlineManager : MonoBehaviour
     /// </summary>
     private void FindAndEnableOutlines(GameObject root)
     {
-        TryEnableOutline(root);
+        // Il root deve avere il tag ObjectStep
+        if (!root.CompareTag(OBJECT_STEP_TAG)) return;
 
-        foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+        // Attiva outline su root e su tutti i figli che hanno il componente, indipendentemente dal tag
+        foreach (Transform t in root.GetComponentsInChildren<Transform>(true))
         {
-            if (child.gameObject == root) continue;
-            TryEnableOutline(child.gameObject);
+            Outline outline = t.GetComponent<Outline>();
+            if (outline == null) continue;
+            if (activeOutlines.Contains(outline)) continue;
+
+            outline.enabled = true;
+            outline.OutlineWidth = minOutlineWidth;
+            activeOutlines.Add(outline);
+
+            Debug.Log($"[StepOutlineManager] Outline attivato su: {t.gameObject.name}");
         }
     }
 

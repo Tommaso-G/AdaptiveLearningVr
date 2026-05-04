@@ -3,7 +3,7 @@ using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
 public class XRButtonPressedMenuItem : MenuItem<ICondition>
 {
-    public override string DisplayedName => "XR Button Pressed";
+    public override string DisplayedName => "Custom/XR Button Pressed or joystick activated";
 
     public override ICondition GetNewItem()
     {

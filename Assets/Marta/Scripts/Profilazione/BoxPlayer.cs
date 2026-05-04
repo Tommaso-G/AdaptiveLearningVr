@@ -413,36 +413,44 @@ public class BoxPlayer : MonoBehaviour
         Ray upRay = new Ray(rayUpPos, -referenceAxis.up);
         Ray downRay = new Ray(rayDownPos, -referenceAxis.up);
 
-        if (Physics.Raycast(upRay, out RaycastHit upHit, width) && upHit.collider.CompareTag("FallTile"))
+        if (Physics.Raycast(upRay, out RaycastHit upHit, width))
         {
-            Debug.DrawRay(rayUpPos, -referenceAxis.up * width, UnityEngine.Color.red);
-            SpecialTile tile = upHit.collider.GetComponent<SpecialTile>();
-
-            if(tile != lastTileHit && lastTileHit == null)
+            if (upHit.collider.CompareTag("FallTile"))
             {
-                lastTileHit = tile;
-                tile.TileEffect();
-                print("Hit tile UP");
-                canMove = false;
-                dataSender?.AddError(); 
-
+                SpecialTile tile = upHit.collider.GetComponent<SpecialTile>();
+                if (tile != lastTileHit && lastTileHit == null)
+                {
+                    lastTileHit = tile;
+                    tile.TileEffect();
+                    canMove = false;
+                    dataSender?.AddError();
+                }
             }
-        }else if (Physics.Raycast(downRay, out RaycastHit downHit, width) && downHit.collider.CompareTag("FallTile"))
-        {
-            Debug.DrawRay(rayDownPos, -referenceAxis.up * width, UnityEngine.Color.blue);
-            SpecialTile tile = downHit.collider.GetComponent<SpecialTile>();
-
-            if (tile != lastTileHit && lastTileHit == null)
+            else if (upHit.collider.CompareTag("EndTile"))
             {
-                lastTileHit = tile;
-                tile.TileEffect();
-                print("Hit tile DOWN");
-                canMove = false;
-                dataSender?.AddError(); 
-
+                SpecialTile tile = upHit.collider.GetComponent<SpecialTile>();
+                tile.TileEffect(); // EndTile gestisce internamente piede/coricato
             }
         }
-
+        else if (Physics.Raycast(downRay, out RaycastHit downHit, width))
+        {
+            if (downHit.collider.CompareTag("FallTile"))
+            {
+                SpecialTile tile = downHit.collider.GetComponent<SpecialTile>();
+                if (tile != lastTileHit && lastTileHit == null)
+                {
+                    lastTileHit = tile;
+                    tile.TileEffect();
+                    canMove = false;
+                    dataSender?.AddError();
+                }
+            }
+            else if (downHit.collider.CompareTag("EndTile"))
+            {
+                SpecialTile tile = downHit.collider.GetComponent<SpecialTile>();
+                tile.TileEffect();
+            }
+        }
     }
 
         private void TryStartTracking()
