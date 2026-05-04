@@ -467,7 +467,7 @@ MonoBehaviour:
               spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
               l'estintore a Co2 nella stanza."
           StepForCompletition:
-          - Prendi l'estintore
+          - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
         - FeedbackName: Estrai la sicura
           pages:
@@ -507,7 +507,7 @@ MonoBehaviour:
               non \xE8 completamente estinto. Rilasciare troppo presto rischia di
               far <b>riprendere le fiamme</b>."
           StepForCompletition:
-          - Estingui il fuoco liquido
+          - Estingui il fuoco (CO2)
           PersonalizedPrefab: {fileID: 0}
       riflessivo:
       - ChapterName: Segnalazione incendio

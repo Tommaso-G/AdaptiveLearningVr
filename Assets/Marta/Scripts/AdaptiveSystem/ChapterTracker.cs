@@ -48,10 +48,12 @@ public class ChapterTracker : MonoBehaviour
     private void OnProcessStarted(object sender, ProcessEventArgs args)
     {
         process = ProcessRunner.Current;
+        Debug.Log($"[ChapterTracker] Processo preso");
     }
 
     public void setChaptersToExclude(List<ChapterConfigData> chapters)
     {
+        Debug.Log($"[ChapterTracker] settati capitoli da escludere");
         foreach (ChapterConfigData chapter in chapters)
         {
             chaptersToExclude.Add(chapter.name);
@@ -60,6 +62,7 @@ public class ChapterTracker : MonoBehaviour
 
     public void OnChapterStarted(object sender, ProcessEventArgs args)
     {   // registra gli errori del capitolo precedente se presenti
+        Debug.Log($"[ChapterTracker] Iniziato un capitolo");
         if (currentChapterName != null)
         {
             chapterIdToRegister = currentChapterName;
