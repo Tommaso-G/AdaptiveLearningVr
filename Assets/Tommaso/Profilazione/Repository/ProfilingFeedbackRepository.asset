@@ -28,12 +28,27 @@ MonoBehaviour:
           per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
           su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
           questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
-          devi andare. \n\nUna volta completato uno step, vedrai comparire un \"check\"
-          sull'icona o sulla diapositiva. \n\nProva ad allontanarti dalla diapositiva."
+          devi andare. Per muoverti nello spazio, utilizza la levette dei controller.\n\nProva
+          ad allontanarti dalla diapositiva."
       StepForCompletition:
       - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
     - FeedbackName: Introduzione 2
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 21300000, guid: b181d6dfee62edb4eb03ecc9626d572d, type: 3}
+        video: {fileID: 0}
+        text: "Per interagire con elementi 2D, come bottoni e pannelli, utilizza
+          il pulsante mostrato in figura puntando verso il punto desiderato; in alternativa,
+          puoi portare fisicamente il controller sopra l\u2019elemento senza premere
+          alcun pulsante.\n\nPer provare, scorri la barra presente sulla sinistra,
+          ti permetter\xE0 di leggere tutto il testo.\n\nBravo!"
+      StepForCompletition:
+      - clicca sulal barra scorrevole
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 3
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
@@ -43,7 +58,7 @@ MonoBehaviour:
         text: "Ottimo lavoro, stai imparando in fretta. \n\nQuesta che vedi \xE8
           una diapositiva pi\xF9 complessa. Contiene diverse slide che potrai navigare
           nell'ordine che preferisci.\n\nClicca sul bottone corrispondente alla pagina
-          2, sulla sinistra"
+          2, sulla sinistra.\n\n"
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -54,7 +69,7 @@ MonoBehaviour:
       StepForCompletition:
       - Clicca sulla seconda pagina
       PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: Introduzione 3
+    - FeedbackName: Introduzione 4
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
@@ -89,7 +104,28 @@ MonoBehaviour:
       StepForCompletition:
       - Clicca su slide globale
       PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: Introduzione 4
+    - FeedbackName: Introduzione 5
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 21300000, guid: ce79b042749569346b9094d0c91b26b2, type: 3}
+        video: {fileID: 0}
+        text: 'Bene, Per interagire invece con gli oggetti che troverai durante il
+          tuo percorso puoi usare il tasto laterale mostrato nell''immagine.
+
+
+          Afferra
+          uno degli oggetti che vedi attorno a te, puntando il controller o avvicinandolo
+          all''oggetto desiderato.
+
+
+          Ricorda: gli oggetti con cui dovrai
+          interagire lampeggeranno al momento giusto!'
+      StepForCompletition:
+      - Grab Oggetti
+      PersonalizedPrefab: {fileID: 0}
+    - FeedbackName: Introduzione 6
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
@@ -97,9 +133,11 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "Ok figliolo, \xE8 il momento di aprire le ali. C'\xE8 tutto un mondo
-          di minigiochi ancora da esplorare. \n\nVoltati e segui le icone."
+          di minigiochi ancora da esplorare. \n\nVoltati e apri la porta premendo
+          il bottone. Per premere oggetti come i bottoni, avvicina il controller
+          al bottone come faresti con la mano. Adios!"
       StepForCompletition:
-      - dirigiti fuori
+      - Premi il bottone per aprire la porta
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Cassaforte
     feedbacks:

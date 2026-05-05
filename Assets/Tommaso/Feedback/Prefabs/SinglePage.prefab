@@ -532,7 +532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3771468885460663403
 RectTransform:
   m_ObjectHideFlags: 0
@@ -547,10 +547,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2696181342263337201}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 274.305, y: -168.725}
-  m_SizeDelta: {x: 518.4, y: 319.45}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 235.6, y: 184.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7144389145911357429
 CanvasRenderer:
@@ -580,7 +580,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b181d6dfee62edb4eb03ecc9626d572d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -756,7 +756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 279.805, y: -55.015}
+  m_AnchoredPosition: {x: 279.805, y: -312.385}
   m_SizeDelta: {x: 548.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4422483001514442349
@@ -787,8 +787,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>Introduzione</b>\r\nQuesto progetto dimostrativo mostra come gestire
-    la logica di gioco, l\u2019interfaccia utente e le transizioni di stato in Unity.\r\n\r\n"
+  m_text: "Per interagire con elementi 2D, come bottoni e pannelli, utilizza il pulsante
+    mostrato in figura puntando verso il punto desiderato; in alternativa, puoi portare
+    fisicamente il controller sopra l\u2019elemento senza premere alcun pulsante.\n\nPer
+    provare, scorri la barra presente sulla sinistra, ti permetter\xE0 di leggere
+    tutto il testo.\n\nBravo!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1178,7 +1181,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 775.4, y: 532.2, z: 10}
-  m_Center: {x: 1.317214, y: -2.6, z: 0}
+  m_Center: {x: 1.317214, y: 13.89, z: 0}
 --- !u!114 &5393314621371185580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1313,7 +1316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.0026855469}
+  m_AnchoredPosition: {x: -0, y: -0.00061035156}
   m_SizeDelta: {x: 559.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628609877651487099
@@ -1331,10 +1334,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 9
+    m_Top: 23
     m_Bottom: 9
   m_ChildAlignment: 4
-  m_Spacing: 4.6
+  m_Spacing: -10.6
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -1540,7 +1543,7 @@ GameObject:
   - component: {fileID: 5584695974753836246}
   - component: {fileID: 8791535132759203775}
   - component: {fileID: 7037563214638904762}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Scrollbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1564,8 +1567,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 281, y: -11.99787}
-  m_SizeDelta: {x: 13.07, y: 354.42}
+  m_AnchoredPosition: {x: 283, y: -11.99787}
+  m_SizeDelta: {x: 23.7, y: 354.42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5584695974753836246
 CanvasRenderer:
@@ -1648,8 +1651,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3292046231320405482}
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999865
+  m_Value: 0.5000021
+  m_Size: 0.8014163
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
