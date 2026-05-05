@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
-public class FireObject : MonoBehaviour
+public class FireObject : MonoBehaviour, IDestructible
 {
     [SerializeField] private Transform fireTran;
     [SerializeField] private BoxCollider fireBox;
@@ -17,6 +17,8 @@ public class FireObject : MonoBehaviour
     private bool sizeChanging = false;
     private bool isExtinguishing = false;
     public bool isHit = false;
+
+    public event System.Action OnDestroyed;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -53,7 +55,8 @@ public class FireObject : MonoBehaviour
         //print("Fire " + gameObject.GetInstanceID() + " healt: " + fireHealt);
         if (fireHealt <= 0)
         {
-            Destroy(this.gameObject);
+            OnDestroyed?.Invoke();
+            Destroy(gameObject);
         }
     }
 
@@ -73,6 +76,8 @@ public class FireObject : MonoBehaviour
         float duration = 3f;
         float elapsed = 0f;
 
+        print($"[FireObj] inizio corutine di grow.\nScale factor {scaleFactor},\nTarget scale {targetScale}");
+
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -87,7 +92,14 @@ public class FireObject : MonoBehaviour
 
     private IEnumerator ExtinguishingCoroutine()
     {
-        fireHealt -= 0.3f;
+        if (fireHealt < 0.3f)
+        {
+            fireHealt = 0f;
+        }
+        else
+        {
+            fireHealt -= 0.3f;
+        }
         yield return new WaitForSeconds(3f);
         isExtinguishing = false;
     }

@@ -67,11 +67,12 @@ public class ObstaclesSpawner : MonoBehaviour
                 selectedArea = pickedChild.GetComponent<SpawnArea>();
             }
 
-            amount -= 1;
-            if (activateAreaEffect)
+            if(selectedArea == null)
             {
-                selectedArea.effectActive = true;
+                selectedArea = safeSpawnArea;
             }
+
+            amount -= 1;
 
             spawnAreas.Add(selectedArea);
         }
@@ -79,7 +80,11 @@ public class ObstaclesSpawner : MonoBehaviour
 
     public void ActivateAreaEffect()
     {
-        activateAreaEffect = true;
+        foreach (SpawnArea spawnArea in spawnAreas)
+        {
+            spawnArea.effectActive = true;
+            print("[ObstaclesSpawner] attivo l'effetto dell'area");
+        }
     }
 
     private void Update()
@@ -97,8 +102,6 @@ public class ObstaclesSpawner : MonoBehaviour
 
     void SpawnResources(SpawnArea spawnArea)
     {
-        bool spawned = false;
-
         if (spawnArea == null)
         {
             if (safeSpawnArea != null)
@@ -112,22 +115,19 @@ public class ObstaclesSpawner : MonoBehaviour
             }
         }
 
-        if (!spawned)
+        GameObject instance = Instantiate(
+            spawnablePrefab,
+            new Vector3(spawnArea.SafePoint.x, spawnArea.SafePoint.y + 0.5f, spawnArea.SafePoint.z),
+            Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)),
+            childEmpty
+        );
+
+        SpawnableObj newSpawnable = instance.GetComponent<SpawnableObj>();
+
+        if (newSpawnable != null)
         {
-            GameObject instance = Instantiate(
-                spawnablePrefab,
-                new Vector3(spawnArea.SafePoint.x, spawnArea.SafePoint.y + 0.5f, spawnArea.SafePoint.z),
-                Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)),
-                childEmpty
-            );
-
-            SpawnableObj newSpawnable = instance.GetComponent<SpawnableObj>();
-
-            if (newSpawnable != null)
-            {
-                newSpawnable.Initialize(spawnArea);
-                newSpawnable.SpawnableObjDestroyed += OnSpawnedObjDestroyed;
-            }
+            newSpawnable.Initialize(spawnArea);
+            newSpawnable.SpawnableObjDestroyed += OnSpawnedObjDestroyed;
         }
 
         spawnArea.SetFeedbackParent(multifeedbackPos);
@@ -137,15 +137,8 @@ public class ObstaclesSpawner : MonoBehaviour
     public void OnSpawnedObjDestroyed(SpawnableObj obj, SpawnArea spawnArea)
     {
         obj.SpawnableObjDestroyed -= OnSpawnedObjDestroyed;
-
-        spawnArea.SetFeedbackParent(spawnArea.transform);
-
+        Destroy(obj.gameObject);
         currentSpawnAreas.Remove(spawnArea);
-    }
-
-    bool IsSpaceFree(Vector3 position, float radius, LayerMask mask)
-    {
-        return Physics.OverlapSphere(position, radius, mask).Length == 0;
     }
 
     public void ActivateChildren()
@@ -170,7 +163,8 @@ public class ObstaclesSpawner : MonoBehaviour
 
         for (int i = childEmpty.childCount - 1; i >= 0; i--)
         {
-            Destroy(childEmpty.GetChild(i).gameObject);
+            SpawnableObj spawnable = childEmpty.GetChild(i).GetComponent<SpawnableObj>();
+            spawnable.PrepareForDestroy();
         }
 
         Initialized = false;

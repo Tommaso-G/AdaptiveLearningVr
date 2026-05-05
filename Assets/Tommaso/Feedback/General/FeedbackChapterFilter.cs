@@ -30,7 +30,7 @@ public class FeedbackChapterFilter : MonoBehaviour
         chapter.feedbackLevel = level;
     }
 
-    public void TemporaryDisableFeedback(string chapterName)
+    public void NoneLevelChangeChapter(string chapterName)
     {
         ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
         if (chapter == null)

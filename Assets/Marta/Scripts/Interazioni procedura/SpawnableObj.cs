@@ -8,41 +8,40 @@ public class SpawnableObj : MonoBehaviour
 {
     [SerializeField] private SpawnArea spawnArea;
 
+    private IDestructible destructible;
+
     public event Action<SpawnableObj, SpawnArea> SpawnableObjDestroyed;
-
-    private bool _isQuitting;
-
-    private void OnApplicationQuit()
-    {
-        _isQuitting = true;
-    }
     // Start is called once before the first executon of Update after the MonoBehaviour is created
     public void Initialize(SpawnArea area)
     {
         spawnArea = area;
+        spawnArea.Initialize();
         //spawnArea.SetOccupied(true);
     }
 
     private void Start()
     {
+        print("[SpanwnableObj] Chimato Start");
         spawnArea.SetOccupied(true);
+        destructible = GetComponent<IDestructible>();
+
+        if (destructible != null)
+        {
+            destructible.OnDestroyed += HandleDestroyed;
+        }
     }
 
-    private void OnDestroy()
+    private void HandleDestroyed()
     {
+        PrepareForDestroy();
+    }
 
-        if (_isQuitting)
-            return;
-#if UNITY_EDITOR
-        // Questo serve a distinguere distruzione in-game da chiusura Play Mode
-        if (!Application.isPlaying || !EditorApplication.isPlayingOrWillChangePlaymode)
-            return;
-#endif
-
-        // Controlla sempre che l'oggetto non sia distrutto
+    public void PrepareForDestroy()
+    {
         if (spawnArea != null && spawnArea.gameObject != null)
         {
             spawnArea.SetOccupied(false);
+            spawnArea.SetFeedbackParent(spawnArea.transform);
             SpawnableObjDestroyed?.Invoke(this, spawnArea);
         }
     }

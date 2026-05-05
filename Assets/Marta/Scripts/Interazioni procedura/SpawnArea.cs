@@ -40,6 +40,12 @@ public class SpawnArea : MonoBehaviour
     {
         CacheareaBounds();
     }
+
+    public void Initialize()
+    {
+        checkFumo.position = effectFeedbackPos.position;
+        checkFumo.rotation = effectFeedbackPos.rotation;
+    }
     private void CacheareaBounds()
     {
         Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
@@ -79,6 +85,7 @@ public class SpawnArea : MonoBehaviour
 
     public void SpawnEffect()
     {
+        checkFumo.gameObject.SetActive(false);
         Collider volume = GetComponent<Collider>();
         if (areaPSEffect == null || volume == null)
         {
@@ -102,9 +109,6 @@ public class SpawnArea : MonoBehaviour
         // Istanzia e fa partire il particle system
         GameObject instance = Instantiate(areaPSEffect, Vector3.zero, Quaternion.identity, this.transform);
         instance.GetComponent<ParticleSystem>().Play();
-        checkFumo.position = effectFeedbackPos.position;
-        checkFumo.rotation = effectFeedbackPos.rotation;
-        checkFumo.gameObject.SetActive(false);
 
         if (effectsController != null)
         {

@@ -89,7 +89,7 @@ public class CorrectDoorButton : MonoBehaviour
                 imageToSet[0].sprite = unlokedImage;
             }
 
-            if (spawnPlaneGrid.Contains(b.obstacleSpawnArea?.GetComponent<SpawnArea>()))
+            if (b.obstacleSpawnArea != null && spawnPlaneGrid.Contains(b.obstacleSpawnArea?.GetComponent<SpawnArea>()))
             {
                 imageToSet[1].sprite = alertImage;
                 imageToSet[1].gameObject.SetActive(true);
