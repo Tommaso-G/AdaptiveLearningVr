@@ -24,7 +24,7 @@ public class SlidingTile : MonoBehaviour
     [SerializeField]
     private SlidingTilesMgr mgr;
 
-    public bool on {  get; private set; }
+    public bool on { get; private set; }
     public bool onTarget = false;
 
     public MinigameDataSender dataSender;
@@ -64,7 +64,8 @@ public class SlidingTile : MonoBehaviour
                     }
                 }
             }
-            else if(upHit.collider.CompareTag("Box")){
+            else if (upHit.collider.CompareTag("Box"))
+            {
 
                 Vector3 nextPos = upHit.collider.transform.position;
 
@@ -75,7 +76,7 @@ public class SlidingTile : MonoBehaviour
 
         if (Physics.Raycast(downRay, out RaycastHit downHit, 6 * size, mask))
         {
-            Debug.DrawRay(transform.position, - referenceAxis.up * size, UnityEngine.Color.red);
+            Debug.DrawRay(transform.position, -referenceAxis.up * size, UnityEngine.Color.red);
 
             if (downHit.collider.CompareTag("Untagged"))
             {
@@ -94,7 +95,8 @@ public class SlidingTile : MonoBehaviour
                     }
                 }
             }
-            else if(downHit.collider.CompareTag("Box")){
+            else if (downHit.collider.CompareTag("Box"))
+            {
                 Vector3 nextPos = downHit.collider.transform.position;
 
                 InstatiateNextPos(nextPos);
@@ -123,7 +125,8 @@ public class SlidingTile : MonoBehaviour
                     }
                 }
             }
-            else if(rightHit.collider.CompareTag("Box")){
+            else if (rightHit.collider.CompareTag("Box"))
+            {
                 Vector3 nextPos = rightHit.collider.transform.position;
 
                 InstatiateNextPos(nextPos);
@@ -152,7 +155,8 @@ public class SlidingTile : MonoBehaviour
                     }
                 }
             }
-            else if(leftHit.collider.CompareTag("Box")){
+            else if (leftHit.collider.CompareTag("Box"))
+            {
                 Vector3 nextPos = leftHit.collider.transform.position;
 
                 InstatiateNextPos(nextPos);
@@ -163,7 +167,7 @@ public class SlidingTile : MonoBehaviour
     private void InstatiateNextPos(Vector3 nextPos)
     {
         GameObject newPos = Instantiate(nextPosPrefab, nextPos, Quaternion.identity, transform.parent);
-        
+
         XRSimpleInteractable interactable = newPos.GetComponentInChildren<XRSimpleInteractable>();
         if (interactable != null)
         {
@@ -177,7 +181,7 @@ public class SlidingTile : MonoBehaviour
         {
             Debug.LogError("XRSimpleInteractable non trovato!");
         }
-        
+
         instatiatedPoses.Add(newPos);
     }
 
@@ -206,7 +210,7 @@ public class SlidingTile : MonoBehaviour
     public void Deselected()
     {
         if (instatiatedPoses == null) return;
-        foreach(GameObject g in instatiatedPoses)
+        foreach (GameObject g in instatiatedPoses)
         {
             Destroy(g);
             print("Distrutto elemento");
@@ -225,7 +229,7 @@ public class SlidingTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             goToTarget();
         }

@@ -72,6 +72,7 @@ public class SafeDoor : MonoBehaviour, ICompletableStep
         }
         else
         {
+            StartCoroutine(ResetPad());
             redLight.material = red;
 
             JointLimits limits = hinge.limits;
@@ -98,9 +99,23 @@ public class SafeDoor : MonoBehaviour, ICompletableStep
         SetButtonsEnabled(true);
     }
 
+    private void AutoCompletition()
+    {
+        psw = stringPassword;
+        CheckPassword();
+    }
     private void SetButtonsEnabled(bool enabled)
     {
         foreach (var button in buttons)
             button.enabled = enabled;
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            AutoCompletition();
+        }
     }
 }

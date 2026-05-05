@@ -83,7 +83,7 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position + referenceAxis.up * size;
-            sokobanManager.dataSender?.AddMove(); 
+            sokobanManager.dataSender?.AddMove();
 
         }
         yield return new WaitForSeconds(1f);
@@ -95,7 +95,7 @@ public class SokobanBox : MonoBehaviour
         {
             lastPos = transform.position;
             transform.position = transform.position - referenceAxis.up * size;
-            sokobanManager.dataSender?.AddMove(); 
+            sokobanManager.dataSender?.AddMove();
 
         }
         yield return new WaitForSeconds(1f);
@@ -294,6 +294,18 @@ public class SokobanBox : MonoBehaviour
         transform.position = lastPos;
     }
 
+    public void AutoCompletition()
+    {
+        targetReached = true;
+        isMoving = true;
+        sokobanManager.TargetReached();
+        Deselect();
+        blockUp = true;
+        blockDown = true;
+        blockRight = true;
+        blockLeft = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -307,6 +319,11 @@ public class SokobanBox : MonoBehaviour
         BoxRaycast();
 
         if (isMoving) return;
+
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            AutoCompletition();
+        }
         //if (Input.GetKeyDown(KeyCode.G))
         //{
         //    isMoving = true;

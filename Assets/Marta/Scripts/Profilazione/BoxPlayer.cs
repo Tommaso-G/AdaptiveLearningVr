@@ -19,6 +19,8 @@ public class BoxPlayer : MonoBehaviour
     XRPushButton rightButton;
     [SerializeField]
     Transform referenceAxis;
+    [SerializeField]
+    Transform finalTransform;
 
     Transform movingObj;
 
@@ -51,7 +53,7 @@ public class BoxPlayer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
 
         movingObj = transform;
         if (movingObj != null)
@@ -78,15 +80,15 @@ public class BoxPlayer : MonoBehaviour
         ////rightButton.onRelease.AddListener();
     }
 
-    
+
 
     private void CallMoveRight()
     {
-        if(coroutine == null && canMove)
+        if (coroutine == null && canMove)
         {
             TryStartTracking();
             coroutine = StartCoroutine("MoveRight");
-            dataSender?.AddMove(); 
+            dataSender?.AddMove();
 
         }
     }
@@ -97,7 +99,7 @@ public class BoxPlayer : MonoBehaviour
         {
             TryStartTracking();
             coroutine = StartCoroutine("MoveLeft");
-            dataSender?.AddMove(); 
+            dataSender?.AddMove();
 
         }
     }
@@ -108,7 +110,7 @@ public class BoxPlayer : MonoBehaviour
         {
             TryStartTracking();
             coroutine = StartCoroutine("MoveUp");
-            dataSender?.AddMove(); 
+            dataSender?.AddMove();
 
         }
     }
@@ -119,7 +121,7 @@ public class BoxPlayer : MonoBehaviour
         {
             TryStartTracking();
             coroutine = StartCoroutine("MoveDown");
-            dataSender?.AddMove(); 
+            dataSender?.AddMove();
 
         }
     }
@@ -399,6 +401,17 @@ public class BoxPlayer : MonoBehaviour
         lastTileHit = null;
         canMove = true;
     }
+
+    public void AutoCompletition()
+    {
+        isDownRL = false;
+        isDownUD = false;
+        movingObj.position = finalTransform.position;
+        movingObj.rotation = Quaternion.Euler(0f, 0f, 0f);
+        movingObj.GetComponent<Rigidbody>().isKinematic = true;
+        lastTileHit = null;
+        canMove = false;
+    }
     private void OnDrawGizmos()
     {
         // disegna il pivot come sfera rossa
@@ -453,14 +466,14 @@ public class BoxPlayer : MonoBehaviour
         }
     }
 
-        private void TryStartTracking()
+    private void TryStartTracking()
+    {
+        if (!hasStarted)
         {
-            if (!hasStarted)
-            {
-                hasStarted = true;
-                dataSender?.StartTracking();
-            }
+            hasStarted = true;
+            dataSender?.StartTracking();
         }
+    }
 
     // Update is called once per frame
     void Update()
@@ -493,6 +506,12 @@ public class BoxPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Reset();
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            AutoCompletition();
 
         }
     }
