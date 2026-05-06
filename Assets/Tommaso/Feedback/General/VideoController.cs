@@ -8,7 +8,12 @@ public class VideoPlayerController : MonoBehaviour
     {
         videoPlayer = GetComponent<UnityEngine.Video.VideoPlayer>();
         if (videoPlayer == null)
+        {
             Debug.LogError("❌ Nessun VideoPlayer trovato su questo oggetto");
+            return;
+        }
+
+        videoPlayer.Stop();
     }
 
     public void Play()

@@ -2,16 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlideDataContainer
 {
     public string pageName;
     public float focusTime;
-    public float normalizedFocusTime; // ← nuovo
+    public float normalizedFocusTime;
     public int opening;
     public LearningEnums.SequenzialeGlobale seqGlob;
     public LearningEnums.VisivoVerbale visVerb;
     public bool isIntroductory;
+    public int buttonClickCount; // ← nuovo
 }
 
 public class SlidesDataSender : MonoBehaviour
@@ -21,6 +23,9 @@ public class SlidesDataSender : MonoBehaviour
     private Dictionary<string, SlideDataContainer> slidesData = new Dictionary<string, SlideDataContainer>();
 
     [SerializeField] SlidesDataRecorder slidesDataRecorder;
+
+    [Header("Bottoni per slide visive")]
+    [SerializeField] private List<Button> visualButtons; // ← nuovo
 
     private string feedbackName;
 
@@ -37,8 +42,10 @@ public class SlidesDataSender : MonoBehaviour
     public List<int> visitHistory = new List<int>();
     private Dictionary<string, int> _slideIndexMap = new Dictionary<string, int>();
 
+    private int _currentButtonClickCount = 0; // ← nuovo
+    private string _currentVisualSlideName = null; // ← nuovo
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         slidesDataRecorder = FindFirstObjectByType<SlidesDataRecorder>();
@@ -62,6 +69,28 @@ public class SlidesDataSender : MonoBehaviour
                 index++;
             }
         }
+
+        RegisterVisualButtonListeners();
+    }
+
+    // ← nuovo
+    private void RegisterVisualButtonListeners()
+    {
+        foreach (var btn in visualButtons)
+        {
+            if (btn != null)
+                btn.onClick.AddListener(OnVisualButtonClicked);
+        }
+    }
+
+    // ← nuovo
+    private void OnVisualButtonClicked()
+    {
+        if (_currentVisualSlideName != null)
+        {
+            _currentButtonClickCount++;
+            Debug.Log($"[VisualButton] Click #{_currentButtonClickCount} su slide visiva: {_currentVisualSlideName}");
+        }
     }
 
     public void SaveSlidesData(SlideDataContainer container)
@@ -71,11 +100,28 @@ public class SlidesDataSender : MonoBehaviour
         if (string.IsNullOrEmpty(container.pageName))
             return;
 
+        // Se la slide corrente è visiva, salva i click accumulati e resetta
+        if (_currentVisualSlideName != null &&
+            _currentVisualSlideName != container.pageName &&
+            slidesData.TryGetValue(_currentVisualSlideName, out var prevData))
+        {
+            prevData.buttonClickCount = _currentButtonClickCount;
+            _currentButtonClickCount = 0;
+        }
 
+        // Traccia la slide visiva attiva
+        if (container.visVerb == LearningEnums.VisivoVerbale.Visivo && !container.isIntroductory)
+        {
+            _currentVisualSlideName = container.pageName;
+        }
+        else
+        {
+            _currentVisualSlideName = null;
+            _currentButtonClickCount = 0;
+        }
 
         if (_slideIndexMap.TryGetValue(container.pageName, out int slideIndex) && !container.isIntroductory)
             visitHistory.Add(slideIndex);
-            
 
         if (slidesData.TryGetValue(container.pageName, out data))
         {
@@ -91,11 +137,20 @@ public class SlidesDataSender : MonoBehaviour
             Debug.Log($"Slide: {container.pageName} (index {slideIndex}) salvata nel sender");
         }
     }
+
     public void SendData()
     {
         if (slidesDataRecorder == null)
             return;
 
+        // Flush click count sull'ultima slide visiva prima di inviare
+        if (_currentVisualSlideName != null &&
+            slidesData.TryGetValue(_currentVisualSlideName, out var lastVisual))
+        {
+            lastVisual.buttonClickCount = _currentButtonClickCount;
+            _currentButtonClickCount = 0;
+            _currentVisualSlideName = null;
+        }
 
         if (!string.IsNullOrEmpty(feedbackName) && feedbackName.Contains("Introduzione"))
         {
@@ -152,9 +207,13 @@ public class SlidesDataSender : MonoBehaviour
         {
             SlideData slide = child.GetComponent<SlideData>();
             if (slide != null)
-            {
                 slide.OnSlideDataUpdated -= SaveSlidesData;
-            }
+        }
+
+        foreach (var btn in visualButtons)
+        {
+            if (btn != null)
+                btn.onClick.RemoveListener(OnVisualButtonClicked);
         }
     }
 
@@ -163,7 +222,6 @@ public class SlidesDataSender : MonoBehaviour
         tempoOsservazionePreStep = tempo;
     }
 
-    //per il tempo totale prima di interagire con il minigioco
     public float GetCurrentTotalFocusTime()
     {
         float total = 0f;

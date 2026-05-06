@@ -198,7 +198,7 @@ public class FeedbackDisplayer : MonoBehaviour
         Transform videoContainer = container.transform.Find(SINGLE_PATH_VIDEO_CONTAINER);
         Transform scrollableContainer = container.transform.Find(SINGLE_PATH_SCROLLABLE);
 
-        VideoPlayer videoPlayer = container.GetComponentInChildren<VideoPlayer>();
+        VideoPlayer videoPlayer = container.GetComponentInChildren<VideoPlayer>(true);
         UnityEngine.UI.Image imageComponent = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
 
         if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
@@ -308,7 +308,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
         bool useGlobalOverviewLabels = feedbackHolder.ProfilingFeedbackRepository != null;
 
-        CreatePages(feedback.pages, contentParent, navPanel, basePage, baseNavItem, feedback.FeedbackName, useGlobalOverviewLabels);
+        CreatePages(feedback.pages, contentParent, navPanel, basePage, baseNavItem, feedback.FeedbackName, useGlobalOverviewLabels, container);
         SetupNavigation(container, navPanel, contentParent);
         StartCoroutine(ForceLayoutNextFrame(contentParent));
     }
@@ -332,7 +332,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
     private void CreatePages(List<FeedbackRepository.FeedbackPage> pages,
         Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem,
-        string feedbackName, bool useGlobalOverviewLabels = false)
+        string feedbackName, bool useGlobalOverviewLabels = false, GameObject container = null)
     {
         for (int i = 0; i < pages.Count; i++)
         {
@@ -355,11 +355,11 @@ public class FeedbackDisplayer : MonoBehaviour
                     textComp.text = $"Step {i}";
             }
 
-            SetupPageContent(pages[i], page, feedbackName);
+            SetupPageContent(pages[i], page, feedbackName, container);
         }
     }
 
-    private void SetupPageContent(FeedbackRepository.FeedbackPage pageData, Transform page, string feedbackName)
+    private void SetupPageContent(FeedbackRepository.FeedbackPage pageData, Transform page, string feedbackName, GameObject container)
     {
         var bodyTextTransform = page.Find(MULTI_PATH_BODY_TEXT);
         var imageContainer = page.Find(MULTI_PATH_IMAGE_CONTAINER);
@@ -371,7 +371,7 @@ public class FeedbackDisplayer : MonoBehaviour
 
         var bodyText = bodyTextTransform?.GetComponent<TMPro.TMP_Text>();
         var image = imageContainer?.GetComponentInChildren<UnityEngine.UI.Image>();
-        var player = videoContainer?.GetComponentInChildren<VideoPlayer>();
+        var player = container.GetComponentInChildren<VideoPlayer>(true); // ← cerca nel prefab root
 
         if (bodyTextTransform != null) bodyTextTransform.gameObject.SetActive(false);
         if (imageContainer != null) imageContainer.gameObject.SetActive(false);
