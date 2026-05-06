@@ -15,6 +15,7 @@ public class FeedbackDataContainer
     public List<int> visitHistory = new List<int>();
     public float tempoTotaleOsservazione = 0f;
 
+
 }
 
 public class SlidesDataRecorder : MonoBehaviour
@@ -80,6 +81,7 @@ public class SlidesDataRecorder : MonoBehaviour
                 sb.AppendLine("opening: " + data.Value.opening);
                 sb.AppendLine("globale/sequenziale: " + data.Value.seqGlob);
                 sb.AppendLine("visivo/verbale: " + data.Value.visVerb);
+                sb.AppendLine("click bottoni: " + data.Value.VideobuttonClicks); // ← aggiunto
                 sb.AppendLine("----------------------");
             }
 

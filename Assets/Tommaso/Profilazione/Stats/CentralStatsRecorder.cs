@@ -6,13 +6,6 @@ using static VisivoVerbaleStatManager;
 public class CentralStatsRecorder : MonoBehaviour
 {
 
-    public float Weight_OpeningOrder = 0.5f;
-
-    public float Weight_TimeOfFocus = 0.3f;
-
-    public float Weight_OpeningTimes = 0.2f;
-
-
     [System.Serializable]
     public class ProfilingSessionData
     {
@@ -37,7 +30,6 @@ public class CentralStatsRecorder : MonoBehaviour
     [System.Serializable]
     public class LearningSessionSlidesData
     {
-        public float scoreGlobaleSequenziale; // 0 = tutto sequenziale, 1 = tutto globale
         public float mediaTempoPreStep;
 
     }
@@ -106,6 +98,7 @@ public class CentralStatsRecorder : MonoBehaviour
         public int opening;
         public string seqGlob;
         public string visVerb;
+        public int videoButtonClicks;
     }
 
     [System.Serializable]
@@ -141,34 +134,12 @@ public class CentralStatsRecorder : MonoBehaviour
         if (feedbacks.Count == 0)
             return result;
 
-        float sommaPesataScore = 0f;
         float sommaPesataPreStep = 0f;
         float sommaPesi = 0f;
-
-        float totaleOpeningSequenziale = 0f;
-        float totaleOpeningGlobale = 0f;
 
         for (int i = 0; i < feedbacks.Count; i++)
         {
             var feedback = feedbacks[i];
-
-            float score = CalcolaScoreFeedback(feedback);
-
-            var slideSeq = feedback.slidesData.Values
-                .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Sequenziale)
-                .ToList();
-
-            var slideGlob = feedback.slidesData.Values
-                .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Globale)
-                .ToList();
-
-            totaleOpeningSequenziale += slideSeq.Count > 0
-                ? (float)slideSeq.Average(s => s.opening)
-                : 0f;
-
-            totaleOpeningGlobale += slideGlob.Count > 0
-                ? (float)slideGlob.Average(s => s.opening)
-                : 0f;
 
             float t = (feedbacks.Count == 1)
                 ? 1f
@@ -176,81 +147,15 @@ public class CentralStatsRecorder : MonoBehaviour
 
             float peso = 0.5f + Mathf.Pow(t, 2f);
 
-            sommaPesataScore += score * peso;
             sommaPesataPreStep += feedback.tempoOsservazionePreStep * peso;
             sommaPesi += peso;
-
-            Debug.Log($"[CentralStatsRecorder] Feedback: {feedback.feedbackName} → score: {score:F2}, peso: {peso:F2}");
         }
 
-        result.scoreGlobaleSequenziale = sommaPesataScore / sommaPesi;
         result.mediaTempoPreStep = sommaPesataPreStep / sommaPesi;
 
-        Debug.Log($"[CentralStatsRecorder] Score medio pesato: {result.scoreGlobaleSequenziale:F2}");
         Debug.Log($"[CentralStatsRecorder] Tempo pre-step medio pesato: {result.mediaTempoPreStep:F2}s");
 
         return result;
-    }
-
-    
-    private float CalcolaScoreFeedback(FeedbackDataContainer feedback)
-    {
-        var slideSeq = feedback.slidesData.Values
-            .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Sequenziale && !s.isIntroductory)
-            .ToList();
-
-        var slideGlob = feedback.slidesData.Values
-            .Where(s => s.seqGlob == LearningEnums.SequenzialeGlobale.Globale && !s.isIntroductory)
-            .ToList();
-
-        //ScoreOrdine
-        float scoreOrdine = 0.5f;
-        var visitHistory = feedback.visitHistory;
-        if (visitHistory != null && visitHistory.Count >= 1)
-        {
-            // rimuovi duplicati mantenendo l'ordine (prime aperture)
-            var primeAperture = visitHistory
-                .Distinct()
-                .ToList();
-
-        if (primeAperture.Count >= 1)
-        {
-            var sequenzaCompleta = new List<int> { 0 }; // parte sempre da 0
-            sequenzaCompleta.AddRange(primeAperture);
-
-            float avgJump = 0f;
-            for (int i = 1; i < sequenzaCompleta.Count; i++)
-                avgJump += Mathf.Abs(sequenzaCompleta[i] - sequenzaCompleta[i - 1]);
-            avgJump /= (sequenzaCompleta.Count - 1);
-
-            scoreOrdine = Mathf.Clamp((avgJump - 1) / 2f, 0f, 1f);
-        }
-        }
-
-        // 2. ScoreTempo
-        float tempoGlob = slideGlob.Count > 0 ? slideGlob.Average(s =>
-            s.visVerb == LearningEnums.VisivoVerbale.Verbale ? s.normalizedFocusTime : s.focusTime) : 0f;
-
-        float tempoSeq = slideSeq.Count > 0 ? slideSeq.Average(s =>
-            s.visVerb == LearningEnums.VisivoVerbale.Verbale ? s.normalizedFocusTime : s.focusTime) : 0f;
-
-        float totTempo = tempoGlob + tempoSeq;
-        float scoreTempo = totTempo > 0 ? (float)(tempoGlob / totTempo) : 0.5f;
-
-        // 3. ScoreOpening
-        float openingSeq = slideSeq.Count > 0 ? (float)slideSeq.Average(s => s.opening) : 0f;
-        float openingGlob = slideGlob.Count > 0 ? (float)slideGlob.Average(s => s.opening) : 0f;
-
-        float totOpening = openingSeq + openingGlob;
-        float scoreOpening = totOpening > 0 ? 1f - (float)(openingSeq / totOpening) : 0.5f;
-
-        // 4. Score finale
-        float score = Weight_OpeningOrder * scoreOrdine + Weight_TimeOfFocus* scoreTempo + Weight_OpeningTimes * scoreOpening;
-
-        Debug.Log($"[CalcolaScoreFeedback] {feedback.feedbackName} → " +
-                $"ScoreOrdine: {scoreOrdine:F2} | ScoreTempo: {scoreTempo:F2} | ScoreOpening: {scoreOpening:F2} | Score: {score:F2}");
-
-        return score;
     }
 
     public VisivoVerbaleSessionData CalcolaMediaGiochi()
@@ -304,9 +209,15 @@ public class CentralStatsRecorder : MonoBehaviour
     public void SalvaJson(ProfilingSessionData data)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine("D:\\lab2a\\Documents\\cosenostre\\AdaptiveLearningVr\\Assets\\Tommaso\\Profilazione\\Dati", "DamianoProfilingSessionData.json");
-        System.IO.File.WriteAllText(path, json);
-        Debug.Log($"[CentralStatsRecorder] File salvato in: {path}");
+        
+        string folderPath = System.IO.Path.Combine(Application.persistentDataPath, "Tommaso", "Profilazione", "Dati");
+        
+        if (!System.IO.Directory.Exists(folderPath))
+            System.IO.Directory.CreateDirectory(folderPath);
+        
+        string filePath = System.IO.Path.Combine(folderPath, "ProvaProfileSessionData.json");
+        System.IO.File.WriteAllText(filePath, json);
+        Debug.Log($"[CentralStatsRecorder] File salvato in: {filePath}");
     }
 
     public ProfilingSessionData CalcolaStatisticheFinali()
@@ -384,17 +295,23 @@ public class CentralStatsRecorder : MonoBehaviour
                     normalizedFocusTime = slide.normalizedFocusTime,
                     opening = slide.opening,
                     seqGlob = slide.seqGlob.ToString(),
-                    visVerb = slide.visVerb.ToString()
+                    visVerb = slide.visVerb.ToString(),
+                    videoButtonClicks = slide.VideobuttonClicks
                 });
             }
 
             data.feedbacks.Add(entry);
         }
-
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string path = System.IO.Path.Combine("D:\\lab2a\\Documents\\cosenostre\\AdaptiveLearningVr\\Assets\\Tommaso\\Profilazione\\Dati", "DamianoFeedbacksSessionData.json");
-        System.IO.File.WriteAllText(path, json);
-        Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {path}");
+
+        string folderPath = System.IO.Path.Combine(Application.persistentDataPath, "Tommaso", "Profilazione", "Dati");
+
+        if (!System.IO.Directory.Exists(folderPath))
+            System.IO.Directory.CreateDirectory(folderPath);
+
+        string filePath = System.IO.Path.Combine(folderPath, "ProvaFeedbacksSessionData.json");
+        System.IO.File.WriteAllText(filePath, json);
+        Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {filePath}");
     }
 
     

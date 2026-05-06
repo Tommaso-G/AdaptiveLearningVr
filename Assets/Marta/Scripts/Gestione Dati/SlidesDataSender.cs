@@ -13,7 +13,7 @@ public class SlideDataContainer
     public LearningEnums.SequenzialeGlobale seqGlob;
     public LearningEnums.VisivoVerbale visVerb;
     public bool isIntroductory;
-    public int buttonClickCount; // ← nuovo
+    public int VideobuttonClicks;
 }
 
 public class SlidesDataSender : MonoBehaviour
@@ -25,7 +25,7 @@ public class SlidesDataSender : MonoBehaviour
     [SerializeField] SlidesDataRecorder slidesDataRecorder;
 
     [Header("Bottoni per slide visive")]
-    [SerializeField] private List<Button> visualButtons; // ← nuovo
+    [SerializeField] private List<Button> visualButtons;
 
     private string feedbackName;
 
@@ -42,8 +42,7 @@ public class SlidesDataSender : MonoBehaviour
     public List<int> visitHistory = new List<int>();
     private Dictionary<string, int> _slideIndexMap = new Dictionary<string, int>();
 
-    private int _currentButtonClickCount = 0; // ← nuovo
-    private string _currentVisualSlideName = null; // ← nuovo
+    private int _totalButtonClicks = 0;
 
 
     void Start()
@@ -73,7 +72,6 @@ public class SlidesDataSender : MonoBehaviour
         RegisterVisualButtonListeners();
     }
 
-    // ← nuovo
     private void RegisterVisualButtonListeners()
     {
         foreach (var btn in visualButtons)
@@ -83,14 +81,10 @@ public class SlidesDataSender : MonoBehaviour
         }
     }
 
-    // ← nuovo
     private void OnVisualButtonClicked()
     {
-        if (_currentVisualSlideName != null)
-        {
-            _currentButtonClickCount++;
-            Debug.Log($"[VisualButton] Click #{_currentButtonClickCount} su slide visiva: {_currentVisualSlideName}");
-        }
+        _totalButtonClicks++;
+        Debug.Log($"[VisualButton] Click totali: {_totalButtonClicks}");
     }
 
     public void SaveSlidesData(SlideDataContainer container)
@@ -99,26 +93,6 @@ public class SlidesDataSender : MonoBehaviour
 
         if (string.IsNullOrEmpty(container.pageName))
             return;
-
-        // Se la slide corrente è visiva, salva i click accumulati e resetta
-        if (_currentVisualSlideName != null &&
-            _currentVisualSlideName != container.pageName &&
-            slidesData.TryGetValue(_currentVisualSlideName, out var prevData))
-        {
-            prevData.buttonClickCount = _currentButtonClickCount;
-            _currentButtonClickCount = 0;
-        }
-
-        // Traccia la slide visiva attiva
-        if (container.visVerb == LearningEnums.VisivoVerbale.Visivo && !container.isIntroductory)
-        {
-            _currentVisualSlideName = container.pageName;
-        }
-        else
-        {
-            _currentVisualSlideName = null;
-            _currentButtonClickCount = 0;
-        }
 
         if (_slideIndexMap.TryGetValue(container.pageName, out int slideIndex) && !container.isIntroductory)
             visitHistory.Add(slideIndex);
@@ -142,15 +116,6 @@ public class SlidesDataSender : MonoBehaviour
     {
         if (slidesDataRecorder == null)
             return;
-
-        // Flush click count sull'ultima slide visiva prima di inviare
-        if (_currentVisualSlideName != null &&
-            slidesData.TryGetValue(_currentVisualSlideName, out var lastVisual))
-        {
-            lastVisual.buttonClickCount = _currentButtonClickCount;
-            _currentButtonClickCount = 0;
-            _currentVisualSlideName = null;
-        }
 
         if (!string.IsNullOrEmpty(feedbackName) && feedbackName.Contains("Introduzione"))
         {
@@ -186,6 +151,17 @@ public class SlidesDataSender : MonoBehaviour
         var filteredSlidesData = slidesData
             .Where(kvp => !kvp.Value.isIntroductory)
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        // Distribuisci click sulle slide visive, -1 sulle verbali
+        foreach (var s in filteredSlidesData.Values)
+        {
+            if (s.visVerb == LearningEnums.VisivoVerbale.Visivo)
+                s.VideobuttonClicks = _totalButtonClicks;
+            else
+                s.VideobuttonClicks = -1;
+        }
+
+        _totalButtonClicks = 0;
 
         var copy = new Dictionary<string, SlideDataContainer>(filteredSlidesData);
 

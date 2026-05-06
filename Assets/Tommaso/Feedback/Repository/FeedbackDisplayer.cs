@@ -344,16 +344,18 @@ public class FeedbackDisplayer : MonoBehaviour
             page.name = $"Page {i + 1}";
             navItem.name = $"Nav Item Toggle {i + 1}";
 
-            var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
-            if (textComp != null)
-            {
-                if (i == 0)
-                    textComp.text = useGlobalOverviewLabels ? "INTRO" : "Start";
-                else if (useGlobalOverviewLabels && pages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
-                    textComp.text = "OVERVIEW";
-                else
-                    textComp.text = $"Step {i}";
-            }
+        var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
+        if (textComp != null)
+        {
+            if (i == 0)
+                textComp.text = useGlobalOverviewLabels ? "INTRO" : "Start";
+            else if (useGlobalOverviewLabels && pages[i].Visivo_Verbale == LearningEnums.VisivoVerbale.Visivo)
+                textComp.text = "VIDEO";
+            else if (useGlobalOverviewLabels && pages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
+                textComp.text = "OVERVIEW";
+            else
+                textComp.text = $"Step {i}";
+        }
 
             SetupPageContent(pages[i], page, feedbackName, container);
         }

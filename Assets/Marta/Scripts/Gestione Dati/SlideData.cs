@@ -5,6 +5,7 @@ using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Overlays;
+using UnityEngine.Video;
 
 public class SlideData: MonoBehaviour
 {
@@ -16,11 +17,12 @@ public class SlideData: MonoBehaviour
     public int opening;
     public LearningEnums.SequenzialeGlobale seqGlob;
     public LearningEnums.VisivoVerbale visVerb;
-
     public bool isIntroductory = false;
-
     public int wordCount;
     [SerializeField] private TMP_Text slideText;
+
+    [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private float videoDuration = 0f; // fallback manuale
 
 
     //variabili di servizio
@@ -136,7 +138,6 @@ public class SlideData: MonoBehaviour
 
     }
 
-
     public int GetWordCount()
     {
         if (slideText == null) { wordCount = 0; return 0; }
@@ -146,11 +147,41 @@ public class SlideData: MonoBehaviour
         return wordCount;
     }
 
+    private float GetVideoDuration()
+    {
+        if (videoPlayer != null && videoPlayer.clip != null){
+            
+            return (float)videoPlayer.clip.length;
+        }
+
+        if(videoPlayer ==null)
+            Debug.Log("Video player nullo ");
+
+        if(videoPlayer.clip ==null)
+            Debug.Log("Video Clip nullo ");
+
+        return 0f;
+    }
+
     public float GetNormalizedFocusTime()
     {
-        int wordCount = GetWordCount();
-        if (wordCount == 0) return focusTime;
-        return focusTime / wordCount;
+        if (visVerb == LearningEnums.VisivoVerbale.Visivo)
+        {
+            float duration = GetVideoDuration();
+            if (duration <= 0f){
+                Debug.Log("duration <0 ");
+                return focusTime;
+
+                } 
+            return focusTime / duration;
+        }
+
+        else // Verbale
+        {
+            int wc = GetWordCount();
+            if (wc == 0) return focusTime;
+            return focusTime / wc;
+        }
     }
 
     public void SendData()
