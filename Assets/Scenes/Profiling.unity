@@ -3872,11 +3872,11 @@ Transform:
   m_GameObject: {fileID: 450133279}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.028, y: 0, z: -5.929}
+  m_LocalPosition: {x: 3.0280006, y: 0, z: -5.929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2109469115}
+  m_Father: {fileID: 1335921644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &450133281
 MonoBehaviour:
@@ -7517,6 +7517,24 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: d75070e434852a419687d4338906c892
   guids: []
+--- !u!114 &629185913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629185904}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.24318251, g: 0.9547169, b: 0.77561325, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &633985925
 GameObject:
   m_ObjectHideFlags: 0
@@ -11568,6 +11586,7 @@ GameObject:
   - component: {fileID: 1072921158}
   - component: {fileID: 1072921157}
   - component: {fileID: 1072921160}
+  - component: {fileID: 1072921161}
   m_Layer: 0
   m_Name: FEEDBACK MANAGER
   m_TagString: Untagged
@@ -11651,6 +11670,25 @@ MonoBehaviour:
   halfCycleDuration: 1
   easingType: 1
   chapterFilter: {fileID: 0}
+--- !u!114 &1072921161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072921155}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b0e7a04f2c0d0d4cbc66901b57f61e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets:
+  - {fileID: 1998659670}
+  - {fileID: 629185904}
+  minOutlineWidth: 1.61
+  maxOutlineWidth: 4.2
+  halfCycleDuration: 0.5
+  autoStart: 1
 --- !u!1 &1078231677
 GameObject:
   m_ObjectHideFlags: 0
@@ -12031,7 +12069,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 450133280}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
@@ -12042,9 +12083,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 202364687, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 629185907}
+    - targetCorrespondingSourceObject: {fileID: 202364687, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629185913}
     - targetCorrespondingSourceObject: {fileID: 1670256624, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1998659673}
+    - targetCorrespondingSourceObject: {fileID: 1670256624, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1998659679}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
 --- !u!1 &1115243739 stripped
 GameObject:
@@ -21869,6 +21916,24 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: c8965ef4f1c90447a8d37749aa43ad41
   guids: []
+--- !u!114 &1998659679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998659670}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.24318251, g: 0.9547169, b: 0.77561325, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &2004927920 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6531395606446715359, guid: 7ee96fa440d092849a90a5a330e4893e, type: 3}
@@ -23933,7 +23998,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 796510217}
-  - {fileID: 450133280}
   - {fileID: 1335921644}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0.484, z: 0}

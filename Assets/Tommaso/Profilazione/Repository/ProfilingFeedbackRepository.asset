@@ -167,53 +167,34 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L\u2019unico problema \xE8 che le casseforti hanno il difetto di essere
-          chiuse a chiave quando non sono tue.\n\nMa ehi, non tutto \xE8 perduto!
-          il propietario potrebbe aver scritto la password da qualche parte. \n\nSu
-          un foglietto magari. Oppure costrunedo un complicato meccanismo di manopole
-          e cilindri numerati. "
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: 'Ruota le manopole per far scorrere i numeri sui cilidri.
-
-
-          Osserva
-          bene e trova i quattro numeri della password.'
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Quando pensi di aver trovato la giusta sequenza, digitala sulla tastiera
-          numerica della cassaforte.\n\nSe ci hai visto giusto si accender\xE0 una
-          luce verde.\n\nSe la luce \xE8 rossa hai sbagliato password,  ma potrai
-          riprovare quante volte vorrai."
-      - Sequenzale_Globale: 1
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Individuare
-          la combinazione numerica corretta per aprire la cassaforte e ottenere la
-          ricompensa.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
-          Ruotare le manopole per osservare i numeri sui cilindri\n- Leggere gli
-          indizi per dedurre la combinazione\n- Inserire la sequenza tramite tastiera
-          numerica</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
-          Puoi riprovare quante volte vuoi senza penalit\xE0</size>"
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Cerca gli indizi sopra il meccanismo a cilindri.  \r\nPotrebbero rivelarti
+          la sequenza corretta.\r\n\r\n<b><size=90%>2.</size></b> Osserva con attenzione
+          il sistema di manopole e cilindri numerati.  \r\nRuota le manopole per
+          far scorrere i numeri sui cilindri.\r\n\r\n<b><size=90%>3.</size></b> Analizza
+          bene ci\xF2 che vedi e individua i <b>quattro numeri</b> della password.\r\n\r\n<b><size=90%>4.</size></b>
+          Quando pensi di aver trovato la sequenza corretta,  \r\ninseriscila nella
+          tastiera numerica della cassaforte.\r\n\r\n<b><size=90%>5.</size></b> Se
+          la sequenza \xE8 giusta, si accender\xE0 una luce verde.\r\n\r\n<b><size=90%>6.</size></b>
+          Se invece compare una luce rossa,  \r\nla password \xE8 errata... ma puoi
+          riprovare tutte le volte che vuoi."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 32900000, guid: c6e163ad5fec7d348b2e9f5c72209cd5, type: 3}
-        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Individuare
+        text: 
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\r\n<size=90%>Individuare
           la combinazione numerica corretta per aprire la cassaforte e ottenere la
-          ricompensa.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
-          Ruotare le manopole per osservare i numeri sui cilindri\n- Leggere gli
-          indizi per dedurre la combinazione\n- Inserire la sequenza tramite tastiera
-          numerica</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          ricompensa.</size>\r\n\r\n<color=#888787><size=85%><b>Mosse</b></size></color>\r\n<size=90%>\u2022
+          Ruotare le manopole per osservare i numeri sui cilindri\r\n\u2022 Leggere
+          gli indizi per dedurre la combinazione\r\n\u2022 Inserire la sequenza tramite
+          tastiera numerica</size>\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>\u2022
           Puoi riprovare quante volte vuoi senza penalit\xE0</size>"
       StepForCompletition:
       - Interagisci con le manopole
@@ -223,45 +204,32 @@ MonoBehaviour:
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Bloxorz
     feedbacks:
-    - FeedbackName: Istruzione Bloxorz
+    - FeedbackName: Istruzioni Bloxorz
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L\u2019obiettivo del gioco \xE8 far entrare la pedina nel buco in
-          fondo al campo."
+        text: "Bloxorz \xE8 un puzzle game in cui controlli un blocco rettangolare
+          da far rotolare su piattaforme sospese, con l\u2019obiettivo di farlo cadere
+          esattamente in un foro."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Usa i pulsanti per far rotolare la pedina nelle 4 direzioni: su, gi\xF9,
-          sinistra e destra."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Se fai sporgere la pedina dai bordi del campo, questa cadr\xE0 e dovrai
-          ricominciare da capo."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Usa le caselle colorare per aprire i ponti che collegano le piattaforme.\n\nCasella
-          blu: per attivare l\u2019effetto basta passarci sopra con la pedina\n\nCasella
-          rossa: per attivare l\u2019effetto la pedina deve trovarsi sopra la casella
-          verticalmente, senza toccare quelle circostanti."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: 'Per centrare il buco e vincere il gioco, la pedina deve cadere verticalmente
-          nel foro. '
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Usa i pulsanti per far rotolare la pedina nelle quattro direzioni:  \r\nsu,
+          gi\xF9, sinistra e destra.\r\n\r\n<b><size=90%>2.</size></b> Fai attenzione
+          ai bordi del campo:  \r\nse la pedina sporge, cadr\xE0 e dovrai ricominciare
+          da capo.\r\n\r\n<b><size=90%>3.</size></b> Utilizza le caselle colorate
+          per aprire i ponti  \r\nche collegano le diverse piattaforme.\r\n\r\n<b><size=90%>4.</size></b>
+          Casella blu: si attiva semplicemente passando sopra con la pedina.\r\n\r\n<b><size=90%>5.</size></b>
+          Casella rossa: si attiva solo se la pedina \xE8 posizionata  \r\nverticalmente
+          sopra di essa, senza toccare le caselle circostanti.\r\n\r\n<b><size=90%>6.</size></b>
+          Per vincere, fai cadere la pedina verticalmente nel foro  \r\ncentrando
+          perfettamente il buco."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -273,6 +241,13 @@ MonoBehaviour:
           Premere i pulsanti direzionali per muovere la pedina\n- Centrare le caselle
           colorate per aprire i ponti\n- Far cadere la pedina nel foro target</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
           Cadere dai bordi della piattaforma reimposta il livello</size>"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: 1c3e48304cc73684994997bbdaf94dc0, type: 3}
+        text: <i><size=60%>Puoi usare i tasti per far ripartire il video, fermarlo
+          o andare avanti e indietro.</size></i>
       StepForCompletition:
       - Prima mossa (bloxorz)
       - Gioca a bloxorz
@@ -286,38 +261,28 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L\u2019obiettivo del gioco \xE8 portare le pedine numerate sulle caselle
-          corrette."
+        text: "Sokoban \xE8 un classico rompicapo in cui il giocatore deve spingere
+          delle casse all\u2019interno di un magazzino fino a posizionarle sui punti
+          designati.\nIl gioco richiede pianificazione strategica, poich\xE9 ogni
+          mossa \xE8 irreversibile e uno spostamento sbagliato pu\xF2 rendere il
+          livello impossibile da completare."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Seleziona una pedina con il raycast e muovila con il joystick davanti
-          a te.
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Puoi muovere una pedina su due assi: in alto o in basso, a destra
-          o sinistra.\n\nSe la pedina selezionata tocca una parete del campo o un\u2019altra
-          pedina, il movimento sull\u2019asse corrispondente sar\xE0 bloccato."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Se la pedina passa sopra un buco, ci cadr\xE0 dentro e non potrai
-          pi\xF9 muoverla.\n\nUsa le pedine rosse per riempire i buchi."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Se sbagli mossa, puoi tornare indietro di un solo passo con il pulsante
-          \u201CBack\u201D. \n\nSe la situazione \xE8 pi\xF9 complicata, premi il
-          pulsante \u201CReset\u201D e ricomincia da capo."
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Seleziona una pedina puntandola con il controller  \r\ne muovila con il
+          joystick davanti a te.\r\n\r\n<b><size=90%>2.</size></b> Puoi muovere la
+          pedina su due assi:  \r\nin alto o in basso, a destra o sinistra.\r\n\r\n<b><size=90%>3.</size></b>
+          Se la pedina tocca una parete del campo,  \r\nil movimento sull\u2019asse
+          corrispondente verr\xE0 bloccato.\r\n\r\n<b><size=90%>4.</size></b> Se
+          la pedina passa sopra un buco, ci cadr\xE0 dentro  \r\ne non potrai pi\xF9
+          muoverla.\r\n\r\n<b><size=90%>5.</size></b> Usa le pedine rosse per riempire
+          i buchi.\r\n\r\n<b><size=90%>6.</size></b> Se sbagli mossa, puoi tornare
+          indietro di un solo passo  \r\ncon il pulsante \u201CBack\u201D.\r\n\r\n<b><size=90%>7.</size></b>
+          Se necessario, premi il pulsante \u201CReset\u201D  \r\nper ricominciare
+          da capo."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -336,46 +301,32 @@ MonoBehaviour:
       PersonalizedPrefab: {fileID: 0}
   - ChapterName: Scalak
     feedbacks:
-    - FeedbackName: Istruzione Scalak
+    - FeedbackName: Istruzioni Scalak
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L\u2019obiettivo del gioco \xE8 quello di riordinare le tessere  verdi.\n"
+        text: "Scalak \xE8 un puzzle game in cui l\u2019obiettivo \xE8 completare
+          forme geometriche combinando e incastrando pezzi di vario tipo."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L\u2019ordine corretto \xE8 quello che riproduce la sequenza di forme
-          sulla destra.\n"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: 'Puoi spostare una tessera solo in certi punti del campo, in base alla
-          sua posizione e a quella delle altre tessere.
-
-
-          Seleziona una
-          tessera con il raycast o toccandola con il controller.'
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "I volumi che compaiono indicano le posizione che la tessera pu\xF2
-          occupare. Selezionali per spostare la tessera.\n"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Una volta riordinate le tessere, posiziona le forme sulla destra all\u2019interno
-          dei fori corrispondenti."
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Osserva la disposizione delle tessere nel campo  \r\ne individua le possibili
+          combinazioni di movimento in base alle loro posizioni.\r\n\r\n<b><size=90%>2.</size></b>
+          Seleziona una tessera tramite raycast o toccandola con il controller. 
+          \r\nI volumi visualizzati indicano le posizioni disponibili.\r\n\r\n<b><size=90%>3.</size></b>
+          Scegli uno dei volumi evidenziati per spostare la tessera  \r\nnella posizione
+          corrispondente.\r\n\r\n<b><size=90%>4.</size></b> Continua a riordinare
+          le tessere fino a ricostruire una disposizione coerente.\r\n\r\n<b><size=90%>5.</size></b>
+          Una volta completato il riordino, posiziona le forme sulla destra  \r\nall\u2019interno
+          dei fori corrispondenti.\r\n\r\n<b><size=90%>6.</size></b> L\u2019ordine
+          corretto \xE8 quello che riproduce la sequenza di forme mostrata sulla
+          destra."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -386,6 +337,13 @@ MonoBehaviour:
           Osservare l'ordine delle forme mostrato a destra\n- Selezionare una tessera
           e spostarla nelle caselle illuminate\n- Posizionare le forme sui fori corrispondenti</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
           Le forme vanno posizionate sui fori solo dopo aver riordinato le tessere</size>"
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: b6ef6359817d3914a9a9e61bef26b2f0, type: 3}
+        text: <i><size=60%>Puoi usare i tasti per far ripartire il video, fermarlo
+          o andare avanti e indietro.</size></i>
       StepForCompletition:
       - Prima mossa (scalak)
       - Gioca a scalak
@@ -399,54 +357,37 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "L'obbiettivo \xE8 quello di replicare la sequenza mostrata interagendo
-          con gli oggetti. Prima di iniziare, puoi interagire con gli oggetti per
-          provarli."
+        text: In questo gioco di memoria dovrai interagire con gli oggetti nell'ordine
+          mostrato.
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Schiaccia il pulsante per far comparire una sequenza sullo schermo.\nLa
-          sequenza pu\xF2 essere composta da immagini o parole"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: Una volta memorizzata, prova a replicarla interagendo con gli oggetti
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Se ti accorgi di non ricordarti pi\xF9 la sequenza, puoi ritornare
-          dallo schermo e ri-schiacciare il pulsante per visualizzare la sequenza"
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Se interagisci con un oggetto nel momento sbagliato, questo lampegger\xE0
-          di rosso, mostrandoti l'errore."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Una volta finito un round, premi nuovamente il pulsante per passare
-          all'altra modalit\xE0, in modo da completare sia la sequenza fatta da parole
-          che da immagini."
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Prima di iniziare, esplora gli oggetti e prova le interazioni  \r\nper
+          familiarizzare con il loro comportamento.\r\n\r\n<b><size=90%>2.</size></b>
+          Premi il pulsante per far comparire una sequenza sullo schermo.\r\n\r\n<b><size=90%>3.</size></b>
+          Memorizza attentamente la sequenza, che pu\xF2 essere composta  \r\nda
+          immagini oppure da parole.\r\n\r\n<b><size=90%>4.</size></b> Replicala
+          interagendo con gli oggetti nell\u2019ordine corretto.\r\n\r\n<b><size=90%>5.</size></b>
+          Se non ricordi la sequenza, torna allo schermo e premi nuovamente il pulsante 
+          \r\nper visualizzarla di nuovo.\r\n\r\n<b><size=90%>6.</size></b> Se interagisci
+          con un oggetto nel momento sbagliato, questo lampegger\xE0 di rosso  \r\nindicando
+          l\u2019errore.\r\n\r\n<b><size=90%>7.</size></b> Dopo ogni round, premi
+          nuovamente il pulsante per cambiare modalit\xE0  \r\ne completare sia la
+          sequenza di parole che quella di immagini."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Memorizzare
-          la sequenza mostrata e replicarla interagendo con gli oggetti.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
-          Premere il pulsante per vedere la sequenza sullo schermo\n- Interagire
-          con gli oggetti nell'ordine memorizzato</size>\n- Ripremere il pulsante
-          una votlta finito un round per passare alla prossima modalit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          la sequenza mostrata e replicarla interagendo con gli oggetti.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\n-
+          Interagire con gli oggetti prima di iniziare per familiarizzare con il
+          loro funzionamento\n- Premere il pulsante per vedere la sequenza sullo
+          schermo\n- Interagire con gli oggetti nell'ordine memorizzato\n- Ripremere
+          il pulsante una volta finito un round per passare alla prossima modalit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\n-
           Puoi tornare allo schermo in qualsiasi momento per rivedere la sequenza\n-
           Entrambe le modalit\xE0 devono essere completate per concludere il gioco</size>"
       StepForCompletition:
@@ -467,23 +408,15 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Una volta premuto il pulsante, le carte verrano scoperte per alcuni
-          secondi. Cerca di memorizzare le coppie prima che queste tornino ad essere
-          coperte
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: Seleziona le carte con il controller, se selezioni due carte uguali,
-          queste rimarrano scoperte fino alla fine del gioco.
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Una volta finito il round, premi di nuovo il pulsante per passare
-          all'altra modalit\xE0"
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          Premi il pulsante per iniziare il round.  \r\nLe carte verranno scoperte
+          per alcuni secondi.\r\n\r\n<b><size=90%>2.</size></b> Memorizza la posizione
+          delle coppie prima che le carte tornino coperte.\r\n\r\n<b><size=90%>3.</size></b>
+          Seleziona le carte puntandole con il controller.\r\n\r\n<b><size=90%>4.</size></b>
+          Trova le coppie corrette: se selezioni due carte uguali,  \r\nrimarranno
+          scoperte fino alla fine del gioco.\r\n\r\n<b><size=90%>5.</size></b> Una
+          volta completato il round, premi nuovamente il pulsante  \r\nper passare
+          all\u2019altra modalit\xE0."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -512,16 +445,13 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Premi il bottone per mostrare la sequenza di elementi e cerca di memorizzare
-          l'ordine di comparsa
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Terminata la sequenza, seleziona gli elementi con il controller nell'ordine
-          in cui sono comparsi. Premi nuovamente il bottone per passare all'altra
-          modalit\xE0"
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\n\n<b><size=90%>1.</size></b>
+          Premi il bottone per mostrare la sequenza di elementi  \ne memorizza attentamente
+          l\u2019ordine di comparsa.\n\n<b><size=90%>2.</size></b> Una volta terminata
+          la sequenza, seleziona gli elementi con il controller  \nrispettando lo
+          stesso ordine in cui sono apparsi.\n\n<b><size=90%>3.</size></b> Quando
+          hai completato la riproduzione, premi nuovamente il bottone  \nper passare
+          all\u2019altra modalit\xE0."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -553,34 +483,23 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: 'iIn questa stanza troverai i componenti necessari e le istruzioni
-          per montarli assieme. '
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Ma attenzione, non potrai tenerle sempre sottomano, dovrai memorizzarle.\n
-          \nMeno tempo ci metterai a montare la macchina e pi\xF9 punti otterrai.
-          \n\nSe metterai i componenti nel posto sbagliato, otterrai una penalit\xE0."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "Premi il pulsante per vedere le istruzioni, memorizza la posizione
-          dei componenti e monta il Sintetizzatore Chimerico. \n\nSe ti dimentichi
-          qualcosa, puoi tornare dallo schermo e ri-premere il pulsante."
-      - Sequenzale_Globale: 0
-        Visivo_Verbale: 1
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 0}
-        text: "La macchina \xE8 divisa tre scompartimenti principali, come puoi vedere
-          dalle istruzioni. Ogni scompartimento \xE8 composto da elementi principali
-          e elementi secondari.\n\nNon c'\xE8 un ordine giusto di montaggio, puoi
-          deciderlo tu in base alle tue preferenze, ma alcuni componenti pi\xF9 piccoli
-          hanno bisogno del componente principale per essere montato\n"
+        text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%>1.</size></b>
+          In questa stanza troverai tutti i componenti necessari  \r\ne un\u2019immagine
+          di riferimento su come deve essere assemblata la macchina.\r\n\r\n<b><size=90%>2.</size></b>
+          Premi il pulsante per visualizzare le istruzioni e osserva attentamente
+          l\u2019immagine.  \r\nCerca di memorizzare la disposizione dei componenti,
+          poich\xE9 non potrai tenerla sempre a schermo.\r\n\r\n<b><size=90%>3.</size></b>
+          Una volta iniziato il montaggio, cerca di completare la macchina nel minor
+          tempo possibile  \r\nper ottenere un punteggio pi\xF9 alto.\r\n\r\n<b><size=90%>4.</size></b>
+          Posiziona i componenti nel modo corretto:  \r\nse li inserisci nella posizione
+          sbagliata, riceverai una penalit\xE0.\r\n\r\n<b><size=90%>5.</size></b>
+          Se dimentichi la disposizione, puoi tornare allo schermo  \r\ne premere
+          nuovamente il pulsante per rivedere le istruzioni.\r\n\r\n<b><size=90%>6.</size></b>
+          Non esiste un ordine di montaggio obbligatorio, puoi scegliere liberamente
+          la sequenza.  \r\nTuttavia, alcuni componenti pi\xF9 piccoli richiedono
+          la presenza del componente principale per essere installati.\r\n\r\n<b><size=90%>7.</size></b>
+          Completa il montaggio del <b>Sintetizzatore Chimerico</b> assemblando tutti
+          i pezzi nel modo corretto."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -619,7 +538,7 @@ MonoBehaviour:
         text: "Mio Dio... che cosa abbiamo fatto... \xE9 un abominio.\n\nNon dire
           a nessuno di quello che \xE8 successo. Chiamer\xF2 personalmente i Pulitori
           per sistemare questo macello e rimuovere ogni traccia. \n\nTu non sei mai
-          stato qu\xEC. Addio."
+          stato qui. Addio."
       StepForCompletition:
       - Osserva la chimera
       PersonalizedPrefab: {fileID: 0}
