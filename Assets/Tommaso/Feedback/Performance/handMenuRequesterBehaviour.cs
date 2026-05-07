@@ -17,6 +17,10 @@ public class OpenHandMenuBehavior : Behavior<OpenHandMenuBehavior.EntityData>
         [DataMember]
         public string MenuId { get; set; } = "";
 
+
+        [DataMember]
+        public HandMenuRequester MenuRequester;
+
         [IgnoreDataMember]
         [HideInProcessInspector]
         public string Name => "Open Hand Menu";
@@ -43,7 +47,7 @@ public class OpenHandMenuBehavior : Behavior<OpenHandMenuBehavior.EntityData>
                 return;
             }
 
-            handMenu.RequestOpen(Data.MenuId);
+            handMenu.RequestOpen(Data.MenuId, Data.MenuRequester);
             Debug.Log($"[OpenHandMenuBehavior] RequestOpen chiamato con id: '{Data.MenuId}'");
         }
 

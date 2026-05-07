@@ -8,7 +8,7 @@ public class HandMenuRequester : MonoBehaviour
     public void OpenMenu()
     {
         print("OPEN REQUEST FROM REQUESTER with " + menuId);
-        menuManager.RequestOpen(menuId);
+        menuManager.RequestOpen(menuId, this);
     }
 
     public void CloseMenu()
