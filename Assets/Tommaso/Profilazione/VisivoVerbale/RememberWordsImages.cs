@@ -20,20 +20,18 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
     public float intervallo = 1.5f;
 
     [Header("Rounds")]
-    [Tooltip("Quante volte ripetere ogni modalità (parole E immagini)")]
     public int roundsPerMode = 2;
 
     [Header("UI - Mostra fase")]
     public GameObject contenitoreMostra;
-
 
     [Tooltip("Contenitore con un'Image per mostrare le immagini nella fase 1")]
     public GameObject contenitoreMostraImmagine;
 
     [Header("UI - Pulsanti")]
     public Transform contenitorePulsanti;
-    public GameObject pulsantePrefabTesto;   // prefab con TMP_Text
-    public GameObject pulsantePrefabImmagine; // prefab con Image
+    public GameObject pulsantePrefabTesto;
+    public GameObject pulsantePrefabImmagine;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -41,24 +39,24 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
     public AudioClip suonoSbagliato;
     public AudioClip suonoRoundCompletato;
 
-    // Stato round
     private int currentRound = 0;
     private int totalRounds;
     private bool startWithWords;
-    private bool useWords; // true = parole, false = immagini
+    private bool useWords;
 
     private bool inRound = false;
 
-    // Stato gioco
     private List<int> ordineCorrettoIndici = new List<int>();
     private int indiceCorrente = 0;
 
     private TMP_Text testoMostra;
     private Image immagineMostra;
 
-    // campi per il tracking
     private int errori = 0;
     private float tempoStart;
+
+    // 🔒 BLOCCO INPUT
+    private bool inputLocked = false;
 
     private void Start()
     {
@@ -75,12 +73,11 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
 
         totalRounds = roundsPerMode * 2;
         startWithWords = Random.value > 0.5f;
-        currentRound = 0;
     }
 
     public void StartGame()
     {
-        if(inRound) return;
+        if (inRound) return;
         ResetSequence();
         StartCoroutine(TimerBeforeStart());
         inRound = true;
@@ -93,16 +90,12 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         bool evenRound = (currentRound % 2 == 0);
         useWords = evenRound ? startWithWords : !startWithWords;
 
-        Debug.Log($"Round {currentRound + 1}/{totalRounds} — Modalità: {(useWords ? "Parole" : "Immagini")}");
-
         indiceCorrente = 0;
         ordineCorrettoIndici.Clear();
 
-        // Nascondi entrambi i contenitori mostra
         if (contenitoreMostra != null) contenitoreMostra.SetActive(false);
         if (contenitoreMostraImmagine != null) contenitoreMostraImmagine.SetActive(false);
 
-        // Rimuovi pulsanti precedenti
         if (contenitorePulsanti != null)
             foreach (Transform child in contenitorePulsanti)
                 Destroy(child.gameObject);
@@ -110,15 +103,14 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         errori = 0;
         tempoStart = Time.time;
         currentRound++;
-        
-    }
 
-    // ─── Countdown ───────────────────────────────────────────────
+        inputLocked = false; // reset sicurezza
+    }
 
     private IEnumerator TimerBeforeStart()
     {
-        // Mostra il countdown nel contenitore parole (sempre testo)
         if (contenitoreMostra != null) contenitoreMostra.SetActive(true);
+
         if (testoMostra != null)
         {
             foreach (string numero in new[] { "3", "2", "1" })
@@ -130,9 +122,7 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         }
 
         if (useWords)
-        {
             StartCoroutine(MostraParole());
-        }
         else
         {
             if (contenitoreMostra != null) contenitoreMostra.SetActive(false);
@@ -140,16 +130,12 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         }
     }
 
-    // ─── Fase mostra - Parole ────────────────────────────────────
-
     private IEnumerator MostraParole()
     {
-        if (parole.Count == 0) { Debug.LogWarning("Nessuna parola!"); yield break; }
-
-        // Genera ordine casuale degli indici
         List<int> indici = new List<int>();
         for (int i = 0; i < parole.Count; i++) indici.Add(i);
         indici.Shuffle();
+
         ordineCorrettoIndici = new List<int>(indici);
 
         foreach (int idx in indici)
@@ -159,39 +145,36 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         }
 
         if (contenitoreMostra != null) contenitoreMostra.SetActive(false);
-        if (testoMostra != null) testoMostra.text = "";
         MostraPulsantiTesto();
     }
 
-    // ─── Fase mostra - Immagini ──────────────────────────────────
-
     private IEnumerator MostraImmagini()
     {
-        if (immagini.Count == 0) { Debug.LogWarning("Nessuna immagine!"); yield break; }
-
-        if (contenitoreMostraImmagine != null) contenitoreMostraImmagine.SetActive(true);
+        if (contenitoreMostraImmagine != null)
+            contenitoreMostraImmagine.SetActive(true);
 
         List<int> indici = new List<int>();
         for (int i = 0; i < immagini.Count; i++) indici.Add(i);
         indici.Shuffle();
+
         ordineCorrettoIndici = new List<int>(indici);
 
         foreach (int idx in indici)
         {
-            if (immagineMostra != null) immagineMostra.sprite = immagini[idx];
+            if (immagineMostra != null)
+                immagineMostra.sprite = immagini[idx];
+
             yield return new WaitForSeconds(intervallo);
         }
 
-        if (contenitoreMostraImmagine != null) contenitoreMostraImmagine.SetActive(false);
+        if (contenitoreMostraImmagine != null)
+            contenitoreMostraImmagine.SetActive(false);
+
         MostraPulsantiImmagine();
     }
 
-    // ─── Fase pulsanti - Testo ───────────────────────────────────
-
     private void MostraPulsantiTesto()
     {
-        if (contenitorePulsanti == null || pulsantePrefabTesto == null) return;
-
         List<int> ordineMisto = new List<int>();
         for (int i = 0; i < parole.Count; i++) ordineMisto.Add(i);
         ordineMisto.Shuffle();
@@ -199,26 +182,20 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         foreach (int idx in ordineMisto)
         {
             GameObject pulsante = Instantiate(pulsantePrefabTesto, contenitorePulsanti);
-            pulsante.SetActive(true);
 
             TMP_Text testo = pulsante.GetComponentInChildren<TMP_Text>();
             if (testo != null) testo.text = parole[idx];
 
             Image img = pulsante.GetComponent<Image>();
             Button btn = pulsante.GetComponent<Button>();
-            if (btn == null) continue;
 
             int capturedIdx = idx;
             btn.onClick.AddListener(() => SelezionaElemento(capturedIdx, pulsante, img));
         }
     }
 
-    // ─── Fase pulsanti - Immagini ────────────────────────────────
-
     private void MostraPulsantiImmagine()
     {
-        if (contenitorePulsanti == null || pulsantePrefabImmagine == null) return;
-
         List<int> ordineMisto = new List<int>();
         for (int i = 0; i < immagini.Count; i++) ordineMisto.Add(i);
         ordineMisto.Shuffle();
@@ -226,26 +203,26 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         foreach (int idx in ordineMisto)
         {
             GameObject pulsante = Instantiate(pulsantePrefabImmagine, contenitorePulsanti);
-            pulsante.SetActive(true);
 
-            // Cerca l'Image figlia (quella che mostra il contenuto, non lo sfondo)
             Image[] imgs = pulsante.GetComponentsInChildren<Image>();
             Image imgContenuto = imgs.Length > 1 ? imgs[1] : imgs[0];
-            if (imgContenuto != null) imgContenuto.sprite = immagini[idx];
+            imgContenuto.sprite = immagini[idx];
 
-            Image imgBackground = pulsante.GetComponent<Image>(); // per il blink
+            Image imgBackground = pulsante.GetComponent<Image>();
             Button btn = pulsante.GetComponent<Button>();
-            if (btn == null) continue;
 
             int capturedIdx = idx;
             btn.onClick.AddListener(() => SelezionaElemento(capturedIdx, pulsante, imgBackground));
         }
     }
 
-    // ─── Selezione elemento (comune a parole e immagini) ─────────
-
     private void SelezionaElemento(int indice, GameObject pulsante, Image imageBottone)
     {
+        if (inputLocked) return;
+
+        inputLocked = true;
+        StartCoroutine(UnlockInputAfterDelay(1f));
+
         if (indiceCorrente >= ordineCorrettoIndici.Count) return;
 
         if (indice == ordineCorrettoIndici[indiceCorrente])
@@ -270,7 +247,11 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
         }
     }
 
-    // ─── Fine round ──────────────────────────────────────────────
+    private IEnumerator UnlockInputAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        inputLocked = false;
+    }
 
     private IEnumerator OnRoundComplete()
     {
@@ -282,7 +263,7 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
             errori = errori,
             tempoSecondi = Time.time - tempoStart
         });
-        
+
         if (audioSource != null && suonoRoundCompletato != null)
         {
             audioSource.Stop();
@@ -291,22 +272,17 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
 
         if (currentRound >= totalRounds)
         {
-            Debug.Log("Tutti i round completati!");
             IsCompleted = true;
         }
         else
         {
             inRound = false;
-            Debug.Log($"Round completato! Prossimo: {currentRound + 1}/{totalRounds}");
             yield return new WaitForSeconds(
                 audioSource != null && suonoRoundCompletato != null
                     ? suonoRoundCompletato.length + 0.5f
                     : 1f);
-
         }
     }
-
-    // ─── Feedback visivo ─────────────────────────────────────────
 
     private IEnumerator GreenThenDestroy(GameObject pulsante, Image img)
     {
@@ -323,19 +299,18 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
     }
 }
 
-    public static class ListExtensions
+public static class ListExtensions
+{
+    private static System.Random rng = new System.Random();
+
+    public static void Shuffle<T>(this IList<T> list)
     {
-        private static System.Random rng = new System.Random();
-        public static void Shuffle<T>(this IList<T> list)
+        int n = list.Count;
+        while (n > 1)
         {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                (list[k], list[n]) = (list[n], list[k]);
-            }
+            n--;
+            int k = rng.Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
         }
     }
-
-
+}

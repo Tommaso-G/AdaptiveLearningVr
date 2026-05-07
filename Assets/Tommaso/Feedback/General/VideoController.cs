@@ -1,26 +1,44 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class VideoPlayerController : MonoBehaviour
 {
-    private UnityEngine.Video.VideoPlayer videoPlayer;
+    private VideoPlayer videoPlayer;
 
-    void OnEnable()
+    void Awake()
     {
-        videoPlayer = GetComponent<UnityEngine.Video.VideoPlayer>();
+        videoPlayer = GetComponent<VideoPlayer>();
+
         if (videoPlayer == null)
         {
-            Debug.LogError("❌ Nessun VideoPlayer trovato su questo oggetto");
+            Debug.LogError("❌ Nessun VideoPlayer trovato");
             return;
         }
 
-        videoPlayer.Stop();
+        videoPlayer.playOnAwake = false;
+
+        // Callback quando il video è pronto
+        videoPlayer.prepareCompleted += OnVideoPrepared;
+
+        // Prepara il video senza farlo partire
+        videoPlayer.Prepare();
     }
 
+    private void OnVideoPrepared(VideoPlayer vp)
+    {
+        // Vai al primo frame
+        vp.frame = 0;
 
+        // Mostra il frame senza playback
+        vp.Pause();
+
+        Debug.Log("✅ Primo frame mostrato");
+    }
 
     public void Play()
     {
         if (videoPlayer == null) return;
+
         videoPlayer.Play();
         Debug.Log("▶️ Play");
     }
@@ -28,34 +46,21 @@ public class VideoPlayerController : MonoBehaviour
     public void Stop()
     {
         if (videoPlayer == null) return;
+
         videoPlayer.Stop();
+
+        // Torna al primo frame
+        videoPlayer.frame = 0;
+        videoPlayer.Pause();
+
         Debug.Log("⏹️ Stop");
     }
 
     public void Pause()
     {
         if (videoPlayer == null) return;
+
         videoPlayer.Pause();
         Debug.Log("⏸️ Pausa");
-    }
-
-    public void Forward5()
-    {
-        if (videoPlayer == null) return;
-
-        double newTime = videoPlayer.time + 5.0;
-        double duration = (double)videoPlayer.frameCount / videoPlayer.frameRate;
-
-        videoPlayer.time = Mathf.Min((float)newTime, (float)duration);
-        Debug.Log($"⏩ Avanti → {videoPlayer.time:F2}s");
-    }
-
-    public void Backward5()
-    {
-        if (videoPlayer == null) return;
-
-        double newTime = videoPlayer.time - 5.0;
-        videoPlayer.time = Mathf.Max((float)newTime, 0f);
-        Debug.Log($"⏪ Indietro → {videoPlayer.time:F2}s");
     }
 }

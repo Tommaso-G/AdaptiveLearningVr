@@ -28,12 +28,12 @@ MonoBehaviour:
           per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
           su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
           questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
-          devi andare. Per muoverti nello spazio, utilizza la levette dei controller.\n\nProva
+          devi andare. Per muoverti nello spazio, utilizza le levette dei controller.\n\nProva
           ad allontanarti dalla diapositiva."
       StepForCompletition:
       - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
-    - FeedbackName: 'Introduzione: interazioni con i pannelli 2D'
+    - FeedbackName: 'Introduzione: pannelli 2D'
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
@@ -41,10 +41,10 @@ MonoBehaviour:
         image: {fileID: 21300000, guid: b181d6dfee62edb4eb03ecc9626d572d, type: 3}
         video: {fileID: 0}
         text: "Per interagire con elementi 2D, come bottoni e pannelli, utilizza
-          il pulsante mostrato in figura puntando verso il punto desiderato; in alternativa,
-          puoi portare fisicamente il controller sopra l\u2019elemento senza premere
-          alcun pulsante.\n\nPer provare, scorri la barra presente sulla sinistra,
-          ti permetter\xE0 di leggere tutto il testo.\n\nBravo!"
+          il pulsante mostrato in figura puntando nellam direzione desiderata. Per
+          alcuni elementi dovrai tenere premuto il pulsante per interagire correttamente.\n\nPer
+          provare, scorri la barra presente sulla sinistra, ti permetter\xE0 di leggere
+          tutto il testo.\n\nBravo!"
       StepForCompletition:
       - clicca sulal barra scorrevole
       PersonalizedPrefab: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
           avere subito un quadro generale.
 
 
-          Apri la pagina "Overview".'
+          Apri la pagina "OVERVIEW".'
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 32900000, guid: c6e163ad5fec7d348b2e9f5c72209cd5, type: 3}
         text: <i><size=60%>Puoi usare i tasti per far ripartire il video, fermarlo
-          o andare avanti e indietro.</size></i>
+          o andare avanti e indietro. Premi il tasto "Play"</size></i>
       StepForCompletition:
       - Guarda il video
       - Aspetta un attimo per il video
@@ -199,12 +199,6 @@ MonoBehaviour:
           Se la sequenza \xE8 giusta, si accender\xE0 una luce verde.\r\n\r\n<b><size=90%><color=#67FFCA>6.</color></size></b>
           Se invece compare una luce rossa,  \r\nla password \xE8 errata... ma puoi
           riprovare tutte le volte che vuoi."
-      - Sequenzale_Globale: 1
-        Visivo_Verbale: 0
-        isIntroductory: 0
-        image: {fileID: 0}
-        video: {fileID: 32900000, guid: c6e163ad5fec7d348b2e9f5c72209cd5, type: 3}
-        text: 
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -422,8 +416,9 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: In questo gioco di memoria dovrai interagire con gli oggetti nell'ordine
-          mostrato.
+        text: "In questo gioco di memoria dovrai interagire con gli oggetti nell'ordine
+          mostrato. Ti verr\xE0 proposto il gioco in due modalit\xE0 diverse, dovrai
+          completare due round per ogni modalit\xE0."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -473,7 +468,8 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "L'obbiettivo del gioco \xE8 girare le coppie di carte uguali, dopo
-          averle memorizzate"
+          averle memorizzate. Ti verr\xE0 proposto il gioco in due modalit\xE0 diverse,
+          dovrai completare 2 round per ogni modalit\xE0."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -531,7 +527,8 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "L'obbiettivo del gioco \xE8 ricordare l'ordine con cui sono comparse
-          le parole o le immagini"
+          le parole o le immagini. Ti verr\xE0 proposto il gioco in due modalit\xE0
+          diverse. Dovrai completare due round per ogni modalit\xE0."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
