@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Conditions;
@@ -28,7 +29,7 @@ public class FeedbackScrollUsedCondition : Condition<FeedbackScrollUsedCondition
         public bool IsCompleted { get; set; }
 
         [DataMember]
-        public float Threshold { get; set; } = 0.05f; // minimo movimento richiesto
+        public float Threshold { get; set; } = 0.05f;
     }
 
     public class FeedbackScrollUsedConditionAutocompleter : Autocompleter<FeedbackScrollUsedConditionData>
@@ -44,47 +45,79 @@ public class FeedbackScrollUsedCondition : Condition<FeedbackScrollUsedCondition
     public class FeedbackScrollUsedConditionActiveProcess : StageProcess<FeedbackScrollUsedConditionData>
     {
         private Scrollbar scrollbar;
+
         private float initialValue;
         private bool triggered = false;
+        private bool isInteracting = false;
 
         public FeedbackScrollUsedConditionActiveProcess(FeedbackScrollUsedConditionData data) : base(data) { }
 
-    public override void Start()
-    {
-        scrollbar = GameObject.FindFirstObjectByType<Scrollbar>();
-
-        if (scrollbar == null)
+        public override void Start()
         {
-            Debug.LogWarning("[FeedbackScrollUsedCondition] Nessuna Scrollbar trovata.");
-            return;
+            scrollbar = GameObject.FindFirstObjectByType<Scrollbar>();
+
+            if (scrollbar == null)
+            {
+                Debug.LogWarning("[FeedbackScrollUsedCondition] Nessuna Scrollbar trovata.");
+                return;
+            }
+
+            Debug.Log("[FeedbackScrollUsedCondition] Scrollbar trovata: " + scrollbar.name);
+
+            SetupPointerEvents(scrollbar);
+
+            scrollbar.StartCoroutine(DelayedInit());
         }
 
-        Debug.Log("[FeedbackScrollUsedCondition] Scrollbar trovata: " + scrollbar.name);
+        private void SetupPointerEvents(Scrollbar sb)
+        {
+            EventTrigger trigger = sb.gameObject.GetComponent<EventTrigger>();
 
-        scrollbar.StartCoroutine(DelayedInit());
-    }
+            if (trigger == null)
+                trigger = sb.gameObject.AddComponent<EventTrigger>();
 
-    private IEnumerator DelayedInit()
-    {
-        // Aspetta 2 secondi per evitare trigger da inizializzazione
-        yield return new WaitForSeconds(2f);
+            var entryDown = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerDown
+            };
+            entryDown.callback.AddListener((data) => { isInteracting = true; });
 
-        initialValue = scrollbar.value;
+            var entryUp = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerUp
+            };
+            entryUp.callback.AddListener((data) => { isInteracting = false; });
 
-        Debug.Log($"Listener attivato dopo delay. Valore iniziale: {initialValue}");
+            trigger.triggers.Add(entryDown);
+            trigger.triggers.Add(entryUp);
+        }
 
-        scrollbar.onValueChanged.AddListener(OnScrollChanged);
-    }
+        private IEnumerator DelayedInit()
+        {
+            yield return new WaitForSeconds(2f);
+
+            initialValue = scrollbar.value;
+
+            Debug.Log($"Listener attivo. Valore iniziale: {initialValue}");
+
+            scrollbar.onValueChanged.AddListener(OnScrollChanged);
+        }
 
         private void OnScrollChanged(float value)
         {
-            if (triggered) return;
+            if (triggered)
+                return;
+
+            // 🔥 SOLO mentre l’utente sta interagendo
+            if (!isInteracting)
+                return;
 
             float delta = Mathf.Abs(value - initialValue);
 
             if (delta >= Data.Threshold)
             {
-                Debug.Log($"Scroll rilevato (delta: {delta}) → attendo 2 secondi...");
+                Debug.Log($"Scroll rilevato durante interazione (delta: {delta})");
+
                 triggered = true;
 
                 scrollbar.StartCoroutine(DelayedCompletion());
@@ -96,6 +129,7 @@ public class FeedbackScrollUsedCondition : Condition<FeedbackScrollUsedCondition
             yield return new WaitForSeconds(2f);
 
             Debug.Log("Scroll confermato → condition completata.");
+
             Data.IsCompleted = true;
         }
 
