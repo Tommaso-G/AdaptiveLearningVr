@@ -2192,25 +2192,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sequenza:
   - oggetto: {fileID: 141853930}
-    nomeOriginale: 
     testo: Tira la leva
     immagine: {fileID: 21300000, guid: 8634e7ec4727ac241aea6ea7448a35e4, type: 3}
   - oggetto: {fileID: 242892773}
-    nomeOriginale: 
     testo: Metti la palla arancione nel secondo cassetto
     immagine: {fileID: 21300000, guid: 54d67f6947b81e540807a08f88a96e8b, type: 3}
   - oggetto: {fileID: 385032155}
-    nomeOriginale: 
     testo: 'Accendi la candela
 
 '
     immagine: {fileID: 21300000, guid: e4b01c88bf3715e4096e8767cd2d96da, type: 3}
   - oggetto: {fileID: 2096581839}
-    nomeOriginale: 
     testo: Rompi il maialino con il martello
     immagine: {fileID: 21300000, guid: 5cc122d681ed149428554aec1a4bf592, type: 3}
   - oggetto: {fileID: 186090700}
-    nomeOriginale: 
     testo: 'Usa l''annaffiattoio
 
 '
@@ -10656,6 +10651,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9dd581be99d7b84ab71e4e9b6acda89, type: 3}
+--- !u!1 &950933572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 950933573}
+  m_Layer: 0
+  m_Name: winPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &950933573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950933572}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.50007, y: 1.25, z: 3.500014}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1571951228}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &962369284
 GameObject:
   m_ObjectHideFlags: 0
@@ -12758,7 +12784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14982,7 +15008,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -14995,7 +15021,7 @@ PrefabInstance:
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 287443476}
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -15022,7 +15048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GenericSequenceManager, Assembly-CSharp
+      value: RememberSequence, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1197402364210891156, guid: 22e628c57a379f144ba4cec2cab0ac51, type: 3}
       propertyPath: m_OnBreak.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -16849,7 +16875,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 29960426247627114, guid: 33c9a4225caf653469dce08899842a76, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 92822833534311525, guid: 33c9a4225caf653469dce08899842a76, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17600,6 +17626,11 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: a3a292edfa32a84fad797d4a057033ac
   guids: []
+--- !u!4 &1571951228 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1960553157614540565, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
+  m_PrefabInstance: {fileID: 2101682679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!135 &1573220633 stripped
 SphereCollider:
   m_CorrespondingSourceObject: {fileID: 3931464535981355190, guid: da3b468b35b58334693dfcd04f6e06a7, type: 3}
@@ -24204,6 +24235,10 @@ PrefabInstance:
       propertyPath: dataSender
       value: 
       objectReference: {fileID: 1958774850}
+    - target: {fileID: 6114276377123394676, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
+      propertyPath: winPosition
+      value: 
+      objectReference: {fileID: 950933573}
     - target: {fileID: 6326498680472088912, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -24301,6 +24336,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2739264522979179228, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1958774849}
+    - targetCorrespondingSourceObject: {fileID: 1960553157614540565, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 950933573}
     - targetCorrespondingSourceObject: {fileID: 7112049318489788287, guid: 81446017fa1870c409018b403aa98b5e, type: 3}
       insertIndex: 0
       addedObject: {fileID: 257205754}
