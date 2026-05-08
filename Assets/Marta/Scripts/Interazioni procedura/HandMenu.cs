@@ -49,11 +49,15 @@ public class HandMenu : MonoBehaviour
     private bool firstTime;
     private Coroutine rotationCoroutine = null;
 
+    private bool isTransitioning = false;
+
     [System.Serializable]
     public class MenuEntry
     {
         public string id;
         public HandMenuPanel panel;
+        public int priority;
+        public bool allowMultipleRequests;
     }
 
 
@@ -62,6 +66,7 @@ public class HandMenu : MonoBehaviour
 
     private Dictionary<string, HandMenuPanel> menuMap;
     private HandMenuPanel currentMenu;
+    private HandMenuRequester currentRequester;
 
     private bool isMenuActive = false;
     private bool isVisible;
@@ -69,8 +74,24 @@ public class HandMenu : MonoBehaviour
     private float minToggleInterval = 0.2f;
     private float sideDotMargin = 0.05f;
 
+    private class MenuRequest
+    {
+        public string menuId;
+        public int priority;
+        public float time;
+        public HandMenuRequester requester;
+
+        public MenuRequest(string id, int prio, HandMenuRequester req)
+        {
+            menuId = id;
+            priority = prio;
+            time = Time.time;
+            requester = req;
+        }
+    }
+
     [SerializeField]
-    private List<string> menuQueue = new List<string>();
+    private List<MenuRequest> menuQueue = new List<MenuRequest>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -100,32 +121,101 @@ public class HandMenu : MonoBehaviour
             }
         }
     }
-    public void RequestOpen(string menuId)
+
+    private int GetPriority(string menuId)
     {
-        if (!menuMap.ContainsKey(menuId)) // il men� � presente in elenco
-        {
-            print("menu non presente");
-            return;
-        }
+        var entry = menus.Find(m => m.id == menuId);
+        if (entry != null)
+            return entry.priority;
 
-        if (currentMenu != null && currentMenu.MenuId != menuId) // non si sovrappongo due richieste diverse di apertura
-        {
-            print("Due richieste di apertura");
-            HighlightController();
-            menuQueue.Add(menuId);
-            return;
-        }
+        return 0;
+    }
 
-        if (currentMenu == null) // apri il men�
+    private bool AllowMultiple(string menuId)
+    {
+        var entry = menus.Find(m => m.id == menuId);
+        if (entry != null)
+            return entry.allowMultipleRequests;
+
+        return false;
+    }
+
+    public void RequestOpen(string menuId, HandMenuRequester requester)
+    {
+        if (isTransitioning)
+            return;
+
+        if (!menuMap.ContainsKey(menuId))
+            return;
+
+        bool allowMultiple = AllowMultiple(menuId);
+
+        // ===== CONTROLLO DUPLICATI =====
+
+        if (!allowMultiple)
         {
-            currentMenu = menuMap[menuId]; // seleziona il Menu panel
-            OnMenuOpened();
+            // Menu singleton → blocca qualsiasi duplicato
+
+            if (currentMenu != null &&
+                currentMenu.MenuId == menuId)
+                return;
+
+            if (menuQueue.Any(r => r.menuId == menuId))
+                return;
         }
         else
         {
-            //print("Men� non null");
+            // Menu multiplo → blocca solo stesso requester
+
+            if (menuQueue.Any(r =>
+                r.menuId == menuId &&
+                r.requester == requester))
+                return;
+
+            if (currentMenu != null &&
+                currentMenu.MenuId == menuId &&
+                currentRequester == requester)
+                return;
+        }
+
+        // ===== LOGICA PRIORITÀ =====
+
+        int newPriority = GetPriority(menuId);
+
+        if (currentMenu == null)
+        {
+            currentMenu = menuMap[menuId];
+            currentRequester = requester;
+            OnMenuOpened();
             return;
         }
+
+        int currentPriority = GetPriority(currentMenu.MenuId);
+
+        if (newPriority > currentPriority)
+        {
+            StartCoroutine(SwitchMenu(menuId, requester));
+        }
+        else
+        {
+            menuQueue.Add(new MenuRequest(menuId, newPriority, requester));
+
+            menuQueue = menuQueue
+                .OrderByDescending(r => r.priority)
+                .ThenBy(r => r.time)
+                .ToList();
+        }
+    }
+
+    private IEnumerator SwitchMenu(string menuId, HandMenuRequester requester)
+    {
+        CloseCurrent();
+
+        yield return new WaitForSeconds(1f); // tempo di chiusura
+
+        currentMenu = menuMap[menuId];
+        currentRequester = requester;
+        OnMenuOpened();
     }
 
     public void RequestClose(string menuId)
@@ -147,7 +237,16 @@ public class HandMenu : MonoBehaviour
         //print("CLOSE REQUEST ACCEPTED");
         currentMenu.Close();
         currentMenu = null;
+        currentRequester = null;
         OnMenuClosed();
+
+        StartCoroutine(EndTransitionAfterFrame());
+    }
+
+    private IEnumerator EndTransitionAfterFrame()
+    {
+        yield return new WaitForSeconds(1f); // o durata animazione reale
+        isTransitioning = false;
     }
 
     private void OnMenuOpened()
@@ -309,17 +408,14 @@ public class HandMenu : MonoBehaviour
             UpdateUI();
         }
 
-        if (currentMenu == null)
+        // Se nessun menu attivo e c'è qualcosa in coda → apri il prossimo
+        if (currentMenu == null && menuQueue.Count > 0)
         {
-            if (menuQueue.Count > 0)
-            {
-                RequestOpen(menuQueue[0]);
-                menuQueue.RemoveAt(0);
-            }
-            else
-            {
-                return;
-            }
+            var nextRequest = menuQueue[0];
+            menuQueue.RemoveAt(0);
+
+            currentMenu = menuMap[nextRequest.menuId];
+            OnMenuOpened();
         }
     }
 }
