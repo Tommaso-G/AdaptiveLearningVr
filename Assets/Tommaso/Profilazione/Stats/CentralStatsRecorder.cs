@@ -215,7 +215,7 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
         
-        string filePath = System.IO.Path.Combine(folderPath, "ProvaProfileSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, "AlessandroProfileSessionData.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {filePath}");
     }
@@ -309,7 +309,7 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
 
-        string filePath = System.IO.Path.Combine(folderPath, "ProvaFeedbacksSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, "AlessandroFeedbacksSessionData.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {filePath}");
     }
