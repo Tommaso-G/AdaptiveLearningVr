@@ -27,7 +27,7 @@ public class interviewPhone : MonoBehaviour
             return;
         }
         grabbedOnce = true;
-        audioSource.Play();
+        audioSource?.Play();
         StartCoroutine(WaitForAudio());
     }
 
@@ -39,6 +39,9 @@ public class interviewPhone : MonoBehaviour
 
     private IEnumerator WaitForAudio()
     {
+        if (audioSource == null)
+            yield break;
+
         yield return new WaitWhile(() => audioSource.isPlaying);
         renderer.enabled = false;
         menuRequester.OpenMenu();

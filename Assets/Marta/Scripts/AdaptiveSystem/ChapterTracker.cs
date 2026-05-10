@@ -14,6 +14,7 @@ public class ChapterTracker : MonoBehaviour
     private string currentChapterName = null;
     private string chapterIdToRegister = null;
     [SerializeField] private StepErrorTracker stepErrorTracker = null;
+    [SerializeField] private ChapterTimer timer;
 
     private int _errorCount = 0;
     private float _startTime;
@@ -44,6 +45,7 @@ public class ChapterTracker : MonoBehaviour
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
         co_mgr.OnRemoveCurrent += HandleChapterSkipped;
         ChangeTime += HandleTimeChange;
+        timer = FindAnyObjectByType<ChapterTimer>();
     }
     private void OnProcessStarted(object sender, ProcessEventArgs args)
     {
@@ -68,10 +70,12 @@ public class ChapterTracker : MonoBehaviour
             chapterIdToRegister = currentChapterName;
             idxToRegister = currentIdx;
             _timeToRegister = (Time.time - _startTime);
+            timer?.StopTimer(chapterIdToRegister);
             OnChapterComplete(chapterIdToRegister, idxToRegister, _timeToRegister);
         }
 
         currentChapterName = process.Data.Current.Data.Name;
+        timer?.StartTimer(currentChapterName);
         currentIdx = process.Data.Chapters.IndexOf(process.Data.Current);
         _errorCount = 0;
         _startTime = Time.time;
@@ -96,6 +100,7 @@ public class ChapterTracker : MonoBehaviour
     {
         IChapter chapter = subChapter.Chapter;
         string subChapterName = chapter.Data.Name;
+        //timer?.StartTimer(subChapterName);
         int subIdx = process.Data.Chapters.IndexOf(chapter);
         int errorCount = 0;
         float startTime = Time.time;
@@ -104,7 +109,7 @@ public class ChapterTracker : MonoBehaviour
         {
             yield return null;
         }
-
+        Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} concluso");
         if (subChapter.IsOptional)
         {
             Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} è stato rimosso, i dati non verranno inviati alla rete.");
@@ -112,6 +117,7 @@ public class ChapterTracker : MonoBehaviour
         }
 
         float timeToRegister = Time.time - startTime;
+        //timer?.StopTimer(subChapterName);
         OnChapterComplete(subChapterName, subIdx, timeToRegister);
 
     }

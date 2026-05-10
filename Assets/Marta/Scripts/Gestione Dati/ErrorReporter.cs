@@ -21,6 +21,12 @@ public class ErrorReporter : MonoBehaviour
         executionOrderController = FindAnyObjectByType<ExecutionOrderController>();
     }
 
+    public void setReference(StepErrorTracker errorTracker, ExecutionOrderController executionOrderController)
+    {
+        this.errorTracker = errorTracker;
+        this.executionOrderController = executionOrderController;
+    }
+
     public void RegisterError(string obj)
     {
         if (process == null)
@@ -28,7 +34,7 @@ public class ErrorReporter : MonoBehaviour
             process = ProcessRunner.Current;
         }
         
-        string stepName = process.Data.Current.Data.Current.Data.Name;
+        string stepName = process?.Data.Current?.Data.Current?.Data.Name;
 
         if (errorTracker == null)
         {

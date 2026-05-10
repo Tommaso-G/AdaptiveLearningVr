@@ -32,6 +32,7 @@ public class EditProcess : MonoBehaviour
     bool skipCurrent = false;
 
     [SerializeField] private ChapterSkipHandler skipHandler;
+    [SerializeField] private ChapterTimer chapterTimer;
 
     private void Start()
     {
@@ -42,6 +43,11 @@ public class EditProcess : MonoBehaviour
         co_mgr.OnListChanged += CheckNextChapter;
         co_mgr.OnRemoveCurrent += skipCurrentChapter;
         co_mgr.OnRemoveSubChapter += removedSubChapter;
+        chapterTimer = FindAnyObjectByType<ChapterTimer>();
+        if (chapterTimer != null)
+        {
+            chapterTimer.OnTimeExceeded += skipCurrentChapter;
+        }
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
@@ -104,7 +110,6 @@ public class EditProcess : MonoBehaviour
     {
         ProcessRunner.SkipChapters(co_mgr.OptionalChapters.Count - co_mgr.OptionalChapters.IndexOf(chapter)); // salta i capitoli opzionali rimasti
     }
-
     public void skipCurrentChapter()
     {
         StartCoroutine(skipCurrentCoroutine());
@@ -112,14 +117,96 @@ public class EditProcess : MonoBehaviour
 
     public IEnumerator skipCurrentCoroutine()
     {
-        while (process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Active)
+        while (process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Active &&
+       process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Activating)
         {
             yield return null;
         }
+
         string currentName = process.Data.Current.Data.Name;
-        ProcessRunner.SkipChapters(1);
+
+        bool skipped = false;
+        bool stepGroup = false;
+        // Completa prima i nested chapters se presenti
+        yield return StartCoroutine(CompleteNestedChapters(process.Data.Current, result => stepGroup = result));
+
+        if (stepGroup)
+        {
+            Debug.Log($"[EDITPROCESS] stepGroup trovato e saltato.");
+            yield break;
+        }
+
+        try
+        {
+            ProcessRunner.SkipChapters(1);
+            skipped = true;
+        }
+        catch (Exception e)
+        {
+            // Fallback: forza il completamento ignorando errori di FastForward
+            Debug.LogWarning($"[EDITPROCESS] Errore durante skip: {e.Message}. Tentativo fallback.");
+        }
+
         skipHandler.NotifyChapterSkipped(currentName);
-        UnityEngine.Debug.Log("[EDITPROCESS] current chapter skipped");
+
+        if (!skipped)
+        {
+            Debug.LogError("[EDITPROCESS] Skip fallito, il capitolo potrebbe non essere avanzato.");
+        }
+        else
+        {
+            Debug.Log($"[EDITPROCESS] current chapter skipped ({currentName})");
+        }
+    }
+
+    private IEnumerator CompleteNestedChapters(IChapter chapter, Action<bool> onCompleted)
+    {
+
+        Debug.Log($"[EDITPROCESS] CompleteNestedChapters chiamato sul capitolo {chapter.Data.Name}");
+
+        bool stepGroup = false;
+        IStep currentStep = chapter.Data.Current;
+
+        if (currentStep == null)
+        {
+            onCompleted?.Invoke(false);
+            yield break;
+        }
+
+        Debug.Log($"[EDITPROCESS] Step corrente {currentStep.Data.Name}");
+        foreach (var behavior in currentStep.Data.Behaviors.Data.Behaviors)
+        {
+            if (behavior is ExecuteChaptersBehavior chapterBehavior)
+            {
+                Debug.Log("[EDITPROCESS] Trovati ExecuteChapterBehavior");
+                List<SubChapter> nestedChapter = chapterBehavior.Data.SubChapters;
+
+                foreach (var subChapter in nestedChapter)
+                {
+                    if (subChapter != null && subChapter.Chapter.LifeCycle.Stage == Stage.Activating)
+                    {
+                        //Ricorsione per StepGroup annidati a più livelli
+                        //yield return StartCoroutine(CompleteNestedChapters(nestedChapter));
+
+                        subChapter.Chapter.LifeCycle.MarkToFastForwardStage(Stage.Activating);
+                        removedSubChapter(subChapter.Chapter.Data.Name);
+                        Debug.Log($"[EDITPROCESS] sottocapitolo {subChapter.Chapter.Data.Name} MarkToFastForward. Stage: {subChapter.Chapter.LifeCycle.Stage}");
+                        //yield return new WaitUntil(() =>
+                        //    nestedChapter.LifeCycle.Stage == Stage.Inactive ||
+                        //    nestedChapter.LifeCycle.Stage == Stage.Deactivating);
+                    }
+                }
+
+                stepGroup = true;
+                onCompleted?.Invoke(stepGroup);
+
+            }
+            else
+            {
+                Debug.Log("[EDITPROCESS] NON trovati ExecuteChapterBehavior");
+
+            }
+        }
     }
 
     public void removedSubChapter(string subChapterName)
