@@ -149,27 +149,27 @@ public class SlideData: MonoBehaviour
 
     private float GetVideoDuration()
     {
-        if (videoPlayer != null && videoPlayer.clip != null){
-            
-            return (float)videoPlayer.clip.length;
+        if (videoPlayer == null)
+        {
+            Debug.LogWarning($"[SlideData] videoPlayer non assegnato su {gameObject.name}");
+            return videoDuration;
         }
 
-        if(videoPlayer ==null)
-            Debug.Log("Video player nullo ");
+        if (videoPlayer.clip == null)
+        {
+            Debug.LogWarning($"[SlideData] clip nullo su {gameObject.name}");
+            return videoDuration;
+        }
 
-        if(videoPlayer.clip ==null)
-            Debug.Log("Video Clip nullo ");
-
-        return 0f;
+        return (float)videoPlayer.clip.length;
     }
-
     public float GetNormalizedFocusTime()
     {
         if (visVerb == LearningEnums.VisivoVerbale.Visivo)
         {
             float duration = GetVideoDuration();
             if (duration <= 0f){
-                Debug.Log("duration <0 ");
+//                Debug.Log("duration <0 ");
                 return focusTime;
 
                 } 

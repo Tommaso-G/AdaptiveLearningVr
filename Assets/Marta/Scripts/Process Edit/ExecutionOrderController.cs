@@ -78,7 +78,7 @@ public class ExecutionOrderController : MonoBehaviour
             for (int i = 0; i < subch.Count; i++)
             {
                 string currentStepName = subch[i].Data.Current?.Data.Name ?? "nessuno";
-                Debug.Log($"[EOC]   Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Step corrente: '{currentStepName}'");
+               // Debug.Log($"[EOC]   Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Step corrente: '{currentStepName}'");
             }
         }
     }
