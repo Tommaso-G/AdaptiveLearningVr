@@ -21,6 +21,9 @@ public class ExitDoor : MonoBehaviour
     private Transform target;
     [SerializeField] private HandMenuRequester menuRequester;
     public Transform feedbackPos;
+    public Sprite BlockedIcon;
+
+    public FeedbackIconController IconController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -50,7 +53,7 @@ public class ExitDoor : MonoBehaviour
     {
         if (rend != null)
         {
-            changeColor();
+            changeColorAndIcon();
         }
 
         //if(BlockedRb != null)
@@ -59,11 +62,14 @@ public class ExitDoor : MonoBehaviour
         //}
     }
 
-    private void changeColor()
+    private void changeColorAndIcon()
     {
         if (blocked)
         {
             renderColor = Color.red;
+            IconController.verbaleText = "Uscita Bloccata";
+            IconController.visivoSprite = BlockedIcon;
+            IconController.Refresh();
         }
         else if (selected)
         {

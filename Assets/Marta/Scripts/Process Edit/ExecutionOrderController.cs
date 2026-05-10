@@ -71,6 +71,16 @@ public class ExecutionOrderController : MonoBehaviour
     private void OnStepStarted(object sender, ProcessEventArgs args)
     {
         getCurrenteObjects(process.Data.Current);
+
+        if (subch != null)
+        {
+            Debug.Log($"[EOC] StepStarted — controllo sottocapitoli attivi:");
+            for (int i = 0; i < subch.Count; i++)
+            {
+                string currentStepName = subch[i].Data.Current?.Data.Name ?? "nessuno";
+                Debug.Log($"[EOC]   Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Step corrente: '{currentStepName}'");
+            }
+        }
     }
 
     private void OnChapterStarted(object sender, ProcessEventArgs args)
@@ -301,6 +311,10 @@ public class ExecutionOrderController : MonoBehaviour
                     {
                         GetParallelStepObjects(ch);
                     }
+
+                int idx = parallelStepObjs.Count - 1;
+                string objNames = string.Join(", ", parallelStepObjs[idx].steps.Select(g => g.name));
+                Debug.Log($"[EOC] Sottocapitolo[{idx}] '{ch.Data.Name}' — oggetti validi: [{objNames}]");
                 }
                 return true;
             }
@@ -321,6 +335,14 @@ public class ExecutionOrderController : MonoBehaviour
         }
         else if (parallelStepObjs.Count > 0)
         {
+                // LOG: stato attuale dei sottocapitoli
+            for (int i = 0; i < subch.Count; i++)
+            {
+                string objNames = string.Join(", ", parallelStepObjs[i].steps.Select(g => g.name));
+                Debug.Log($"[EOC] Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Oggetti validi: [{objNames}]");
+            }
+            Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Oggetto interagito: {go.name}");
+
             if (ParallelStepIndex == -1 || subch[ParallelStepIndex].LifeCycle.Stage == Stage.Active)
             {
                 for (int i = 0; i < parallelStepObjs.Count; i++)
@@ -387,19 +409,13 @@ public class ExecutionOrderController : MonoBehaviour
     {
         Debug.Log($"Oggetto interagito: {go.name}");
 
-        if (go == prevObj)
-        {
-            return;
-        }
+        if (go == prevObj) return;
 
         prevObj = go;
 
-        Renderer[] renderers = go.GetComponentsInChildren<Renderer>();
-
-        //if (renderers == null)
-        //{
-        //    renderers = GetRendererFromProxy(go);
-        //}
+        Renderer[] renderers = go.GetComponentsInChildren<Renderer>()
+            .Where(r => !HasExcludedTagInHierarchy(r.transform))
+            .ToArray();
 
         List<Material[]> orgMaterials = new List<Material[]>();
         List<Material[]> redMaterials = new List<Material[]>();
@@ -416,6 +432,16 @@ public class ExecutionOrderController : MonoBehaviour
         }
 
         StartCoroutine(FadeColor(renderers, orgMaterials, redMaterials));
+    }
+
+    private bool HasExcludedTagInHierarchy(Transform t)
+    {
+        while (t != null)
+        {
+            if (t.CompareTag("IconFeedback")) return true;
+            t = t.parent;
+        }
+        return false;
     }
 
     //private  Renderer[] GetRendererFromProxy(GameObject go)

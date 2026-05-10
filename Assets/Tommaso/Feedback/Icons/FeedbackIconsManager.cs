@@ -18,13 +18,17 @@ public class FeedbackIconsManager : MonoBehaviour
         }
 
         var profile = learningProfile.GetProfileTuple();
-
         bool isVisivo = profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
 
         Debug.Log("[FeedbackIconsManager] Profilo: " + (isVisivo ? "Visivo" : "Verbale"));
 
-        // Trova tutti gli script in scena
-        FeedbackIconController[] controllers = FindObjectsByType<FeedbackIconController>(FindObjectsSortMode.None);
+        // Una sola chiamata, con gli inattivi inclusi
+        FeedbackIconController[] controllers = FindObjectsByType<FeedbackIconController>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        Debug.Log($"[FeedbackIconsManager] Controller trovati: {controllers.Length}");
 
         foreach (var controller in controllers)
         {

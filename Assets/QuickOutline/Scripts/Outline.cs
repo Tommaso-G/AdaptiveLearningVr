@@ -80,11 +80,15 @@ public class Outline : MonoBehaviour {
 
   private bool needsUpdate;
 
+  private string excludeTag = "IconFeedback";
+
   void Awake() {
 
     // Cache renderers
-    renderers = GetComponentsInChildren<Renderer>();
-
+    renderers = GetComponentsInChildren<Renderer>()
+        .Where(r => !HasExcludedTagInHierarchy(r.transform))
+        .ToArray();
+        
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
     outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
@@ -98,6 +102,16 @@ public class Outline : MonoBehaviour {
     // Apply material properties immediately
     needsUpdate = true;
   }
+
+  private bool HasExcludedTagInHierarchy(Transform t)
+{
+    while (t != null)
+    {
+        if (t.CompareTag(excludeTag)) return true;
+        t = t.parent;
+    }
+    return false;
+}
 
   void OnEnable() {
     foreach (var renderer in renderers) {

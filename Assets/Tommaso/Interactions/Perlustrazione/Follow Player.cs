@@ -105,32 +105,70 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     // ── Controlla l'ingresso nei collider ─────────────────────────
     private void OnTriggerEnter(Collider other)
     {
-        if (IsCompleted) return;
-        if (destinationColliders == null || destinationColliders.Count == 0) return;
-        if (!destinationColliders.Contains(other)) return;
+        if (IsCompleted)
+            return;
 
-        string chapterName = ProcessRunner.Current?.Data.Current?.Data.Name ?? "Unknown Chapter";
+        if (destinationColliders == null || destinationColliders.Count == 0)
+            return;
 
-        if (other == _closestCollider)
+        if (!destinationColliders.Contains(other))
+            return;
+
+        ExitDoor exitDoor = other.GetComponentInParent<ExitDoor>();
+
+        // Nessun ExitDoor
+        if (exitDoor == null)
         {
-            Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider corretto: {other.name}");
+            Debug.LogError(
+                $"[FollowerAgentWithCheck] [{name}] " +
+                $"Il collider '{other.name}' non ha ExitDoor."
+            );
+
+            return;
         }
-        else
+
+        // Porta bloccata:
+        // ignora completamente
+        if (exitDoor.blocked)
         {
-            Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider sbagliato: '{other.name}', più vicino era '{_closestCollider?.name}'");
+            Debug.Log(
+                $"[FollowerAgentWithCheck] [{name}] " +
+                $"'{other.name}' ignorato perché Blocked=true"
+            );
+
+            return;
+        }
+
+        // Collider valido raggiunto → completa SEMPRE
+        IsCompleted = true;
+
+        // Controlla se era quello più vicino
+        if (_closestCollider != null && other != _closestCollider)
+        {
+            Debug.Log(
+                $"[FollowerAgentWithCheck] [{name}] " +
+                $"Collider sbagliato: '{other.name}', " +
+                $"più vicino era '{_closestCollider.name}'"
+            );
 
             if (ErrorReporter != null)
             {
-                ErrorReporter.RegisterError(gameObject.name);
+                ErrorReporter.RegisterError(gameObject.name + "_uscita");
             }
             else
             {
-                Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
+                Debug.LogError("[FollowerAgentWithCheck] ErrorReporter non assegnato.");
             }
         }
+        else
+        {
+            Debug.Log(
+                $"[FollowerAgentWithCheck] [{name}] " +
+                $"Collider corretto: '{other.name}'"
+            );
+        }
 
-        // In entrambi i casi: step completato e movimento fermato
-        IsCompleted = true;
+        // Stop follow
         isFollowing = false;
 
         if (_hasAgent)
