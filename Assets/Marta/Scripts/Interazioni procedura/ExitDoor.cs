@@ -103,10 +103,6 @@ public class ExitDoor : MonoBehaviour
         selected = false;
     }
 
-    public void checkState()
-    {
-        isBlock(blocked);
-    }
     public void isBlock(bool blocked)
     {
         BlockedRb.freezeRotation = blocked ? true : false;

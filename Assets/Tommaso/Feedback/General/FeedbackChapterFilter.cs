@@ -27,6 +27,7 @@ public class FeedbackChapterFilter : MonoBehaviour
             Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' non trovato in chapterSettings.");
             return;
         }
+
         chapter.feedbackLevel = level;
     }
 
@@ -40,7 +41,6 @@ public class FeedbackChapterFilter : MonoBehaviour
         }
         chapter.feedbackLevel = 2;
     }
-/*
     private void Start()
     {
         if (ProcessRunner.Current != null)
@@ -59,7 +59,7 @@ public class FeedbackChapterFilter : MonoBehaviour
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
     }
-*/
+
     public void Initialize(IProcess process)
     {
         foreach (IChapter chapter in process.Data.Chapters)
@@ -80,6 +80,8 @@ public class FeedbackChapterFilter : MonoBehaviour
                 feedbackLevel = 0
             });
         }
+
+        print($"[FeedbackChapterFilter] capitolo {name} registrato. Parent name: {(parentName != null ? parentName : "assente")}");
 
         if (parentName != null && !parentMap.ContainsKey(name))
             parentMap[name] = parentName;
@@ -106,7 +108,9 @@ public class FeedbackChapterFilter : MonoBehaviour
     private int GetEffectiveFeedbackLevel(string chapterName)
     {
         if (!chapterName.Contains("Optional") && parentMap.TryGetValue(chapterName, out string parentName))
+        {
             return GetEffectiveFeedbackLevel(parentName);
+        }
 
         var setting = chapterSettings.Find(s => s.chapterName == chapterName);
         return setting?.feedbackLevel ?? 0;

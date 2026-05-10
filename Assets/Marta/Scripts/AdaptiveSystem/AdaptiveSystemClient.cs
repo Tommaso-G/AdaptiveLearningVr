@@ -18,8 +18,8 @@ public class StartSessionRequest
 [Serializable]
 public class ChapterConfigData
 {
-    public string chapter_id;
     public string name;
+    public string chapter_id;
     public bool is_mandatory;
     public float weight = 1.0f;
     public int max_iterations = 5;

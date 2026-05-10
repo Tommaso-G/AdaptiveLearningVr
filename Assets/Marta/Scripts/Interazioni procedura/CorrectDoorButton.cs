@@ -1,210 +1,189 @@
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework.Constraints;
-using Unity.XR.CoreUtils;
 using UnityEngine.AI;
+using Unity.XR.CoreUtils;
 
 public class CorrectDoorButton : MonoBehaviour
 {
-    [SerializeField]
-    private MapButton correctButton;
-    [SerializeField]
-    private MapButton[] mapButtons;
-    private Transform currentBlockedDoor;
-    [SerializeField]
-    private List<SpawnArea> spawnPlaneGrid;
-    [SerializeField]
-    private Image resultImage;
-    [SerializeField]
-    private Sprite youImage;
-    [SerializeField]
-    private Sprite alertImage;
-    [SerializeField]
-    private Sprite unlokedImage;
-    [SerializeField]
-    private Sprite lockedImage;
-    [SerializeField]
-    private Sprite correctImage;
-    [SerializeField]
-    private Sprite wrongImage;
-    [SerializeField]
-    private NavMeshAgent childAgent;
-    private bool cliked = false;
-    private bool setting = false;
-    private Collider currentUITrigger;
+    [Header("Porte")]
+    [SerializeField] private List<ExitDoor> doors = new List<ExitDoor>();
 
+    [Header("UI Mappa")]
+    [SerializeField] private Sprite youImage;
+    [SerializeField] private Sprite alertImage;
+    [SerializeField] private Sprite lockedImage;
+    [SerializeField] private Sprite correctImage;
+    [SerializeField] private Sprite wrongImage;
+    [SerializeField] private Image resultImage;
     [SerializeField] private Transform feedbackPos;
 
+    [Header("AI")]
+    [SerializeField] private NavMeshAgent childAgent;
+
+    [Header("Errori")]
     public ErrorReporter ErrorReporter;
 
+    // Stato interno
+    private MapButton[] mapButtons;
+    private MapButton correctButton;
+    private ExitDoor blockedDoor;
+    private Collider currentUITrigger;
+    private List<SpawnArea> occupiedSpawnAreas = new List<SpawnArea>();
+    private bool clicked = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //private void Awake()
+    //{
+    //    // Popola mapButtons in Awake, così è pronto per Start
+    //    mapButtons = FindObjectsByType<MapButton>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+    //        .Where(b => b.selectableDoor)
+    //        .ToArray();
+    //}
+
+    private void Start()
     {
-        mapButtons = FindObjectsByType<MapButton>(FindObjectsInactive.Include, FindObjectsSortMode.None).Where(b => b.selectableDoor).ToArray();
+        // Popola mapButtons in Awake, così è pronto per Start
+        mapButtons = FindObjectsByType<MapButton>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(b => b.selectableDoor)
+            .ToArray();
         SpawnArea.onSpawnAreaChange += UpdateAreaIcon;
-        spawnPlaneGrid = new List<SpawnArea>();
-        //setBlockedDoor();
+        SelectAndBlockRandomDoor();
     }
 
-    public void CallCorrectButton(ExitDoor door)
-    {
-        resultImage.gameObject.SetActive(false);
-        cliked = false;
-        currentBlockedDoor = door.transform;
-        currentUITrigger = door.triggerUICollider;
-        calculateCorrectButton();
-    }
+    // ── Selezione porta random ────────────────────────────────────────────
 
-    private void calculateCorrectButton()
+    private void SelectAndBlockRandomDoor()
     {
-        if (currentBlockedDoor == null)
+        if (doors == null || doors.Count == 0)
         {
+            Debug.LogWarning("[CorrectDoorButton] Lista porte vuota o null!");
             return;
         }
-        // dove sono io -> currentBlockedDoor
-        Vector2 currentBlockedDoorPosition = new Vector2(currentBlockedDoor.position.x, currentBlockedDoor.position.z);
 
-        // qual � la porta pi� vicina
-        float minSqrDistance = float.MaxValue;
+        // Reset tutte le porte
+        foreach (var door in doors)
+            door.blocked = false;
 
-        foreach (MapButton b in mapButtons)
-        {
-            Transform otherTransform = b.ExitDoor.transform;
-            Image[] imageToSet = b.GetComponentsInChildren<Image>(true);
-            imageToSet[1].gameObject.SetActive(false);
+        // Seleziona una porta random
+        int idx = Random.Range(0, doors.Count);
+        blockedDoor = doors[idx];
+        blockedDoor.blocked = true;
 
-            if (otherTransform == currentBlockedDoor)
-            {
-                imageToSet[0].sprite = lockedImage;
-                imageToSet[1].sprite = youImage;
-                imageToSet[1].gameObject.SetActive(true);
-                continue;
-            }
-            else
-            {
-                imageToSet[0].sprite = unlokedImage;
-            }
+        Debug.Log($"[CorrectDoorButton] Porta bloccata: {blockedDoor.gameObject.name}");
 
-            if (b.obstacleSpawnArea != null && spawnPlaneGrid.Contains(b.obstacleSpawnArea?.GetComponent<SpawnArea>()))
-            {
-                imageToSet[1].sprite = alertImage;
-                imageToSet[1].gameObject.SetActive(true);
-                continue;
-            }
-
-            if (Mathf.Abs(otherTransform.position.y - currentBlockedDoor.position.y) > 10f)
-            {
-                Debug.Log("Non sullo stesso piano");
-                continue;
-            }
-
-            Vector2 otherDoor = new Vector2(otherTransform.position.x, otherTransform.position.z);
-
-            float sqrDist = (otherDoor - currentBlockedDoorPosition).sqrMagnitude;
-
-            if (sqrDist < minSqrDistance)
-            {
-                minSqrDistance = sqrDist;
-                correctButton = b;
-            }
-        }
-    }
-    public void CheckCorrectButton(MapButton button)
-    {
-        if (!cliked)
-        {
-            if (button.ExitDoor.transform == currentBlockedDoor)
-            {
-                return;
-            }
-
-            if (button == correctButton)
-            {
-                resultImage.sprite = correctImage;
-            }
-            else
-            {
-                resultImage.sprite = wrongImage;
-                wrongButtonSelected();
-            }
-
-            resultImage.gameObject.SetActive(true);
-            currentUITrigger.enabled = false;
-            cliked = true;
-        }
-
+        ApplyBlockedDoor();
     }
 
-    private void wrongButtonSelected()
-    {
-        if (ErrorReporter != null)
-        {
-            ErrorReporter.RegisterError(gameObject.name);
-        }
-        else
-        {
-            Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
-        }
-    }
-
-    public void setBlockedDoor()
+    private void ApplyBlockedDoor()
     {
         foreach (MapButton b in mapButtons)
         {
             ExitDoor door = b.ExitDoor;
             door.Deselect();
-            bool blocked = door.blocked;
-            door.isBlock(blocked);
-            if (blocked)
+            bool isBlocked = door.blocked;
+            door.isBlock(isBlocked);
+
+            if (isBlocked)
             {
-                print(b.gameObject.name);
                 b.ExitDoor.triggerUICollider.enabled = true;
                 feedbackPos.SetWorldPose(b.ExitDoor.feedbackPos.GetWorldPose());
-                AITarget aiTarget = childAgent.GetComponent<AITarget>();
-                if (!aiTarget.gameObject.activeSelf)
-                {
-                    aiTarget.gameObject.SetActive(true);
-                }
-                else
-                {
-                    aiTarget.resetTarget();
-                }
-                Transform target = b.ExitDoor.transform.Find("ChildPos");
 
+                AITarget aiTarget = childAgent.GetComponent<AITarget>();
+                aiTarget.gameObject.SetActive(true);
+                aiTarget.resetTarget();
+
+                Transform target = b.ExitDoor.transform.Find("ChildPos");
                 childAgent.Warp(target.position);
                 childAgent.transform.rotation = target.rotation;
-
             }
         }
-        setting = false;
+    }
+
+    public void CallCorrectButton(ExitDoor door)
+    {
+        resultImage.gameObject.SetActive(false);
+        clicked = false;
+        currentUITrigger = door.triggerUICollider;
+        CalculateCorrectButton(door.transform);
+    }
+
+    private void CalculateCorrectButton(Transform currentDoorTransform)
+    {
+        Vector2 currentPos = new Vector2(currentDoorTransform.position.x, currentDoorTransform.position.z);
+        float minSqrDist = float.MaxValue;
+        correctButton = null;
+
+        foreach (MapButton b in mapButtons)
+        {
+            Transform otherTransform = b.ExitDoor.transform;
+            Image[] images = b.GetComponentsInChildren<Image>(true);
+            images[1].gameObject.SetActive(false);
+
+            if (otherTransform == currentDoorTransform)
+            {
+                images[0].sprite = lockedImage;
+                images[1].sprite = youImage;
+                images[1].gameObject.SetActive(true);
+                continue;
+            }
+
+            if (b.obstacleSpawnArea != null && occupiedSpawnAreas.Contains(b.obstacleSpawnArea.GetComponent<SpawnArea>()))
+            {
+                images[1].sprite = alertImage;
+                images[1].gameObject.SetActive(true);
+                continue;
+            }
+
+            if (Mathf.Abs(otherTransform.position.y - currentDoorTransform.position.y) > 10f)
+                continue;
+
+            Vector2 otherPos = new Vector2(otherTransform.position.x, otherTransform.position.z);
+            float sqrDist = (otherPos - currentPos).sqrMagnitude;
+
+            if (sqrDist < minSqrDist)
+            {
+                minSqrDist = sqrDist;
+                correctButton = b;
+            }
+        }
+    }
+
+    public void CheckCorrectButton(MapButton button)
+    {
+        if (clicked) return;
+        if (button.ExitDoor.transform == blockedDoor.transform) return;
+
+        resultImage.sprite = button == correctButton ? correctImage : wrongImage;
+
+        if (button != correctButton)
+            WrongButtonSelected();
+
+        resultImage.gameObject.SetActive(true);
+        currentUITrigger.enabled = false;
+        clicked = true;
+    }
+
+    private void WrongButtonSelected()
+    {
+        if (ErrorReporter != null)
+            ErrorReporter.RegisterError(gameObject.name);
+        else
+            Debug.LogError("[CorrectDoorButton] ErrorReporter non linkato.");
     }
 
     private void UpdateAreaIcon(SpawnArea spawnArea, bool occupied)
     {
-        print("OnAreaChange respond");
         if (occupied)
-        {
-            spawnPlaneGrid.Add(spawnArea);
-            calculateCorrectButton();
-        }
+            occupiedSpawnAreas.Add(spawnArea);
         else
-        {
-            spawnPlaneGrid.Remove(spawnArea);
-            calculateCorrectButton();
-        }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O) && !setting)
-        {
-            setting = true;
-            setBlockedDoor();
-        }
+            occupiedSpawnAreas.Remove(spawnArea);
+
+        // Ricalcola solo se c'è già una porta attiva nel trigger
+        if (currentUITrigger != null && currentUITrigger.enabled == false)
+            return;
+
+        CalculateCorrectButton(blockedDoor.transform);
     }
 
     private void OnDestroy()

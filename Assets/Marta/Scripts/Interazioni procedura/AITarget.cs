@@ -48,6 +48,7 @@ public class AITarget : MonoBehaviour
         Target = null;
         m_Agent.ResetPath();
         m_Animator.SetBool("GoToRun", false);
+        this.gameObject.SetActive(false);
     }
 
     private void OnAnimatorMove()
