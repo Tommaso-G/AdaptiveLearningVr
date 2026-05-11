@@ -16,8 +16,386 @@ MonoBehaviour:
   MultipleContainer: {fileID: 781630661673262138, guid: 4689bb12224f63240ac0e3056d230e01, type: 3}
   globalPath:
     verbalPath:
-      attivo: []
-      riflessivo: []
+      attivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: 'Capitolo 1: Segnalazione Incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Quando si verifica un incendio, la prima cosa da fare \xE8 <b>segnalarlo
+              immediatamente</b> a tutte le persone coinvolte: il personale scolastico,
+              gli altri occupanti dell'edificio e i soccorritori esterni. Seguendo
+              questi tre passaggi in ordine, garantisci che nessuno rimanga all'oscuro
+              del pericolo.\r\n \r\n1. <b>Avvisa il personale scolastico</b> usando
+              il telefono: indica dove si trova l'incendio e quanto \xE8 esteso.\r\n2.
+              <b>Attiva l'allarme antincendio</b> pi\xF9 vicino a te, nei corridoi
+              vicino alle uscite, premendo il bottone.\r\n3. <b>Chiama il 115</b>
+              e fornisci posizione, estensione e qualsiasi dettaglio utile sull'incendio."
+          StepForCompletition:
+          - Grab telefono
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "Capitolo 2: Elettricit\xE0 e del gas"
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Prima di lasciare l''area, <b>interrompi le fonti di rischio</b>
+              per evitare che l''incendio si aggravi. Agisci in questo ordine:
+
+              
+
+              1.
+              <b>Solleva gli interruttori elettrici</b> per eliminare il rischio
+              di cortocircuiti.
+
+              2. <b>Gira la manopola del gas</b>
+              per evitare il rischio di esplosioni.'
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Disattiva il gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: 'Capitolo 3: Isolamento incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Entra nella stanza e <b>valuta subito le dimensioni dell'incendio</b>.
+              Se \xE8 troppo grande per essere gestito, la priorit\xE0 \xE8 uscire,
+              isolare la stanza chiudendo la porta e bloccare la diffusione del fumo.\r\n\r\n1.
+              <b>Valuta l'incendio entrnado nella stanza</b>: se \xE8 troppo grande,
+              non tentare di spegnerlo ed esci immediatamente.\r\n2. <b>Chiudi la
+              porta</b> dietro di te: blocca il flusso d'aria che alimenta il fuoco
+              e rallenta la diffusione di fumo e fiamme.\r\n3. <b>Tappa le fessure
+              della porta</b> con qualsiasi tessuto disponibile, lungo i bordi inferiori
+              e laterali, per bloccare il passaggio del fumo."
+          StepForCompletition:
+          - Istruzioni isola Incendio
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: 'Capitolo 4: Giro di Perlustrazione'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Fai il <b>giro delle aule</b> per verificare che nessuno sia rimasto
+              indietro. Per ogni stanza, segui questi passaggi.\r\n \r\n\u2022 <b>Controlla
+              l'aula</b>: se \xE8 vuota, esci rapidamente e chiudi la porta per rallentare
+              la diffusione di fumo e fiamme.\r\n\u2022 <b>Accompagna chi non ha
+              evacuato</b> verso l'uscita pi\xF9 vicina con passo rapido ma controllato.
+              Le persone con disabilit\xE0 potrebbero aver bisogno di <b>aiuto aggiuntivo</b>.\r\n\u2022
+              <b>Estingui i fuochi controllabili</b> usando l'estintore adeguato
+              per liberare il percorso di evacuazione."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          - Perlustra tutta la scuola e chiudi le porte
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: 'Capitolo 5: Segnalazione assenti'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Una volta evacuati, <b>parla subito con gli insegnanti</b>. Fornisci
+              informazioni sul numero di studenti e <b>segnala eventuali dispersi
+              o assenti</b>. Una comunicazione rapida permette di organizzare i <b>soccorsi</b>
+              nel minor tempo possibile.
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: 'Imprevisto: Fuoco controllabile'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Il fuoco blocca il percorso ma \xE8 gestibile: usa l'<b>estintore</b>.
+              Segui questi passaggi nell'ordine corretto per spegnerlo in modo efficace
+              e proseguire con l'evacuazione.\r\n \r\n1. <b>Rimuovi la chiave di
+              sicurezza</b>: finch\xE9 rimane inserita il dispositivo \xE8 bloccato
+              e non eroga alcun getto.\r\n2. <b>Punta l'ugello alla base delle fiamme</b>:
+              se il fuoco \xE8 su un liquido infiammabile, tieni il flusso parallelo
+              alla superficie per evitare di propagare le fiamme.\r\n3. <b>Premi
+              il trigger e mantieni il flusso</b> finch\xE9 il fuoco non \xE8 completamente
+              estinto. Rilasciare troppo presto rischia di far riprendere le fiamme."
+          StepForCompletition:
+          - Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      riflessivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: 'Capitolo 1: Segnalazione incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Quando si verifica un incendio, la prima priorit\xE0 \xE8 <b>segnalarlo</b>:
+              il personale scolastico, gli altri occupanti e i soccorritori esterni
+              devono essere avvisati il prima possibile. Senza una segnalazione tempestiva,
+              i <b>protocolli di emergenza</b> non possono attivarsi e le persone
+              rimangono esposte al pericolo senza saperlo."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: '1. <b>Avvisare il personale scolastico</b> utilizzando il telefono:
+              sono i responsabili della gestione dell''emergenza. Comunicare con
+              calma la posizione e l''estensione dell''incendio permette loro di
+              coordinare l''evacuazione in modo efficace.'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: '2. <b>Attivare l''allarme antincendio</b>: raggiunge simultaneamente
+              tutte le persone nell''edificio, anche quelle lontane dall''incendio.
+              Gli allarmi sono posizionati nei corridoi vicino alle uscite per essere
+              accessibili rapidamente.'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "3. <b>Chiamare i Vigili del Fuoco al 115</b>: fornire informazioni
+              precise consente ai soccorritori di prepararsi gi\xE0 durante il tragitto,
+              riducendo i tempi di intervento."
+          StepForCompletition:
+          - Grab telefono
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "Capitolo 2: Interruzione dell'elettricit\xE0 e del gas"
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di evacuare, \xE8 fondamentale <b>interrompere le fonti
+              di rischio</b>. Gas ed elettricit\xE0 possono alimentare e aggravare
+              un incendio in modo rapido e imprevedibile: eliminarle riduce significativamente
+              il pericolo per chi evacua e per i soccorritori."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "1. <b>Interrompere l'elettricit\xE0</b>: i cortocircuiti possono
+              innescare nuovi focolai e rendere pericoloso il contatto con oggetti
+              normalmente sicuri. Sollevare gli interruttori elettrici elimina questa
+              fonte di rischio immediatamente."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "2. <b>Interrompere il gas</b>: il gas \xE8 altamente infiammabile
+              e pu\xF2 causare esplosioni se raggiunge temperature critiche. Girare
+              la manopola del gas prima di lasciare l'area impedisce che le fiamme
+              trovino nuovo combustibile."
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Disattiva il gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: 'Capitolo 3: IIsolamento incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Entrare nella stanza e valutare le dimensioni dell'incendio \xE8
+              il primo passo per decidere come agire. Non tutti gli incendi si affrontano
+              allo stesso modo: un fuoco gestibile richiede un intervento diretto,
+              uno troppo grande richiede invece di <b>evacuare immediatamente</b>
+              e mettere in sicurezza il percorso per gli altri."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "1. <b>Valutare le dimensioni dell'incendio</b>: tentare di spegnere
+              un fuoco troppo grande \xE8 pericoloso. Le fiamme consumano ossigeno
+              rapidamente e producono fumo tossico che pu\xF2 causare perdita di
+              conoscenza in pochi minuti. Se l'incendio non \xE8 gestibile, uscire
+              subito \xE8 la scelta pi\xF9 sicura."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: '2. <b>Chiudere la porta</b>: priva il fuoco del flusso d''aria
+              necessario ad alimentarsi e crea una barriera fisica che rallenta la
+              propagazione di fumo e fiamme verso corridoi e altre stanze, guadagnando
+              tempo prezioso per l''evacuazione.'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "3. <b>Tappare le fessure della porta</b>: il fumo \xE8 spesso
+              pi\xF9 pericoloso delle fiamme stesse. Posizionare tessuti lungo i
+              bordi inferiori e laterali della porta riduce significativamente la
+              quantit\xE0 di gas tossici che si diffondono nelle aree adiacenti,
+              proteggendo chi sta ancora evacuando."
+          StepForCompletition:
+          - Istruzioni isola Incendio
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: 'Capitolo 4: Giro di Perlustrazione'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Fare il giro delle aule \xE8 una procedura fondamentale per garantire
+              che nessuno rimanga intrappolato nell'edificio. Chi \xE8 rimasto indietro
+              potrebbe essere disorientato, in preda al panico o impossibilitato
+              a muoversi autonomamente: una verifica sistematica riduce il rischio
+              di lasciare qualcuno in pericolo."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "1. <b>Controllare ogni aula</b>: se la stanza \xE8 vuota, uscire
+              e chiudere la porta dietro di s\xE9. Una porta chiusa rallenta la propagazione
+              di fumo e fiamme verso le aree adiacenti, proteggendo i percorsi di
+              evacuazione ancora in uso."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "2. <b>Accompagnare chi non ha evacuato</b>: guidare fisicamente
+              una persona \xE8 pi\xF9 efficace che indicarle semplicemente la direzione,
+              specialmente in situazioni di stress. Mantenere un passo rapido ma
+              controllato riduce il rischio di cadute. Le persone con <b>disabilit\xE0</b>
+              potrebbero necessitare di supporto aggiuntivo: valuta la situazione
+              e chiedi aiuto se necessario."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "3. <b>Estinguere i fuochi controllabili</b>: se si incontrano
+              fuochi di dimensioni contenute, intervenire con l'<b>estintore adeguato</b>
+              libera il percorso di evacuazione per tutti. \xC8 importante usare
+              il tipo di estintore corretto in base alla natura del fuoco."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          - Perlustra tutta la scuola e chiudi le porte
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: 'Capitolo 5: Segnalazione assenti'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Perch\xE9 \xE8 importante confrontarsi con gli insegnanti dopo
+              l'evacuazione? Gli insegnanti sono i responsabili del <b>controllo
+              delle presenze</b> e hanno gli strumenti per verificare chi manca all'appello.
+              Segnalare un <b>disperso o un assente</b> tempestivamente consente
+              ai soccorritori di sapere se \xE8 necessario rientrare nell'edificio
+              per una ricerca, riducendo il rischio di lasciare qualcuno in pericolo.
+              Ogni informazione utile, anche parziale, contribuisce a rendere le
+              operazioni di <b>messa in sicurezza</b> pi\xF9 efficaci e coordinate."
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: 'Imprevisto: Fuoco controllabile'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Quando il fuoco blocca il percorso ma \xE8 di dimensioni contenute,
+              usare l'<b>estintore</b> \xE8 la scelta giusta. Ogni aula ne \xE8 dotata.
+              Conoscere la procedura corretta \xE8 fondamentale: un utilizzo sbagliato
+              pu\xF2 essere inefficace o addirittura peggiorare la situazione."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "1. <b>Rimuovere la chiave di sicurezza</b>: \xE8 un dispositivo
+              che impedisce l'attivazione accidentale durante il trasporto. In emergenza
+              \xE8 il primo gesto da compiere: finch\xE9 rimane inserita, premere
+              la leva non produce alcun effetto."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "2. <b>Puntare l'ugello alla base delle fiamme</b>: il getto deve
+              colpire la fonte di combustione, non le fiamme stesse. Nel caso di
+              incendi su liquidi infiammabili, un getto perpendicolare pu\xF2 schizzare
+              il liquido acceso in altre direzioni, allargando l'incendio. Mantenere
+              il flusso parallelo alla superficie evita questo rischio."
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "3. <b>Mantenere il flusso costante fino alla completa estinzione</b>:
+              interrompere il getto prematuramente \xE8 uno degli errori pi\xF9 comuni.
+              Il fuoco pu\xF2 sembrare spento in superficie ma mantenere ancora una
+              fonte di calore sufficiente a riprendere. Continuare fino alla completa
+              estinzione garantisce che non rimangano focolai nascosti pronti a riattivarsi."
+          StepForCompletition:
+          - Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
     visualPath:
       attivo: []
       riflessivo: []
