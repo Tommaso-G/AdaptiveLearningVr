@@ -103,6 +103,10 @@ public class FeedbackDisplayer : MonoBehaviour
             {
                 GameObject customInstance = Instantiate(feedback.PersonalizedPrefab, position.position, position.rotation);
                 customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
+
+                var ctrl = customInstance.GetComponent<FeedbackPrefabController>();
+                if (ctrl != null) ctrl.needsButtonToBeCompleted = feedback.needsButtonToBeCompleted;
+
                 holder.activeFeedbackInstance = customInstance;
                 return;
             }
@@ -157,6 +161,9 @@ public class FeedbackDisplayer : MonoBehaviour
                 containerInstance.name = $"Feedback_Multiple_{feedback.FeedbackName}";
                 FillMultipleContainer(feedback, containerInstance);
             }
+
+            var containerCtrl = containerInstance.GetComponent<FeedbackPrefabController>();
+            if (containerCtrl != null) containerCtrl.needsButtonToBeCompleted = feedback.needsButtonToBeCompleted;
 
             holder.activeFeedbackInstance = containerInstance;
         }

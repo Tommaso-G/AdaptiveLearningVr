@@ -88,6 +88,9 @@ public class FeedbackRepository : ScriptableObject
 
         [Header("Prefab Personalizzato, se inserito tutto il resto viene ignorato")]
         public GameObject PersonalizedPrefab;
+
+        [Header("Se è true, il feedback ha un bottone che va premnuto per proseguire")]
+        public bool needsButtonToBeCompleted = false;
     }
 
     [Serializable]
@@ -132,14 +135,14 @@ public class FeedbackRepository : ScriptableObject
     {
         var (attivoRiflessivo, _, visivoVerbale, sequenzialeGlobale) = profileTuple;
 
-        // 1️⃣ Selezione del percorso principale (Globale o Sequenziale)
+        // Selezione del percorso principale (Globale o Sequenziale)
         PathGroup branch = (sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale)
             ? globalPath
             : sequentialPath;
 
         List<Chapter> chapters = null;
 
-        // 2️⃣ Selezione ramo Visivo/Verbale e Attivo/Riflessivo
+        // Selezione ramo Visivo/Verbale e Attivo/Riflessivo
         if (visivoVerbale == LearningEnums.VisivoVerbale.Visivo)
         {
             chapters = (attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo)
@@ -159,7 +162,7 @@ public class FeedbackRepository : ScriptableObject
             return null;
         }
 
-        // 3️⃣ Ricerca del capitolo per nome (case-insensitive)
+        // Ricerca del capitolo per nome (case-insensitive)
         Chapter chapter = chapters
             .FirstOrDefault(c => string.Equals(c.ChapterName, chapterName, StringComparison.OrdinalIgnoreCase));
 
@@ -175,7 +178,7 @@ public class FeedbackRepository : ScriptableObject
             return null;
         }
 
-        // 4️⃣ Cerca il feedback associato allo step specificato
+        //Cerca il feedback associato allo step specificato
         FeedbackData feedback = chapter.feedbacks
             .FirstOrDefault(f => f.StepForCompletition.Contains(stepName));
 
@@ -199,16 +202,16 @@ public class FeedbackRepository : ScriptableObject
     {
         var allFeedbacks = new List<FeedbackData>();
 
-        // 1️⃣ Seleziona subito il percorso (Globale o Sequenziale)
+        // Seleziona subito il percorso (Globale o Sequenziale)
         PathGroup pathGroup = profileTuple.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale
             ? globalPath
             : sequentialPath;
 
-        // 2️⃣ Seleziona la modalità Visuale o Verbale
+        // Seleziona la modalità Visuale o Verbale
         bool isVisual = profileTuple.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
         bool isActive = profileTuple.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
 
-        // 3️⃣ Naviga direttamente nel ramo corretto
+        // Naviga direttamente nel ramo corretto
         if (isVisual)
         {
             if (isActive)
@@ -384,14 +387,14 @@ public class FeedbackRepository : ScriptableObject
             return null;
         }
 
-        // 1️⃣ Controlla Behavior
+        // Controlla Behavior
         foreach (var behavior in step.Data.Behaviors.Data.Behaviors)
         {
             var go = CheckProperties(behavior.Data, $"behavior '{behavior.Data.GetType().Name}'");
             if (go != null) return go;
         }
 
-        // 2️⃣ Controlla Conditions
+        // Controlla Conditions
         foreach (var transition in step.Data.Transitions.Data.Transitions)
         {
             foreach (var condition in transition.Data.Conditions)
