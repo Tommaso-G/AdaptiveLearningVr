@@ -89,6 +89,7 @@ public class PersistentErrorLog : MonoBehaviour
             if (textPanelOnStart != null && !string.IsNullOrEmpty(_savedText))
                 textPanelOnStart.text = _savedText;
         }
+
     }
 
     /// <summary>

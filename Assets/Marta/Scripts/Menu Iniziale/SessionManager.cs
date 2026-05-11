@@ -32,6 +32,7 @@ public class SessionManager : MonoBehaviour
     {
         Debug.Log("[SessionManager] Avvio nuova sessione");
         SessionPersistence.Clear();
+        SessionPersistence.SetResetAll(true);
         _isNewSession = true;
         LoadGameScene();
     }
@@ -45,6 +46,7 @@ public class SessionManager : MonoBehaviour
         }
 
         Debug.Log("[SessionManager] Continuazione sessione");
+        SessionPersistence.SetResetAll(false);
         _activeSessionId = SessionPersistence.Load();
         _isNewSession = false;
         LoadGameScene();

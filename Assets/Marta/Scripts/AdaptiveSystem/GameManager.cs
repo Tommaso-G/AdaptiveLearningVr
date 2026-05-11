@@ -238,6 +238,7 @@ public class GameManager : MonoBehaviour
                    allChapters.ToArray(),
                    false
                );
+                done = true;
             }
         );
         yield return new WaitUntil(() => done);
@@ -289,26 +290,14 @@ public class GameManager : MonoBehaviour
                         Debug.LogWarning(
                             $"[GameManager] ⚠️ Iterazione INCOMPLETA! " +
                             $"Mancanti: {string.Join(", ", result.incomplete_chapters)}"
+
                         );
+                        // Torna al menu dopo iterazione incompleta
+                        SessionManager.Instance.BackToMenu();
                     }
                 }
             )
         );
-        //ReloadSceneForNextIteration();
-    }
-
-    /// <summary>
-    /// Ricarica la scena al termine di un'iterazione.
-    /// Chiamato da FlowManager quando tutti i capitoli attivi sono completati.
-    /// </summary>
-    public void ReloadSceneForNextIteration()
-    {
-        // Lo stato è già salvato sul server Python.
-        // Basta ricaricare la scena: GameManager.Start()
-        // troverà la sessione salvata e recupererà lo stato aggiornato.
-        Debug.Log("[GameManager] Ricaricare la scena per l'iterazione successiva...");
-        //SessionPersistence.SetResetAll(false);
-        SceneManager.LoadScene(gameSceneName);
     }
 
     public void HandleDecision(DecisionResponse decision)
@@ -355,6 +344,7 @@ public class GameManager : MonoBehaviour
 
     private void SaveActiveChapters(string[] response)
     {
+        active_chapters.Clear();
 
         string message = "[GameManager] Capitoli attivi all'INIZIO dell'iterazione: \n";
         foreach (var chapter in response)
@@ -375,11 +365,11 @@ public class GameManager : MonoBehaviour
         }
 
         // ===== NUOVO: ESC per tornare al menu =====
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            Debug.Log("[GameManager] SPACE: Ritorno al menu");
-            SessionManager.Instance.BackToMenu();
-        }
+        //if (Input.GetKeyUp(KeyCode.Space))
+        //{
+        //    Debug.Log("[GameManager] SPACE: Ritorno al menu");
+        //    SessionManager.Instance.BackToMenu();
+        //}
     }
 
     private void AddOptionalChapter(List<string> chapterToAdd)
@@ -406,6 +396,7 @@ public class GameManager : MonoBehaviour
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
         AdaptiveSystemClient.OnDecisionReceived -= HandleDecision;
         chapterTracker.ObservationDataReady -= SendObservation;
+        AdaptiveSystemClient.OnSessionStarted -= SaveActiveChapters;
 
         //if (endIterationButton != null)
         //{

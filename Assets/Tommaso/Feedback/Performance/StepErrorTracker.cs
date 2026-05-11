@@ -84,6 +84,12 @@ public class StepErrorTracker : MonoBehaviour
 
         // Notifica il log persistente del profilo corrente
         // (gestisce reset automatico se il profilo è cambiato)
+        if (SessionPersistence.GetResetAll())
+        {
+            if (errorLog != null)
+                errorLog.resetOnNext = true;
+        }
+
         string currentProfile = IsSequenziale() ? "Sequenziale" : "Globale";
         errorLog?.InitSession(currentProfile);
     }

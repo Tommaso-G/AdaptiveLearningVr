@@ -117,8 +117,8 @@ public class EditProcess : MonoBehaviour
 
     public IEnumerator skipCurrentCoroutine()
     {
-        while (process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Active &&
-       process.Data.Current.Data.Current.LifeCycle.Stage != Stage.Activating)
+        while (process?.Data.Current?.Data.Current?.LifeCycle.Stage != Stage.Active &&
+       process?.Data.Current?.Data.Current?.LifeCycle.Stage != Stage.Activating)
         {
             yield return null;
         }
