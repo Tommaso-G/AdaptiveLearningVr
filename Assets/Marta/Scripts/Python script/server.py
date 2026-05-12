@@ -123,6 +123,7 @@ def start_session(request: StartSessionRequest):
                 is_mandatory=c["is_mandatory"],
                 weight=c.get("weight", 1.0),
                 max_iterations=c.get("max_iterations", 5),
+                has_difficulty_level=c.get("has_difficulty_level"),
                 max_possible_errors=c.get("max_errors"),
                 min_expected_time_sec=c.get("min_time_sec"),
                 max_expected_time_sec=c.get("max_time_sec")

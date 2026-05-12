@@ -284,8 +284,31 @@ class AdaptiveSessionManager:
         Returns:
             Dict con risultato
         """
-        
+        print(f"[SESSION] end_iteration chiamato. current_iter={self.current_iteration_number}, "
+        f"iterations_keys={list(self.iterations.keys())}, "
+        f"active_chapters={active_chapters}")
+
+        # Guard: se l'iterazione corrente non esiste, è già stata chiusa
+        if self.current_iteration_number not in self.iterations:
+            print(f"[SESSION] WARN: end_iteration chiamato ma iterazione "
+                f"{self.current_iteration_number} non esiste. Ignorato.")
+            return {
+                "status": "already_ended",
+                "iteration_number": self.last_complete_iteration,
+                "next_iteration": self.current_iteration_number,
+                "incomplete_chapters": [],
+            }
+
+        # Guard: se già completata, non processare di nuovo
         current_iter = self.iterations[self.current_iteration_number]
+        if current_iter.state == IterationState.COMPLETE:
+            print(f"[SESSION] WARN: end_iteration chiamato su iterazione già COMPLETE. Ignorato.")
+            return {
+                "status": "already_ended",
+                "iteration_number": self.last_complete_iteration,
+                "next_iteration": self.current_iteration_number,
+                "incomplete_chapters": [],
+            }
         
         # Controlla completamento
         if current_iter.is_complete(active_chapters):

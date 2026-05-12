@@ -8,6 +8,7 @@ using System.Linq;
 using VRBuilder.Core.Behaviors;
 using UnityEngine.UI;
 using static UnityEngine.XR.OpenXR.Features.Interactions.HandInteractionProfile;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string gameSceneName = "ScenaUfficiale";
     [SerializeField] private ChaptersOrderManager chaptersOrderMgr = null;
     [SerializeField] private ChapterTracker chapterTracker = null;
+    [SerializeField] private StepErrorTracker stepErrorTracker;
     [SerializeField] private FeedbackChapterFilter feedbackChapterFilter = null;
     [SerializeField] private DifficultyChapterFilter difficultyChapterFilter = null;
 
@@ -38,6 +40,15 @@ public class GameManager : MonoBehaviour
     private List<string> active_chapters = new List<string>();
     private bool _endIterationPending = false;
 
+    private class ChapterRuntimeData
+    {
+        public string chapterId;
+        public string chapterName;
+        public float time;
+        public List<StepError> errors = new();
+    }
+
+    private Dictionary<string, ChapterRuntimeData> chapterData = new();
 
     private void Start()
     {
@@ -45,6 +56,7 @@ public class GameManager : MonoBehaviour
         chapterTracker = FindFirstObjectByType<ChapterTracker>();
         feedbackChapterFilter = FindFirstObjectByType<FeedbackChapterFilter>();
         difficultyChapterFilter = FindFirstObjectByType<DifficultyChapterFilter>();
+        stepErrorTracker = FindFirstObjectByType<StepErrorTracker>();   
 
         AdaptiveSystemClient.OnDecisionReceived += HandleDecision;
         AdaptiveSystemClient.OnSessionStarted += SaveActiveChapters;
@@ -244,6 +256,49 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => done);
     }
 
+    private string BuildIterationJson()
+    {
+        SessionJson session = new SessionJson();
+
+        session.session_id = SessionManager.Instance.GetActiveSessionId();
+        session.iteration = currentIterationNumber;
+
+        foreach (var kvp in chapterData) // tuo contenitore tempo+info capitolo
+        {
+            var data = kvp.Value;
+
+            var errorData = stepErrorTracker.ChapterErrors.TryGetValue(
+                data.chapterName,
+                out var chapterErrorData
+            );
+
+            ChapterJson chapterJson = new ChapterJson
+            {
+                chapter_id = data.chapterId,
+                chapter_name = data.chapterName,
+                time_seconds = data.time,
+                errors = chapterErrorData != null
+                        ? chapterErrorData.errors
+                        : new List<StepError>()
+            };
+
+            session.chapters.Add(chapterJson);
+        }
+
+        return JsonUtility.ToJson(session, true);
+    }
+
+    private void SaveIterationJsonToFile(string json)
+    {
+        string dir = Path.Combine(Application.persistentDataPath, "Sessions", AdaptiveSystemClient.Instance.GetSessionId());
+        Directory.CreateDirectory(dir);
+
+        string path = Path.Combine(dir, $"iter_{currentIterationNumber}.json");
+
+        File.WriteAllText(path, json);
+
+        Debug.Log("[GameManager] Salvato in: " + path);
+    }
     private void OnEndIterationButtonPressed()
     {
         Debug.Log("[GameManager] Bottone End Iteration premuto");
@@ -269,6 +324,8 @@ public class GameManager : MonoBehaviour
     // ===== NUOVO: Chiama il server per marcare fine iterazione =====
     private IEnumerator EndIterationCoroutine(List<string> activeChapters)
     {
+        string json = BuildIterationJson();
+        SaveIterationJsonToFile(json);
         yield return StartCoroutine(
             AdaptiveSystemClient.Instance.EndIteration(
                 activeChapters.ToArray(),
@@ -383,6 +440,17 @@ public class GameManager : MonoBehaviour
 
     private void SendObservation(string chapter_id, string chapter_name, int errors, float time)
     {
+        if (!chapterData.ContainsKey(chapter_id))
+        {
+            chapterData[chapter_id] = new ChapterRuntimeData
+            {
+                chapterId = chapter_id,
+                chapterName = chapter_name
+            };
+        }
+
+        chapterData[chapter_id].time = time;
+
         // Invia al sistema adattivo e gestisci la risposta
         AdaptiveSystemClient.Instance.SendObservation(
             chapterId: chapter_id,

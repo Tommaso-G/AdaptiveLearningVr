@@ -104,6 +104,8 @@ class ChapterConfig:
     cpt_time: Optional[List[List[float]]] = None
     # Numero massimo di iterazioni prima di passare oltre
     max_iterations: int = 5
+    # False se non ha livelli di difficoltà
+    has_difficulty_level: bool = False
 
     # parametri per il normalizzatore
     max_possible_errors: Optional[int] = None
@@ -362,7 +364,7 @@ class AdaptiveDecision:
 
 class AdaptiveTrainingManager:
     # parametri per early remove dei capitoli opzionali:
-    EARLY_REMOVE_MIN_FRACTION_COMPLETED = 0.2  # almeno 40% completati (ho abbastanza dati da analizzare)
+    EARLY_REMOVE_MIN_FRACTION_COMPLETED = 0.5  # almeno 40% completati (ho abbastanza dati da analizzare)
     EARLY_REMOVE_STRUGGLE_FRACTION      = 0.5 # più del 50% in difficoltà
 
     # Configurazioni delle fasi
@@ -379,7 +381,7 @@ class AdaptiveTrainingManager:
             iteration_count = 1,
             feedback_strategy="dynamic",
             allow_optional=True,
-            alpha = 0.5 # le osservazioni influnzano al 50% le nuove prior
+            alpha = 0.3 # le osservazioni influnzano al 50% le nuove prior
         ),
         TrainingPhase.AUTOMATION: PhaseConfig(
             phase=TrainingPhase.AUTOMATION,
@@ -400,7 +402,7 @@ class AdaptiveTrainingManager:
     ),
     InitialActivationPolicy.INTERMEDIATE: InitialProfileConfig(
         name=InitialActivationPolicy.INTERMEDIATE,
-        optional_to_activate=1,
+        optional_to_activate=3,
         starting_phase=TrainingPhase.AUTOMATION,
         description="Alcuni opzionali attivi, ma fase ancora guidata"
     ),
@@ -568,28 +570,16 @@ class AdaptiveTrainingManager:
         # Dalle iterazioni successive usa la posterior precedente come
         # nuova prior, implementando l'aggiornamento sequenziale.
 
-        prior = state.skill_posterior if state.iteration_count > 0 else None
-        new_posterior = bn.infer_skill(
-            error_bin, time_bin, prior_override=prior
-        )
+        # Smoothing della prior verso la distribuzione originale
+        beta = self.PHASE_CONFIGS[self.current_phase].alpha  # riusi alpha come parametro
+        original_prior = PRIOR_SKILL
+        prev = state.skill_posterior
 
-        # Aggiorna lo stato del capitolo
+        # La prior iniettata è una versione attenuata della posterior precedente
+        smoothed_prior = [beta * prev[i] + (1 - beta) * original_prior[i] for i in range(3)]
 
-        alpha = self.PHASE_CONFIGS[self.current_phase].alpha
-            
-        if prior is not None:
-            weighted_posterior = [
-                alpha * new_posterior[i] + (1 - alpha) * prior[i]
-                for i in range(len(new_posterior))
-            ]
-        else:
-            weighted_posterior = [
-                alpha * new_posterior[i] + (1 - alpha) * PRIOR_SKILL[i]
-                for i in range(len(new_posterior))
-            ]
-
-        new_posterior = weighted_posterior
-
+        # La BN usa la prior attenuata, nessun blending dopo
+        new_posterior = bn.infer_skill(error_bin, time_bin, prior_override=smoothed_prior)
         state.skill_posterior = new_posterior
         state.observations.append((errors, time_sec))
         state.iteration_count += 1
@@ -746,7 +736,7 @@ class AdaptiveTrainingManager:
             new_posterior[SkillLevel.EXPERT.value]
             > AdaptiveDecisionEngine.MASTERY_THRESHOLD
         )
-        if chapter_mastered and chapter_id in self.optional_ids and self.chapter_states[chapter_id].difficulty_version == 0:
+        if chapter_mastered and chapter_id and self.configs[chapter_id].has_difficulty_level and self.chapter_states[chapter_id].difficulty_version == 0:
             self.chapter_states[chapter_id].optional_status = OptionalStatus.MASTERED
             self.chapter_states[chapter_id].difficulty_version = 1
             new_difficulty = 1
