@@ -177,8 +177,8 @@ public class StepErrorTracker : MonoBehaviour
         // errorLog persistente: diviso in Step dimenticati ed Errori commessi
         var sb = new System.Text.StringBuilder();
 
-        var stepDimenticati = new List<string>();
-        var erroriCommessi = new List<string>();
+        var stepDimenticati = new Dictionary<string, int>();
+        var erroriCommessi = new Dictionary<string, int>();
 
         foreach (var kvp in chapterErrors)
         {
@@ -188,17 +188,32 @@ public class StepErrorTracker : MonoBehaviour
                     string.Equals(c.interactedObjectName, error.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
 
                 if (custom != null)
-                    erroriCommessi.Add(custom.customMessage);
+                {
+                    if (!erroriCommessi.ContainsKey(custom.customMessage))
+                        erroriCommessi[custom.customMessage] = 0;
+
+                    erroriCommessi[custom.customMessage]++;
+                }
                 else
-                    stepDimenticati.Add(error.missedStepName);
+                {
+                    if (!stepDimenticati.ContainsKey(error.missedStepName))
+                        stepDimenticati[error.missedStepName] = 0;
+
+                    stepDimenticati[error.missedStepName]++;
+                }
             }
         }
 
         sb.AppendLine("Step dimenticati");
         sb.AppendLine("─────────────────");
         if (stepDimenticati.Count > 0)
-            foreach (var s in stepDimenticati)
-                sb.AppendLine($"• {s}");
+            foreach (var kvp in stepDimenticati)
+            {
+                string label = kvp.Value > 1
+                    ? $"• {kvp.Key} (x{kvp.Value})"
+                    : $"• {kvp.Key}";
+                sb.AppendLine(label);
+            }
         else
             sb.AppendLine("Nessuno");
 
@@ -206,8 +221,13 @@ public class StepErrorTracker : MonoBehaviour
         sb.AppendLine("Errori commessi");
         sb.AppendLine("─────────────────");
         if (erroriCommessi.Count > 0)
-            foreach (var e in erroriCommessi)
-                sb.AppendLine($"• {e}");
+            foreach (var kvp in erroriCommessi)
+            {
+                string label = kvp.Value > 1
+                    ? $"• {kvp.Key} (x{kvp.Value})"
+                    : $"• {kvp.Key}";
+                sb.AppendLine(label);
+            }
         else
             sb.AppendLine("Nessuno");
 

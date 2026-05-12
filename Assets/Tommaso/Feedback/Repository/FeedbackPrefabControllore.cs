@@ -51,10 +51,12 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private void Start()
     {
-
-        if(needsButtonToBeCompleted)
-            buttonsToClickCanvas.SetActive(true);
-        else buttonsToClickCanvas.SetActive(false);
+        if (buttonsToClickCanvas != null)
+        {
+            if (needsButtonToBeCompleted)
+                buttonsToClickCanvas.SetActive(true);
+            else buttonsToClickCanvas.SetActive(false);
+        }
         
         //HandleConditionalCanvas();
 

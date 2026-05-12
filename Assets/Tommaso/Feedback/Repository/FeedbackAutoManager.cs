@@ -225,7 +225,6 @@ public class FeedbackAutoManager : MonoBehaviour
             Debug.Log($"[FeedbackAutoManager] Feedback disabilitato per '{chapterName}'.");
             return;
         }
-        Debug.Log($"[FeedbackAutoManager] Feedback abilitato per il capitolo '{chapterName}': {chapterFilter.IsFeedbackAllowed(chapterName)}.");
         string stepName = step.Data.Name;
         string firstStep = feedback.StepForCompletition.FirstOrDefault();
         if (stepName != firstStep) return;
