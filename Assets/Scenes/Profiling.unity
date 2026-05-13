@@ -19350,6 +19350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1691728863}
+  - component: {fileID: 1691728864}
   m_Layer: 0
   m_Name: Oggetti Sequenza
   m_TagString: Untagged
@@ -19381,6 +19382,31 @@ Transform:
   - {fileID: 1387916457}
   m_Father: {fileID: 2143730116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1691728864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691728862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488838c6bf9ef414db718dd7d30f1287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToTrack:
+  - {fileID: 186090700}
+  - {fileID: 2096581839}
+  - {fileID: 242892773}
+  - {fileID: 669908786}
+  - {fileID: 385032155}
+  - {fileID: 1387916456}
+  - {fileID: 1387916456}
+  - {fileID: 1616991134}
+  - {fileID: 1177572179}
+  - {fileID: 778036425}
+  targetCollider: {fileID: 1937152389}
+  returnSpeed: 2
 --- !u!1001 &1694697015
 PrefabInstance:
   m_ObjectHideFlags: 0
