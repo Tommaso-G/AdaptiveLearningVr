@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using static VisivoVerbaleStatManager;
 
+//:/Users/lab2a/AppData/LocalLow/DefaultCompany/Adaptive Learning Vr - School Evacuation\Tommaso\Profilazione\Dati
 public class CentralStatsRecorder : MonoBehaviour
 {
 
@@ -215,7 +216,7 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
         
-        string filePath = System.IO.Path.Combine(folderPath, "AlessandroProfileSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, "guguProfileSessionData.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {filePath}");
     }
@@ -309,7 +310,7 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
 
-        string filePath = System.IO.Path.Combine(folderPath, "AlessandroFeedbacksSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, "guguFeedbacksSessionData.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {filePath}");
     }

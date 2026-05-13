@@ -24,17 +24,22 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Questa che stai leggendo \xE8 una delle tante diapositive che ti guider\xE0
-          per tutta l'applicazione.\n\nLe diapositive contengono informazioni utili
-          su come agire in un determinato momento. \n\nSe ti allontani da una diapositiva,
-          questa verr\xE0 ridotta ad icona. Puoi seguire le icone per capire dove
-          devi andare. Per muoverti nello spazio, utilizza le levette dei controller.\n\nProva
-          ad allontanarti dalla diapositiva."
+        text: "Ciao viaggiatore. Questa che stai leggendo \xE8 una delle tante diapositive
+          che ti guider\xE0 durante l'applicazione.\n\nLe diapositive contengono
+          informazioni utili su come agire in un determinato momento. \n\nSe ti allontani
+          da una diapositiva, questa verr\xE0 ridotta ad icona. Puoi seguire le icone
+          per capire dove devi andare. \n\nUna volta completato uno step, sull'icona
+          comparir\xE0 un simbolo di \"check\"\n\nProva ad allontanarti dalla diapositiva
+          utilizzando la levetta di sinistra."
       StepForCompletition:
       - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+<<<<<<< Updated upstream
     - FeedbackName: 'Introduzione: pannelli 2D'
+=======
+    - FeedbackName: 'Introduzione: elementi 2d'
+>>>>>>> Stashed changes
       pages:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
@@ -45,11 +50,16 @@ MonoBehaviour:
           il pulsante mostrato in figura puntando nella direzione desiderata. \nPer
           alcuni elementi dovrai tenere premuto il pulsante per interagire correttamente.\n\nPer
           provare, scorri la barra presente sulla sinistra, ti permetter\xE0 di leggere
-          tutto il testo.\n\nBravo!"
+          tutto il testo.\n\nBravo!\n\nPer alcune diapositive dovrai anche cliccare
+          su \"Ho capito\" per mostrare che, appunto, hai capito. "
       StepForCompletition:
       - clicca sulal barra scorrevole
       PersonalizedPrefab: {fileID: 0}
+<<<<<<< Updated upstream
       needsButtonToBeCompleted: 0
+=======
+      needsButtonToBeCompleted: 1
+>>>>>>> Stashed changes
     - FeedbackName: 'Introduzione: la pagina STEPS'
       pages:
       - Sequenzale_Globale: 0
@@ -68,12 +78,25 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Fantastico! Non \xE8 da tutti cliccare cos\xEC bene un bottone. Sei
-          davvero portato!"
+        text: "<color=#888787><size=85%><b>Struttura della pagina STEPS</b></size></color>\n\n<b><size=90%><color=#67FFCA>1.</color></size></b>
+          Ogni sezione di questa pagina presenta un passaggio dell\u2019attivit\xE0
+          accompagnato da una breve descrizione esplicativa.\n\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Le istruzioni sono organizzate in ordine sequenziale per guidare l\u2019utente
+          passo dopo passo durante l\u2019esecuzione.\n\n<b><size=90%><color=#67FFCA>3.</color></size></b>
+          Gli elementi evidenziati, come pulsanti, oggetti o aree interattive, aiutano
+          a identificare rapidamente le azioni disponibili.\n\n<b><size=90%><color=#67FFCA>4.</color></size></b>
+          Alcuni step possono includere suggerimenti visivi o indicazioni aggiuntive
+          per facilitare l\u2019interazione.\n\n<b><size=90%><color=#67FFCA>5.</color></size></b>
+          L\u2019utente pu\xF2 procedere seguendo gli step nell\u2019ordine mostrato
+          fino al completamento dell\u2019attivit\xE0."
       StepForCompletition:
       - Clicca sulla seconda pagina
       PersonalizedPrefab: {fileID: 0}
+<<<<<<< Updated upstream
       needsButtonToBeCompleted: 0
+=======
+      needsButtonToBeCompleted: 1
+>>>>>>> Stashed changes
     - FeedbackName: 'Introduzione: la pagina OVERVIEW'
       pages:
       - Sequenzale_Globale: 0
@@ -81,16 +104,9 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: 'Tra le pagine presenti, quella che si chiama "OVERVIEW" ti da informazioni
-          generali sui task da svolgere.
-
-
-          Puoi navigare tra le pagine
-          nell''ordine che vuoi, quindi assicurati di guardare prima quella se vuoi
-          avere subito un quadro generale.
-
-
-          Apri la pagina "OVERVIEW".'
+        text: "Tra le pagine presenti, quella che si chiama \"OVERVIEW\" ti da informazioni
+          generali sui task da svolgere, contiene diverse sezioni con le informazioni
+          principali.\n \nApri la pagina \"OVERVIEW\" per vedere com'\xE8 strutturata."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -102,7 +118,14 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: Porca vacca ma cosa ti danno da mangiare?! Sei un fenomeno!
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Mostrare
+          in modo chiaro l\u2019obiettivo principale dell\u2019attivit\xE0 che l\u2019utente
+          dovr\xE0 completare.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Presentare le principali azioni disponibili durante l\u2019interazione\n\u2022
+          Guidare l\u2019utente nell\u2019utilizzo degli elementi presenti nella
+          scena\n\u2022 Descrivere le operazioni necessarie per completare l\u2019attivit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Eventuali suggerimenti o informazioni utili vengono mostrati in questa
+          sezione</size>"
       StepForCompletition:
       - Clicca su slide globale
       PersonalizedPrefab: {fileID: 0}
@@ -139,7 +162,11 @@ MonoBehaviour:
       - Guarda il video
       - Aspetta un attimo per il video
       PersonalizedPrefab: {fileID: 0}
+<<<<<<< Updated upstream
       needsButtonToBeCompleted: 0
+=======
+      needsButtonToBeCompleted: 1
+>>>>>>> Stashed changes
     - FeedbackName: 'Introduzione: gli oggetti'
       pages:
       - Sequenzale_Globale: 0
@@ -147,17 +174,12 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 21300000, guid: ce79b042749569346b9094d0c91b26b2, type: 3}
         video: {fileID: 0}
-        text: 'Bene, ora passiamo agli altri comandi. Per interagire con gli oggetti
+        text: "Bene, ora passiamo agli altri comandi. Per interagire con gli oggetti
           che troverai durante il tuo percorso puoi usare il tasto laterale mostrato
-          nell''immagine.
-
-
-          Afferra uno degli oggetti che vedi attorno
-          a te, puntando il controller o avvicinandolo all''oggetto desiderato.
-
-
-          Ricorda:
-          gli oggetti con cui dovrai interagire lampeggeranno al momento giusto!'
+          nell'immagine.\n\nAfferra uno degli oggetti che vedi attorno a te, puntando
+          il controller o avvicinandolo all'oggetto desiderato. Per girare la visuale
+          pi\xF9 comdamente puoi usare la levetta del controller di sinitra.\n\nRicorda:
+          gli oggetti con cui dovrai interagire lampeggeranno al momento giusto!"
       StepForCompletition:
       - Grab Oggetti
       PersonalizedPrefab: {fileID: 0}
