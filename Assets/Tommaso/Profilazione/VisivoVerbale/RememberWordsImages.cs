@@ -255,14 +255,23 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
 
     private IEnumerator OnRoundComplete()
     {
-        OnRoundFinished?.Invoke(new RoundData
+        bool isPracticeRound = roundsPerMode > 1 && currentRound <= 2;
+
+        if (!isPracticeRound)
         {
-            gameID = GameID,
-            modalita = useWords ? ModalitaGioco.Verbale : ModalitaGioco.Visivo,
-            numeroRound = currentRound,
-            errori = errori,
-            tempoSecondi = Time.time - tempoStart
-        });
+            OnRoundFinished?.Invoke(new RoundData
+            {
+                gameID = GameID,
+                modalita = useWords ? ModalitaGioco.Verbale : ModalitaGioco.Visivo,
+                numeroRound = currentRound,
+                errori = errori,
+                tempoSecondi = Time.time - tempoStart
+            });
+        }
+        else
+        {
+            Debug.Log($"ℹ️ Round {currentRound} di pratica — statistiche non registrate.");
+        }
 
         if (audioSource != null && suonoRoundCompletato != null)
         {
@@ -283,7 +292,6 @@ public class RememberWordsImages : MonoBehaviour, ICompletableStep, ITrackableGa
                     : 1f);
         }
     }
-
     private IEnumerator GreenThenDestroy(GameObject pulsante, Image img)
     {
         if (img != null) img.color = Color.green;

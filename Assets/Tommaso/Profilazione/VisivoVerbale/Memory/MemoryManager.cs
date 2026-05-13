@@ -278,18 +278,26 @@ public class MemoryManager : MonoBehaviour, ICompletableStep, ITrackableGameVisi
     {
         currentRound++;
 
-        OnRoundFinished?.Invoke(new RoundData
+        bool isPracticeRound = roundsPerMode > 1 && currentRound <= 2;
+
+        if (!isPracticeRound)
         {
-            gameID = GameID,
-            modalita = useImage ? ModalitaGioco.Visivo : ModalitaGioco.Verbale,
-            numeroRound = currentRound,
-            errori = errori,
-            tempoSecondi = Time.time - tempoStart
-        });
+            OnRoundFinished?.Invoke(new RoundData
+            {
+                gameID = GameID,
+                modalita = useImage ? ModalitaGioco.Visivo : ModalitaGioco.Verbale,
+                numeroRound = currentRound,
+                errori = errori,
+                tempoSecondi = Time.time - tempoStart
+            });
+        }
+        else
+        {
+            Debug.Log($"ℹ️ Round {currentRound} di pratica — statistiche non registrate.");
+        }
 
         if (currentRound >= totalRounds)
         {
-            // Tutti i round completati
             source.clip = victorySound;
             source.Play();
             Debug.Log("Tutti i round completati!");
@@ -297,7 +305,6 @@ public class MemoryManager : MonoBehaviour, ICompletableStep, ITrackableGameVisi
         }
         else
         {
-            // Suona la vittoria del round, poi passa al successivo
             source.clip = victorySound;
             source.Play();
 

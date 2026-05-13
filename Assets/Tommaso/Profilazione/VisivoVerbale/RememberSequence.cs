@@ -332,29 +332,38 @@ public class RememberSequence : MonoBehaviour, ICompletableStep, ITrackableGameV
                     _gazeCoroutine = null;
                 }
 
-                OnRoundFinished?.Invoke(
-                    new RoundData
-                    {
-                        gameID = GameID,
-                        modalita = usaImmagini
-                            ? ModalitaGioco.Visivo
-                            : ModalitaGioco.Verbale,
-                        numeroRound = currentRound,
-                        errori = errori,
-                        tempoSecondi = Time.time - tempoStart,
-                        parametriExtra = usaImmagini
-                            ? new Dictionary<string, float>
-                            {
-                                { "tempoGuardatoImmagini", tempoGuardatoImmagini },
-                                { "riapertureImmagini", _riapertureImmagini }
-                            }
-                            : new Dictionary<string, float>
-                            {
-                                { "tempoGuardatoTesti", tempoGuardatoTesti },
-                                { "riapertureTesti", _riapertureTesti }
-                            }
-                    }
-                );
+                bool isPracticeRound = roundsPerMode > 1 && currentRound < 2;
+
+                if (!isPracticeRound)
+                {
+                    OnRoundFinished?.Invoke(
+                        new RoundData
+                        {
+                            gameID = GameID,
+                            modalita = usaImmagini
+                                ? ModalitaGioco.Visivo
+                                : ModalitaGioco.Verbale,
+                            numeroRound = currentRound,
+                            errori = errori,
+                            tempoSecondi = Time.time - tempoStart,
+                            parametriExtra = usaImmagini
+                                ? new Dictionary<string, float>
+                                {
+                                    { "tempoGuardatoImmagini", tempoGuardatoImmagini },
+                                    { "riapertureImmagini", _riapertureImmagini }
+                                }
+                                : new Dictionary<string, float>
+                                {
+                                    { "tempoGuardatoTesti", tempoGuardatoTesti },
+                                    { "riapertureTesti", _riapertureTesti }
+                                }
+                        }
+                    );
+                }
+                else
+                {
+                    Debug.Log($"ℹ️ Round {currentRound + 1} di pratica — statistiche non registrate.");
+                }
 
                 if (audioSource != null && suonoRoundCompletato != null)
                 {

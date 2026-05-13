@@ -341,30 +341,49 @@ public class FeedbackDisplayer : MonoBehaviour
         Transform contentParent, Transform navPanel, Transform basePage, Transform baseNavItem,
         string feedbackName, bool useGlobalOverviewLabels = false, GameObject container = null)
     {
-        for (int i = 0; i < pages.Count; i++)
+        // Se stiamo usando il ProfilingFeedbackRepository, mescoliamo le pagine dalla seconda in poi
+        List<FeedbackRepository.FeedbackPage> orderedPages = new List<FeedbackRepository.FeedbackPage>(pages);
+
+        if (useGlobalOverviewLabels && orderedPages.Count > 1)
+        {
+            var intro = orderedPages[0];
+            var rest = orderedPages.Skip(1).ToList();
+
+            // Fisher-Yates shuffle
+            for (int n = rest.Count - 1; n > 0; n--)
+            {
+                int k = UnityEngine.Random.Range(0, n + 1);
+                (rest[k], rest[n]) = (rest[n], rest[k]);
+            }
+
+            orderedPages = new List<FeedbackRepository.FeedbackPage> { intro };
+            orderedPages.AddRange(rest);
+        }
+
+        for (int i = 0; i < orderedPages.Count; i++)
         {
             var (page, navItem) = (i == 0)
                 ? (basePage, baseNavItem)
                 : (UnityEngine.Object.Instantiate(basePage, contentParent),
-                   UnityEngine.Object.Instantiate(baseNavItem, navPanel));
+                UnityEngine.Object.Instantiate(baseNavItem, navPanel));
 
             page.name = $"Page {i + 1}";
             navItem.name = $"Nav Item Toggle {i + 1}";
 
-        var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
-        if (textComp != null)
-        {
-            if (i == 0)
-                textComp.text = useGlobalOverviewLabels ? "INTRO" : "Start";
-            else if (useGlobalOverviewLabels && pages[i].Visivo_Verbale == LearningEnums.VisivoVerbale.Visivo)
-                textComp.text = "VIDEO";
-            else if (useGlobalOverviewLabels && pages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
-                textComp.text = "OVERVIEW";
-            else
-                textComp.text = $"STEPS";
-        }
+            var textComp = navItem.GetComponentInChildren<TMPro.TMP_Text>();
+            if (textComp != null)
+            {
+                if (i == 0)
+                    textComp.text = useGlobalOverviewLabels ? "INTRO" : "Start";
+                else if (useGlobalOverviewLabels && orderedPages[i].Visivo_Verbale == LearningEnums.VisivoVerbale.Visivo)
+                    textComp.text = "VIDEO";
+                else if (useGlobalOverviewLabels && orderedPages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
+                    textComp.text = "OVERVIEW";
+                else
+                    textComp.text = $"STEPS";
+            }
 
-            SetupPageContent(pages[i], page, feedbackName, container);
+            SetupPageContent(orderedPages[i], page, feedbackName, container);
         }
     }
 

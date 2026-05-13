@@ -22,7 +22,9 @@ namespace UnityEngine.XR.Content.Interaction
 
         public CollisionEvent OnCollisionEnterEvent;
 
-
+        public GameObject BrokenVersion => m_BrokenVersion;
+        public bool IsDestroyed => m_Destroyed;
+        
         bool m_Destroyed = false;
 
         public BreakEvent onBreak => m_OnBreak;

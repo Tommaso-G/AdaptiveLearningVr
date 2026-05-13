@@ -33,6 +33,7 @@ MonoBehaviour:
       StepForCompletition:
       - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: 'Introduzione: pannelli 2D'
       pages:
       - Sequenzale_Globale: 0
@@ -48,6 +49,7 @@ MonoBehaviour:
       StepForCompletition:
       - clicca sulal barra scorrevole
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: 'Introduzione: la pagina STEPS'
       pages:
       - Sequenzale_Globale: 0
@@ -71,6 +73,7 @@ MonoBehaviour:
       StepForCompletition:
       - Clicca sulla seconda pagina
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: 'Introduzione: la pagina OVERVIEW'
       pages:
       - Sequenzale_Globale: 0
@@ -103,6 +106,7 @@ MonoBehaviour:
       StepForCompletition:
       - Clicca su slide globale
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 1
     - FeedbackName: 'Introduzione: la pagina VIDEO'
       pages:
       - Sequenzale_Globale: 0
@@ -135,6 +139,7 @@ MonoBehaviour:
       - Guarda il video
       - Aspetta un attimo per il video
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: 'Introduzione: gli oggetti'
       pages:
       - Sequenzale_Globale: 0
@@ -156,6 +161,7 @@ MonoBehaviour:
       StepForCompletition:
       - Grab Oggetti
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: Si parte!
       pages:
       - Sequenzale_Globale: 0
@@ -170,6 +176,7 @@ MonoBehaviour:
       StepForCompletition:
       - Premi il bottone per aprire la porta
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Cassaforte
     feedbacks:
     - FeedbackName: Apri la cassaforte
@@ -217,6 +224,7 @@ MonoBehaviour:
       - Apri la porta
       - Goditi il bottino
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Bloxorz
     feedbacks:
     - FeedbackName: Istruzioni Bloxorz
@@ -267,6 +275,7 @@ MonoBehaviour:
       - Prima mossa (bloxorz)
       - Gioca a bloxorz
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Sokoban
     feedbacks:
     - FeedbackName: Istruzione Sokoban
@@ -338,6 +347,7 @@ MonoBehaviour:
       - Prima mossa (sokoban)
       - Gioca a sokoban
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Scalak
     feedbacks:
     - FeedbackName: Istruzioni Scalak
@@ -408,6 +418,7 @@ MonoBehaviour:
       - Prima mossa (scalak)
       - Gioca a scalak
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Visivo-Verbale
     feedbacks:
     - FeedbackName: Ricorda la sequenza
@@ -461,6 +472,7 @@ MonoBehaviour:
       - inizia a giocare a ricordaInteractable
       - Ricorda gli interactable
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: Memory
       pages:
       - Sequenzale_Globale: 0
@@ -520,6 +532,7 @@ MonoBehaviour:
       - inizia a giocare a memory
       - Memory
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: Ricorda le parole e le immagini
       pages:
       - Sequenzale_Globale: 0
@@ -556,6 +569,7 @@ MonoBehaviour:
       - inizia a giocare a ricordaInParoleImmagini
       - Test parole
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
   - ChapterName: Sintetizzatore Chimerico
     feedbacks:
     - FeedbackName: Sintetizzatore Chimerico
@@ -614,6 +628,7 @@ MonoBehaviour:
       - Il bottone che attiva la macchina infernale
       - arrivano gli animali
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: 'La creazione '
       pages:
       - Sequenzale_Globale: 0
@@ -626,6 +641,7 @@ MonoBehaviour:
       StepForCompletition:
       - Premi il bottone e raggiungi gli dei
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
     - FeedbackName: La Chimera
       pages:
       - Sequenzale_Globale: 0
@@ -640,3 +656,4 @@ MonoBehaviour:
       StepForCompletition:
       - Osserva la chimera
       PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 0
