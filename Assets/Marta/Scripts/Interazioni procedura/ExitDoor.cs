@@ -12,6 +12,7 @@ public class ExitDoor : MonoBehaviour
     public CorrectDoorButton correctDoorButton;
     private bool selected = false;
     private Rigidbody BlockedRb;
+    [SerializeField]
     private Rigidbody secondDoor;
     private Renderer rend;
     private Renderer secondDoorRend;
@@ -29,7 +30,7 @@ public class ExitDoor : MonoBehaviour
     void Awake()
     {
         rend = GetComponent<Renderer>();
-        secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
+        //secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
         secondDoorRend = secondDoor.gameObject.transform.GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
         target = transform.GetChild(0).transform;
