@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using static VisivoVerbaleStatManager;
 
-//:/Users/lab2a/AppData/LocalLow/DefaultCompany/Adaptive Learning Vr - School Evacuation\Tommaso\Profilazione\Dati
+//C:/Users/lab2a/AppData/LocalLow/DefaultCompany/Adaptive Learning Vr - School Evacuation\Tommaso\Profilazione\Dati
 public class CentralStatsRecorder : MonoBehaviour
 {
 
