@@ -64,7 +64,7 @@ MonoBehaviour:
           nell'ordine che preferisci.\n\nSulla sinistra trovi i segnalibri corrispondenti
           alle varie pagine che puoi navigare. Quella con scritto \"STEPS\" contiene
           l'elenco dei passaggi che devi completare per un determinato task.  Clicca
-          sopra il segnalibro per visualizzarla.\n\n"
+          sopra il segnalibro per visualizzarla e comprendere la sua struttura.\n\n"
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
           che troverai durante il tuo percorso puoi usare il tasto laterale mostrato
           nell'immagine.\n\nAfferra uno degli oggetti che vedi attorno a te, puntando
           il controller o avvicinandolo all'oggetto desiderato. Per girare la visuale
-          pi\xF9 comdamente puoi usare la levetta del controller di sinistra.\n\nRicorda:
+          pi\xF9 comdamente puoi usare la levetta del controller di destra.\n\nRicorda:
           gli oggetti con cui dovrai interagire lampeggeranno al momento giusto!"
       StepForCompletition:
       - Grab Oggetti
@@ -189,7 +189,7 @@ MonoBehaviour:
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: a006a213781ac3c468f3f86286e0bb4f, type: 3}
         video: {fileID: 0}
         text: "Ehi, tu! Vuoi fare dei VERI soldi finti? Sto parlando di un mucchio
           di sonanti quattrini digitali. \n\nDentro questa cassaforte troverai quello
@@ -200,17 +200,18 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%><color=#67FFCA>1.</color></size></b>
-          Cerca gli indizi sopra il meccanismo a cilindri.  \r\nPotrebbero rivelarti
-          la sequenza corretta.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
-          Osserva con attenzione il sistema di manopole e cilindri numerati.  \r\nRuota
-          le manopole per far scorrere i numeri sui cilindri.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
+          Cerca gli indizi sopra il meccanismo a cilindri alla destra della cassaforte. 
+          \r\nPotrebbero rivelarti la sequenza corretta.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Ruota le manopole per far scorrere i numeri sui cilindri.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
           Analizza bene ci\xF2 che vedi e individua i <b>quattro numeri</b> della
           password.\r\n\r\n<b><size=90%><color=#67FFCA>4.</color></size></b> Quando
           pensi di aver trovato la sequenza corretta,  \r\ninseriscila nella tastiera
           numerica della cassaforte.\r\n\r\n<b><size=90%><color=#67FFCA>5.</color></size></b>
           Se la sequenza \xE8 giusta, si accender\xE0 una luce verde.\r\n\r\n<b><size=90%><color=#67FFCA>6.</color></size></b>
           Se invece compare una luce rossa,  \r\nla password \xE8 errata... ma puoi
-          riprovare tutte le volte che vuoi."
+          riprovare tutte le volte che vuoi.\r\n\r\n<b><size=90%><color=#67FFCA>7.</color></size></b>
+          Una volta aperta la cassaforte goditi il bottino, afferrando la moneta
+          illuminata.\r\n\r\n"
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -219,7 +220,7 @@ MonoBehaviour:
         text: "<color=#888787><size=85%><b>Scopo</b></size></color>\r\n<size=90%>Individuare
           la combinazione numerica corretta per aprire la cassaforte e ottenere la
           ricompensa.</size>\r\n\r\n<color=#888787><size=85%><b>Mosse</b></size></color>\r\n<size=90%>\u2022
-          Ruotare le manopole per osservare i numeri sui cilindri\r\n\u2022 Leggere
+          Ruotare le manopole per far scorrere i numeri sui cilindri\r\n\u2022 Leggere
           gli indizi per dedurre la combinazione\r\n\u2022 Inserire la sequenza tramite
           tastiera numerica</size>\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>\u2022
           Puoi riprovare quante volte vuoi senza penalit\xE0</size>"
@@ -237,11 +238,10 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: 50f0a8fd3807e594b89d70ef2c745faa, type: 3}
         video: {fileID: 0}
-        text: "Bloxorz \xE8 un puzzle game in cui controlli un blocco rettangolare
-          da far rotolare su piattaforme sospese, con l\u2019obiettivo di farlo cadere
-          esattamente in un foro."
+        text: Sposta quel Bloxorz! Riuscirai a diventare un Bloxorz Master? Bloxorzali
+          tutti!
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -266,7 +266,7 @@ MonoBehaviour:
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Guidare
           la pedina attraverso la piattaforma, attraversare i ponti e cadere nel
-          foro corretto.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\n-
+          foro corretto.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>-
           Premere i pulsanti direzionali per muovere la pedina\n- Centrare le caselle
           colorate per aprire i ponti\n- Far cadere la pedina nel foro target</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
           Cadere dai bordi della piattaforma reimposta il livello</size>"
@@ -288,13 +288,10 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: 4c9ab140e45fe5f4e9fa372696419016, type: 3}
         video: {fileID: 0}
-        text: "Sokoban \xE8 un classico rompicapo in cui il giocatore deve spingere
-          delle casse all\u2019interno di un magazzino fino a posizionarle sui punti
-          designati.\nIl gioco richiede pianificazione strategica, poich\xE9 ogni
-          mossa \xE8 irreversibile e uno spostamento sbagliato pu\xF2 rendere il
-          livello impossibile da completare."
+        text: "It's time to... Sokoban! Il gioco di spostamento quadrati pi\xF9 amato
+          d'Europa!"
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -328,9 +325,7 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Mosse</b></size></color>
 
-          <size=90%>
-
-          -
+          <size=90%>-
           Selezionare una pedina con il joystick
 
           - Spostarla sulla casella
@@ -341,13 +336,18 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Attenzione</b></size></color>
 
-          <size=90%>
-
-          -
+          <size=90%>-
           Le pedine non si muovono se bloccate da pareti o altre pedine
 
           -
           Se incastrato puoi tornare indietro di una mossa o resettare la partita</size>'
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: 723e425c5b9c17440bfbbabaab38e5c7, type: 3}
+        text: "Il video mostra le direzioni in cui \xE8 possibile spostarsi nei vari
+          casi"
       StepForCompletition:
       - Prima mossa (sokoban)
       - Gioca a sokoban
@@ -360,10 +360,9 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: d8aea21009241594192726db1c2a5214, type: 3}
         video: {fileID: 0}
-        text: "Scalak \xE8 un puzzle game in cui l\u2019obiettivo \xE8 completare
-          forme geometriche combinando e incastrando pezzi di vario tipo."
+        text: Monta anche tu il tuo piccolo Scalak!
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -394,9 +393,7 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Mosse</b></size></color>
 
-          <size=90%>
-
-          -
+          <size=90%>-
           Osservare l''ordine delle forme mostrato a destra
 
           - Selezionare
@@ -408,9 +405,7 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Attenzione</b></size></color>
 
-          <size=90%>
-
-          -
+          <size=90%>-
           Le forme vanno posizionate sui fori solo dopo aver riordinato le tessere</size>'
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
@@ -431,11 +426,9 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: c2c3aa8eeaf136947b0287d2af960e6f, type: 3}
         video: {fileID: 0}
-        text: "In questo gioco di memoria dovrai interagire con gli oggetti nell'ordine
-          mostrato. Ti verr\xE0 proposto il gioco in due modalit\xE0 diverse, dovrai
-          completare due round per ogni modalit\xE0."
+        text: Ricorda l'ordine degli interactable!
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -459,13 +452,13 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Memorizzare
-          la sequenza mostrata e replicarla interagendo con gli oggetti.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\n-
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\r\n<size=90%>Memorizzare
+          la sequenza mostrata e replicarla interagendo con gli oggetti.</size>\r\n\r\n<color=#888787><size=85%><b>Mosse</b></size></color>\r\n<size=90%>-
           Interagire con gli oggetti prima di iniziare per familiarizzare con il
-          loro funzionamento\n- Premere il pulsante per vedere la sequenza sullo
-          schermo\n- Interagire con gli oggetti nell'ordine memorizzato\n- Ripremere
-          il pulsante una volta finito un round per passare alla prossima modalit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\n-
-          Puoi tornare allo schermo in qualsiasi momento per rivedere la sequenza\n-
+          loro funzionamento\r\n- Premere il pulsante per vedere la sequenza sullo
+          schermo\r\n- Interagire con gli oggetti nell'ordine memorizzato\r\n- Ripremere
+          il pulsante una volta finito un round per passare alla prossima modalit\xE0</size>\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>-
+          Puoi tornare allo schermo in qualsiasi momento per rivedere la sequenza\r\n-
           Entrambe le modalit\xE0 devono essere completate per concludere il gioco</size>"
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
@@ -483,11 +476,9 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: e8230ae88285b464aa13ce56aa30705c, type: 3}
         video: {fileID: 0}
-        text: "L'obbiettivo del gioco \xE8 girare le coppie di carte uguali, dopo
-          averle memorizzate. Ti verr\xE0 proposto il gioco in due modalit\xE0 diverse,
-          dovrai completare 2 round per ogni modalit\xE0."
+        text: Il classico Memory
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -515,9 +506,7 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Mosse</b></size></color>
 
-          <size=90%>
-
-          -
+          <size=90%>-
           Premere il pulsante per scoprire tutte le carte
 
           - Memorizzare
@@ -529,9 +518,7 @@ MonoBehaviour:
 
           <color=#888787><size=85%><b>Attenzione</b></size></color>
 
-          <size=90%>
-
-          -Le
+          <size=90%>-Le
           carte possono essere parole o immagini</size>'
       StepForCompletition:
       - inizia a giocare a memory
@@ -543,11 +530,9 @@ MonoBehaviour:
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 1
-        image: {fileID: 0}
+        image: {fileID: 21300000, guid: 072b8a718ab68d34795e9f0fa1e2b98a, type: 3}
         video: {fileID: 0}
-        text: "L'obbiettivo del gioco \xE8 ricordare l'ordine con cui sono comparse
-          le parole o le immagini. Ti verr\xE0 proposto il gioco in due modalit\xE0
-          diverse. Dovrai completare due round per ogni modalit\xE0."
+        text: RIcorda l'ordine degli elementi
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
@@ -584,45 +569,45 @@ MonoBehaviour:
         isIntroductory: 1
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "Pare che questa macchina possa fondere assieme creature appertenti
-          al mondo animale. E\u2019 molto utile se per esempio... Vabb\xE8 tu costruiscila
-          e basta. Non fare domande. "
+        text: "Pare che uno scienziato, dopo aver terminato le sue scellerate ricerche
+          sulla famosa Shrinking Potion, abbia creato una bizzarra macchina capace
+          di fondere assieme creature appartenenti al mondo animale. Purtroppo solo
+          una foto \xE8 rimasta a testimonianza di tale invenzione, ma sar\xE0 comunque
+          tuo compito tentare di ricostruirla."
       - Sequenzale_Globale: 0
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%><color=#67FFCA>1.</color></size></b>
-          In questa stanza troverai tutti i componenti necessari e un\u2019immagine
-          di riferimento su come deve essere assemblata la macchina.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
-          Premi il pulsante per visualizzare le istruzioni e osserva attentamente
-          l\u2019immagine.  \r\nCerca di memorizzare la disposizione dei componenti,
-          poich\xE9 non potrai tenerla sempre a schermo.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
-          Prendi i componenti dalla prete di destra e montali sulla parete di sinistra.
-          Una volta iniziato il montaggio, cerca di completare la macchina nel minor
-          tempo possibile per ottenere un punteggio pi\xF9 alto.\r\n\r\n<b><size=90%><color=#67FFCA>4.</color></size></b>
-          Posiziona i componenti nel modo corretto: se li inserisci nella posizione
-          sbagliata, riceverai una penalit\xE0.\r\n\r\n<b><size=90%><color=#67FFCA>5.</color></size></b>
+          Premi il pulsante per visualizzare l'immagine del Sintetizzatore Chimerico
+          sullo schermo e rivelare i componenti necessari per l'assemblaggio oltre
+          la parete verde, sulla destra.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Memorizza la posizione dei componenti: L'ordine di montaggio non conta,
+          ma alcuni componenti pi\xF9 piccoli richiedono la presenza del componente
+          principale per essere installati.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
+          Afferra il componente che vuoi assemblare dalla parete di destra e installalo
+          nella posizione desiderata sulla parete di sinistra.\r\n\r\n<b><size=90%><color=#67FFCA>4.</color></size></b>
           Se dimentichi la disposizione, puoi tornare allo schermo e premere nuovamente
-          il pulsante per rivedere le istruzioni.\r\n\r\n<b><size=90%><color=#67FFCA>6.</color></size></b>
-          Non esiste un ordine di montaggio obbligatorio, puoi scegliere liberamente
-          la sequenza. Tuttavia, alcuni componenti pi\xF9 piccoli richiedono la presenza
-          del componente principale per essere installati.\r\n\r\n<b><size=90%><color=#67FFCA>7.</color></size></b>
+          il pulsante per rivedere l'immagine.\r\n\r\n<b><size=90%><color=#67FFCA>5.</color></size></b>
           Completa il montaggio del <b>Sintetizzatore Chimerico</b> assemblando tutti
-          i pezzi nel modo corretto."
+          i pezzi nel modo corretto.\r\n\r\n<b><size=90%><color=#67FFCA>6.</color></size></b>
+          Una volta terminato l'assemblaggio attendi ulteriori istruzioni per attivare
+          la macchina."
       - Sequenzale_Globale: 1
         Visivo_Verbale: 1
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Montare
-          il Sintetizzatore Chimerico posizionando tutti i componenti correttamente.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\n-
-          Premere il pulsante per vedere le istruzioni\n- Montare i componenti principali
-          nell'ordine preferito\n- Aggiungere i componenti secondari dopo il rispettivo
-          componente principale</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\n-
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\r\n<size=90%>Montare
+          il Sintetizzatore Chimerico posizionando tutti i componenti correttamente.</size>\r\n\r\n<color=#888787><size=85%><b>Mosse</b></size></color>\r\n<size=90%>\r\n-
+          Premere il pulsante per vedere le istruzioni\r\n- Afferrare i componenti
+          dalla parete di destra\r\n- Montare i componenti per completare la macchina
+          sulla parete di sinistra\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>\r\n-
           Alcuni componenti pi\xF9 piccoli richiedono che il componente principale
-          sia gi\xE0 posizionato\n- Puoi tornare alle istruzioni in qualsiasi momento
-          per rivedere la posizione dei componenti</size>"
+          sia gi\xE0 posizionato\r\n- Se ti allontani dallo schermo questo si spegner\xE0
+          nascondendo l'immagine.\r\n- Puoi tornare allo schermo in qualsiasi momento
+          e premere il pulsante per rivedere la posizione dei componenti</size>"
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
         isIntroductory: 0
