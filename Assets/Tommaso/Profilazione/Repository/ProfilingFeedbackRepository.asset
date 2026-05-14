@@ -163,6 +163,22 @@ MonoBehaviour:
       - Grab Oggetti
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+    - FeedbackName: Recap finale
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "<size=90%>\r\n\u2022 Ti verranno proposti dei <b><color=#7FFFD4>task</color></b>,
+          accompagnati da diapositive composte da pi\xF9 pagine.\r\n\r\n\u2022 Le
+          pagine sono <b><color=#7FFFD4>diverse tra loro</color></b> e puoi navigarle
+          nell\u2019ordine che preferisci.\r\n\r\n\u2022 Se non trovi subito un\u2019informazione,
+          prova a consultare <b><color=#7FFFD4>un\u2019altra pagina</color></b>.\r\n"
+      StepForCompletition:
+      - Recap
+      PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 1
     - FeedbackName: Si parte!
       pages:
       - Sequenzale_Globale: 0
