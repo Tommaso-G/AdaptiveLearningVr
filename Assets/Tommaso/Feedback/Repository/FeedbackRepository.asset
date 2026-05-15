@@ -719,7 +719,23 @@ MonoBehaviour:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
-        - FeedbackName: Prendi l'estintore
+        - FeedbackName: <b>Fuoco elettrico<b> - prendi l'estintore
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Il fuoco blocca il percorso ma sembra gestibile: usa l'<b>estintore</b>.
+              Ce n'\xE8 uno <b>nelle vicinanze</b>. Prendilo, puntalo alla <b>base
+              delle fiamme</b> ed eroga il getto.\r\nSono coinvolti impianti elettrici</b>,
+              usa un <b>estintore a CO2</b>.\r\nUna volta spento il fuoco, <b>prosegui
+              immediatamente</b> con l'evacuazione."
+          StepForCompletition:
+          - (elettrico) Grab  extinguisher
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+        - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -730,11 +746,10 @@ MonoBehaviour:
               Ce n'\xE8 uno <b>nelle vicinanze</b>. Prendilo, puntalo alla <b>base
               delle fiamme</b> ed eroga il getto.\nSe stanno bruciando <b>materiali
               solidi</b> (come carta, legno o arredi) e <b>non sono coinvolti impianti
-              elettrici</b>, puoi usare un <b>estintore ad acqua</b>, adatto a questo
-              tipo di incendio.\nUna volta spento il fuoco, <b>prosegui immediatamente</b>
-              con l'evacuazione."
+              elettrici</b>, puoi usare un <b>estintore ad acqua</b> o uno a <b>schiuma<b>.\nUna
+              volta spento il fuoco, <b>prosegui immediatamente</b> con l'evacuazione."
           StepForCompletition:
-          - Grab extiguisher
+          - (solido) Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
         - FeedbackName: Rimuovi la sicura
@@ -877,7 +892,7 @@ MonoBehaviour:
           needsButtonToBeCompleted: 0
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: Trova l'estintore a CO2
+        - FeedbackName: Trova l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -885,8 +900,8 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "Del <b>liquido infiammabile<b> ha preso fuoco. Questa volta per
-              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
-              l'estintore a Co2 nella stanza."
+              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Vanno
+              bene sia l'<b>estintore a C02<b>, che quello a <b>schiuma<b>."
           StepForCompletition:
           - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}

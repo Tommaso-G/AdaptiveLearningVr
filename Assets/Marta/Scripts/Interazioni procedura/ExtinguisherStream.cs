@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
 using UnityEngine.VFX;
+using System.Collections.Generic;
 
 public class ExtinguisherStream : MonoBehaviour
 {
@@ -9,11 +10,16 @@ public class ExtinguisherStream : MonoBehaviour
     public ParticleSystem FoamPS;
     public ErrorReporter ErrorReporter;
 
+    [SerializeField] private List<FireType> supportedTypes;
+
+    [SerializeField] private GameObject safetyCatchEmpty;
     private bool safetyCatch = false;
     private FireObject fire;
     private FireObject lastHit;
     private FireLiquid fireLiquid;
     private FireLiquid lastFireLiquid;
+
+    private bool wrongType = false;
 
     //private  GameObject FoamStream;
 
@@ -48,9 +54,21 @@ public class ExtinguisherStream : MonoBehaviour
             //fire hit + foam shooting
             if (fire != null && FoamPS.isPlaying)
             {
-                fire.isHit = true;
-                //Debug.Log("Secondo if: " + lastHit.isHit);
-                fire.Extinguish();
+                if (supportedTypes.Contains(fire.FireType))
+                {
+                    fire.isHit = true;
+                    fire.Extinguish();
+                }
+                else
+                {
+                    fire.isHit = false;
+
+                    if (ErrorReporter != null && !wrongType)
+                    {
+                        ErrorReporter.RegisterError("Wrong extinguisher");
+                        wrongType = true;
+                    }
+                }
             }
         }
         else if (fire != null) // se non sto colpendo nulla devo comunque mettere fire.isHit = false
@@ -118,6 +136,7 @@ public class ExtinguisherStream : MonoBehaviour
 
     public void StopFoam()
     {
+        wrongType = false;
         FoamPS.Clear();
         FoamPS.Pause();
     }
@@ -125,5 +144,21 @@ public class ExtinguisherStream : MonoBehaviour
     public void setSafetyCatch()
     {
         safetyCatch = true;
+        SafetyCatchCheck(true);
+    }
+
+    public void SafetyCatchCheck(bool disable)
+    {
+        if (safetyCatch)
+        {
+            if (disable)
+            {
+                safetyCatchEmpty.SetActive(false);
+            }
+            else
+            {
+                safetyCatchEmpty.SetActive(true);
+            }
+        }
     }
 }

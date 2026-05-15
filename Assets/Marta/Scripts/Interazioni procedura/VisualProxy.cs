@@ -2,11 +2,13 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using VRBuilder.Core.Conditions;
 
-public class VisualProxy : MonoBehaviour
+public class VisualProxy : MonoBehaviour, DynamicObjectInColliderCondition.IDynamicTargetProvider
 {
     public Renderer[] renderers;
     public GameObject activeproxy;
+    public GameObject CurrentTarget => activeproxy;
     private InteractionListener interactionlistener;
     public bool isGrabbed { get; private set; }
     public event Action OnGrabbed;
@@ -16,6 +18,22 @@ public class VisualProxy : MonoBehaviour
         interactionlistener = GetComponent<InteractionListener>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public void setDisableProxy(GameObject proxy)
+    {
+        if (!proxy.gameObject.activeSelf)
+        {
+            setActiveProxy(proxy);
+        }
+    }
+
+    public void releaseDisableProxy(GameObject proxy)
+    {
+        if (!proxy.gameObject.activeSelf)
+        {
+            releaseProxy(true);
+        }
+    }
     public void setActiveProxy(GameObject proxy)
     {
         activeproxy = proxy;

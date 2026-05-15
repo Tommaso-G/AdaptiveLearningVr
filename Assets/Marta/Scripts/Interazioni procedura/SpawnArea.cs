@@ -31,7 +31,6 @@ public class SpawnArea : MonoBehaviour
 
     public static event Action<SpawnArea, bool> onSpawnAreaChange;
 
-    public Transform feedbackPos;
     public Transform effectFeedbackPos;
     public Transform checkFumo;
 
@@ -115,14 +114,6 @@ public class SpawnArea : MonoBehaviour
             effectsController.SetCanActivate(true);
         }
     }
-
-    public void SetFeedbackParent(Transform newParent)
-    {
-        if (feedbackPos != null)
-            feedbackPos.parent = newParent;
-        print($"[SpawnArea] Posizione feedback {feedbackPos.gameObject.name}");
-    }
-
     public void ResetArea()
     {
         isOccupied = false;

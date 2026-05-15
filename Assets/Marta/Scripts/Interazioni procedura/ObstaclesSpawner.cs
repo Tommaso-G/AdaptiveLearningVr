@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,42 +10,58 @@ using System.Collections;
 using Unity.XR.CoreUtils;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using VRBuilder.Core.Properties;
+using VRBuilder.Core.Conditions;
 
-public class ObstaclesSpawner : MonoBehaviour
+public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.IDynamicColliderProvider
 {
     [Header("Spawnables")]
-    [SerializeField] private GameObject spawnablePrefab;
+    [Tooltip("Tutti gli SpawnableObj già presenti in scena (disabilitati)")]
+    public List<SpawnableObj> currentSceneSpawnables = new List<SpawnableObj>();
+    private List<SpawnableObj> sceneSpawnables = new List<SpawnableObj>();
+
     public List<SpawnArea> currentSpawnAreas = new List<SpawnArea>();
     private List<SpawnArea> spawnAreas;
 
-    [SerializeField] private Transform childEmpty;
+    [Tooltip("Tranform padre di tutti gli spawnable in scena")]
+    [SerializeField] private Transform sceneSpawnablesParent;
+    [Tooltip("Tranform padre di tutte le aree di spawn")]
     [SerializeField] private Transform spawnAreasParent;
     [Tooltip("Inidicare una spawn area sicura per lo spawn")]
     [SerializeField] private SpawnArea safeSpawnArea;
-    private bool activateAreaEffect = false;
-    private SpawnableObj spawnableObj;
+
     private bool Initialized = true;
 
     public Transform multifeedbackPos;
-    private bool HasActiveSpawnedObjects => childEmpty.childCount > 0;
+
+    // Considera "attivo" se almeno uno spawnable è enabled
+    private bool HasActiveSpawnedObjects => sceneSpawnables.Any(s => s.gameObject.activeSelf);
+
+    private ColliderWithTriggerProperty _activeCollider;
+
+    // IDynamicColliderProvider
+    public ColliderWithTriggerProperty CurrentCollider => _activeCollider;
+
     private void Start()
     {
-        spawnableObj = spawnablePrefab.GetComponent<SpawnableObj>();
-        if (childEmpty != null)
+        for (int i = 0; i < sceneSpawnablesParent.childCount; i++)
         {
-            childEmpty.gameObject.SetActive(true);
+            sceneSpawnables.Add(sceneSpawnablesParent.GetChild(i).GetComponent<SpawnableObj>());
         }
+        // Assicura che tutti gli spawnables partano disabilitati
+        foreach (var s in sceneSpawnables)
+            s.gameObject.SetActive(false);
 
         initializeSpawn();
     }
     public void initializeSpawn()
     {
         spawnAreas = new List<SpawnArea>(currentSpawnAreas);
-        childEmpty.gameObject.SetActive(true);
         pickRandomArea();
         foreach (SpawnArea spawnArea in spawnAreas)
         {
-            SpawnResources(spawnArea);
+            //SpawnResources(spawnArea);
+            ActivateSpawnableForArea(spawnArea);
         }
 
         Initialized = true;
@@ -53,101 +69,94 @@ public class ObstaclesSpawner : MonoBehaviour
 
     private void pickRandomArea(int amount = 1)
     {
-        while (amount > 0)
+        List<SpawnArea> availableAreas = new List<SpawnArea>();
+
+        foreach (Transform child in spawnAreasParent)
         {
-            int count = spawnAreasParent.childCount;
-            SpawnArea selectedArea = null;
+            SpawnArea area = child.GetComponent<SpawnArea>();
+            if (area != null)
+                availableAreas.Add(area);
+        }
 
-            if (count > 0)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, count);
+        while (amount > 0 && availableAreas.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, availableAreas.Count);
 
-                Transform pickedChild = spawnAreasParent.GetChild(randomIndex);
-
-                selectedArea = pickedChild.GetComponent<SpawnArea>();
-            }
-
-            if(selectedArea == null)
-            {
-                selectedArea = safeSpawnArea;
-            }
-
-            amount -= 1;
+            SpawnArea selectedArea = availableAreas[randomIndex];
 
             spawnAreas.Add(selectedArea);
-        }
-    }
 
-    public void ActivateAreaEffect()
-    {
-        foreach (SpawnArea spawnArea in spawnAreas)
+            availableAreas.RemoveAt(randomIndex); // 🔥 rimuove per evitare doppioni
+
+            amount--;
+        }
+
+        // fallback se non ci sono abbastanza aree
+        while (amount > 0)
         {
-            spawnArea.effectActive = true;
-            print("[ObstaclesSpawner] attivo l'effetto dell'area");
+            spawnAreas.Add(safeSpawnArea);
+            amount--;
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && HasActiveSpawnedObjects)
-        {
-            ResetSpawner();
-        }
+        //if (Input.GetKeyDown(KeyCode.P) && HasActiveSpawnedObjects)
+        //{
+        //    ResetSpawner();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.M) && !HasActiveSpawnedObjects)
-        {
-            initializeSpawn();
-        }
+        //if (Input.GetKeyDown(KeyCode.M) && !HasActiveSpawnedObjects)
+        //{
+        //    initializeSpawn();
+        //}
     }
 
-    void SpawnResources(SpawnArea spawnArea)
+    private void ActivateSpawnableForArea(SpawnArea spawnArea)
     {
         if (spawnArea == null)
         {
-            if (safeSpawnArea != null)
-            {
-                spawnArea = safeSpawnArea;
-            }
-            else
-            {
-                print("[ObstaclesSpawner] spawnArea null");
-                return;
-            }
+            if (safeSpawnArea != null) spawnArea = safeSpawnArea;
+            else { print("[ObstaclesSpawner] spawnArea null"); return; }
         }
 
-        GameObject instance = Instantiate(
-            spawnablePrefab,
-            new Vector3(spawnArea.SafePoint.x, spawnArea.SafePoint.y + 0.5f, spawnArea.SafePoint.z),
-            Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)),
-            childEmpty
-        );
+        // 1️⃣ Trova tutti gli spawnable validi per quell'area e inattivi
+        var candidates = sceneSpawnables
+            .Where(s => s.AssignedSpawnArea == spawnArea && !s.gameObject.activeSelf)
+            .ToList();
 
-        SpawnableObj newSpawnable = instance.GetComponent<SpawnableObj>();
-
-        if (newSpawnable != null)
+        if (candidates.Count == 0)
         {
-            newSpawnable.Initialize(spawnArea);
-            newSpawnable.SpawnableObjDestroyed += OnSpawnedObjDestroyed;
+            Debug.LogWarning($"[ObstaclesSpawner] Nessun SpawnableObj disponibile per l'area '{spawnArea.name}'.");
+            return;
         }
 
-        spawnArea.SetFeedbackParent(multifeedbackPos);
-        
+        // 2️⃣ Selezione random
+        int randomIndex = UnityEngine.Random.Range(0, candidates.Count);
+        SpawnableObj target = candidates[randomIndex];
+
+        _activeCollider = target.GetComponentInChildren<ColliderWithTriggerProperty>(true);
+        target.SpawnableObjDestroyed += OnSpawnedObjDestroyed;
+        target.Activate();
+
+        target.SetFeedbackParent(multifeedbackPos);
+
+        currentSceneSpawnables.Add(target);
     }
 
     public void OnSpawnedObjDestroyed(SpawnableObj obj, SpawnArea spawnArea)
     {
         obj.SpawnableObjDestroyed -= OnSpawnedObjDestroyed;
-        Destroy(obj.gameObject);
+        //Destroy(obj.gameObject);
+        _activeCollider = null;
         currentSpawnAreas.Remove(spawnArea);
+        currentSceneSpawnables.Remove(obj);
     }
 
     public void ActivateChildren()
     {
-
-        for (int i = childEmpty.childCount - 1; i >= 0; i--)
-        {
-            childEmpty.GetChild(i).gameObject.SetActive(true);
-        }
+        foreach (var s in currentSceneSpawnables)
+            s.gameObject.SetActive(true);
     }
     public void ResetSpawner()
     {
@@ -156,14 +165,11 @@ public class ObstaclesSpawner : MonoBehaviour
 
     private IEnumerator ResetCoroutine()
     {
-        while(!Initialized)
-        {
+        while (!Initialized)
             yield return null;
-        }
 
-        for (int i = childEmpty.childCount - 1; i >= 0; i--)
+        foreach (var spawnable in sceneSpawnables.Where(s => s.gameObject.activeSelf))
         {
-            SpawnableObj spawnable = childEmpty.GetChild(i).GetComponent<SpawnableObj>();
             spawnable.PrepareForDestroy();
         }
 

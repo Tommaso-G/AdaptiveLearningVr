@@ -4,8 +4,16 @@ using System.Linq;
 using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
+
+public enum FireType
+{
+    Classe_Solido,   // solidi
+    Classe_Liquido,   // liquidi
+    Classe_Elettrico,   // elettrico
+}
 public class FireObject : MonoBehaviour, IDestructible
 {
+    [SerializeField] private FireType fireType;
     [SerializeField] private Transform fireTran;
     [SerializeField] private BoxCollider fireBox;
     [SerializeField] private SphereCollider damageArea;
@@ -17,6 +25,8 @@ public class FireObject : MonoBehaviour, IDestructible
     private bool sizeChanging = false;
     private bool isExtinguishing = false;
     public bool isHit = false;
+    public FireType FireType => fireType;
+
 
     public event System.Action OnDestroyed;
 

@@ -63,18 +63,19 @@ public class ChildDestroyedCondition : Condition<ChildDestroyedCondition.ChildDe
         public override void Start()
         {
             Data.IsCompleted = false;
-            Data.children = Data.Target.Value.GameObject.transform.childCount;
+            Data.children = GetActiveChildCount(Data.Target.Value.GameObject.transform);
             Debug.Log("Children: " + Data.children);
         }
 
         public override IEnumerator Update()
         {
-            int currentChildren = Data.Target.Value.GameObject.transform.childCount;
+            Transform parent = Data.Target.Value.GameObject.transform;
+            int currentChildren = GetActiveChildCount(parent);
             if (Data.noChildren)
             {
                 while (currentChildren > 0)
                 {
-                    currentChildren = Data.Target.Value.GameObject.transform.childCount;
+                    currentChildren = GetActiveChildCount(parent);
                     yield return null;
                 }
 
@@ -84,7 +85,7 @@ public class ChildDestroyedCondition : Condition<ChildDestroyedCondition.ChildDe
             {
                 while (Data.children == currentChildren)
                 {
-                    currentChildren = Data.Target.Value.GameObject.transform.childCount;
+                    currentChildren = GetActiveChildCount(parent);
                     yield return null;
                 }
 
@@ -94,6 +95,17 @@ public class ChildDestroyedCondition : Condition<ChildDestroyedCondition.ChildDe
                 }
             }
 
+        }
+
+        private int GetActiveChildCount(Transform parent)
+        {
+            int count = 0;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                if (parent.GetChild(i).gameObject.activeSelf)
+                    count++;
+            }
+            return count;
         }
 
         public override void End()

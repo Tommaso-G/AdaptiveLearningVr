@@ -7,16 +7,26 @@ using static UnityEngine.Rendering.ProbeAdjustmentVolume;
 public class SpawnableObj : MonoBehaviour
 {
     [SerializeField] private SpawnArea spawnArea;
+    [SerializeField] private Transform feedbackPos;
+    public SpawnArea AssignedSpawnArea => spawnArea;
 
     private IDestructible destructible;
 
     public event Action<SpawnableObj, SpawnArea> SpawnableObjDestroyed;
-    // Start is called once before the first executon of Update after the MonoBehaviour is created
-    public void Initialize(SpawnArea area)
+
+    public void Activate()
     {
-        spawnArea = area;
-        spawnArea.Initialize();
-        //spawnArea.SetOccupied(true);
+        if (spawnArea != null)
+        {
+            spawnArea.Initialize();
+            //spawnArea.SetOccupied(true);
+        }
+
+        destructible = GetComponent<IDestructible>();
+        if (destructible != null)
+        {
+            destructible.OnDestroyed += HandleDestroyed;
+        }
     }
 
     private void Start()
@@ -31,6 +41,13 @@ public class SpawnableObj : MonoBehaviour
         }
     }
 
+    public void SetFeedbackParent(Transform newParent)
+    {
+        if (feedbackPos != null)
+            feedbackPos.parent = newParent;
+        print($"[SpawnArea] Posizione feedback {feedbackPos.gameObject.name}");
+    }
+
     private void HandleDestroyed()
     {
         PrepareForDestroy();
@@ -41,8 +58,21 @@ public class SpawnableObj : MonoBehaviour
         if (spawnArea != null && spawnArea.gameObject != null)
         {
             spawnArea.SetOccupied(false);
-            spawnArea.SetFeedbackParent(spawnArea.transform);
             SpawnableObjDestroyed?.Invoke(this, spawnArea);
         }
+
+        SetFeedbackParent(transform);
+        Deactivate();
+    }
+
+    public void Deactivate()
+    {
+        if (destructible != null)
+        {
+            destructible.OnDestroyed -= HandleDestroyed;
+            destructible = null;
+        }
+
+        gameObject.SetActive(false);
     }
 }

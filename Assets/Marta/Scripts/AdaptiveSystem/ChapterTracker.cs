@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using VRBuilder.Core;
 using VRBuilder.Core.Behaviors;
@@ -38,6 +37,7 @@ public class ChapterTracker : MonoBehaviour
     public Action<string, string, int, float> ObservationDataReady;
     public static System.Action<string, float> ChangeTime;
 
+    private Dictionary<string, bool> subChapterTimerReady = new();
     private void Start()
     {
         co_mgr = FindAnyObjectByType<ChaptersOrderManager>();
@@ -100,16 +100,39 @@ public class ChapterTracker : MonoBehaviour
     {
         IChapter chapter = subChapter.Chapter;
         string subChapterName = chapter.Data.Name;
-        //timer?.StartTimer(subChapterName);
         int subIdx = process.Data.Chapters.IndexOf(chapter);
         int errorCount = 0;
+
+        subChapterTimerReady[subChapterName] = false;
+
+        Debug.Log($"[ChapterTracker] Sottocapitolo {subChapterName} creato, in attesa di attivazione.");
+        
+        // aspetta che il sottocapitolo sia effettivamente iniziato
+        yield return new WaitUntil(() =>
+            subChapterTimerReady.ContainsKey(subChapterName) &&
+            subChapterTimerReady[subChapterName]
+        );
+
         float startTime = Time.time;
-        Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} iniziato");
+        //timer?.StartTimer(subChapterName);
+
+        Debug.Log($"[ChapterTracker] Tracking del sottocapitolo {chapter.Data.Name} iniziato");
+
+        // Aspetta che il sottocapiotlo sia concluso
         while (chapter.LifeCycle.Stage != Stage.Active)
         {
             yield return null;
         }
-        Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} concluso");
+
+        // Rimuovi la chiave dal dizionario
+        if (subChapterTimerReady.ContainsKey(subChapterName))
+        {
+            subChapterTimerReady.Remove(subChapterName);
+        }
+
+        //timer?.StopTimer(subChapterName);
+        Debug.Log($"[ChapterTracker] Tracking del sottocapitolo {chapter.Data.Name} concluso");
+
         if (subChapter.IsOptional)
         {
             Debug.Log($"[ChapterTracker] Sottocapitolo {chapter.Data.Name} è stato rimosso, i dati non verranno inviati alla rete.");
@@ -117,11 +140,26 @@ public class ChapterTracker : MonoBehaviour
         }
 
         float timeToRegister = Time.time - startTime;
-        //timer?.StopTimer(subChapterName);
+
+        if(timeToRegister < 0.5f)
+        {
+            timeToRegister = 500f;
+        }
         OnChapterComplete(subChapterName, subIdx, timeToRegister);
 
     }
 
+    public void StartTimerForSubChapter(string chapterName)
+    {
+        if (subChapterTimerReady.ContainsKey(chapterName))
+        {
+            subChapterTimerReady[chapterName] = true;
+        }
+        else
+        {
+            Debug.Log($"[ChapterTracker] il Sottocapitolo {chapterName} non è nel dizionario");
+        }
+    }
 
     // ── Chiamato da VRBuilder quando il capitolo finisce ─────────────────
     public void OnChapterComplete(string chapter_name, int chapter_idx, float time)
