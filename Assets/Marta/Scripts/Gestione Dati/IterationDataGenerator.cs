@@ -20,13 +20,23 @@ public class TextIconPair
 {
     public TMP_Text text;
     public Sprite icon;
+
+}
+
+[System.Serializable]
+public class IconLabelPair
+{
+    public Sprite icon;
+    public string label;
 }
 
 public class IterationDataGenerator : MonoBehaviour
 {
+    [Header("Profilo apprendimento")]
+    public LearningProfile learningProfile;
 
     [Header("Documenti (3)")]
-    public DocumentUI[] documents; // size 3
+    public DocumentUI[] documents;
 
     [Header("Icone primo numero (21-24)")]
     public Sprite icon21;
@@ -40,8 +50,11 @@ public class IterationDataGenerator : MonoBehaviour
     public Sprite icon3;
 
     [Header("5 Image con icone uniche")]
-    public Image[] targetImages;        // size 5
-    public Sprite[] availableIcons;     // size 5
+    public Image[] targetImages;
+    public IconLabelPair[] availableIcons;
+
+    [Header("Label verbali (uno per ogni targetImage)")]
+    public TMP_Text[] targetLabels;
 
     [Header("Icone Colorate-Strade")]
     public TextIconPair[] textIconPairs;
@@ -49,7 +62,6 @@ public class IterationDataGenerator : MonoBehaviour
     [Header("Orario")]
     public TMP_Text timeText;
 
-    // ===== DATI GENERATI =====
     public int[] generatedFirstNumbers = new int[3];
     public int[] generatedSecondNumbers = new int[3];
     public List<Sprite> assignedIcons = new List<Sprite>();
@@ -64,9 +76,30 @@ public class IterationDataGenerator : MonoBehaviour
     public Action OnDocumentsGenerated;
 
     public bool isReady { get; private set; }
+
+    private bool useVisualProfile;
+    public bool IsVisualProfile => useVisualProfile;
+
     void Start()
     {
+        InitializeProfile();
         GenerateAllData();
+    }
+
+    void InitializeProfile()
+    {
+        if (learningProfile == null)
+        {
+            Debug.LogWarning("LearningProfile non assegnato! Uso modalità visuale di default.");
+            useVisualProfile = true;
+            return;
+        }
+
+        var profile = learningProfile.GetProfileTuple();
+        useVisualProfile = profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
+
+        Debug.Log("[DataGenerator] visivoVerbale vale: " + profile.visivoVerbale);
+        Debug.Log("[DataGenerator] useVisualProfile vale: " + useVisualProfile);
     }
 
     public void GenerateAllData()
@@ -91,9 +124,14 @@ public class IterationDataGenerator : MonoBehaviour
 
             documents[i].firstImage.sprite = GetFirstIcon(firstNumber);
             documents[i].secondImage.sprite = GetSecondIcon(secondNumber);
+
+            documents[i].firstImage.enabled = useVisualProfile;
+            documents[i].secondImage.enabled = useVisualProfile;
         }
+
         isReady = true;
         OnDocumentsGenerated?.Invoke();
+
         print("[DataGenerator] chiamato evento");
     }
 
@@ -112,8 +150,11 @@ public class IterationDataGenerator : MonoBehaviour
                 fake[i].firstImage.sprite = GetFirstIcon(firstNumber);
                 fake[i].secondImage.sprite = GetSecondIcon(secondNumber);
 
+                fake[i].firstImage.enabled = useVisualProfile;
+                fake[i].secondImage.enabled = useVisualProfile;
             }
-        }while (IsSameAsReal(fake));
+
+        } while (IsSameAsReal(fake));
     }
 
     bool IsSameAsReal(DocumentUI[] fake)
@@ -121,11 +162,14 @@ public class IterationDataGenerator : MonoBehaviour
         for (int i = 0; i < fake.Length; i++)
         {
             if (fake[i].firstText.text != documents[i].firstText.text) return false;
-            if (fake[i].secondText.text!= documents[i].secondText.text) return false;
+            if (fake[i].secondText.text != documents[i].secondText.text) return false;
         }
+
         print("[DataGenerator] fake option uguali alle reali");
+
         return true;
     }
+
     Sprite GetFirstIcon(int value)
     {
         switch (value)
@@ -135,6 +179,7 @@ public class IterationDataGenerator : MonoBehaviour
             case 23: return icon23;
             case 24: return icon24;
         }
+
         return null;
     }
 
@@ -146,6 +191,7 @@ public class IterationDataGenerator : MonoBehaviour
             case 2: return icon2;
             case 3: return icon3;
         }
+
         return null;
     }
 
@@ -154,19 +200,27 @@ public class IterationDataGenerator : MonoBehaviour
         assignedIcons.Clear();
         spriteToPair.Clear();
 
-        List<Sprite> tempIcons = new List<Sprite>(availableIcons);
+        List<IconLabelPair> tempIcons = new List<IconLabelPair>(availableIcons);
 
         for (int i = 0; i < targetImages.Length; i++)
         {
             int randomIconIndex = UnityEngine.Random.Range(0, tempIcons.Count);
-            Sprite chosenIcon = tempIcons[randomIconIndex];
+            IconLabelPair chosen = tempIcons[randomIconIndex];
 
-            targetImages[i].sprite = chosenIcon;
-            assignedIcons.Add(chosenIcon);
+            targetImages[i].sprite = chosen.icon;
+            targetImages[i].enabled = useVisualProfile;
 
-            // 🔥 SALVIAMO IL MAPPING
-            spriteToPair[chosenIcon] = getTextIconPair(targetImages[i]);
-            print($"[DataGenerator] assegnata sprite: {chosenIcon.name} all'immagine: {targetImages[i].name} con testo: {spriteToPair[chosenIcon].text.text} e icona: {spriteToPair[chosenIcon].icon.name}");
+            assignedIcons.Add(chosen.icon);
+            TextIconPair pair = getTextIconPair(targetImages[i]);
+            spriteToPair[chosen.icon] = pair;
+
+            if (!useVisualProfile && pair != null && i < targetLabels.Length && targetLabels[i] != null)
+                targetLabels[i].text = chosen.label;
+            
+            if (i < targetLabels.Length && targetLabels[i] != null)
+                targetLabels[i].gameObject.SetActive(!useVisualProfile);
+
+            print($"[DataGenerator] assegnata sprite: {chosen.icon.name} | label: {chosen.label} | immagine: {targetImages[i].name}");
 
             tempIcons.RemoveAt(randomIconIndex);
         }
@@ -174,14 +228,13 @@ public class IterationDataGenerator : MonoBehaviour
 
     public TextIconPair getTextIconPair(Image image)
     {
-        TMP_Text text = image.gameObject.GetComponentInChildren<TMP_Text>();
-        var pair = textIconPairs.FirstOrDefault(pair => pair.text.text == text.text);
-        return pair;
-
+        TMP_Text text = image.gameObject.GetComponentInChildren<TMP_Text>(true);
+        return textIconPairs.FirstOrDefault(pair => pair.text.text == text.text);
     }
+
     void GenerateRandomTime()
     {
-        int hour = UnityEngine.Random.Range(8, 14); // 8-13
+        int hour = UnityEngine.Random.Range(8, 14);
         int minute = UnityEngine.Random.Range(0, 2) == 0 ? 0 : 30;
 
         generatedTime = new TimeSpan(hour, minute, 0);

@@ -34,6 +34,7 @@ public class QuizManager : MonoBehaviour
     public Button fakeOptionButton;
 
     public ErrorReporter ErrorReporter;
+
     void Start()
     {
         SetupQuestion1();
@@ -42,7 +43,6 @@ public class QuizManager : MonoBehaviour
 
     void SetupQuestion1()
     {
-        // Recupero indice corretto dalla sprite
         TextIconPair correctPair = dataGenerator.SpriteToPair[correctSprite];
         print($"[QuizManager] correct sprite: {correctSprite.name} con testo: {correctPair.text.text} e icona: {correctPair.icon.name}");
 
@@ -50,10 +50,8 @@ public class QuizManager : MonoBehaviour
 
         int totalOptions = dataGenerator.textIconPairs.Length;
 
-        // 1. aggiungo sempre la corretta
         availablePairs.Add(correctPair);
 
-        // 2. creo lista di possibili sbagliati
         List<TextIconPair> wrongOptions = new List<TextIconPair>();
 
         for (int i = 0; i < totalOptions; i++)
@@ -63,10 +61,8 @@ public class QuizManager : MonoBehaviour
                 wrongOptions.Add(dataGenerator.textIconPairs[i]);
                 print($"[QuizManager] aggiunto indice {dataGenerator.textIconPairs[i].icon.name} alla lista di wrongOptions");
             }
-
         }
 
-        // 3. shuffle sbagliati
         for (int i = 0; i < wrongOptions.Count; i++)
         {
             int rand = Random.Range(i, wrongOptions.Count);
@@ -75,12 +71,10 @@ public class QuizManager : MonoBehaviour
             wrongOptions[rand] = temp;
         }
 
-        // 4. prendo solo 2 sbagliati
         availablePairs.Add(wrongOptions[0]);
         availablePairs.Add(wrongOptions[1]);
         print($"[QuizManager] aggiunto indici {wrongOptions[0].icon.name} e {wrongOptions[1].icon.name} alla lista di opzioni");
 
-        // 5. shuffle finale delle 3 opzioni
         for (int i = 0; i < availablePairs.Count; i++)
         {
             int rand = Random.Range(i, availablePairs.Count);
@@ -94,11 +88,10 @@ public class QuizManager : MonoBehaviour
             TextIconPair slotPair = availablePairs[i];
             print($"[QuizManager] slotIndex attuale: {slotPair.icon.name}");
 
-            string testo = slotPair.text.text;
-            answerTexts[i].text = testo;
+            answerTexts[i].text = slotPair.text.text;
 
-            Sprite sprite = slotPair.icon;
-            answerImages[i].sprite = sprite;
+            answerImages[i].sprite = slotPair.icon;
+            answerImages[i].gameObject.SetActive(dataGenerator.IsVisualProfile); // ←
 
             Debug.Log($"[QuizManager] Button {i}: {(answerButtons[i] == null ? "NULL" : answerButtons[i].name)}");
 
@@ -107,14 +100,12 @@ public class QuizManager : MonoBehaviour
             print($"[QuizManager] Slot index: {slotPair.icon.name} == Correct index: {correctPair.icon.name} ? -> {slotPair == correctPair}");
             if (slotPair == correctPair)
             {
-                int indexCopy = i;
                 Button buttonCopy = answerButtons[i];
                 print($"[QuizManager] assegnato correct button a {buttonCopy.name}");
                 buttonCopy.onClick.AddListener(CorrectAnswer);
             }
             else
             {
-                int indexCopy = i;
                 Button buttonCopy = answerButtons[i];
                 print($"[QuizManager] assegnato wrong button a {buttonCopy.name}");
                 buttonCopy.onClick.AddListener(WrongAnswer);
@@ -133,6 +124,7 @@ public class QuizManager : MonoBehaviour
         {
             RenderOption(correctOption, dataGenerator.documents);
             dataGenerator.GenerateFakeDocuments(fakeOption);
+            SetDocumentImagesActive(fakeOption, dataGenerator.IsVisualProfile); // ←
 
             correctOptionButton.onClick.AddListener(CorrectAnswer);
             fakeOptionButton.onClick.AddListener(WrongAnswer);
@@ -140,12 +132,14 @@ public class QuizManager : MonoBehaviour
         else
         {
             dataGenerator.GenerateFakeDocuments(correctOption);
+            SetDocumentImagesActive(correctOption, dataGenerator.IsVisualProfile); // ←
             RenderOption(fakeOption, dataGenerator.documents);
 
             correctOptionButton.onClick.AddListener(WrongAnswer);
             fakeOptionButton.onClick.AddListener(CorrectAnswer);
         }
     }
+
     void RenderOption(DocumentUI[] targetOption, DocumentUI[] sourceDocuments)
     {
         for (int i = 0; i < targetOption.Length; i++)
@@ -155,11 +149,23 @@ public class QuizManager : MonoBehaviour
 
             targetOption[i].firstImage.sprite = sourceDocuments[i].firstImage.sprite;
             targetOption[i].secondImage.sprite = sourceDocuments[i].secondImage.sprite;
+
+            targetOption[i].firstImage.gameObject.SetActive(dataGenerator.IsVisualProfile); // ←
+            targetOption[i].secondImage.gameObject.SetActive(dataGenerator.IsVisualProfile); // ←
         }
     }
+
+    void SetDocumentImagesActive(DocumentUI[] option, bool active)
+    {
+        for (int i = 0; i < option.Length; i++)
+        {
+            option[i].firstImage.gameObject.SetActive(active);
+            option[i].secondImage.gameObject.SetActive(active);
+        }
+    }
+
     public void CorrectAnswer()
     {
-
         if (currentquestion + 1 < questions.Length)
         {
             questions[currentquestion].SetActive(false);
@@ -167,7 +173,6 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-
             OnEnd?.Invoke();
             Uipanel.SetActive(false);
         }
@@ -178,8 +183,8 @@ public class QuizManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         currentquestion++;
         questions[currentquestion].SetActive(true);
-
     }
+
     public void WrongAnswer()
     {
         if (ErrorReporter != null)

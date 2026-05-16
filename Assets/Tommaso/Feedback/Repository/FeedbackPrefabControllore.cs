@@ -14,7 +14,7 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public bool isOptionalFeedback = false;
 
- //   private LearningStyleFeatures styleBehaviour;
+    private LearningStyleFeatures styleBehaviour;
     private LearningProfile profile;
 
     private GameObject waypointInstance;
@@ -31,7 +31,8 @@ public class FeedbackPrefabController : MonoBehaviour
     public Scrollbar verticalScrollbar;
     public RectTransform content;
 
-   // public GameObject buttonsCanvas;
+    private bool _reflectiveEffectsConsumed = false;
+
 
     public SlidesDataSender sender;
 
@@ -47,6 +48,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public GameObject buttonsToClickCanvas;
 
+    public bool applyReflectiveEffects = true;
+
 
 
     private void Start()
@@ -57,25 +60,50 @@ public class FeedbackPrefabController : MonoBehaviour
                 buttonsToClickCanvas.SetActive(true);
             else buttonsToClickCanvas.SetActive(false);
         }
-        
-        //HandleConditionalCanvas();
 
-        // Trova la camera del giocatore
         playerCamera = Camera.main ?? FindFirstObjectByType<Camera>();
-/*
-        // Recupera il profilo di apprendimento
-        profile = FindFirstObjectByType<LearningProfile>();
-        if (profile != null)
-        {
-            styleBehaviour = profile.GetCurrentBehaviour(); // Ottiene lo stile attuale
 
-            // Se il profilo è Riflessivo → cerca e attiva il bottone
+        profile = FindFirstObjectByType<LearningProfile>();
+        Debug.Log($"[FeedbackPrefabController] profile trovato: {profile != null}, applyReflectiveEffects: {applyReflectiveEffects}");
+
+        if (profile != null && applyReflectiveEffects)
+        {
+            styleBehaviour = profile.GetCurrentBehaviour();
+            Debug.Log($"[FeedbackPrefabController] styleBehaviour: {styleBehaviour?.GetType().Name ?? "NULL"}");
+
             if (styleBehaviour is RiflessivoFeatures)
             {
-                HandleReflectiveButtons();
+                Debug.Log("[FeedbackPrefabController] Profilo RIFLESSIVO rilevato.");
+
+                if (buttonsToClickCanvas != null)
+                {
+                    buttonsToClickCanvas.SetActive(true);
+                    Debug.Log("[FeedbackPrefabController] buttonsToClickCanvas attivato.");
+
+                    Button[] buttons = buttonsToClickCanvas.GetComponentsInChildren<Button>(true);
+                    Debug.Log($"[FeedbackPrefabController] Bottoni trovati: {buttons.Length}");
+
+                    foreach (Button btn in buttons)
+                    {
+                        btn.onClick.AddListener(OnReflectiveButtonClicked);
+                        Debug.Log($"[FeedbackPrefabController] Listener aggiunto al bottone: {btn.name}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("[FeedbackPrefabController] buttonsToClickCanvas è NULL, impossibile attivarlo.");
+                }
+            }
+            else
+            {
+                Debug.Log("[FeedbackPrefabController] Profilo NON riflessivo, nessun bottone attivato.");
             }
         }
-*/
+        else
+        {
+            Debug.LogWarning($"[FeedbackPrefabController] Blocco riflessivo saltato — profile null: {profile == null}, applyReflectiveEffects: {applyReflectiveEffects}");
+        }
+
         if (isOptionalFeedback)
         {
             if (OptionalWayPoint != null)
@@ -84,62 +112,19 @@ public class FeedbackPrefabController : MonoBehaviour
                 waypointInstance.name = $"OptionalWaypoint_{name}";
                 waypointInstance.SetActive(true);
             }
-        }else if (waypointPrefab != null)
+        }
+        else if (waypointPrefab != null)
         {
             waypointInstance = Instantiate(waypointPrefab, transform.position, Quaternion.identity);
             waypointInstance.name = $"Waypoint_{name}";
             waypointInstance.SetActive(true);
         }
 
-        // Imposta stato iniziale
         transform.localScale = Vector3.zero;
-      //  styleBehaviour?.resetVariables();
-        // Avvia controllo distanza
+        styleBehaviour?.resetVariables();
         StartCoroutine(CheckDistanceRoutine());
-
-
-
     }
-/*
-    private void HandleReflectiveButtons()
-    {
-        if (reflectiveButtonActivate != null && reflectiveButtonDeactivate != null)
-        {
-            // Stato iniziale: mostra solo A
-            reflectiveButtonActivate.gameObject.SetActive(false);
-            reflectiveButtonDeactivate.gameObject.SetActive(true);
 
-            // Rimuove listener vecchi e aggiunge i nuovi
-            reflectiveButtonActivate.onClick.RemoveAllListeners();
-            reflectiveButtonDeactivate.onClick.RemoveAllListeners();
-
-            // Quando clicchi A → mostra B e nasconde A, 
-            reflectiveButtonActivate.onClick.AddListener(() =>
-            {
-                reflectiveButtonActivate.gameObject.SetActive(false);
-                reflectiveButtonDeactivate.gameObject.SetActive(true);
-                Debug.Log("[FeedbackPrefabController] Bottone A cliccato, mostra B.");
-                styleBehaviour?.EnableFeature();
-
-            });
-
-            // Quando clicchi B → mostra A e nasconde B
-            reflectiveButtonDeactivate.onClick.AddListener(() =>
-            {
-                reflectiveButtonDeactivate.gameObject.SetActive(false);
-                reflectiveButtonActivate.gameObject.SetActive(true);
-                styleBehaviour?.DisableFeature();
-                Debug.Log("[FeedbackPrefabController] Bottone B cliccato, mostra A.");
-            });
-
-            Debug.Log($"[FeedbackPrefabController] Bottoni riflessivi attivati per '{name}'.");
-        }
-        else
-        {
-            Debug.LogWarning($"[FeedbackPrefabController] Mancano uno o entrambi i bottoni riflessivi in '{name}'.");
-        }
-    }
-*/
     private IEnumerator CheckDistanceRoutine()
     {
 
@@ -147,30 +132,34 @@ public class FeedbackPrefabController : MonoBehaviour
         {
             float distance = Vector3.Distance(playerCamera.transform.position, transform.position);
 
-            if (distance <= activationDistance && !isVisible)
-            {
-                isVisible = true;
-                if (waypointInstance != null)
-                    waypointInstance.SetActive(false);
+        if (distance <= activationDistance && !isVisible)
+        {
+            isVisible = true;
+            if (waypointInstance != null)
+                waypointInstance.SetActive(false);
 
-                StartScaling(Vector3.one * maxScale);
- //               styleBehaviour?.OnFeedbackOpened(this);
+            StartScaling(Vector3.one * maxScale);
+            if (!_reflectiveEffectsConsumed)
+                styleBehaviour?.OnFeedbackOpened(this);
+        }
+        else if (distance > activationDistance && isVisible)
+        {
+            isVisible = false;
+            if (waypointInstance != null)
+                waypointInstance.SetActive(true);
 
-            }
-            else if (distance > activationDistance && isVisible)
-            {
-                isVisible = false;
-                if (waypointInstance != null)
-                    waypointInstance.SetActive(true);
-
-                StartScaling(Vector3.zero);
-//                styleBehaviour?.OnFeedbackClosed(this);
-            }
-
-
-
+            StartScaling(Vector3.zero);
+            if (!_reflectiveEffectsConsumed)
+                styleBehaviour?.OnFeedbackClosed(this);
+        }
             yield return null;
         }
+    }
+
+    private void OnReflectiveButtonClicked()
+    {
+        _reflectiveEffectsConsumed = true;
+        styleBehaviour?.OnFeedbackClosed(this);
     }
 
     public void UpdateScrollState()
@@ -207,8 +196,6 @@ public class FeedbackPrefabController : MonoBehaviour
     }
 
 
-
-
     private void StartScaling(Vector3 targetScale)
     {
         if (scaleRoutine != null)
@@ -242,8 +229,6 @@ public class FeedbackPrefabController : MonoBehaviour
 
             Canvas.ForceUpdateCanvases();
         }
-
-
 
         // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
     }
@@ -282,7 +267,7 @@ public class FeedbackPrefabController : MonoBehaviour
         scaleRoutine = StartCoroutine(SmoothScale(Vector3.zero));
         StartCoroutine(DestroyAfterClose());
 
- //       styleBehaviour?.OnFeedbackClosed(this);
+        styleBehaviour?.OnFeedbackClosed(this);
     }
 
     public void CloseFeedbackWithoutCompletion()
@@ -380,28 +365,5 @@ public class FeedbackPrefabController : MonoBehaviour
     {
         StartCoroutine(FadeSwitch(canvasToDisable, canvasToEnable, fadeDuration));
     }
-
-/*
-    public void HandleConditionalCanvas()
-    {
-        if (buttonsCanvas == null) return;
-
-        FeedbackSetHolder holder = FindFirstObjectByType<FeedbackSetHolder>();
-
-        if (holder != null && holder.ProfilingFeedbackRepository != null)
-        {
-            buttonsCanvas.SetActive(false);
-        }
-        else
-        {
-            LearningProfile profile = FindFirstObjectByType<LearningProfile>();
-            if (profile != null && profile.enableLearningFeatures)
-                buttonsCanvas.SetActive(true);
-            else
-                buttonsCanvas.SetActive(false);
-        }
-    }
-
-*/
 
 }

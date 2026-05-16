@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,87 +50,114 @@ public class FeedbackButtonClickedCondition : Condition<FeedbackButtonClickedCon
 
     public class FeedbackButtonClickedConditionActiveProcess : StageProcess<FeedbackButtonClickedConditionData>
     {
-        private Button[] listenedButtons;
-        private bool buttonClicked = false;
+        // Mappa ogni bottone al suo controller, per sapere quali controller sono stati confermati
+        private Dictionary<Button, FeedbackPrefabController> buttonToController = new();
+        private HashSet<FeedbackPrefabController> completedControllers = new();
+        private HashSet<FeedbackPrefabController> pendingControllers = new();
 
         public FeedbackButtonClickedConditionActiveProcess(FeedbackButtonClickedConditionData data) : base(data) { }
 
-        public override void Start()
+    public override void Start()
+    {
+        if (Data.TargetPosition?.Value == null)
         {
-            // Se non c'è target, completa subito
-            if (Data.TargetPosition?.Value == null)
+            Debug.LogWarning("[FeedbackButtonClickedCondition] TargetPosition non assegnato, condizione completata automaticamente.");
+            Data.IsCompleted = true;
+            return;
+        }
+
+        Transform targetTransform = Data.TargetPosition.Value.GameObject.transform;
+
+        // Costruisce la lista dei centri di ricerca:
+        // se il target ha figli, usa la posizione di ciascun figlio,
+        // altrimenti usa il target stesso
+        List<Vector3> searchOrigins = new();
+
+        if (targetTransform.childCount > 0)
+        {
+            foreach (Transform child in targetTransform)
+                searchOrigins.Add(child.position);
+        }
+        else
+        {
+            searchOrigins.Add(targetTransform.position);
+        }
+
+        FeedbackPrefabController[] allControllers = GameObject.FindObjectsByType<FeedbackPrefabController>(FindObjectsSortMode.None);
+
+        // Un controller viene incluso se è entro raggio da ALMENO uno dei centri di ricerca
+        List<FeedbackPrefabController> foundControllers = new();
+        foreach (var ctrl in allControllers)
+        {
+            foreach (var origin in searchOrigins)
             {
-                Debug.LogWarning("[FeedbackButtonClickedCondition] TargetPosition non assegnato, condizione completata automaticamente.");
-                Data.IsCompleted = true;
-                return;
-            }
-
-            Vector3 targetPos = Data.TargetPosition.Value.GameObject.transform.position;
-
-            // Cerca tutti i FeedbackPrefabController nella scena
-            FeedbackPrefabController[] allControllers = GameObject.FindObjectsByType<FeedbackPrefabController>(FindObjectsSortMode.None);
-
-            FeedbackPrefabController found = null;
-            float bestDist = float.MaxValue;
-
-            foreach (var ctrl in allControllers)
-            {
-                float dist = Vector3.Distance(ctrl.transform.position, targetPos);
-                if (dist <= Data.SearchRadius && dist < bestDist)
+                if (Vector3.Distance(ctrl.transform.position, origin) <= Data.SearchRadius)
                 {
-                    bestDist = dist;
-                    found = ctrl;
+                    foundControllers.Add(ctrl);
+                    break; // evita duplicati se il controller è vicino a più origini
                 }
-            }
-
-            if (found == null)
-            {
-                Debug.LogWarning($"[FeedbackButtonClickedCondition] Nessun FeedbackPrefabController trovato entro {Data.SearchRadius}m dalla posizione target. Condizione completata automaticamente.");
-                Data.IsCompleted = true;
-                return;
-            }
-
-            // Se il feedback non richiede il bottone, completa subito
-            if (!found.needsButtonToBeCompleted)
-            {
-                Debug.Log($"[FeedbackButtonClickedCondition] '{found.name}' non richiede bottone. Condizione completata automaticamente.");
-                Data.IsCompleted = true;
-                return;
-            }
-
-            // Cerca il campo buttonsToClickCanvas
-            if (found.buttonsToClickCanvas == null)
-            {
-                Debug.LogWarning($"[FeedbackButtonClickedCondition] '{found.name}' ha NeedsButtonToBeCompleted=true ma buttonsToClickCanvas è null. Condizione completata automaticamente.");
-                Data.IsCompleted = true;
-                return;
-            }
-
-            // Prendi tutti i Button figli del canvas
-            listenedButtons = found.buttonsToClickCanvas.GetComponentsInChildren<Button>(true);
-
-            if (listenedButtons == null || listenedButtons.Length == 0)
-            {
-                Debug.LogWarning($"[FeedbackButtonClickedCondition] Nessun Button trovato in buttonsToClickCanvas di '{found.name}'. Condizione completata automaticamente.");
-                Data.IsCompleted = true;
-                return;
-            }
-
-            // Registra listener su ogni bottone
-            foreach (var btn in listenedButtons)
-            {
-                btn.onClick.AddListener(OnButtonClicked);
-                Debug.Log($"[FeedbackButtonClickedCondition] Listener registrato su '{btn.name}'.");
             }
         }
 
-        private void OnButtonClicked()
+        if (foundControllers.Count == 0)
         {
-            if (buttonClicked) return;
-
-            buttonClicked = true;
-            Debug.Log("[FeedbackButtonClickedCondition] Bottone cliccato → condizione completata.");
+            Debug.LogWarning($"[FeedbackButtonClickedCondition] Nessun FeedbackPrefabController trovato entro {Data.SearchRadius}m. Condizione completata automaticamente.");
             Data.IsCompleted = true;
+            return;
+        }
+
+        foreach (var ctrl in foundControllers)
+        {
+            if (!ctrl.needsButtonToBeCompleted)
+            {
+                Debug.Log($"[FeedbackButtonClickedCondition] '{ctrl.name}' non richiede bottone, ignorato.");
+                continue;
+            }
+
+            if (ctrl.buttonsToClickCanvas == null)
+            {
+                Debug.LogWarning($"[FeedbackButtonClickedCondition] '{ctrl.name}' richiede bottone ma buttonsToClickCanvas è null, ignorato.");
+                continue;
+            }
+
+            Button[] buttons = ctrl.buttonsToClickCanvas.GetComponentsInChildren<Button>(true);
+
+            if (buttons == null || buttons.Length == 0)
+            {
+                Debug.LogWarning($"[FeedbackButtonClickedCondition] Nessun Button trovato in '{ctrl.name}', ignorato.");
+                continue;
+            }
+
+            pendingControllers.Add(ctrl);
+
+            foreach (var btn in buttons)
+            {
+                buttonToController[btn] = ctrl;
+                btn.onClick.AddListener(() => OnButtonClicked(ctrl));
+                Debug.Log($"[FeedbackButtonClickedCondition] Listener registrato su '{btn.name}' per '{ctrl.name}'.");
+            }
+        }
+
+        if (pendingControllers.Count == 0)
+        {
+            Debug.Log("[FeedbackButtonClickedCondition] Nessun controller richiede bottone. Condizione completata automaticamente.");
+            Data.IsCompleted = true;
+        }
+    }
+
+        private void OnButtonClicked(FeedbackPrefabController ctrl)
+        {
+            if (!pendingControllers.Contains(ctrl)) return;
+
+            completedControllers.Add(ctrl);
+            pendingControllers.Remove(ctrl);
+            Debug.Log($"[FeedbackButtonClickedCondition] '{ctrl.name}' confermato. Rimangono {pendingControllers.Count} feedback in attesa.");
+
+            if (pendingControllers.Count == 0)
+            {
+                Debug.Log("[FeedbackButtonClickedCondition] Tutti i feedback confermati → condizione completata.");
+                Data.IsCompleted = true;
+            }
         }
 
         public override IEnumerator Update()
@@ -140,13 +168,15 @@ public class FeedbackButtonClickedCondition : Condition<FeedbackButtonClickedCon
 
         public override void End()
         {
-            if (listenedButtons == null) return;
-
-            foreach (var btn in listenedButtons)
+            foreach (var (btn, _) in buttonToController)
             {
                 if (btn != null)
-                    btn.onClick.RemoveListener(OnButtonClicked);
+                    btn.onClick.RemoveAllListeners();
             }
+
+            buttonToController.Clear();
+            pendingControllers.Clear();
+            completedControllers.Clear();
         }
 
         public override void FastForward()

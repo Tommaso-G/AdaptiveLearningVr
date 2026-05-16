@@ -397,4 +397,10 @@ public class FeedbackAutoManager : MonoBehaviour
         else
             Debug.LogWarning($"[FeedbackAutoManager] Nessun sender trovato per '{feedback.FeedbackName}'");
     }
+
+    // In FeedbackAutoManager
+    public void RunCoroutineSafe(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
+    }
 }

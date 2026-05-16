@@ -97,6 +97,9 @@ public class FeedbackDisplayer : MonoBehaviour
             return;
         }
 
+        var profile = FindFirstObjectByType<LearningProfile>();
+
+
         foreach (Transform position in positions)
         {
             if (feedback.PersonalizedPrefab != null)
@@ -163,7 +166,7 @@ public class FeedbackDisplayer : MonoBehaviour
             }
 
             var containerCtrl = containerInstance.GetComponent<FeedbackPrefabController>();
-            if (containerCtrl != null) containerCtrl.needsButtonToBeCompleted = feedback.needsButtonToBeCompleted;
+            if (containerCtrl != null) containerCtrl.needsButtonToBeCompleted =  feedback.needsButtonToBeCompleted;
 
             holder.activeFeedbackInstance = containerInstance;
         }

@@ -701,7 +701,7 @@ MonoBehaviour:
           StepForCompletition:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
+          needsButtonToBeCompleted: 1
         - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
@@ -1010,24 +1010,35 @@ MonoBehaviour:
           needsButtonToBeCompleted: 0
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
-        - FeedbackName: "Disattiva Elettricit\xE0 e Gas"
+        - FeedbackName: "Disattiva l'elettricit\xE0"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 \xE8 importante interrompere <b>gas ed elettricit\xE0</b>
-              durante un incendio? Il gas alimenta le fiamme e pu\xF2 causare <b>esplosioni</b>
-              se raggiunge temperature critiche. L'elettricit\xE0, invece, pu\xF2
-              generare <b>cortocircuiti</b> che innescano nuovi focolai o rendono
-              pericoloso il contatto con oggetti normalmente sicuri. Girare la <b>manopola
-              del gas</b> e sollevare gli <b>interruttori elettrici</b> prima di
-              evacuare sono azioni semplici ma decisive: eliminano due delle principali
-              fonti di rischio aggiuntivo, permettendo ai soccorritori di operare
-              in un ambiente meno pericoloso."
+            text: "Prima di lasciare l\u2019area, <b>interrompi l\u2019elettricit\xE0</b>
+              agendo sul quadro elettrico: <b>solleva o abbassa l\u2019interruttore
+              generale</b>.\nQuesta azione elimina la corrente e riduce il rischio
+              di <b>cortocircuiti</b> o inneschi elettrici che potrebbero aggravare
+              l\u2019incendio."
           StepForCompletition:
-          - Switch the levers
+          - "Disattiva l'elettricit\xE0"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> fino alla posizione di chiusura (di solito
+              perpendicolare al tubo).\nIn questo modo si blocca il flusso, riducendo
+              il rischio di <b>esplosioni</b> e fughe pericolose."
+          StepForCompletition:
+          - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
       - ChapterName: Isola Incendio
@@ -1281,24 +1292,27 @@ MonoBehaviour:
           needsButtonToBeCompleted: 0
       - ChapterName: Estintore generico Optional
         feedbacks:
-        - FeedbackName: Prendi l'estintore
+        - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Quando il fuoco blocca il percorso ma \xE8 di dimensioni contenute,
-              usare un <b>estintore</b> \xE8 la scelta giusta. Gli estintori sono
-              posizionati in <b>ogni aula</b> proprio per situazioni come questa.
-              \xC8 importante puntare il getto alla <b>base delle fiamme</b> e non
-              alle fiamme stesse: \xE8 l\xEC che si trova la fonte di combustione.
-              Agire con rapidit\xE0 e precisione permette di liberare il <b>percorso
-              di evacuazione</b> senza esporsi inutilmente al pericolo. Se il fuoco
-              non si spegne in pochi secondi, abbandonare il tentativo e cercare
-              una <b>via alternativa</b> rimane sempre la priorit\xE0."
+            text: 'Il fuoco blocca il percorso ma sembra gestibile: usa l''<b>estintore</b>.
+              Punta alla <b>base delle fiamme</b> ed eroga il getto.
+
+              Se
+              stanno bruciando <b>materiali solidi</b> (come carta, legno o arredi)
+              usa un estintore ad <b>acqua<b> o a <b>schiuma<b>.4
+
+              Se
+              sono coinvolti <b>componenti elettrici<b>, sceglie l''estintore a <b>CO2<b>.
+
+              Una
+              volta spento il fuoco, <b>prosegui immediatamente</b> con l''evacuazione.'
           StepForCompletition:
-          - Grab extiguisher
+          - (solido) Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
         - FeedbackName: Rimuovi la sicura
@@ -1357,6 +1371,22 @@ MonoBehaviour:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+        - FeedbackName: "C'\xE8 del fumo!"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "In presenza di <b>fumo</b>, <b>abbassati immediatamente</b> e
+              procedi vicino al pavimento. Il fumo tende a salire verso l\u2019alto,
+              quindi restando in basso puoi respirare aria pi\xF9 pulita e ridurre
+              il rischio di <b>intossicazione</b>. Se possibile, <b>copri naso e
+              bocca</b> con un panno e <b>prosegui rapidamente</b> verso l\u2019uscita."
+          StepForCompletition:
+          - Mostra Feedback fumo
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
       - ChapterName: Primo soccorso Optional
         feedbacks:
         - FeedbackName: Apri il medikit
