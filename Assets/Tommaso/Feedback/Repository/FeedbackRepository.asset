@@ -684,23 +684,6 @@ MonoBehaviour:
           - "No, non c'\xE8 nessuno in mensa"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
-      - ChapterName: Segnalazione assenti
-        feedbacks:
-        - FeedbackName: Segnala gli assenti
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: Una volta evacuati, <b>parla subito con gli insegnanti</b>. Fornisci
-              informazioni sul numero di studenti e <b>segnala eventuali dispersi
-              o assenti</b>. Una comunicazione rapida permette di organizzare i <b>soccorsi</b>
-              nel minor tempo possibile.
-          StepForCompletition:
-          - segnala assenti
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
       - ChapterName: Estintore generico Optional
         feedbacks:
         - FeedbackName: "C'\xE8 del fumo!"
@@ -719,22 +702,6 @@ MonoBehaviour:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
-        - FeedbackName: <b>Fuoco elettrico<b> - prendi l'estintore
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Il fuoco blocca il percorso ma sembra gestibile: usa l'<b>estintore</b>.
-              Ce n'\xE8 uno <b>nelle vicinanze</b>. Prendilo, puntalo alla <b>base
-              delle fiamme</b> ed eroga il getto.\r\nSono coinvolti impianti elettrici</b>,
-              usa un <b>estintore a CO2</b>.\r\nUna volta spento il fuoco, <b>prosegui
-              immediatamente</b> con l'evacuazione."
-          StepForCompletition:
-          - (elettrico) Grab  extinguisher
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
         - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
@@ -742,12 +709,18 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Il fuoco blocca il percorso ma sembra gestibile: usa l'<b>estintore</b>.
-              Ce n'\xE8 uno <b>nelle vicinanze</b>. Prendilo, puntalo alla <b>base
-              delle fiamme</b> ed eroga il getto.\nSe stanno bruciando <b>materiali
-              solidi</b> (come carta, legno o arredi) e <b>non sono coinvolti impianti
-              elettrici</b>, puoi usare un <b>estintore ad acqua</b> o uno a <b>schiuma<b>.\nUna
-              volta spento il fuoco, <b>prosegui immediatamente</b> con l'evacuazione."
+            text: 'Il fuoco blocca il percorso ma sembra gestibile: usa l''<b>estintore</b>.
+              Punta alla <b>base delle fiamme</b> ed eroga il getto.
+
+              Se
+              stanno bruciando <b>materiali solidi</b> (come carta, legno o arredi)
+              usa un estintore ad <b>acqua<b> o a <b>schiuma<b>.4
+
+              Se
+              sono coinvolti <b>componenti elettrici<b>, sceglie l''estintore a <b>CO2<b>.
+
+              Una
+              volta spento il fuoco, <b>prosegui immediatamente</b> con l''evacuazione.'
           StepForCompletition:
           - (solido) Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
@@ -791,6 +764,23 @@ MonoBehaviour:
               far <b>riprendere le fiamme</b>."
           StepForCompletition:
           - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: Segnala gli assenti
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Una volta evacuati, <b>parla subito con gli insegnanti</b>. Fornisci
+              informazioni sul numero di studenti e <b>segnala eventuali dispersi
+              o assenti</b>. Una comunicazione rapida permette di organizzare i <b>soccorsi</b>
+              nel minor tempo possibile.
+          StepForCompletition:
+          - segnala assenti
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
       - ChapterName: Primo soccorso Optional
@@ -892,7 +882,7 @@ MonoBehaviour:
           needsButtonToBeCompleted: 0
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: Trova l'estintore
+        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
