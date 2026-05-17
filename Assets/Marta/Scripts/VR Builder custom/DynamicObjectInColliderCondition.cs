@@ -161,7 +161,7 @@ namespace VRBuilder.Core.Conditions
 
             public override IEnumerator Update()
             {
-                while (!Data.IsCompleted)
+                while (true)
                 {
                     if (IsInside())
                     {
@@ -172,6 +172,7 @@ namespace VRBuilder.Core.Conditions
                     else
                     {
                         _timeInside = 0f;
+                        Data.IsCompleted = false;
                     }
 
                     yield return null;

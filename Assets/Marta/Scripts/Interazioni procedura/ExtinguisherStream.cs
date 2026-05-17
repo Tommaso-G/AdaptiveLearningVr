@@ -13,7 +13,8 @@ public class ExtinguisherStream : MonoBehaviour
     [SerializeField] private List<FireType> supportedTypes;
 
     [SerializeField] private GameObject safetyCatchEmpty;
-    private bool safetyCatch = false;
+    [SerializeField] private GameObject safetyCatch;
+    //private bool safetyCatch = false;
     private FireObject fire;
     private FireObject lastHit;
     private FireLiquid fireLiquid;
@@ -141,23 +142,19 @@ public class ExtinguisherStream : MonoBehaviour
         FoamPS.Pause();
     }
 
-    public void setSafetyCatch()
-    {
-        safetyCatch = true;
-        SafetyCatchCheck(true);
-    }
-
     public void SafetyCatchCheck(bool disable)
     {
-        if (safetyCatch)
+        if (safetyCatch.activeSelf == false)
         {
             if (disable)
             {
                 safetyCatchEmpty.SetActive(false);
+                //safetyCatchEmpty.GetComponent<VisualProxy>().setDisableProxy(safetyCatch);
             }
             else
             {
                 safetyCatchEmpty.SetActive(true);
+                //safetyCatchEmpty.GetComponent<VisualProxy>().releaseDisableProxy(safetyCatch);
             }
         }
     }

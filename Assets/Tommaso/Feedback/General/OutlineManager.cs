@@ -9,6 +9,8 @@ using System.Linq;
 using System.Reflection;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 /// <summary>
 /// Per ogni step, cerca gli oggetti con tag "ObjectStep" (o nei loro figli)
@@ -62,8 +64,13 @@ public class StepOutlineManager : MonoBehaviour
 
     /// <summary>Outline attivi nello step corrente, da spegnere alla fine.</summary>
     private readonly List<Outline> activeOutlines = new List<Outline>();
+    private readonly Dictionary<VisualProxy, Outline> activeProxyOutlines = new Dictionary<VisualProxy, Outline>();
 
     private Coroutine pulseCoroutine;
+
+    // Stato interno aggiuntivo in StepOutlineManager
+    private readonly Dictionary<IChapter, IStep> trackedSubChapterSteps = new Dictionary<IChapter, IStep>();
+    private Coroutine subChapterMonitorCoroutine;
 
     // -------------------------------------------------------------------------
     // Unity lifecycle
@@ -71,15 +78,23 @@ public class StepOutlineManager : MonoBehaviour
     private void Start()
     {
         ProcessRunner.Events.ProcessStarted += OnProcessStarted;
-        ProcessRunner.Events.StepStarted    += OnStepStarted;
+        ProcessRunner.Events.StepStarted += OnStepStarted;
         ProcessRunner.Events.ChapterStarted += OnChapterStarted;
     }
 
     private void OnDestroy()
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
-        ProcessRunner.Events.StepStarted    -= OnStepStarted;
+        ProcessRunner.Events.StepStarted -= OnStepStarted;
         ProcessRunner.Events.ChapterStarted -= OnChapterStarted;
+        StopSubChapterMonitor();
+        if (activeProxyOutlines.Count > 0)
+        {
+            foreach (KeyValuePair<VisualProxy, Outline> pair in activeProxyOutlines)
+            {
+                pair.Key.OnProxyChanged -= HandleProxyOutline;
+            }
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -97,7 +112,9 @@ public class StepOutlineManager : MonoBehaviour
         IChapter chapter = process.Data.Current;
         if (chapter == null) return;
 
+
         DisableAllActiveOutlines();
+        DisableAllActiveProxyOutlines();
 
         // Controlla il filtro: outline attivo solo se feedbackLevel è 0 o 1
         if (chapterFilter != null && chapterFilter.IsOutlineAllowed(chapter.Data.Name) == false)
@@ -115,6 +132,7 @@ public class StepOutlineManager : MonoBehaviour
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {
         DisableAllActiveOutlines();
+        DisableAllActiveProxyOutlines();
     }
 
     // -------------------------------------------------------------------------
@@ -135,19 +153,101 @@ public class StepOutlineManager : MonoBehaviour
 
             if (behavior is ExecuteChaptersBehavior executeChaptersBehavior)
             {
-                IEnumerable<IChapter> subChapters = executeChaptersBehavior.Data.GetChildren();
-                foreach (IChapter subChapter in subChapters)
-                {
-                    IStep activeStep = subChapter.Data.Current;
-                    if (activeStep != null)
-                        EnableOutlinesForStep(activeStep);
-                }
+                StopSubChapterMonitor();
+                // Passa il behavior, non i sottocapitoli già risolti
+                subChapterMonitorCoroutine = StartCoroutine(
+                    MonitorSubChapters(executeChaptersBehavior));
                 return true;
             }
         }
         return false;
     }
+    /// <summary>
+    /// Monitora ogni frame i sottocapitoli: quando uno step cambia,
+    /// aggiorna gli outline esattamente come farebbe StepStarted.
+    /// </summary>
+    private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBehavior)
+    {
+        // Aspetta finché almeno un sottocapitolo ha uno step attivo
+        List<IChapter> subChapters = null;
 
+        while (true)
+        {
+            subChapters = executeChaptersBehavior.Data.GetChildren()
+                .Where(c => c != null)
+                .ToList();
+
+            bool anyActive = subChapters.Any(c => c?.Data?.Current != null);
+            if (anyActive) break;
+
+            yield return null;
+        }
+
+        Debug.Log($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
+
+        // Abilita gli outline per lo step attivo iniziale
+        foreach (IChapter subChapter in subChapters)
+        {
+            IStep activeStep = subChapter?.Data?.Current;
+            if (activeStep != null)
+                EnableOutlinesForStep(activeStep);
+        }
+
+        // Snapshot iniziale
+        var lastStep = new Dictionary<IChapter, IStep>();
+        foreach (IChapter subChapter in subChapters)
+            lastStep[subChapter] = subChapter?.Data?.Current;
+
+        // Monitor continuo
+        while (true)
+        {
+            bool anyChanged = false;
+
+            foreach (IChapter subChapter in subChapters)
+            {
+                if (subChapter?.Data == null) continue;
+
+                IStep currentStep = subChapter.Data.Current;
+
+                if (currentStep != lastStep[subChapter])
+                {
+                    Debug.Log($"[StepOutlineManager] Last step: {lastStep[subChapter].Data.Name}. Current step: {(currentStep == null ? "Finito il sottocapitolo" : currentStep.Data.Name)}");
+                    lastStep[subChapter] = currentStep;
+                    anyChanged = true;
+                }
+            }
+
+            if (anyChanged)
+            {
+                ClearOutlines();
+                ClearProxyOutlines();
+
+                foreach (IChapter subChapter in subChapters)
+                {
+                    if (subChapter?.Data == null) continue;
+
+                    IStep activeStep = subChapter.Data.Current;
+                    if (activeStep != null)
+                    {
+                        Debug.Log($"[StepOutlineManager] Step cambiato: {activeStep.Data.Name} in {subChapter.Data.Name}");
+                        EnableOutlinesForStep(activeStep);
+                    }
+                }
+            }
+
+            yield return null;
+        }
+    }
+
+    private void StopSubChapterMonitor()
+    {
+        if (subChapterMonitorCoroutine != null)
+        {
+            StopCoroutine(subChapterMonitorCoroutine);
+            subChapterMonitorCoroutine = null;
+        }
+        trackedSubChapterSteps.Clear();
+    }
     // -------------------------------------------------------------------------
     // Logica principale
     // -------------------------------------------------------------------------
@@ -158,21 +258,65 @@ public class StepOutlineManager : MonoBehaviour
     /// </summary>
     private void EnableOutlinesForStep(IStep step)
     {
-        List<GameObject> targetObjects = CollectTargetObjects(step);
+        CollectTargetObjects(step,
+            out List<GameObject> standardObjects,
+            out List<GameObject> proxyObjects);
 
-        foreach (GameObject go in targetObjects)
+        foreach (GameObject go in standardObjects)
         {
             FindAndEnableOutlines(go);
         }
 
+        foreach (GameObject go in proxyObjects)
+        {
+            VisualProxy vproxy = go.GetComponent<VisualProxy>();
+            GameObject activeProxy = vproxy?.activeproxy;
+            if (activeProxy != null)
+            {
+                Debug.Log($"[StepOutlineManager] ActiveProxy {activeProxy.name}, Visual Proxy {vproxy.name}");
+                FindAndEnableProxyOutlines(activeProxy, vproxy);
+                vproxy.OnProxyChanged += HandleProxyOutline;
+            }
+            else
+            {
+                Debug.Log($"[StepOutlineManager] ActiveProxy null");
+            }
+        }
+
         // Avvia la coroutine di pulsazione se ci sono outline attivi
-        if (activeOutlines.Count > 0)
+        if (activeOutlines.Count > 0 || activeProxyOutlines.Count > 0)
         {
             StopPulseCoroutine();
             pulseCoroutine = StartCoroutine(PulseOutlineWidth());
         }
     }
 
+    private void HandleProxyOutline(VisualProxy vproxy)
+    {
+        StartCoroutine(UpdateProxyOutline(vproxy));
+    }
+
+    private IEnumerator UpdateProxyOutline(VisualProxy vproxy)
+    {
+        if (activeProxyOutlines.ContainsKey(vproxy))
+        {
+            activeProxyOutlines[vproxy].OutlineWidth = minOutlineWidth;
+            activeProxyOutlines[vproxy].enabled = false;
+
+            Debug.Log($"[StepOutlineManager] Proxy outline disattivato su: {activeProxyOutlines[vproxy].gameObject.name}");
+
+            activeProxyOutlines.Remove(vproxy);
+        }
+        else
+        {
+            GameObject activeProxy = vproxy?.activeproxy;
+            if (activeProxy != null)
+            {
+                FindAndEnableProxyOutlines(activeProxy, vproxy);
+            }
+        }
+            yield return null;
+    }
     /// <summary>
     /// Cerca ricorsivamente tra il GO e i suoi figli quelli con tag "ObjectStep"
     /// che hanno un componente Outline, e lo attiva.
@@ -197,6 +341,30 @@ public class StepOutlineManager : MonoBehaviour
         }
     }
 
+    private void FindAndEnableProxyOutlines(GameObject root, VisualProxy vproxy)
+    {
+        // Il root deve avere il tag ObjectStep
+        if (!root.CompareTag(OBJECT_STEP_TAG))
+        {
+            Debug.Log($"[StepOutlineManager] Root tag sbagliato. Root = {root.name}");
+            return;
+        }
+
+        // Attiva outline su root e su tutti i figli che hanno il componente, indipendentemente dal tag
+        foreach (Transform t in root.GetComponentsInChildren<Transform>(true))
+        {
+            Outline outline = t.GetComponent<Outline>();
+            if (outline == null) continue;
+            if (activeProxyOutlines.ContainsKey(vproxy)) continue;
+
+            outline.enabled = true;
+            outline.OutlineWidth = minOutlineWidth;
+            activeProxyOutlines.Add(vproxy, outline);
+
+            Debug.Log($"[StepOutlineManager] Proxy outline attivato su: {t.gameObject.name}");
+        }
+    }
+
     private void TryEnableOutline(GameObject go)
     {
         if (!go.CompareTag(OBJECT_STEP_TAG)) return;
@@ -215,6 +383,13 @@ public class StepOutlineManager : MonoBehaviour
 
     private void DisableAllActiveOutlines()
     {
+        StopSubChapterMonitor();
+        StopPulseCoroutine();
+        ClearOutlines();
+    }
+
+    private void ClearOutlines()
+    {
         StopPulseCoroutine();
 
         foreach (Outline outline in activeOutlines)
@@ -227,6 +402,27 @@ public class StepOutlineManager : MonoBehaviour
             }
         }
         activeOutlines.Clear();
+    }
+
+    private void DisableAllActiveProxyOutlines()
+    {
+        StopSubChapterMonitor();
+        StopPulseCoroutine();
+        ClearProxyOutlines();
+    }
+
+    private void ClearProxyOutlines()
+    {
+        StopPulseCoroutine();
+
+        foreach (KeyValuePair<VisualProxy, Outline> pair in activeProxyOutlines)
+        {
+            pair.Value.OutlineWidth = minOutlineWidth;
+            pair.Value.enabled = false;
+            pair.Key.OnProxyChanged -= HandleProxyOutline;
+            Debug.Log($"[StepOutlineManager] Outline disattivato su: {pair.Value.gameObject.name}");
+        }
+        activeProxyOutlines.Clear();
     }
 
     private void StopPulseCoroutine()
@@ -252,8 +448,8 @@ public class StepOutlineManager : MonoBehaviour
         float lo = Mathf.Min(minOutlineWidth, maxOutlineWidth);
         float hi = Mathf.Max(minOutlineWidth, maxOutlineWidth);
 
-        float t        = 0f;
-        bool  goingUp  = true;
+        float t = 0f;
+        bool goingUp = true;
 
         while (true)
         {
@@ -261,18 +457,23 @@ public class StepOutlineManager : MonoBehaviour
 
             if (t >= 1f)
             {
-                t       = t - 1f; // mantiene il resto per continuità
+                t = t - 1f; // mantiene il resto per continuità
                 goingUp = !goingUp;
             }
 
             float normalized = goingUp ? t : 1f - t;
-            float eased      = ApplyEasing(normalized);
-            float width      = Mathf.LerpUnclamped(lo, hi, eased);
+            float eased = ApplyEasing(normalized);
+            float width = Mathf.LerpUnclamped(lo, hi, eased);
 
             foreach (Outline outline in activeOutlines)
             {
                 if (outline != null)
                     outline.OutlineWidth = width;
+            }
+
+            foreach (KeyValuePair<VisualProxy, Outline> pair in activeProxyOutlines)
+            {
+                pair.Value.OutlineWidth = width;
             }
 
             yield return null;
@@ -299,9 +500,12 @@ public class StepOutlineManager : MonoBehaviour
     /// Legge le condizioni dello step e raccoglie i GameObjects referenziati,
     /// tramite SingleSceneObjectReference e MultipleScenePropertyReference.
     /// </summary>
-    private List<GameObject> CollectTargetObjects(IStep step)
+    private void CollectTargetObjects(IStep step,
+    out List<GameObject> standardObjects,
+    out List<GameObject> proxyObjects)
     {
-        var result = new List<GameObject>();
+        standardObjects = new List<GameObject>();
+        proxyObjects = new List<GameObject>();
 
         foreach (ITransition transition in step.Data.Transitions.Data.Transitions)
         {
@@ -310,25 +514,24 @@ public class StepOutlineManager : MonoBehaviour
 
             foreach (ICondition condition in t.Data.Conditions)
             {
+                bool isProxyCondition = condition is VirtualGrabCondition
+                                     || condition is ObjectDisabledCondition;
+
+                List<GameObject> target = isProxyCondition ? proxyObjects : standardObjects;
+
                 var properties = condition.Data.GetType().GetProperties(
                     BindingFlags.Public | BindingFlags.Instance);
 
                 foreach (PropertyInfo prop in properties)
                 {
                     if (typeof(SingleSceneObjectReference).IsAssignableFrom(prop.PropertyType))
-                    {
-                        CollectFromSSO(prop, condition, result);
-                    }
+                        CollectFromSSO(prop, condition, target);
                     else if (prop.PropertyType.IsGenericType &&
                              prop.PropertyType.GetGenericTypeDefinition() == typeof(MultipleScenePropertyReference<>))
-                    {
-                        CollectFromMSPR(prop, condition, result);
-                    }
+                        CollectFromMSPR(prop, condition, target);
                 }
             }
         }
-
-        return result;
     }
 
     private void CollectFromSSO(PropertyInfo prop, ICondition condition, List<GameObject> result)

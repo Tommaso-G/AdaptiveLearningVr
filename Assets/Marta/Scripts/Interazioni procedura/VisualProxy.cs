@@ -3,15 +3,23 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using VRBuilder.Core.Conditions;
+using VRBuilder.XRInteraction.Interactables;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class VisualProxy : MonoBehaviour, DynamicObjectInColliderCondition.IDynamicTargetProvider
 {
     public Renderer[] renderers;
     public GameObject activeproxy;
     public GameObject CurrentTarget => activeproxy;
+    public bool MultypleGrabNotAllowed = false;
     private InteractionListener interactionlistener;
     public bool isGrabbed { get; private set; }
     public event Action OnGrabbed;
+    public event Action OnReleased;
+    public event Action<VisualProxy> OnProxyChanged;
 
     private void Start()
     {
@@ -19,25 +27,42 @@ public class VisualProxy : MonoBehaviour, DynamicObjectInColliderCondition.IDyna
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public void setDisableProxy(GameObject proxy)
+    public void setProxyWithoutGrab(GameObject proxy)
     {
-        if (!proxy.gameObject.activeSelf)
+        if (activeproxy != proxy)
         {
-            setActiveProxy(proxy);
+            activeproxy = proxy;
+            renderers = proxy.GetComponentsInChildren<Renderer>();
+            OnProxyChanged?.Invoke(this);
         }
     }
 
-    public void releaseDisableProxy(GameObject proxy)
+    public void releaseProxyWithoutGrab(GameObject proxy)
     {
-        if (!proxy.gameObject.activeSelf)
-        {
-            releaseProxy(true);
-        }
+        activeproxy = null;
+        renderers = null;
+        OnProxyChanged?.Invoke(this);
     }
     public void setActiveProxy(GameObject proxy)
     {
-        activeproxy = proxy;
-        renderers = proxy.GetComponentsInChildren<Renderer>();
+
+        if (activeproxy != proxy)
+        {
+            if (activeproxy != null && MultypleGrabNotAllowed)
+            {
+                InteractableObject interactable = activeproxy.GetComponent<InteractableObject>();
+                var interactor = interactable.firstInteractorSelecting;
+                if (interactor != null)
+                {
+                    interactable.interactionManager.SelectExit(interactor, interactable);
+                }
+
+            }
+
+            activeproxy = proxy;
+            renderers = proxy.GetComponentsInChildren<Renderer>();
+            OnProxyChanged?.Invoke(this);
+        }
         Grabbed();
     }
 
@@ -46,9 +71,8 @@ public class VisualProxy : MonoBehaviour, DynamicObjectInColliderCondition.IDyna
         activeproxy = null;
         renderers = null;
         if (releaseGrabbed)
-        {
             Release();
-        }
+        OnProxyChanged?.Invoke(this);
     }
 
     public Renderer[] GetProxyRenderers()
@@ -65,5 +89,6 @@ public class VisualProxy : MonoBehaviour, DynamicObjectInColliderCondition.IDyna
     public void Release()
     {
         isGrabbed = false;
+        OnReleased?.Invoke();
     }
 }
