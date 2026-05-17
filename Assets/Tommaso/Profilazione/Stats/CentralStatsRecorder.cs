@@ -125,6 +125,13 @@ public class CentralStatsRecorder : MonoBehaviour
     [SerializeField] private MinigameDataRecorder minigameDataRecorder;
     [SerializeField] private List<string> feedbackDaEscludere = new List<string>();
 
+    public string profilingSessionName = "Nome";
+
+    void Start()
+    {
+        if (PlayerPrefs.HasKey("ProfilingSessionName"))
+            profilingSessionName = PlayerPrefs.GetString("ProfilingSessionName");
+    }
 
 
     public LearningSessionSlidesData CalcolaMediaSlidesData()
@@ -216,7 +223,8 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
         
-        string filePath = System.IO.Path.Combine(folderPath, "CropCrodingherProfileSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}ProfileSessionData.json");
+
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] File salvato in: {filePath}");
     }
@@ -310,7 +318,7 @@ public class CentralStatsRecorder : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
 
-        string filePath = System.IO.Path.Combine(folderPath, "CropCrondringherFeedbacksSessionData.json");
+        string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}FeedbacksSessionData.json");        
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {filePath}");
     }
