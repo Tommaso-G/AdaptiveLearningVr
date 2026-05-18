@@ -33,6 +33,7 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private bool _reflectiveEffectsConsumed = false;
 
+    private bool isClosing = false;
 
     public SlidesDataSender sender;
 
@@ -132,7 +133,7 @@ public class FeedbackPrefabController : MonoBehaviour
         {
             float distance = Vector3.Distance(playerCamera.transform.position, transform.position);
 
-        if (distance <= activationDistance && !isVisible)
+        if (distance <= activationDistance && !isVisible && !isClosing)
         {
             isVisible = true;
             if (waypointInstance != null)
@@ -142,7 +143,7 @@ public class FeedbackPrefabController : MonoBehaviour
             if (!_reflectiveEffectsConsumed)
                 styleBehaviour?.OnFeedbackOpened(this);
         }
-        else if (distance > activationDistance && isVisible)
+        else if (distance > activationDistance && isVisible && !isClosing)
         {
             isVisible = false;
             if (waypointInstance != null)
@@ -242,6 +243,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public IEnumerator CloseFeedbackRoutine()
     {
+        isClosing = true;
+
         if (audioSource != null)
             audioSource.Play();
 
@@ -249,25 +252,27 @@ public class FeedbackPrefabController : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         if (scaleRoutine != null)
+        {
             StopCoroutine(scaleRoutine);
+            scaleRoutine = null;
+        }
 
         if (waypointInstance != null)
         {
             foreach (Transform child in waypointInstance.GetComponentsInChildren<Transform>(true))
             {
-                if (child.name == "Question") { child.gameObject.SetActive(false); Debug.Log("[CloseFeedbackRoutine] 'Question' disattivato."); }
-                if (child.name == "Check") { child.gameObject.SetActive(true); Debug.Log("[CloseFeedbackRoutine] 'Check' attivato."); }
+                if (child.name == "Question") child.gameObject.SetActive(false);
+                if (child.name == "Check") child.gameObject.SetActive(true);
             }
-
-            yield return new WaitForSeconds(1f); // <-- lascia vedere il cambiamento
-
+            yield return new WaitForSeconds(1f);
             Destroy(waypointInstance);
         }
 
-        scaleRoutine = StartCoroutine(SmoothScale(Vector3.zero));
-        StartCoroutine(DestroyAfterClose());
-
         styleBehaviour?.OnFeedbackClosed(this);
+
+        // Scala a zero garantita
+        scaleRoutine = StartCoroutine(SmoothScale(Vector3.zero));
+        StartCoroutine(DestroyAfterClose()); // con timeout
     }
 
     public void CloseFeedbackWithoutCompletion()
@@ -293,11 +298,16 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private IEnumerator DestroyAfterClose()
     {
-        while (transform.localScale.magnitude > 0.0001f)
+        float timeout = 5f;
+        float elapsed = 0f;
+
+        while (transform.localScale.magnitude > 0.0001f && elapsed < timeout)
+        {
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
+        }
 
         Destroy(gameObject);
-
     }
 
 

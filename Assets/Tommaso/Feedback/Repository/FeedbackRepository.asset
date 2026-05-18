@@ -412,10 +412,8 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "In caso di incendio, <b>avvisa subito il personale scolastico</b>
-              usando il telefono. Comunica con calma: indica <b>dove si trova l'incendio</b>
-              (piano, aula, corridoio) e <b>quanto \xE8 esteso</b>. Una segnalazione
-              precisa permette di attivare i <b>protocolli di emergenza</b> nel minor
-              tempo possibile."
+              usando il telefono. In questo modo il personale scolastico pu\xF2 coordinare
+              l'evacuazione degli studenti in maniera ordinata e sicura."
           StepForCompletition:
           - Grab telefono
           - Eseguire chiamata
@@ -443,11 +441,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Prendi il telefono e <b>chiama subito i Vigili del Fuoco</b> al
-              numero <b>115</b>. Comunica con calma e precisione: indica la <b>posizione
-              dell'incendio</b>, la sua <b>estensione</b> e qualsiasi dettaglio utile.
-              Pi\xF9 informazioni fornisci, pi\xF9 rapido e mirato sar\xE0 l'<b>intervento
-              di soccorso</b>."
+            text: Prendi il telefono e <b>chiama subito i Vigili del Fuoco</b> al
+              numero <b>115</b>. Una volta chiamati, saranno loro a chiederti alcune
+              informazioni sulla natura dell'emergenza.
           StepForCompletition:
           - Grab telefono pompieri
           - completa Domande
@@ -479,9 +475,9 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> fino alla posizione di chiusura (di solito
-              perpendicolare al tubo).\nIn questo modo si blocca il flusso, riducendo
-              il rischio di <b>esplosioni</b> e fughe pericolose."
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
           StepForCompletition:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
@@ -1034,9 +1030,9 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> fino alla posizione di chiusura (di solito
-              perpendicolare al tubo).\nIn questo modo si blocca il flusso, riducendo
-              il rischio di <b>esplosioni</b> e fughe pericolose."
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
           StepForCompletition:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}

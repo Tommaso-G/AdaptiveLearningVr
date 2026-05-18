@@ -58,6 +58,8 @@ public class HandMenu : MonoBehaviour
         public HandMenuPanel panel;
         public int priority;
         public bool allowMultipleRequests;
+        public bool automaticallyClose;
+        public float autoCloseDelay = 10f;
     }
 
 
@@ -92,6 +94,8 @@ public class HandMenu : MonoBehaviour
 
     [SerializeField]
     private List<MenuRequest> menuQueue = new List<MenuRequest>();
+
+    private Coroutine autoCloseCoroutine = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -234,7 +238,13 @@ public class HandMenu : MonoBehaviour
         if (currentMenu == null)
             return;
 
-        //print("CLOSE REQUEST ACCEPTED");
+        // Cancella auto-close se in corso
+        if (autoCloseCoroutine != null)
+        {
+            StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = null;
+        }
+
         currentMenu.Close();
         currentMenu = null;
         currentRequester = null;
@@ -251,7 +261,6 @@ public class HandMenu : MonoBehaviour
 
     private void OnMenuOpened()
     {
-        //print("OPEN REQUEST ACCEPTED");
         TriggerHaptic();
         HighlightController();
         if (rotationCoroutine == null)
@@ -259,6 +268,23 @@ public class HandMenu : MonoBehaviour
             rotationCoroutine = StartCoroutine(ShowRotationUI());
         }
         isMenuActive = true;
+
+        // Avvia auto-chiusura se configurata
+        var entry = menus.Find(m => m.id == currentMenu.MenuId);
+        if (entry != null && entry.automaticallyClose)
+        {
+            if (autoCloseCoroutine != null)
+                StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = StartCoroutine(AutoCloseAfterDelay(entry.autoCloseDelay));
+        }
+    }
+
+    private IEnumerator AutoCloseAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (currentMenu != null)
+            CloseCurrent();
+        autoCloseCoroutine = null;
     }
 
     private void OnMenuClosed()
