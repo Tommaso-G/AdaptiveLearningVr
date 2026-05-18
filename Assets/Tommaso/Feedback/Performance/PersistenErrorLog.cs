@@ -31,6 +31,7 @@ public class PersistentErrorLog : MonoBehaviour
 
     private const string KEY_TEXT = "PersistentErrorLog_Text";
     private const string KEY_PROFILE = "PersistentErrorLog_Profile";
+    private const string KEY_WAS_UPDATED = "PersistentErrorLog_WasUpdated";
 
     private void Awake()
     {
@@ -73,10 +74,11 @@ public class PersistentErrorLog : MonoBehaviour
 
             PlayerPrefs.SetString(KEY_TEXT, "");
             PlayerPrefs.SetString(KEY_PROFILE, currentProfile);
+            PlayerPrefs.SetInt(KEY_WAS_UPDATED, 0);
             PlayerPrefs.Save();
 
             if (textPanelOnStart != null)
-                textPanelOnStart.text = "";
+                textPanelOnStart.text = "Prima iterazione: vai campione salvali tutti!";
 
             Debug.Log($"[PersistentErrorLog] Log azzerato. Motivo: {(profileChanged ? "profilo cambiato" : "reset manuale")}");
         }
@@ -84,12 +86,24 @@ public class PersistentErrorLog : MonoBehaviour
         {
             _lastProfile = currentProfile;
             PlayerPrefs.SetString(KEY_PROFILE, currentProfile);
-            PlayerPrefs.Save();
 
             if (textPanelOnStart != null && !string.IsNullOrEmpty(_savedText))
-                textPanelOnStart.text = _savedText;
-        }
+            {
+                int wasUpdatedInLastSession = PlayerPrefs.GetInt(KEY_WAS_UPDATED, 0);
 
+                if (wasUpdatedInLastSession == 0)
+                {
+                    textPanelOnStart.text = "Nessun errore commesso nella precedente iterazione";
+                }
+                else
+                {
+                    textPanelOnStart.text = _savedText;
+                }
+            }
+
+            PlayerPrefs.SetInt(KEY_WAS_UPDATED, 0);
+            PlayerPrefs.Save();
+        }
     }
 
     /// <summary>
@@ -103,6 +117,7 @@ public class PersistentErrorLog : MonoBehaviour
 
         _savedText = newText;
         PlayerPrefs.SetString(KEY_TEXT, _savedText);
+        PlayerPrefs.SetInt(KEY_WAS_UPDATED, 1);
         PlayerPrefs.Save();
 
         if (textPanelOnStart != null)
@@ -132,6 +147,7 @@ public class PersistentErrorLog : MonoBehaviour
         _sessionStarted = false;
 
         PlayerPrefs.SetString(KEY_TEXT, "");
+        PlayerPrefs.SetInt(KEY_WAS_UPDATED, 0);
         PlayerPrefs.Save();
 
         if (textPanelOnStart != null)
