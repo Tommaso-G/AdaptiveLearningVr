@@ -4,34 +4,51 @@ using Unity.XR.CoreUtils;
 using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit.UI.BodyUI;
+using VRBuilder.XRInteraction.Interactables;
 public class ExitDoor : MonoBehaviour
 {
+    [Header("Block Door Settings")]
     public bool blocked = false;
+    public Sprite BlockedIcon;
+    [SerializeField]
+    private GameObject secondDoor;
+
+    [Header("HandMenu Settings")]
+    [SerializeField] private HandMenuRequester menuRequester;
     public Collider triggerUICollider;
     public CorrectDoorButton correctDoorButton;
+
+    [Header("Feedback Settings")]
+    public Transform feedbackPos;
+    public FeedbackIconController IconController;
+
     private bool selected = false;
+
+    private XRKnob interactable;
+
     private Rigidbody BlockedRb;
-    [SerializeField]
-    private Rigidbody secondDoor;
+    private Rigidbody secondDoorRb;
+
     private Renderer rend;
     private Renderer secondDoorRend;
+
     private Color[] baseColors;
     private Color renderColor;
+
     private GameObject mapButton;
     private Transform target;
-    [SerializeField] private HandMenuRequester menuRequester;
-    public Transform feedbackPos;
-    public Sprite BlockedIcon;
 
-    public FeedbackIconController IconController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         rend = GetComponent<Renderer>();
         //secondDoor = transform.Find("secondDoor").GetComponent<Rigidbody>();
-        secondDoorRend = secondDoor.gameObject.transform.GetComponent<Renderer>();
+        interactable = secondDoor.GetComponentInChildren<XRKnob>(true);
+        secondDoorRb = secondDoor.GetComponent<Rigidbody>();
+        secondDoorRend = secondDoor.GetComponent<Renderer>();
         BlockedRb = GetComponent<Rigidbody>();
         target = transform.GetChild(0).transform;
         target.transform.parent = null;
@@ -113,15 +130,18 @@ public class ExitDoor : MonoBehaviour
     public void isBlock(bool blocked)
     {
         BlockedRb.freezeRotation = blocked ? true : false;
-        secondDoor.freezeRotation = blocked ? true : false;
+        secondDoorRb.freezeRotation = blocked ? true : false;
         selected = blocked ? false : selected;
         target.gameObject.SetActive(!blocked);
+        interactable.enabled = blocked ? false : true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            if (!menuRequester.enabled) return;
+
             menuRequester.OpenMenu();
             correctDoorButton.CallCorrectButton(this);
         }
@@ -131,6 +151,8 @@ public class ExitDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (!menuRequester.enabled) return;
+
             menuRequester.CloseMenu();
         }
     }
