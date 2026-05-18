@@ -413,6 +413,16 @@ public class ExecutionOrderController : MonoBehaviour
 
         prevObj = go;
 
+        Outline[] outline = go.GetComponentsInChildren<Outline>(true);
+
+        if(outline.Length > 0)
+        {
+            foreach (Outline ol in outline)
+            {
+                ol.enabled = false;
+            }
+        }
+
         Renderer[] renderers = go.GetComponentsInChildren<Renderer>()
             .Where(r => !HasExcludedTagInHierarchy(r.transform))
             .ToArray();
@@ -431,7 +441,7 @@ public class ExecutionOrderController : MonoBehaviour
             rend.materials = redArray;
         }
 
-        StartCoroutine(FadeColor(renderers, orgMaterials, redMaterials));
+        StartCoroutine(FadeColor(renderers, orgMaterials, redMaterials, outline));
     }
 
     private bool HasExcludedTagInHierarchy(Transform t)
@@ -456,7 +466,7 @@ public class ExecutionOrderController : MonoBehaviour
     //    return renderers;
     //}
 
-    private IEnumerator FadeColor(Renderer[] renderers, List<Material[]> orgMaterials, List<Material[]> redMaterials)
+    private IEnumerator FadeColor(Renderer[] renderers, List<Material[]> orgMaterials, List<Material[]> redMaterials, Outline[] outline)
     {
         yield return new WaitForSeconds(0.5f);
         int k = 0;
