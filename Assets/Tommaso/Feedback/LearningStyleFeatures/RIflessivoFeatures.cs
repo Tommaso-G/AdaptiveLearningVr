@@ -26,6 +26,8 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private readonly List<Animator> pausedAnimators = new();
     private readonly List<ParticleSystem> pausedParticles = new();
     private readonly List<AgentState> pausedNavMeshAgents = new();
+    private ChapterTimer pausedChapterTimer;
+    private ChapterTracker pausedChapterTracker;
     public static bool IsPaused { get; private set; } = false;
 
     private FeedbackAutoManager _safeRunner;
@@ -96,6 +98,8 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         DisableInteractablesInRange(feedback.transform.position);
 
+        PauseChapterTimers();
+        PauseChapterTracker();
         PauseAnimators();
         PauseParticles();
         PauseNavMeshAgent();
@@ -109,6 +113,8 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 1f, audioFadeDuration));
 
+        ResumeChpaterTimers();
+        ResumeChpaterTracker();
         EnableInteractables();
         ResumeAnimators();
         ResumeParticles();
@@ -356,6 +362,52 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         pausedNavMeshAgents.Clear();
     }
+
+    private void PauseChapterTimers()
+    {
+        if (pausedChapterTimer == null)
+        {
+            pausedChapterTimer = FindAnyObjectByType<ChapterTimer>();
+        }
+
+        pausedChapterTimer.PauseTimer(all: true);
+        Debug.Log($"[RiflessivoFeatures] Chapter timer in pausa per tutti i capitoli.");
+    }
+
+    private void ResumeChpaterTimers()
+    {
+        if (pausedChapterTimer == null)
+        {
+            pausedChapterTimer = FindAnyObjectByType<ChapterTimer>();
+        }
+
+        pausedChapterTimer.ResumeTimer(all: true);
+        Debug.Log($"[RiflessivoFeatures] Chapter timer ripreso per tutti i capitoli.");
+    }
+
+    private void PauseChapterTracker()
+    {
+        if (pausedChapterTracker == null)
+        {
+            pausedChapterTracker = FindAnyObjectByType<ChapterTracker>();
+        }
+
+        pausedChapterTracker.PauseTracker();
+        Debug.Log($"[RiflessivoFeatures] Chapter tracker in pausa.");
+    }
+
+    private void ResumeChpaterTracker()
+    {
+        if (pausedChapterTracker == null)
+        {
+            pausedChapterTracker = FindAnyObjectByType<ChapterTracker>();
+        }
+
+        pausedChapterTracker.ResumeTracker();
+        Debug.Log($"[RiflessivoFeatures] Chapter tracker ripreso.");
+    }
+
+
 
     public static void SetPaused(bool value)
     {

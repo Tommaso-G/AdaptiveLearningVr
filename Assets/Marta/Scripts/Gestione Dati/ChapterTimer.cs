@@ -7,7 +7,6 @@ using System.Collections;
 
 public class ChapterTimer : MonoBehaviour
 {
-
     [System.Serializable]
     public class ChapterTimerSettings
     {
@@ -16,12 +15,24 @@ public class ChapterTimer : MonoBehaviour
         public string chapterWithTimer;
         public float max_time = 150f;
         public bool timerOn = false;
+
+        // ─────────────────────────────────────────────────────────────────
+        // NUOVI CAMPI DI RUNTIME (Nascosti nell'Inspector)
+        // ─────────────────────────────────────────────────────────────────
+        [System.NonSerialized] public float elapsedTime = 0f;
+        [System.NonSerialized] public Coroutine activeCoroutine = null;
+        [System.NonSerialized] public bool isPaused = false;
     }
 
     [SerializeField] ExecutionOrderController executionOrderController;
     [SerializeField] StepErrorTracker errorTracker;
     public List<ChapterTimerSettings> timerSettings = new List<ChapterTimerSettings>();
+
     public event Action OnTimeExceeded;
+
+    /// <summary>
+    /// Avvia il timer o lo riprende (Resume) se era stato messo in pausa.
+    /// </summary>
     public void StartTimer(string chapterName)
     {
         ChapterTimerSettings currentChapter = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
@@ -29,22 +40,20 @@ public class ChapterTimer : MonoBehaviour
         if (currentChapter == null || currentChapter.timerOn)
             return;
 
-        StartCoroutine(TimerCoroutine(currentChapter));
-
+        currentChapter.isPaused = false;
+        currentChapter.activeCoroutine = StartCoroutine(TimerCoroutine(currentChapter));
     }
 
     private IEnumerator TimerCoroutine(ChapterTimerSettings currentChapter)
     {
         currentChapter.timerOn = true;
 
-        print($"[ChapterTimer] Lanciato il timer per il capitolo {currentChapter.chapterWithTimer}");
+        print($"[ChapterTimer] Avviato/Ripreso timer per il capitolo {currentChapter.chapterWithTimer}. Tempo attuale: {currentChapter.elapsedTime:F1}/{currentChapter.max_time}s");
 
-        float elapsed_time = 0f;
-
-        while (elapsed_time < currentChapter.max_time)
+        while (currentChapter.elapsedTime < currentChapter.max_time)
         {
-            elapsed_time += Time.deltaTime;
-            yield return null;   // ← aspetta il frame successivo
+            currentChapter.elapsedTime += Time.deltaTime;
+            yield return null;
         }
 
         EndTimer(currentChapter);
@@ -55,46 +64,126 @@ public class ChapterTimer : MonoBehaviour
         if (currentChapter == null || !currentChapter.timerOn)
             return;
 
-        print($"[ChapterTimer] Terminato il timer per il capitolo {currentChapter.chapterWithTimer}");
+        print($"[ChapterTimer] Terminato il timer per il capitolo {currentChapter.chapterWithTimer} (Tempo Scaduto)");
 
-        if(errorTracker != null || executionOrderController != null)
+        if (errorTracker != null || executionOrderController != null)
         {
             ErrorReporter errorReporter = new ErrorReporter();
             errorReporter.setReference(errorTracker, executionOrderController);
 
-            string chapterErrorName;
-
-            if (currentChapter.chapterWithTimer == null)
-            {
-                chapterErrorName = "Unknown Chapter";
-            }
-            else
-            {
-                chapterErrorName = currentChapter.chapterWithTimer;
-            }
+            string chapterErrorName = currentChapter.chapterWithTimer ?? "Unknown Chapter";
 
             errorReporter.chapterErrorName = chapterErrorName;
             errorReporter.RegisterError("ChapterTimer");
         }
         else
         {
-            print($"[ChapterTimer] Impossibile segnar l'errore, Reference mancanti");
+            print($"[ChapterTimer] Impossibile segnare l'errore, Reference mancanti");
         }
 
         OnTimeExceeded?.Invoke();
-        currentChapter.timerOn = false;
+
+        ResetChapterData(currentChapter);
     }
 
-    public void StopTimer(string chapterName)
+    /// <summary>
+    /// Mette in pausa un singolo capitolo o TUTTI i capitoli attivi contemporaneamente.
+    /// </summary>
+    public void PauseTimer(string chapterName = "", bool all = false)
     {
-        ChapterTimerSettings currentChapter = timerSettings
-            .FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
+        if (all)
+        {
+            foreach (ChapterTimerSettings cts in timerSettings)
+            {
+                // Se il timer non è attivo, lo saltiamo e passiamo al prossimo (CONTINUE, non return!)
+                if (cts == null || !cts.timerOn)
+                    continue;
 
-        if (currentChapter == null || !currentChapter.timerOn)
+                PauseChapterInternal(cts);
+            }
+        }
+        else
+        {
+            ChapterTimerSettings currentChapter = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
+            if (currentChapter != null && currentChapter.timerOn)
+            {
+                PauseChapterInternal(currentChapter);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Riprende il timer di un singolo capitolo o di TUTTI i capitoli precedentemente messi in pausa.
+    /// </summary>
+    public void ResumeTimer(string chapterName = "", bool all = false)
+    {
+        if (all)
+        {
+            foreach (ChapterTimerSettings cts in timerSettings)
+            {
+                // Riparte SOLO se era stato effettivamente messo in pausa ed è configurato correttamente
+                if (cts == null || !cts.isPaused)
+                    continue;
+
+                ResumeChapterInternal(cts);
+            }
+        }
+        else
+        {
+            ChapterTimerSettings currentChapter = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
+            if (currentChapter != null && currentChapter.isPaused)
+            {
+                ResumeChapterInternal(currentChapter);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Ferma il timer definitivamente e AZZERA il tempo (es. quando il capitolo viene completato con successo).
+    /// </summary>
+    public void StopAndResetTimer(string chapterName)
+    {
+        ChapterTimerSettings currentChapter = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
+
+        if (currentChapter == null)
             return;
 
-        StopAllCoroutines(); // oppure tieni traccia della coroutine specifica
-        currentChapter.timerOn = false;
-        Debug.Log($"[ChapterTimer] Timer fermato per {chapterName}");
+        ResetChapterData(currentChapter);
+        Debug.Log($"[ChapterTimer] Timer INTERROTTO e RESETTATO per {chapterName}");
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // METODI INTERNI DI SUPPORTO
+    // ─────────────────────────────────────────────────────────────────
+
+    private void PauseChapterInternal(ChapterTimerSettings cts)
+    {
+        if (cts.activeCoroutine != null)
+        {
+            StopCoroutine(cts.activeCoroutine);
+            cts.activeCoroutine = null;
+        }
+
+        cts.timerOn = false;
+        cts.isPaused = true; // <--- Fondamentale per ricordarsi di lui al Resume globale
+        Debug.Log($"[ChapterTimer] Timer in PAUSA per {cts.chapterWithTimer}. Tempo salvato: {cts.elapsedTime:F1}s");
+    }
+
+    private void ResumeChapterInternal(ChapterTimerSettings cts)
+    {
+        cts.isPaused = false;
+        cts.activeCoroutine = StartCoroutine(TimerCoroutine(cts));
+    }
+
+    private void ResetChapterData(ChapterTimerSettings chapter)
+    {
+        if (chapter.activeCoroutine != null)
+        {
+            StopCoroutine(chapter.activeCoroutine);
+            chapter.activeCoroutine = null;
+        }
+        chapter.timerOn = false;
+        chapter.isPaused = false;
+        chapter.elapsedTime = 0f;
     }
 }
