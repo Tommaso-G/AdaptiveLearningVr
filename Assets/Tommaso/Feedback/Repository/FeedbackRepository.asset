@@ -40,6 +40,7 @@ MonoBehaviour:
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
         - FeedbackName: "Capitolo 2: Elettricit\xE0 e del gas"
@@ -65,6 +66,7 @@ MonoBehaviour:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: 'Capitolo 3: Isolamento incendio'
@@ -88,6 +90,7 @@ MonoBehaviour:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Giro di perlustrazione
         feedbacks:
         - FeedbackName: 'Capitolo 4: Giro di Perlustrazione'
@@ -110,6 +113,7 @@ MonoBehaviour:
           - Perlustra tutta la scuola e chiudi le porte
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: 'Capitolo 5: Segnalazione assenti'
@@ -127,6 +131,7 @@ MonoBehaviour:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Estintore generico Optional
         feedbacks:
         - FeedbackName: 'Imprevisto: Fuoco controllabile'
@@ -150,6 +155,7 @@ MonoBehaviour:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       riflessivo:
       - ChapterName: Segnalazione incendio
         feedbacks:
@@ -196,6 +202,7 @@ MonoBehaviour:
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
         - FeedbackName: "Capitolo 2: Interruzione dell'elettricit\xE0 e del gas"
@@ -232,6 +239,7 @@ MonoBehaviour:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: 'Capitolo 3: IIsolamento incendio'
@@ -280,6 +288,7 @@ MonoBehaviour:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Giro di perlustrazione
         feedbacks:
         - FeedbackName: 'Capitolo 4: Giro di Perlustrazione'
@@ -328,6 +337,7 @@ MonoBehaviour:
           - Perlustra tutta la scuola e chiudi le porte
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: 'Capitolo 5: Segnalazione assenti'
@@ -349,6 +359,7 @@ MonoBehaviour:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Estintore generico Optional
         feedbacks:
         - FeedbackName: 'Imprevisto: Fuoco controllabile'
@@ -396,6 +407,7 @@ MonoBehaviour:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
     visualPath:
       attivo: []
       riflessivo: []
@@ -419,6 +431,7 @@ MonoBehaviour:
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Attiva allarme
           pages:
           - Sequenzale_Globale: 0
@@ -434,6 +447,7 @@ MonoBehaviour:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Chiama i vigili del fuoco
           pages:
           - Sequenzale_Globale: 0
@@ -449,6 +463,7 @@ MonoBehaviour:
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
         - FeedbackName: "Disattiva l'elettricit\xE0"
@@ -467,6 +482,7 @@ MonoBehaviour:
           - "Disattiva l'elettricit\xE0"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Disattiva il gas
           pages:
           - Sequenzale_Globale: 0
@@ -482,6 +498,7 @@ MonoBehaviour:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: Isola l'incendio
@@ -501,6 +518,7 @@ MonoBehaviour:
           - Non puoi domarli tutti... chiudi la porta e scappa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Usa stracci o indumenti per bloccare il fumo
           pages:
           - Sequenzale_Globale: 0
@@ -516,6 +534,7 @@ MonoBehaviour:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Giro di perlustrazione
         feedbacks:
         - FeedbackName: Perlustra la scuola
@@ -533,6 +552,7 @@ MonoBehaviour:
           - Istruzioni Giro Di Perlustrazioni
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Aula computer
         feedbacks:
         - FeedbackName: Porta Paolina  in salvo
@@ -551,6 +571,7 @@ MonoBehaviour:
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
           pages:
           - Sequenzale_Globale: 0
@@ -566,6 +587,7 @@ MonoBehaviour:
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Aula 2(in fondo a sinistra)
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
@@ -583,6 +605,7 @@ MonoBehaviour:
           - Chiudi Porta Aula 2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Porta Paolina 2 in salvo
           pages:
           - Sequenzale_Globale: 0
@@ -599,6 +622,7 @@ MonoBehaviour:
           - Chiudi Porta Aula 2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: 'Laboratorio di chimica '
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
@@ -616,6 +640,7 @@ MonoBehaviour:
           - No, chiudi la porta di chimica
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Biblioteca
         feedbacks:
         - FeedbackName: "c'\xE8 paolina in sedie a rotelle"
@@ -634,6 +659,7 @@ MonoBehaviour:
           - Portala fuori
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
           pages:
           - Sequenzale_Globale: 0
@@ -648,6 +674,7 @@ MonoBehaviour:
           - "No, Non c'\xE8 nessuo in Biblioteca "
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Mensa
         feedbacks:
         - FeedbackName: "C'\xE8 michelle che balla..."
@@ -666,6 +693,7 @@ MonoBehaviour:
           - Porta Michelle all'uscita
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Non c'\xE8 nessuno in mensa"
           pages:
           - Sequenzale_Globale: 0
@@ -680,6 +708,7 @@ MonoBehaviour:
           - "No, non c'\xE8 nessuno in mensa"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Estintore generico Optional
         feedbacks:
         - FeedbackName: "C'\xE8 del fumo!"
@@ -698,6 +727,7 @@ MonoBehaviour:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
         - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
@@ -721,6 +751,7 @@ MonoBehaviour:
           - (solido) Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Rimuovi la sicura
           pages:
           - Sequenzale_Globale: 0
@@ -735,6 +766,7 @@ MonoBehaviour:
           - Sfaty catch removal
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: Afferra l'ugello
           pages:
           - Sequenzale_Globale: 0
@@ -747,6 +779,7 @@ MonoBehaviour:
           - grab ejector
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: Spegni il fuoco
           pages:
           - Sequenzale_Globale: 0
@@ -762,6 +795,7 @@ MonoBehaviour:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: Segnala gli assenti
@@ -779,6 +813,7 @@ MonoBehaviour:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Primo soccorso Optional
         feedbacks:
         - FeedbackName: Apri il medikit
@@ -798,6 +833,7 @@ MonoBehaviour:
           - Apri medkit
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Disinfetta la ferita
           pages:
           - Sequenzale_Globale: 0
@@ -816,6 +852,7 @@ MonoBehaviour:
           - Versa acqua
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Asciuga la ferita
           pages:
           - Sequenzale_Globale: 0
@@ -829,6 +866,7 @@ MonoBehaviour:
           - Asciuga
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Metti la garza
           pages:
           - Sequenzale_Globale: 0
@@ -845,6 +883,7 @@ MonoBehaviour:
           - metti garza
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Vie di fuga Optional
         feedbacks:
         - FeedbackName: Seleziona un'uscita
@@ -862,6 +901,7 @@ MonoBehaviour:
           - Seleziona una via di fuga alternativa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Chiudi la mappa
           pages:
           - Sequenzale_Globale: 0
@@ -876,6 +916,7 @@ MonoBehaviour:
           - Chiudi la mappa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
         - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
@@ -892,6 +933,7 @@ MonoBehaviour:
           - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Estrai la sicura
           pages:
           - Sequenzale_Globale: 0
@@ -906,6 +948,7 @@ MonoBehaviour:
           - Rimuovi la sicura (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Afferra l'erogatore
           pages:
           - Sequenzale_Globale: 0
@@ -920,6 +963,7 @@ MonoBehaviour:
           - Prendi l'eiettore (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Spegni il fuoco su liquido
           pages:
           - Sequenzale_Globale: 0
@@ -935,6 +979,7 @@ MonoBehaviour:
           - Estingui il fuoco (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       riflessivo:
       - ChapterName: Segnalazione incendio
         feedbacks:
@@ -961,6 +1006,7 @@ MonoBehaviour:
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Attiva allarme
           pages:
           - Sequenzale_Globale: 0
@@ -982,6 +1028,7 @@ MonoBehaviour:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Chiama i vigili del fuoco
           pages:
           - Sequenzale_Globale: 0
@@ -1004,6 +1051,7 @@ MonoBehaviour:
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
         - FeedbackName: "Disattiva l'elettricit\xE0"
@@ -1022,6 +1070,7 @@ MonoBehaviour:
           - "Disattiva l'elettricit\xE0"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Disattiva il gas
           pages:
           - Sequenzale_Globale: 0
@@ -1037,6 +1086,7 @@ MonoBehaviour:
           - Disattiva il gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Isola Incendio
         feedbacks:
         - FeedbackName: Isola l'incendio
@@ -1060,6 +1110,7 @@ MonoBehaviour:
           - Non puoi domarli tutti... chiudi la porta e scappa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Usa stracci o indumenti per bloccare il fumo
           pages:
           - Sequenzale_Globale: 0
@@ -1081,6 +1132,7 @@ MonoBehaviour:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Giro di perlustrazione
         feedbacks:
         - FeedbackName: Perlustra la scuola
@@ -1103,6 +1155,7 @@ MonoBehaviour:
           - Istruzioni Giro Di Perlustrazioni
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Aula computer
         feedbacks:
         - FeedbackName: Porta Paolina in salvo
@@ -1124,6 +1177,7 @@ MonoBehaviour:
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "non c'\xE8 nessuno"
           pages:
           - Sequenzale_Globale: 0
@@ -1142,6 +1196,7 @@ MonoBehaviour:
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Aula 2(in fondo a sinistra)
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
@@ -1162,6 +1217,7 @@ MonoBehaviour:
           - No, chiudi la porta di aula 2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Porta Paolina 2 in salvo
           pages:
           - Sequenzale_Globale: 0
@@ -1178,6 +1234,7 @@ MonoBehaviour:
           - Chiudi Porta Aula 2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: 'Laboratorio di chimica '
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
@@ -1198,6 +1255,7 @@ MonoBehaviour:
           - No, chiudi la porta di chimica
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Biblioteca
         feedbacks:
         - FeedbackName: "c'\xE8 paolina in sedie a rotelle"
@@ -1213,6 +1271,7 @@ MonoBehaviour:
           - Portala fuori
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
           pages:
           - Sequenzale_Globale: 0
@@ -1227,6 +1286,7 @@ MonoBehaviour:
           - "No, Non c'\xE8 nessuo in Biblioteca "
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Mensa
         feedbacks:
         - FeedbackName: "C'\xE8 michelle che balla..."
@@ -1248,6 +1308,7 @@ MonoBehaviour:
           - Porta Michelle all'uscita
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Non c'\xE8 nessuno qui"
           pages:
           - Sequenzale_Globale: 0
@@ -1265,6 +1326,7 @@ MonoBehaviour:
           - "No, non c'\xE8 nessuno in mensa"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Segnalazione assenti
         feedbacks:
         - FeedbackName: Segnala gli assenti
@@ -1286,6 +1348,7 @@ MonoBehaviour:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Estintore generico Optional
         feedbacks:
         - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
@@ -1311,6 +1374,7 @@ MonoBehaviour:
           - (solido) Grab extiguisher
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Rimuovi la sicura
           pages:
           - Sequenzale_Globale: 0
@@ -1329,6 +1393,7 @@ MonoBehaviour:
           - Sfaty catch removal
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: Afferra l'ugello
           pages:
           - Sequenzale_Globale: 0
@@ -1349,6 +1414,7 @@ MonoBehaviour:
           - grab ejector
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: Spegni il fuoco
           pages:
           - Sequenzale_Globale: 0
@@ -1367,6 +1433,7 @@ MonoBehaviour:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: "C'\xE8 del fumo!"
           pages:
           - Sequenzale_Globale: 0
@@ -1383,6 +1450,7 @@ MonoBehaviour:
           - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
       - ChapterName: Primo soccorso Optional
         feedbacks:
         - FeedbackName: Apri il medikit
@@ -1397,6 +1465,7 @@ MonoBehaviour:
           - Apri medkit
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Disinfetta la ferita
           pages:
           - Sequenzale_Globale: 0
@@ -1418,6 +1487,7 @@ MonoBehaviour:
           - Versa acqua
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Asciuga la ferita
           pages:
           - Sequenzale_Globale: 0
@@ -1437,6 +1507,7 @@ MonoBehaviour:
           - Asciuga
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
         - FeedbackName: Metti la garza
           pages:
           - Sequenzale_Globale: 0
@@ -1455,6 +1526,7 @@ MonoBehaviour:
           - metti garza
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
       - ChapterName: Vie di fuga Optional
         feedbacks:
         - FeedbackName: Seleziona un'uscita
@@ -1476,6 +1548,7 @@ MonoBehaviour:
           - Seleziona una via di fuga alternativa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Chiudi la mappa
           pages:
           - Sequenzale_Globale: 0
@@ -1489,6 +1562,7 @@ MonoBehaviour:
           - Chiudi la mappa
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
         - FeedbackName: Prendi l'estintore a CoO2
@@ -1505,6 +1579,7 @@ MonoBehaviour:
           - Prendi l'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Estrai la sicura
           pages:
           - Sequenzale_Globale: 0
@@ -1519,6 +1594,7 @@ MonoBehaviour:
           - Rimuovi la sicura (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Afferra l'erogatore
           pages:
           - Sequenzale_Globale: 0
@@ -1533,6 +1609,7 @@ MonoBehaviour:
           - Prendi l'eiettore (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Spegni il fuoco su liquido
           pages:
           - Sequenzale_Globale: 0
@@ -1548,6 +1625,7 @@ MonoBehaviour:
           - Estingui il fuoco liquido
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
     visualPath:
       attivo: []
       riflessivo: []

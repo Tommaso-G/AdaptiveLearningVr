@@ -108,7 +108,10 @@ public class FeedbackDisplayer : MonoBehaviour
                 customInstance.name = $"Feedback_Custom_{feedback.FeedbackName}";
 
                 var ctrl = customInstance.GetComponent<FeedbackPrefabController>();
-                if (ctrl != null) ctrl.needsButtonToBeCompleted = feedback.needsButtonToBeCompleted;
+                if (ctrl != null){ 
+                    ctrl.needsButtonToBeCompleted =  feedback.needsButtonToBeCompleted;
+                    ctrl.applyReflectiveEffects = feedback.applyReflectiveEffects;
+            }
 
                 holder.activeFeedbackInstance = customInstance;
                 return;
@@ -166,7 +169,10 @@ public class FeedbackDisplayer : MonoBehaviour
             }
 
             var containerCtrl = containerInstance.GetComponent<FeedbackPrefabController>();
-            if (containerCtrl != null) containerCtrl.needsButtonToBeCompleted =  feedback.needsButtonToBeCompleted;
+            if (containerCtrl != null){ 
+                containerCtrl.needsButtonToBeCompleted =  feedback.needsButtonToBeCompleted;
+                containerCtrl.applyReflectiveEffects = feedback.applyReflectiveEffects;
+            }
 
             holder.activeFeedbackInstance = containerInstance;
         }

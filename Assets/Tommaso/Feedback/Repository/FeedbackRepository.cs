@@ -91,6 +91,8 @@ public class FeedbackRepository : ScriptableObject
 
         [Header("Se è true, il feedback ha un bottone che va premnuto per proseguire")]
         public bool needsButtonToBeCompleted = false;
+
+        public bool applyReflectiveEffects = true;
     }
 
     [Serializable]

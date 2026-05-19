@@ -30,6 +30,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private ChapterTracker pausedChapterTracker;
     public static bool IsPaused { get; private set; } = false;
 
+    // --- Coroutine handles per cancellazione ---
+    private Coroutine _audioFadeCoroutine;
+    private Coroutine _volumeFadeCoroutine;
+    private Coroutine _resetCoroutine;
+
     private FeedbackAutoManager _safeRunner;
 
     private FeedbackAutoManager SafeRunner
@@ -76,7 +81,12 @@ public class RiflessivoFeatures : LearningStyleFeatures
     public override void OnFeedbackClosed(FeedbackPrefabController feedback)
     {
         if (feedback == null) return;
-        SafeRunner?.RunCoroutineSafe(WaitForVolumeAndReset(feedback));
+        
+        // Cancella eventuale reset in corso prima di avviarne uno nuovo
+        if (_resetCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_resetCoroutine);
+            
+        _resetCoroutine = SafeRunner?.RunCoroutineSafe(WaitForVolumeAndReset(feedback));
     }
 
     public override void resetVariables()
@@ -91,12 +101,21 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         EnsureVolumeReference();
 
-        if (globalVolume != null)
-            SafeRunner?.RunCoroutineSafe(FadeVolumeWeight(globalVolume, 1f, 0.5f));
+        // Cancella tutte le coroutine attive prima di avviarne di nuove
+        if (_resetCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_resetCoroutine);
+        if (_audioFadeCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
+        if (_volumeFadeCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_volumeFadeCoroutine);
 
-        SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 0f, audioFadeDuration));
+        if (globalVolume != null)
+            _volumeFadeCoroutine = SafeRunner?.RunCoroutineSafe(FadeVolumeWeight(globalVolume, 1f, 0.5f));
+
+        _audioFadeCoroutine = SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 0f, audioFadeDuration));
 
         DisableInteractablesInRange(feedback.transform.position);
+        MuteIgnoredAudioSources(true);
 
         PauseChapterTimers();
         PauseChapterTracker();
@@ -109,9 +128,13 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void ResetReflectiveEffects(FeedbackPrefabController feedback)
     {
-        // Volume già gestito da WaitForVolumeAndReset
+        // Cancella eventuale fade audio in corso prima di avviarne uno nuovo
+        if (_audioFadeCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
 
-        SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 1f, audioFadeDuration));
+        _audioFadeCoroutine = SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 1f, audioFadeDuration));
+
+        MuteIgnoredAudioSources(false);
 
         ResumeChpaterTimers();
         ResumeChpaterTracker();
@@ -125,6 +148,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private IEnumerator WaitForVolumeAndReset(FeedbackPrefabController feedback)
     {
+        // Cancella eventuali fade audio attivi: il volume lo gestiamo qui
+        if (_audioFadeCoroutine != null)
+            SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
+        _audioFadeCoroutine = null;
+
         EnsureVolumeReference();
 
         if (globalVolume != null)
@@ -141,6 +169,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
         }
 
         ResetReflectiveEffects(feedback);
+        _resetCoroutine = null;
     }
 
     private void EnsureVolumeReference()
@@ -149,10 +178,24 @@ public class RiflessivoFeatures : LearningStyleFeatures
             globalVolume = Object.FindFirstObjectByType<Volume>();
     }
 
+    /// <summary>
+    /// Muta/smuta gli AudioSource che ignorano l'AudioListener (bypassano AudioListener.volume).
+    /// </summary>
+    private void MuteIgnoredAudioSources(bool mute)
+    {
+        foreach (var source in Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+        {
+            if (source != null && source.ignoreListenerVolume)
+            {
+                source.mute = mute;
+                Debug.Log($"[RiflessivoFeatures] AudioSource '{source.name}' ignoreListenerVolume → mute={mute}");
+            }
+        }
+    }
+
 
     private void DisableInteractablesInRange(Vector3 center)
     {
-
         disabledInteractables.Clear();
         closableDoors.Clear();
 
@@ -160,7 +203,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         foreach (Collider col in nearbyObjects)
         {
-                Debug.Log($"[RiflessivoFeatures] Collider trovato: {col.gameObject.name}");
+            Debug.Log($"[RiflessivoFeatures] Collider trovato: {col.gameObject.name}");
 
             var interactables = col.GetComponentsInChildren<XRBaseInteractable>(true);
             if (interactables.Length > 0)
@@ -201,11 +244,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
             {
                 if (btn == null) continue;
                 Debug.Log($"[RiflessivoFeatures] PushButton trovato: {btn.name}, enabled: {btn.enabled}");
-                
+
                 if (btn.enabled)
                 {
                     btn.enabled = false;
-                    // Disabilita anche il collider
                     var btnCollider = btn.GetComponent<Collider>();
                     if (btnCollider != null)
                     {
@@ -240,7 +282,13 @@ public class RiflessivoFeatures : LearningStyleFeatures
         foreach (var btn in pausedPushButtons)
         {
             if (btn != null)
+            {
                 btn.enabled = true;
+                // Riabilita anche il collider
+                var btnCollider = btn.GetComponent<Collider>();
+                if (btnCollider != null)
+                    btnCollider.enabled = true;
+            }
         }
         pausedPushButtons.Clear();
     }
@@ -366,9 +414,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private void PauseChapterTimers()
     {
         if (pausedChapterTimer == null)
-        {
             pausedChapterTimer = FindAnyObjectByType<ChapterTimer>();
-        }
 
         pausedChapterTimer.PauseTimer(all: true);
         Debug.Log($"[RiflessivoFeatures] Chapter timer in pausa per tutti i capitoli.");
@@ -377,9 +423,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private void ResumeChpaterTimers()
     {
         if (pausedChapterTimer == null)
-        {
             pausedChapterTimer = FindAnyObjectByType<ChapterTimer>();
-        }
 
         pausedChapterTimer.ResumeTimer(all: true);
         Debug.Log($"[RiflessivoFeatures] Chapter timer ripreso per tutti i capitoli.");
@@ -388,9 +432,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private void PauseChapterTracker()
     {
         if (pausedChapterTracker == null)
-        {
             pausedChapterTracker = FindAnyObjectByType<ChapterTracker>();
-        }
 
         pausedChapterTracker.PauseTracker();
         Debug.Log($"[RiflessivoFeatures] Chapter tracker in pausa.");
@@ -399,14 +441,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private void ResumeChpaterTracker()
     {
         if (pausedChapterTracker == null)
-        {
             pausedChapterTracker = FindAnyObjectByType<ChapterTracker>();
-        }
 
         pausedChapterTracker.ResumeTracker();
         Debug.Log($"[RiflessivoFeatures] Chapter tracker ripreso.");
     }
-
 
 
     public static void SetPaused(bool value)

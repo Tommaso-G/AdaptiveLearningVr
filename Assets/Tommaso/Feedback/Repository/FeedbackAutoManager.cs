@@ -284,6 +284,18 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
+    public Coroutine RunCoroutineSafe(IEnumerator routine)
+    {
+        if (routine == null) return null;
+        return StartCoroutine(routine);
+    }
+
+    public void StopCoroutineSafe(Coroutine coroutine)
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+    }
+
     private void HandleStepCompletion(string stepName)
     {
         var feedbacksToRemove = new List<FeedbackRepository.FeedbackData>();
@@ -398,9 +410,4 @@ public class FeedbackAutoManager : MonoBehaviour
             Debug.LogWarning($"[FeedbackAutoManager] Nessun sender trovato per '{feedback.FeedbackName}'");
     }
 
-    // In FeedbackAutoManager
-    public void RunCoroutineSafe(IEnumerator coroutine)
-    {
-        StartCoroutine(coroutine);
-    }
 }
