@@ -299,6 +299,12 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("[GameManager] Salvato in: " + path);
     }
+
+    public void OnEndIterationButtonPressedUI()
+    {
+        Debug.Log("[GameManager] Bottone UI: Fine iterazione");
+        OnEndIterationButtonPressed();
+    }
     private void OnEndIterationButtonPressed()
     {
         Debug.Log("[GameManager] Bottone End Iteration premuto");

@@ -11,6 +11,7 @@ public class FeedbackPrefabController : MonoBehaviour
     public float activationDistance = 1f;
     public float scaleSpeed = 3f;
     public float maxScale = 0.004f;
+    public bool stayOpen = false;
 
     public bool isOptionalFeedback = false;
 
@@ -231,9 +232,22 @@ public class FeedbackPrefabController : MonoBehaviour
             Canvas.ForceUpdateCanvases();
         }
 
+        if (stayOpen)
+        {
+            DisableFeedbackCorutine();
+        }
+
         // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
     }
 
+    public void DisableFeedbackCorutine()
+    {
+        if(waypointInstance != null)
+        {
+            waypointInstance.gameObject.SetActive(false);
+        }
+        StopAllCoroutines();
+    }
 
     public void CloseFeedback()
     {
