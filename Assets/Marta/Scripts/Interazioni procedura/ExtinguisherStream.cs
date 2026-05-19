@@ -118,7 +118,7 @@ public class ExtinguisherStream : MonoBehaviour
     public void StartFoam()
     {
         Debug.Log("Chiamato start foam");
-        if (!safetyCatch)
+        if (safetyCatch.activeSelf)
         {
             if(ErrorReporter != null)
             {
@@ -129,7 +129,7 @@ public class ExtinguisherStream : MonoBehaviour
                 Debug.LogError("[ExtinguisherStream] ErrorReport non linkato.");
             }
         }
-        else if(!FoamPS.isPlaying && safetyCatch)
+        else if(!FoamPS.isPlaying && !safetyCatch.activeSelf)
         {
             FoamPS.Play();
         }

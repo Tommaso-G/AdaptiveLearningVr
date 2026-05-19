@@ -118,7 +118,10 @@ public class StepOutlineManager : MonoBehaviour
 
         // Controlla il filtro: outline attivo solo se feedbackLevel è 0 o 1
         if (chapterFilter != null && chapterFilter.IsOutlineAllowed(chapter.Data.Name) == false)
+        {
+            TryEnableOutlinesInSubChapters(chapter, false);
             return;
+        }
 
         if (TryEnableOutlinesInSubChapters(chapter)) return;
 
@@ -144,7 +147,7 @@ public class StepOutlineManager : MonoBehaviour
     /// cerca lo step attivo in ciascun sotto-capitolo e ne attiva gli outline.
     /// Restituisce true se ha gestito lui la situazione, false se il capitolo è normale.
     /// </summary>
-    private bool TryEnableOutlinesInSubChapters(IChapter chapter)
+    private bool TryEnableOutlinesInSubChapters(IChapter chapter, bool mainChapterOutlineAllowed = true)
     {
         foreach (IStep step in chapter.Data.Steps)
         {
@@ -156,7 +159,7 @@ public class StepOutlineManager : MonoBehaviour
                 StopSubChapterMonitor();
                 // Passa il behavior, non i sottocapitoli già risolti
                 subChapterMonitorCoroutine = StartCoroutine(
-                    MonitorSubChapters(executeChaptersBehavior));
+                    MonitorSubChapters(executeChaptersBehavior, mainChapterOutlineAllowed));
                 return true;
             }
         }
@@ -166,7 +169,7 @@ public class StepOutlineManager : MonoBehaviour
     /// Monitora ogni frame i sottocapitoli: quando uno step cambia,
     /// aggiorna gli outline esattamente come farebbe StepStarted.
     /// </summary>
-    private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBehavior)
+    private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBehavior, bool mainChapterOutlineAllowed = true)
     {
         // Aspetta finché almeno un sottocapitolo ha uno step attivo
         List<IChapter> subChapters = null;
@@ -184,6 +187,29 @@ public class StepOutlineManager : MonoBehaviour
         }
 
         Debug.Log($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
+
+        if (!mainChapterOutlineAllowed)
+        {
+            string message_1 = ($"[StepOutlineManager] Main chapter non amette outline.\nOutline attivo per i seguenti sottocapitli opzionali:\n");
+            List<SubChapter> OptionalSubChapters = null;
+            OptionalSubChapters = executeChaptersBehavior.Data.AddedSubChapters;
+            subChapters.Clear();
+
+            string message_2 = null;
+            foreach (SubChapter sc in OptionalSubChapters)
+            {
+                IChapter chapter = sc.Chapter;
+                if (chapterFilter.IsOutlineAllowed(chapter.Data.Name))
+                {
+                    subChapters.Add(chapter);
+                    message_2 += $"{chapter.Data.Name}\n";
+                }
+            }
+
+            Debug.Log(message_1 + (message_2 != null? message_2 : "Nessuno"));
+        }
+
+        if (subChapters.Count < 0) yield break;
 
         // Abilita gli outline per lo step attivo iniziale
         foreach (IChapter subChapter in subChapters)
