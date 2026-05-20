@@ -35,6 +35,7 @@ MonoBehaviour:
       - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: 'Introduzione: elementi 2d'
       pages:
       - Sequenzale_Globale: 0
@@ -52,6 +53,7 @@ MonoBehaviour:
       - clicca sulal barra scorrevole
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: 'Introduzione: la pagina STEPS'
       pages:
       - Sequenzale_Globale: 0
@@ -81,6 +83,7 @@ MonoBehaviour:
       - Clicca sulla seconda pagina
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: 'Introduzione: la pagina OVERVIEW'
       pages:
       - Sequenzale_Globale: 0
@@ -114,6 +117,7 @@ MonoBehaviour:
       - Clicca su slide globale
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: 'Introduzione: la pagina VIDEO'
       pages:
       - Sequenzale_Globale: 0
@@ -146,6 +150,7 @@ MonoBehaviour:
       - Guarda il video
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: 'Introduzione: gli oggetti'
       pages:
       - Sequenzale_Globale: 0
@@ -163,6 +168,7 @@ MonoBehaviour:
       - Grab Oggetti
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: Recap finale
       pages:
       - Sequenzale_Globale: 0
@@ -179,6 +185,7 @@ MonoBehaviour:
       - Recap
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: Si parte!
       pages:
       - Sequenzale_Globale: 0
@@ -194,6 +201,7 @@ MonoBehaviour:
       - Premi il bottone per aprire la porta
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Cassaforte
     feedbacks:
     - FeedbackName: Apri la cassaforte
@@ -243,6 +251,7 @@ MonoBehaviour:
       - Goditi il bottino
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Bloxorz
     feedbacks:
     - FeedbackName: Istruzioni Bloxorz
@@ -262,9 +271,9 @@ MonoBehaviour:
         text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%><color=#67FFCA>1.</color></size></b>
           Usa i pulsanti per far rotolare la pedina nelle quattro direzioni:  su,
           gi\xF9, sinistra e destra.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
-          Fai attenzione ai bordi del campo:  \r\nse la pedina sporge, cadr\xE0 e
-          dovrai ricominciare da capo.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
-          Utilizza le caselle colorate per aprire i ponti  \r\nche collegano le diverse
+          Fai attenzione ai bordi del campo:  se la pedina sporge, cadr\xE0 e dovrai
+          ricominciare da capo.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
+          Utilizza le caselle colorate per aprire i ponti  che collegano le diverse
           piattaforme.\r\n\r\n<b><size=90%><color=#67FFCA>4.</color></size></b> Casella
           blu: si attiva semplicemente passando sopra con la pedina.\r\n\r\n<b><size=90%><color=#67FFCA>5.</color></size></b>
           Casella rossa: si attiva solo se la pedina \xE8 posizionata  \r\nverticalmente
@@ -276,12 +285,36 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Guidare
+        text: '<color=#888787><size=85%><b>Scopo</b></size></color>
+
+          <size=90%>Guidare
           la pedina attraverso la piattaforma, attraversare i ponti e cadere nel
-          foro corretto.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>-
-          Premere i pulsanti direzionali per muovere la pedina\n- Centrare le caselle
-          colorate per aprire i ponti\n- Far cadere la pedina nel foro target</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
-          Cadere dai bordi della piattaforma reimposta il livello</size>"
+          foro corretto.</size>
+
+
+          <color=#888787><size=85%><b>Mosse</b></size></color>
+
+          <size=90%>-
+          Premere i pulsanti direzionali per muovere la pedina
+
+          - Centrare
+          le caselle colorate per aprire i ponti
+
+          - Far cadere la pedina
+          nel foro target</size>
+
+
+          <color=#888787><size=85%><b>Attenzione</b></size></color>
+
+          <size=90%>-Per
+          aprire il ponte con la casella blu, basta che il Bloxorz tocchi la casella
+
+          -Per
+          apire il ponte con la casella rossa, il Bloxorz deve essere posizionato
+          esattamente sulla casella, in verticale.
+
+          - Cadere dai bordi
+          della piattaforma reimposta il livello</size>'
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
         isIntroductory: 0
@@ -293,6 +326,7 @@ MonoBehaviour:
       - Gioca a bloxorz
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Sokoban
     feedbacks:
     - FeedbackName: Istruzione Sokoban
@@ -328,31 +362,15 @@ MonoBehaviour:
         isIntroductory: 0
         image: {fileID: 0}
         video: {fileID: 0}
-        text: '<color=#888787><size=85%><b>Scopo</b></size></color>
-
-          <size=90%>Portare
-          ogni pedina numerata sulla casella corretta; usare le rosse per coprire
-          i buchi.</size>
-
-
-          <color=#888787><size=85%><b>Mosse</b></size></color>
-
-          <size=90%>-
-          Selezionare una pedina con il joystick
-
-          - Spostarla sulla casella
-          corretta
-
-          - Usare le pedine rosse per coprire i buchi</size>
-
-
-          <color=#888787><size=85%><b>Attenzione</b></size></color>
-
-          <size=90%>-
-          Le pedine non si muovono se bloccate da pareti o altre pedine
-
-          -
-          Se incastrato puoi tornare indietro di una mossa o resettare la partita</size>'
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Portare
+          ogni pedina numerata sulla casella corretta.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>-
+          Selezionare una pedina con il joystick\n- Spostarla sulla casella corretta\n-
+          Usare le pedine rosse per coprire i buchi</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>-
+          La pedina si muove di una casella nelle quattro direzioni, ma il movimento
+          su un asse \xE8 bloccato se davanti o dietro rispetto a quell\u2019asse
+          \xE8 presente una parete. Pupi immaginare di dover spingere la pedina per
+          spostarla.\n- Se incastrato puoi tornare indietro di una mossa o resettare
+          la partita</size>"
       - Sequenzale_Globale: 1
         Visivo_Verbale: 0
         isIntroductory: 0
@@ -365,6 +383,7 @@ MonoBehaviour:
       - Gioca a sokoban
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Scalak
     feedbacks:
     - FeedbackName: Istruzioni Scalak
@@ -431,6 +450,7 @@ MonoBehaviour:
       - Gioca a scalak
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Visivo-Verbale
     feedbacks:
     - FeedbackName: Ricorda la sequenza
@@ -447,8 +467,8 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%><color=#67FFCA>1.</color></size></b>
-          Prima di iniziare, esplora gli oggetti e prova le interazioni per familiarizzare
-          con il loro comportamento.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Prima di iniziare, esplora gli oggetti oltre lo schermo e prova le interazioni
+          per familiarizzare con il loro comportamento.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
           Premi il pulsante per far comparire una sequenza sullo schermo.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
           Memorizza attentamente la sequenza, che pu\xF2 essere composta da immagini
           oppure da parole.\r\n\r\n<b><size=90%><color=#67FFCA>4.</color></size></b>
@@ -483,6 +503,7 @@ MonoBehaviour:
       - Ricorda gli interactable
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: Memory
       pages:
       - Sequenzale_Globale: 0
@@ -537,6 +558,7 @@ MonoBehaviour:
       - Memory
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: Ricorda le parole e le immagini
       pages:
       - Sequenzale_Globale: 0
@@ -572,6 +594,7 @@ MonoBehaviour:
       - Test parole
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
   - ChapterName: Sintetizzatore Chimerico
     feedbacks:
     - FeedbackName: Sintetizzatore Chimerico
@@ -631,6 +654,7 @@ MonoBehaviour:
       - arrivano gli animali
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: 'La creazione '
       pages:
       - Sequenzale_Globale: 0
@@ -644,6 +668,7 @@ MonoBehaviour:
       - Premi il bottone e raggiungi gli dei
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
     - FeedbackName: La Chimera
       pages:
       - Sequenzale_Globale: 0
@@ -659,3 +684,4 @@ MonoBehaviour:
       - Osserva la chimera
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
+      applyReflectiveEffects: 1
