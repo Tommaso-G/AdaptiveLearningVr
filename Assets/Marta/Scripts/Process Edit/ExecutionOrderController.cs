@@ -87,6 +87,11 @@ public class ExecutionOrderController : MonoBehaviour
     {
         //getCurrenteObjects(process.Data.Current);
 
+        if (previousChapter != null && previousChapter.Data.Name != "Starting Point")
+            {
+                errorTracker.NotifyChapterCompleted(previousChapter.Data.Name);
+            }
+
         previousChapter = process.Data.Current;
 
     }

@@ -420,8 +420,11 @@ public class HandMenu : MonoBehaviour
              sideDot < 0f - sideDotMargin ||
              upDot < upThreshold))
         {
+
             isVisible = false;
             currentMenu.Close();
+            currentMenu = null;
+            currentRequester = null;
             lastToggleTime = now;
             //print("CLOSING MENU");
         }

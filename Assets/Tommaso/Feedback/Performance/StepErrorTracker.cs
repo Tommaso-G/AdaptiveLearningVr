@@ -271,11 +271,22 @@ public class StepErrorTracker : MonoBehaviour
             sb.AppendLine(completedChapterName);
             sb.AppendLine("─────────────────");
 
-            if (chapterErrors.TryGetValue(completedChapterName, out ChapterErrorData data) && data.TotalErrors > 0)
+        if (chapterErrors.TryGetValue(completedChapterName, out ChapterErrorData data) && data.TotalErrors > 0)
+        {
+            var errorCounts = new Dictionary<string, int>();
+            foreach (var error in data.errors)
             {
-                foreach (var error in data.errors)
-                    sb.AppendLine($"• {error.missedStepName}");
+                if (!errorCounts.ContainsKey(error.missedStepName))
+                    errorCounts[error.missedStepName] = 0;
+                errorCounts[error.missedStepName]++;
             }
+
+            foreach (var kvp in errorCounts)
+            {
+                string label = kvp.Value > 1 ? $"• {kvp.Key} (x{kvp.Value})" : $"• {kvp.Key}";
+                sb.AppendLine(label);
+            }
+        }
             else
             {
                 sb.AppendLine("Nessun errore commesso.");
@@ -292,6 +303,8 @@ public class StepErrorTracker : MonoBehaviour
         foreach (var kvp in chapterErrors)
         {
             ChapterErrorData data = kvp.Value;
+
+            if (data.TotalErrors == 0) continue;
 
             int stepDimenticati = 0;
             int erroriCommessi = 0;

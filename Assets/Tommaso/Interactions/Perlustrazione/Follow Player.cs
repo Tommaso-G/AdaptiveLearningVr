@@ -5,10 +5,8 @@ using VRBuilder.Core;
 
 public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 {
-    // ── ICompletableStep ──────────────────────────────────────────
     public bool IsCompleted { get; private set; } = false;
 
-    // ── NavMesh / Follow ──────────────────────────────────────────
     private NavMeshAgent agent;
     private bool _hasAgent = false;
     private Transform playerTransform;
@@ -16,18 +14,13 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
     public Animator MyAnimator;
 
-    // ── Collider check ────────────────────────────────────────────
-    [Tooltip("Lista di collider — l'NPC deve entrare nel più vicino")]
     public List<Collider> destinationColliders = new List<Collider>();
-
-    [Tooltip("Nome dello step sbagliato da passare all'ErrorEvent")]
     public string wrongStepName = "l'uscita non era la più vicina";
 
     private Collider _closestCollider;
 
     public ErrorReporter ErrorReporter;
 
-    // ─────────────────────────────────────────────────────────────
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -49,7 +42,6 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     void OnEnable()
     {
         FollowPlayerBehavior.OnFollowPlayerTriggered += HandleFollowTriggered;
-       // Debug.Log($"[FollowerAgentWithCheck] [{name}] OnEnable — sottoscrizione all'evento");
     }
 
     void OnDisable()
@@ -57,7 +49,6 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         FollowPlayerBehavior.OnFollowPlayerTriggered -= HandleFollowTriggered;
     }
 
-    // ── Calcola il collider più vicino alla posizione corrente dell'NPC ──
     private void ComputeClosestCollider()
     {
         if (destinationColliders == null || destinationColliders.Count == 0) return;
@@ -68,6 +59,10 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         foreach (Collider c in destinationColliders)
         {
             if (c == null) continue;
+
+            ExitDoor exitDoor = c.GetComponentInChildren<ExitDoor>();
+            if (exitDoor != null && exitDoor.blocked) continue;
+
             float dist = Vector3.Distance(transform.position, c.bounds.center);
             if (dist < minDist)
             {
@@ -77,17 +72,13 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         }
 
         _closestCollider = closest;
-       // Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider più vicino all'avvio: {_closestCollider?.name}");
+        Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider più vicino all'avvio: {_closestCollider?.name}");
     }
 
-    // ── Riceve l'evento di follow ─────────────────────────────────
     private void HandleFollowTriggered(GameObject follower, GameObject player)
     {
-        //Debug.Log($"[FollowerAgentWithCheck] [{name}] Evento ricevuto — follower: {follower?.name}, atteso: {name}, match: {follower == gameObject}");
-
         if (follower != gameObject) return;
 
-        //Debug.Log($"[FollowerAgentWithCheck] [{name}] inizia a seguire {player.name}");
         playerTransform = player.transform;
         isFollowing = true;
 
@@ -95,67 +86,44 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
             MyAnimator.SetBool("GoToRun", true);
     }
 
-    // ── Segue il player ogni frame ────────────────────────────────
     void Update()
     {
         if (isFollowing && playerTransform != null && _hasAgent)
             agent.SetDestination(playerTransform.position);
     }
 
-    // ── Controlla l'ingresso nei collider ─────────────────────────
-private void OnTriggerEnter(Collider other)
-{
-    if (IsCompleted) return;
-    if (destinationColliders == null || destinationColliders.Count == 0) return;
-
-   // Debug.Log($"[FollowerAgentWithCheck] [{name}] OnTriggerEnter con: '{other.name}' (GameObject: '{other.gameObject.name}')");
-
-    if (!destinationColliders.Contains(other))
+    private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log($"[FollowerAgentWithCheck] [{name}] '{other.name}' non è nella lista, ignorato.");
-        return;
+        if (IsCompleted) return;
+        if (destinationColliders == null || destinationColliders.Count == 0) return;
+        if (!destinationColliders.Contains(other)) return;
+
+        ExitDoor exitDoor = other.GetComponentInChildren<ExitDoor>();
+
+        if (exitDoor == null)
+        {
+            Debug.LogError($"[FollowerAgentWithCheck] [{name}] Nessuna ExitDoor trovata tra i figli di '{other.gameObject.name}'.");
+            return;
+        }
+
+        if (exitDoor.blocked) return;
+
+        IsCompleted = true;
+
+        if (_closestCollider != null && other != _closestCollider)
+        {
+            if (ErrorReporter != null)
+                ErrorReporter.RegisterError(gameObject.name + "_uscita");
+            else
+                Debug.LogError("[FollowerAgentWithCheck] ErrorReporter non assegnato.");
+        }
+
+        isFollowing = false;
+
+        if (_hasAgent)
+        {
+            agent.ResetPath();
+            MyAnimator.SetBool("GoToRun", false);
+        }
     }
-
-    //Debug.Log($"[FollowerAgentWithCheck] [{name}] '{other.name}' è nella lista. Cerco ExitDoor tra i figli di '{other.gameObject.name}'...");
-
-    ExitDoor exitDoor = other.GetComponentInChildren<ExitDoor>();
-
-    if (exitDoor == null)
-    {
-        Debug.LogError($"[FollowerAgentWithCheck] [{name}] Nessuna ExitDoor trovata tra i figli di '{other.gameObject.name}'.");
-        return;
-    }
-
-//    Debug.Log($"[FollowerAgentWithCheck] [{name}] ExitDoor trovata: '{exitDoor.gameObject.name}', blocked={exitDoor.blocked}");
-
-    if (exitDoor.blocked)
-    {
-    //    Debug.Log($"[FollowerAgentWithCheck] [{name}] '{other.name}' ignorato perché Blocked=true");
-        return;
-    }
-
-    IsCompleted = true;
-
-    if (_closestCollider != null && other != _closestCollider)
-    {
-       // Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider sbagliato: '{other.name}', più vicino era '{_closestCollider.name}'");
-
-        if (ErrorReporter != null)
-            ErrorReporter.RegisterError(gameObject.name + "_uscita");
-        else
-            Debug.LogError("[FollowerAgentWithCheck] ErrorReporter non assegnato.");
-    }
-    else
-    {
-        //Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider corretto: '{other.name}'");
-    }
-
-    isFollowing = false;
-
-    if (_hasAgent)
-    {
-        agent.ResetPath();
-        MyAnimator.SetBool("GoToRun", false);
-    }
-}
 }
