@@ -59,7 +59,7 @@ public class CheckTimerBehavior : Behavior<CheckTimerBehavior.EntityData>
 
             if (elapsed > Data.TimeThreshold)
             {
-                ErrorEvent.OnError?.Invoke(chapterName, currentStepName, Data.InteractedObjectName);
+                ErrorEvent.OnError?.Invoke(chapterName, currentStepName, Data.InteractedObjectName, "");
 
                 Debug.Log($"[CheckTimerBehavior] Soglia superata — errore registrato. " +
                           $"Capitolo: '{chapterName}' | Step: '{currentStepName}' | " +

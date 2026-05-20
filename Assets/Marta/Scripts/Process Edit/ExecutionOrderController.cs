@@ -322,7 +322,7 @@ public class ExecutionOrderController : MonoBehaviour
         return false;
     }
 
-    public void checkForObjInStep(GameObject go, string chapter_name, GameObject proxy = null)
+    public void checkForObjInStep(GameObject go, string chapter_name, GameObject proxy = null, string errorString = "")
     {
         if (parallelStepObjs.Count == 1)
         {
@@ -335,7 +335,7 @@ public class ExecutionOrderController : MonoBehaviour
         }
         else if (parallelStepObjs.Count > 0)
         {
-                // LOG: stato attuale dei sottocapitoli
+            // LOG: stato attuale dei sottocapitoli
             for (int i = 0; i < subch.Count; i++)
             {
                 string objNames = string.Join(", ", parallelStepObjs[i].steps.Select(g => g.name));
@@ -358,32 +358,27 @@ public class ExecutionOrderController : MonoBehaviour
 
             if (ParallelStepIndex != -1 && parallelStepObjs[ParallelStepIndex].steps.Contains(go))
             {
-                Debug.Log("Oggetto " + go.gameObject.name + " nello step.");
+                Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step.");
                 return;
             }
         }
 
-        //if (optionalSubChapterObjs.Contains(go))
-        //{
-        //    Debug.Log("Oggetto " + go.gameObject.name + " nello step(subChAdded).");
-        //    return;
-        //}
         if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
         {
             if (chapterOptionalObjecs.Contains(go))
             {
-                Debug.Log("Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+                Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
                 return;
             }
         }
 
         if (ParallelStepIndex != -1)
         {
-            Debug.Log("Last subchapter selected " + subch[ParallelStepIndex].Data.Name + ", last subchapter LifeStage " + subch[ParallelStepIndex].LifeCycle.Stage);
+            Debug.Log("[EOC] Last subchapter selected: " + subch[ParallelStepIndex].Data.Name + ", last subchapter LifeStage: " + subch[ParallelStepIndex].LifeCycle.Stage + ", interacted object: " + go.name + " is not in current subchapter.");
         }
         else
         {
-            Debug.Log("Step group index: " + ParallelStepIndex);
+            Debug.Log("[EOC] Step group index: " + ParallelStepIndex);
         }
 
         if (proxy != null)
@@ -400,7 +395,14 @@ public class ExecutionOrderController : MonoBehaviour
         string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
         string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
 
-        errorTracker.RegisterError(chapterName, stepName, go.name);
+        if (string.IsNullOrEmpty(errorString))
+        {
+            errorTracker.RegisterError(chapterName, stepName, go.name);
+        }
+        else
+        {
+            errorTracker.RegisterError(chapterName, stepName, errorString, (subch[ParallelStepIndex]?.Data.Name != null ? subch[ParallelStepIndex]?.Data.Name : ""));
+        }
     }
 
 

@@ -58,4 +58,17 @@ public class MenuUI : MonoBehaviour
             Debug.LogWarning("[MenuUI] Nessuna sessione da continuare!");
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            OnNewSessionClicked();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            OnContinueClicked();
+        }
+    }
 }

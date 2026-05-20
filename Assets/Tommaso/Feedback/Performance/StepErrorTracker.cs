@@ -8,7 +8,7 @@ public static class ErrorEvent
 {
     public static IProcess process { get; private set; }
 
-    public static System.Action<string, string, string> OnError;
+    public static System.Action<string, string, string, string> OnError;
 
     public static void SetProcess(IProcess p)
     {
@@ -71,6 +71,9 @@ public class StepErrorTracker : MonoBehaviour
     [Tooltip("Se l'oggetto interagito corrisponde, usa il messaggio personalizzato invece di quello standard.")]
     public List<CustomErrorMessage> customErrorMessages = new List<CustomErrorMessage>();
 
+    [Header("Messaggi personalizzati Runtime")]
+    public List<CustomErrorMessage> customErrorMessagesRuntime = new List<CustomErrorMessage>();
+
     public IProcess CurrentProcess => ProcessRunner.Current;
 
     private LearningProfile learningProfile;
@@ -120,7 +123,7 @@ public class StepErrorTracker : MonoBehaviour
     // REGISTRAZIONE ERRORE
     // ─────────────────────────────────────────────────────────────────
 
-    public void RegisterError(string chapterName, string missedStepName, string interactedObjectName)
+    public void RegisterError(string chapterName, string missedStepName, string interactedObjectName, string customRuntime = "")
     {
         if (!chapterErrors.ContainsKey(chapterName))
         {
@@ -135,7 +138,7 @@ public class StepErrorTracker : MonoBehaviour
 
         // Aggiorna i pannelli in base al profilo
         if (IsSequenziale())
-            UpdatePanelsSequenziale(error);
+            UpdatePanelsSequenziale(error, customRuntime);
         // Per Globale: i pannelli si aggiornano solo a fine capitolo, tramite NotifyChapterCompleted()
     }
 
@@ -157,13 +160,20 @@ public class StepErrorTracker : MonoBehaviour
     // AGGIORNAMENTO PANNELLI — SEQUENZIALE
     // ─────────────────────────────────────────────────────────────────
 
-    private void UpdatePanelsSequenziale(StepError lastError)
+    private void UpdatePanelsSequenziale(StepError lastError, string customRuntime)
     {
         // textPanelOnHand: solo l'ultimo errore
         if (textPanelOnHand != null)
         {
             CustomErrorMessage custom = customErrorMessages.Find(c =>
                 string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+
+            if(custom == null)
+            {
+                custom = customErrorMessagesRuntime.Find(c =>
+                    string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+                custom = CustomErrorMessageRuntime(custom, customRuntime);
+            }
 
             textPanelOnHand.text = custom != null
                 ? custom.customMessage
@@ -186,6 +196,12 @@ public class StepErrorTracker : MonoBehaviour
             {
                 CustomErrorMessage custom = customErrorMessages.Find(c =>
                     string.Equals(c.interactedObjectName, error.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+                if (custom == null)
+                {
+                    custom = customErrorMessagesRuntime.Find(c =>
+                        string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+                    custom = CustomErrorMessageRuntime(custom, customRuntime);
+                }
 
                 if (custom != null)
                 {
@@ -325,5 +341,17 @@ public class StepErrorTracker : MonoBehaviour
             foreach (var e in data.errors)
                 Debug.Log($"   {e}");
         }
+    }
+
+    public CustomErrorMessage CustomErrorMessageRuntime(CustomErrorMessage custom, string custom_word)
+    {
+        string new_message = custom.customMessage.Replace("_", custom_word);
+
+        CustomErrorMessage new_custom = new CustomErrorMessage();
+        string id = System.Guid.NewGuid().ToString();
+        new_custom.interactedObjectName = $"{custom.interactedObjectName}_custom[{id}]";
+        new_custom.customMessage = new_message;
+
+        return new_custom;
     }
 }
