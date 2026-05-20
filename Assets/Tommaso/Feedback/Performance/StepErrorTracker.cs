@@ -172,7 +172,11 @@ public class StepErrorTracker : MonoBehaviour
             {
                 custom = customErrorMessagesRuntime.Find(c =>
                     string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
-                custom = CustomErrorMessageRuntime(custom, customRuntime);
+
+                if (custom != null)
+                {
+                    custom = CustomErrorMessageRuntime(custom, customRuntime);
+                }
             }
 
             textPanelOnHand.text = custom != null
@@ -200,7 +204,11 @@ public class StepErrorTracker : MonoBehaviour
                 {
                     custom = customErrorMessagesRuntime.Find(c =>
                         string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
-                    custom = CustomErrorMessageRuntime(custom, customRuntime);
+
+                    if (custom != null)
+                    {
+                        custom = CustomErrorMessageRuntime(custom, customRuntime);
+                    }
                 }
 
                 if (custom != null)
