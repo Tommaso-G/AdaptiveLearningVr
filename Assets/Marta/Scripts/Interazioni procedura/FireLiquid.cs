@@ -63,7 +63,7 @@ public class FireLiquid : MonoBehaviour
         Vector3 targetScale = selectedFire.transform.localScale;
         selectedFire.localScale = Vector3.zero;
         // Cambia parent
-        selectedFire.SetParent(fireParent);
+        selectedFire.SetParent(fireParent, true);
 
         selectedFire.gameObject.GetComponent<FireObject>().enabled = false;
         selectedFire.gameObject.SetActive(true);

@@ -34,13 +34,13 @@ public class ExtinguisherStream : MonoBehaviour
     public void Shooting()
     {
         RaycastHit hit;
-        int layerMask = ~LayerMask.GetMask("Ignore Raycast"); // ~ = simbolo per invertire => sto esculdendo il layer
+        int layerMask = ~LayerMask.GetMask("Ignore Raycast", "Fire Liquid"); // ~ = simbolo per invertire => sto esculdendo il layer
 
         if (Physics.Raycast(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward), out hit, 100, layerMask))
         {
             Debug.DrawRay(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
 
-            fire = hit.transform.GetComponent<FireObject>();
+            fire = hit.transform.GetComponentInParent<FireObject>();
 
             if (fire != lastHit)
             {
@@ -53,18 +53,17 @@ public class ExtinguisherStream : MonoBehaviour
                 lastHit = fire;
             }
             //fire hit + foam shooting
-            if (fire != null && FoamPS.isPlaying)
+            if (fire != null)
             {
                 if (supportedTypes.Contains(fire.FireType))
                 {
-                    fire.isHit = true;
-                    fire.Extinguish();
+                    fire.isHit = FoamPS.isPlaying ? true : false;
                 }
                 else
                 {
                     fire.isHit = false;
 
-                    if (ErrorReporter != null && !wrongType)
+                    if (ErrorReporter != null && !wrongType && FoamPS.isPlaying)
                     {
                         ErrorReporter.RegisterError("Wrong extinguisher");
                         wrongType = true;
@@ -86,9 +85,9 @@ public class ExtinguisherStream : MonoBehaviour
 
         if (Physics.Raycast(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward), out hit, 100, layerMask))
         {
-            Debug.DrawRay(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+            Debug.DrawRay(ShootingPoint.position + ShootingPoint.transform.TransformDirection(Vector3.up)*0.1f, ShootingPoint.transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
 
-            fireLiquid = hit.transform.GetComponent<FireLiquid>();
+            fireLiquid = hit.transform.GetComponentInParent<FireLiquid>();
 
             if (fireLiquid != lastFireLiquid)
             {
@@ -100,9 +99,9 @@ public class ExtinguisherStream : MonoBehaviour
                 lastFireLiquid = fireLiquid;
             }
             //fire hit + foam shooting
-            if (fireLiquid != null && FoamPS.isPlaying)
+            if (fireLiquid != null)
             {
-                fireLiquid.isHit = true;
+                fireLiquid.isHit = FoamPS.isPlaying? true : false;
             }
         }
         else if (fireLiquid != null) // se non sto colpendo nulla devo comunque mettere fire.isHit = false

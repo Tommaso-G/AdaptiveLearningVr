@@ -21,6 +21,8 @@ public class FireObject : MonoBehaviour, IDestructible
     [SerializeField] private float fireHealt = 1f;
     [SerializeField] private float maxHealt = 1f;
     [SerializeField] private float fireDamage;
+    [SerializeField] private float extinguishSpeed = 0.3f;
+    [SerializeField] private float growSpeed = 0.1f;
     private Vector3 initialScale;
     private bool sizeChanging = false;
     private bool isExtinguishing = false;
@@ -43,75 +45,51 @@ public class FireObject : MonoBehaviour, IDestructible
         firePS = GetComponentInChildren<ParticleSystem>();
 
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (!sizeChanging) // se non sto già cambiando size allora entro
+        if (!sizeChanging)
         {
-            sizeChanging = true; // evito di chiamare la coroutine di crescita più volte insieme
-            StartCoroutine(GrowCoroutine());
-        }
-
-    }
-
-    public void Extinguish()
-    {
-        if (!isExtinguishing)
-        {
-            isExtinguishing = true;
-            StartCoroutine(ExtinguishingCoroutine());
-        }
-        //print("Fire " + gameObject.GetInstanceID() + " healt: " + fireHealt);
-        if (fireHealt <= 0)
-        {
-            OnDestroyed?.Invoke();
-            Destroy(gameObject);
+            sizeChanging = true;
+            StartCoroutine(UpdateFireCoroutine());
         }
     }
 
-    private IEnumerator GrowCoroutine()
+    private IEnumerator UpdateFireCoroutine()
     {
-        if (!isHit)
-        {
-            if (fireHealt < maxHealt)
-            {
-                fireHealt += 0.1f;
-            }
-        }
-
-        float scaleFactor = fireHealt / maxHealt;
-        Vector3 startScale = fireTran.localScale;
-        Vector3 targetScale = initialScale * scaleFactor;
         float duration = 3f;
         float elapsed = 0f;
-
-        print($"[FireObj] inizio corutine di grow.\nScale factor {scaleFactor},\nTarget scale {targetScale}");
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration; // da 0 a 1
-            fireTran.localScale = Vector3.Lerp(startScale, targetScale, t);
-            yield return null; // aspetta il prossimo frame
+
+            // aggiorna healt ogni frame in base a isHit
+            if (isHit)
+            {
+                fireHealt -= extinguishSpeed * Time.deltaTime;
+                fireHealt = Mathf.Max(fireHealt, 0f);
+            }
+            else
+            {
+                fireHealt += growSpeed * Time.deltaTime;
+                fireHealt = Mathf.Min(fireHealt, maxHealt);
+            }
+
+            // scala segue fireHealt in tempo reale
+            float scaleFactor = fireHealt / maxHealt;
+            fireTran.localScale = initialScale * scaleFactor;
+
+            if (fireHealt <= 0)
+            {
+                OnDestroyed?.Invoke();
+                Destroy(gameObject);
+                yield break;
+            }
+
+            yield return null;
         }
 
-        fireTran.localScale = targetScale;
         sizeChanging = false;
-    }
-
-    private IEnumerator ExtinguishingCoroutine()
-    {
-        if (fireHealt < 0.3f)
-        {
-            fireHealt = 0f;
-        }
-        else
-        {
-            fireHealt -= 0.3f;
-        }
-        yield return new WaitForSeconds(3f);
-        isExtinguishing = false;
     }
 
 }
