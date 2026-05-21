@@ -444,6 +444,9 @@ MonoBehaviour:
   onDoorOpened:
     m_PersistentCalls:
       m_Calls: []
+  isPermanentlyClosed: 0
+  IsGrabbed: 0
+  startsOpen: 1
   closed_angle: 85
   opened_angle: 4
   initialSpring: 100
@@ -1023,7 +1026,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.13
   m_Height: 0.2
   m_Direction: 0
   m_Center: {x: 0.07200509, y: -0.00000007636849, z: 0.125}
@@ -1046,7 +1049,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.13
   m_Height: 0.2
   m_Direction: 0
   m_Center: {x: 0.07200509, y: -0.00000007636849, z: -0.14}
@@ -1124,7 +1127,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1d4ffba877e11574b83dd66ffe09c3e2, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 1d4ffba877e11574b83dd66ffe09c3e2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

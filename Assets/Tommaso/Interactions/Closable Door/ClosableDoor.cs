@@ -36,7 +36,6 @@ namespace UnityEngine.XR.Content.Interaction
 
             if (startsOpen)
             {
-                // Porta parte aperta: rotazione a 0° (aperta), fisica attiva
                 m_DoorJoint.transform.localRotation = initialRotation;
                 m_Rigidbody.isKinematic = true;
                 m_Closed = false;
@@ -44,7 +43,6 @@ namespace UnityEngine.XR.Content.Interaction
             }
             else
             {
-                // Porta parte chiusa: rotazione a -90° (chiusa), fisica bloccata
                 m_DoorJoint.transform.localRotation = initialRotation * Quaternion.Euler(0f, -90f, 0f);
                 m_Rigidbody.isKinematic = true;
                 m_Closed = true;
@@ -61,6 +59,8 @@ namespace UnityEngine.XR.Content.Interaction
 
         public void ActivateIsGrabbed(bool Activate)
         {
+            if (isPermanentlyClosed) return;
+
             if (Activate)
             {
                 IsGrabbed = true;
@@ -88,7 +88,7 @@ namespace UnityEngine.XR.Content.Interaction
             }
 
             // Porta aperta
-            else if (m_Closed && currentAngle <= closed_angle)
+            else if (m_Closed && currentAngle <= closed_angle && !isPermanentlyClosed)
             {
                 m_Closed = false;
                 onDoorOpened?.Invoke();
@@ -121,19 +121,33 @@ namespace UnityEngine.XR.Content.Interaction
             }
         }
 
+        public void OpenWithSpring()
+        {
+            isPermanentlyClosed = false;
+
+            m_Rigidbody.isKinematic = false;
+            was_closed = true;
+
+            m_DoorJoint.useSpring = true;
+            JointSpring spring = m_DoorJoint.spring;
+            spring.spring = initialSpring;
+            spring.damper = initalDamper;
+            spring.targetPosition = 90f;
+            m_DoorJoint.spring = spring;
+        }
+
         public void ClosePermanently()
         {
             isPermanentlyClosed = true;
-            
-            // Forza la porta in posizione chiusa
+
             m_Rigidbody.angularVelocity = Vector3.zero;
             m_Rigidbody.linearVelocity = Vector3.zero;
             m_DoorJoint.transform.localRotation = initialRotation * Quaternion.Euler(0f, -90f, 0f);
             m_Rigidbody.isKinematic = true;
             m_Closed = true;
             was_closed = true;
-            
+
             onDoorClosed?.Invoke();
-}
+        }
     }
 }
