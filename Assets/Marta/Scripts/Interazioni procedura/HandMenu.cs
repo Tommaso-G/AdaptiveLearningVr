@@ -423,8 +423,8 @@ public class HandMenu : MonoBehaviour
 
             isVisible = false;
             currentMenu.Close();
-            currentMenu = null;
-            currentRequester = null;
+            //currentMenu = null;
+            //currentRequester = null;
             lastToggleTime = now;
             //print("CLOSING MENU");
         }

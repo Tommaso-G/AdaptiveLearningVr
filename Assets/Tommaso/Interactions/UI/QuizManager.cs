@@ -102,13 +102,13 @@ public class QuizManager : MonoBehaviour
             {
                 Button buttonCopy = answerButtons[i];
                 print($"[QuizManager] assegnato correct button a {buttonCopy.name}");
-                buttonCopy.onClick.AddListener(CorrectAnswer);
+                buttonCopy.onClick.AddListener(() => CorrectAnswer(buttonCopy));
             }
             else
             {
                 Button buttonCopy = answerButtons[i];
                 print($"[QuizManager] assegnato wrong button a {buttonCopy.name}");
-                buttonCopy.onClick.AddListener(WrongAnswer);
+                buttonCopy.onClick.AddListener(() => WrongAnswer(buttonCopy));
             }
         }
     }
@@ -126,8 +126,8 @@ public class QuizManager : MonoBehaviour
             dataGenerator.GenerateFakeDocuments(fakeOption);
             SetDocumentImagesActive(fakeOption, dataGenerator.IsVisualProfile); // ←
 
-            correctOptionButton.onClick.AddListener(CorrectAnswer);
-            fakeOptionButton.onClick.AddListener(WrongAnswer);
+            correctOptionButton.onClick.AddListener(() => CorrectAnswer(correctOptionButton));
+            fakeOptionButton.onClick.AddListener(() => WrongAnswer(fakeOptionButton));
         }
         else
         {
@@ -135,8 +135,8 @@ public class QuizManager : MonoBehaviour
             SetDocumentImagesActive(correctOption, dataGenerator.IsVisualProfile); // ←
             RenderOption(fakeOption, dataGenerator.documents);
 
-            correctOptionButton.onClick.AddListener(WrongAnswer);
-            fakeOptionButton.onClick.AddListener(CorrectAnswer);
+            correctOptionButton.onClick.AddListener(() => WrongAnswer(correctOptionButton));
+            fakeOptionButton.onClick.AddListener(() => CorrectAnswer(fakeOptionButton));
         }
     }
 
@@ -164,29 +164,48 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-    public void CorrectAnswer()
+    public void CorrectAnswer(Button selectedButton = null)
     {
+        if(selectedButton != null)
+        {
+            Color color = new Color(114f / 255f, 219f / 255f, 105f / 255f);
+            selectedButton.GetComponent<Image>().color = color;
+        }
+
         if (currentquestion + 1 < questions.Length)
         {
-            questions[currentquestion].SetActive(false);
-            StartCoroutine(NextQuestion());
+            StartCoroutine(NextQuestion(false));
         }
         else
         {
-            OnEnd?.Invoke();
-            Uipanel.SetActive(false);
+            StartCoroutine(NextQuestion(true));
         }
     }
 
-    private IEnumerator NextQuestion()
+    private IEnumerator NextQuestion(bool lastQuestion)
     {
         yield return new WaitForSeconds(1);
+
+        if (lastQuestion)
+        {
+            OnEnd?.Invoke();
+            Uipanel.SetActive(false);
+            yield break;
+        }
+
+        questions[currentquestion].SetActive(false);
         currentquestion++;
         questions[currentquestion].SetActive(true);
     }
 
-    public void WrongAnswer()
+    public void WrongAnswer(Button selectedButton = null)
     {
+        if (selectedButton != null)
+        {
+            Color color = new Color(237f / 255f, 100f / 255f, 100f / 255f);
+            selectedButton.GetComponent<Image>().color = color;
+        }
+
         if (ErrorReporter != null)
         {
             ErrorReporter.RegisterError(gameObject.name);
