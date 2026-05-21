@@ -156,6 +156,30 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: 'Imprevisto: Primo soccorso'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Il fuoco blocca il percorso ma \xE8 gestibile: usa l'<b>estintore</b>.
+              Segui questi passaggi nell'ordine corretto per spegnerlo in modo efficace
+              e proseguire con l'evacuazione.\r\n \r\n1. <b>Rimuovi la chiave di
+              sicurezza</b>: finch\xE9 rimane inserita il dispositivo \xE8 bloccato
+              e non eroga alcun getto.\r\n2. <b>Punta l'ugello alla base delle fiamme</b>:
+              se il fuoco \xE8 su un liquido infiammabile, tieni il flusso parallelo
+              alla superficie per evitare di propagare le fiamme.\r\n3. <b>Premi
+              il trigger e mantieni il flusso</b> finch\xE9 il fuoco non \xE8 completamente
+              estinto. Rilasciare troppo presto rischia di far riprendere le fiamme."
+          StepForCompletition:
+          - Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       riflessivo:
       - ChapterName: Segnalazione incendio
         feedbacks:
@@ -826,9 +850,7 @@ MonoBehaviour:
             text: "Quando qualcuno sta male, la prima azione concreta \xE8 accedere
               al <b>medikit</b>. La scatola contiene gli strumenti necessari per
               una <b>prima assistenza</b> e aprirla subito permette di valutare cosa
-              \xE8 disponibile prima ancora di conoscere con precisione il problema.
-              Avere il kit a portata di mano riduce i tempi di risposta e consente
-              di agire in modo pi\xF9 <b>organizzato e efficace</b>."
+              \xE8 disponibile prima ancora di conoscere con precisione il problema. "
           StepForCompletition:
           - Apri medkit
           PersonalizedPrefab: {fileID: 0}
