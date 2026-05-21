@@ -6,6 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors.Casters;
 using VRBuilder.Core;
 
 [CreateAssetMenu(menuName = "Learning Styles/Riflessivo Behaviour")]
@@ -13,16 +14,30 @@ public class RiflessivoFeatures : LearningStyleFeatures
 {
     [Header("Settings")]
     public float audioFadeDuration = 1.5f;
-    [SerializeField] private float interactionRadius = 5f;
-    [SerializeField] private LayerMask interactableLayer;
+
+
 
     [Header("State")]
     [SerializeField] private bool isTimeStopFeatureEnabled = true;
 
+    // Layer mask contenente solo il layer "UI", calcolato a runtime per evitare
+    // chiamate a NameToLayer durante la serializzazione (UnityException)
+    private static int? _uiLayerMask;
+    private static int UILayerMask
+    {
+        get
+        {
+            if (!_uiLayerMask.HasValue)
+                _uiLayerMask = 1 << LayerMask.NameToLayer("UI");
+            return _uiLayerMask.Value;
+        }
+    }
+
+    // Backup dei layer mask originali dei caster
+    private readonly List<(SphereInteractionCaster caster, LayerMask original)> _sphereOriginalMasks = new();
+    private readonly List<(CurveInteractionCaster caster, LayerMask original)> _curveOriginalMasks = new();
+
     private Volume globalVolume;
-    private readonly List<XRBaseInteractable> disabledInteractables = new();
-    private readonly List<XRPushButtonVrBuilder> pausedPushButtons = new();
-    private readonly List<ClosableDoor> closableDoors = new();
     private readonly List<Animator> pausedAnimators = new();
     private readonly List<ParticleSystem> pausedParticles = new();
     private readonly List<AgentState> pausedNavMeshAgents = new();
@@ -81,11 +96,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
     public override void OnFeedbackClosed(FeedbackPrefabController feedback)
     {
         if (feedback == null) return;
-        
+
         // Cancella eventuale reset in corso prima di avviarne uno nuovo
         if (_resetCoroutine != null)
             SafeRunner?.StopCoroutineSafe(_resetCoroutine);
-            
+
         _resetCoroutine = SafeRunner?.RunCoroutineSafe(WaitForVolumeAndReset(feedback));
     }
 
@@ -114,7 +129,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         _audioFadeCoroutine = SafeRunner?.RunCoroutineSafe(FadeAudioVolume(AudioListener.volume, 0f, audioFadeDuration));
 
-        DisableInteractablesInRange(feedback.transform.position);
+        RestrictCastersToUILayer();
         MuteIgnoredAudioSources(true);
 
         PauseChapterTimers();
@@ -138,7 +153,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         ResumeChpaterTimers();
         ResumeChpaterTracker();
-        EnableInteractables();
+        RestoreCasterLayers();
         ResumeAnimators();
         ResumeParticles();
         ResumeNavMeshAgents();
@@ -194,103 +209,58 @@ public class RiflessivoFeatures : LearningStyleFeatures
     }
 
 
-    private void DisableInteractablesInRange(Vector3 center)
+    // --- GESTIONE LAYER MASK DEI CASTER ---
+
+    /// <summary>
+    /// Salva i layer mask originali di tutti i caster e li sovrascrive con solo "UI",
+    /// impedendo ai controller di interagire con qualsiasi oggetto tranne le UI.
+    /// </summary>
+    private void RestrictCastersToUILayer()
     {
-        disabledInteractables.Clear();
-        closableDoors.Clear();
+        _sphereOriginalMasks.Clear();
+        _curveOriginalMasks.Clear();
 
-        Collider[] nearbyObjects = Physics.OverlapSphere(center, interactionRadius, ~0, QueryTriggerInteraction.Collide);
-
-        foreach (Collider col in nearbyObjects)
+        foreach (var caster in Object.FindObjectsByType<SphereInteractionCaster>(FindObjectsSortMode.None))
         {
-            Debug.Log($"[RiflessivoFeatures] Collider trovato: {col.gameObject.name}");
+            if (caster == null) continue;
+            _sphereOriginalMasks.Add((caster, caster.physicsLayerMask));
+            caster.physicsLayerMask = UILayerMask;
+            Debug.Log($"[RiflessivoFeatures] SphereInteractionCaster '{caster.name}' layer mask → solo UI.");
+        }
 
-            var interactables = col.GetComponentsInChildren<XRBaseInteractable>(true);
-            if (interactables.Length > 0)
-            {
-                foreach (var interactable in interactables)
-                {
-                    if (interactable == null)
-                    {
-                        Debug.LogWarning($"[RiflessivoFeatures] Componente nullo su {col.gameObject.name} — saltato.");
-                        continue;
-                    }
-
-                    if (interactable.CompareTag("Feedback"))
-                        continue;
-
-                    if (interactable.enabled)
-                    {
-                        interactable.enabled = false;
-                        disabledInteractables.Add(interactable);
-                    }
-                }
-            }
-
-            var doors = col.GetComponentsInChildren<ClosableDoor>(true);
-            foreach (var door in doors)
-            {
-                if (door == null) continue;
-
-                if (door.enabled)
-                {
-                    door.enabled = false;
-                    closableDoors.Add(door);
-                }
-            }
-
-            var pushButtons = col.GetComponentsInChildren<XRPushButtonVrBuilder>(true);
-            foreach (var btn in pushButtons)
-            {
-                if (btn == null) continue;
-                Debug.Log($"[RiflessivoFeatures] PushButton trovato: {btn.name}, enabled: {btn.enabled}");
-
-                if (btn.enabled)
-                {
-                    btn.enabled = false;
-                    var btnCollider = btn.GetComponent<Collider>();
-                    if (btnCollider != null)
-                    {
-                        btnCollider.enabled = false;
-                        Debug.Log($"[RiflessivoFeatures] Collider disabilitato su: {btn.name}");
-                    }
-                    pausedPushButtons.Add(btn);
-                }
-            }
+        foreach (var caster in Object.FindObjectsByType<CurveInteractionCaster>(FindObjectsSortMode.None))
+        {
+            if (caster == null) continue;
+            _curveOriginalMasks.Add((caster, caster.raycastMask));
+            caster.raycastMask = UILayerMask;
+            Debug.Log($"[RiflessivoFeatures] CurveInteractionCaster '{caster.name}' layer mask → solo UI.");
         }
     }
 
-    private void EnableInteractables()
+    /// <summary>
+    /// Ripristina i layer mask originali su tutti i caster.
+    /// </summary>
+    private void RestoreCasterLayers()
     {
-        foreach (var interactable in disabledInteractables)
+        foreach (var (caster, original) in _sphereOriginalMasks)
         {
-            if (interactable != null)
-                interactable.enabled = true;
-        }
-
-        foreach (var door in closableDoors)
-        {
-            if (door != null)
-                door.enabled = true;
-        }
-
-        disabledInteractables.Clear();
-        closableDoors.Clear();
-
-        Debug.Log("[RiflessivoFeatures] Tutti gli interattabili e le porte sono stati riattivati.");
-
-        foreach (var btn in pausedPushButtons)
-        {
-            if (btn != null)
+            if (caster != null)
             {
-                btn.enabled = true;
-                // Riabilita anche il collider
-                var btnCollider = btn.GetComponent<Collider>();
-                if (btnCollider != null)
-                    btnCollider.enabled = true;
+                caster.physicsLayerMask = original;
+                Debug.Log($"[RiflessivoFeatures] SphereInteractionCaster '{caster.name}' layer mask ripristinato.");
             }
         }
-        pausedPushButtons.Clear();
+        _sphereOriginalMasks.Clear();
+
+        foreach (var (caster, original) in _curveOriginalMasks)
+        {
+            if (caster != null)
+            {
+                caster.raycastMask = original;
+                Debug.Log($"[RiflessivoFeatures] CurveInteractionCaster '{caster.name}' layer mask ripristinato.");
+            }
+        }
+        _curveOriginalMasks.Clear();
     }
 
 
