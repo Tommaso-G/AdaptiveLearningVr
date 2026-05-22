@@ -240,9 +240,9 @@ MonoBehaviour:
         text: "<color=#888787><size=85%><b>Scopo</b></size></color>\r\n<size=90%>Individuare
           la combinazione numerica corretta per aprire la cassaforte e ottenere la
           ricompensa.</size>\r\n\r\n<color=#888787><size=85%><b>Mosse</b></size></color>\r\n<size=90%>\u2022
-          Ruotare le manopole per far scorrere i numeri sui cilindri\r\n\u2022 Leggere
-          gli indizi per dedurre la combinazione\r\n\u2022 Inserire la sequenza tramite
-          tastiera numerica</size>\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>\u2022
+          Ruotare le manopole per far scorrere i numeri sui cilindri a destra\r\n\u2022
+          Osservare i numeri sui cilindri per dedurre la combinazione\r\n\u2022 Inserire
+          la sequenza tramite tastiera numerica della cassaforte</size>\r\n\r\n<color=#888787><size=85%><b>Attenzione</b></size></color>\r\n<size=90%>\u2022
           Puoi riprovare quante volte vuoi senza penalit\xE0</size>"
       StepForCompletition:
       - Interagisci con le manopole
@@ -400,8 +400,8 @@ MonoBehaviour:
         image: {fileID: 0}
         video: {fileID: 0}
         text: "<color=#888787><size=85%><b>Step da completare</b></size></color>\r\n\r\n<b><size=90%><color=#67FFCA>1.</color></size></b>
-          Osserva la disposizione delle tessere nel campo e individua le possibili
-          combinazioni di movimento in base alle loro posizioni.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Osserva la disposizione delle forme grigie sulla destra. Quello \xE8 l'ordine
+          che dovrai replicare spostando le tessere verdi.\r\n\r\n<b><size=90%><color=#67FFCA>2.</color></size></b>
           Seleziona una tessera tramite raycast o toccandola con il controller. I
           volumi visualizzati indicano le posizioni disponibili.\r\n\r\n<b><size=90%><color=#67FFCA>3.</color></size></b>
           Scegli uno dei volumi evidenziati per spostare la tessera nella posizione
@@ -419,7 +419,8 @@ MonoBehaviour:
         text: '<color=#888787><size=85%><b>Scopo</b></size></color>
 
           <size=90%>Riordinare
-          le tessere secondo il pattern mostrato, poi posizionare le forme sui fori.</size>
+          le tessere secondo il pattern mostrato dalle forme g, poi posizionare le
+          forme sui fori.</size>
 
 
           <color=#888787><size=85%><b>Mosse</b></size></color>

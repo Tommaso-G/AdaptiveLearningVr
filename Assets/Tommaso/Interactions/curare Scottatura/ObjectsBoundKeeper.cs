@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -28,6 +29,10 @@ public class ObjectBoundsKeeper : MonoBehaviour
     [Tooltip("Secondi di attesa prima di avviare il ritorno, una volta uscito dal collider.")]
     public float returnDelay = 0f;
 
+    [Header("Debug")]
+    [Tooltip("Attiva log dettagliati in Console per diagnosticare problemi.")]
+    public bool debugMode = false;
+
     // Posizioni iniziali memorizzate per ogni oggetto
     readonly Dictionary<GameObject, Vector3> m_StartPositions = new Dictionary<GameObject, Vector3>();
 
@@ -45,11 +50,20 @@ public class ObjectBoundsKeeper : MonoBehaviour
         {
             if (obj == null) continue;
             m_StartPositions[obj] = obj.transform.position;
+
+            if (debugMode)
+                Debug.Log($"[ObjectBoundsKeeper] Posizione salvata per '{obj.name}': {obj.transform.position}", obj);
         }
+
+        if (boundsCollider == null)
+            Debug.LogWarning("[ObjectBoundsKeeper] Nessun boundsCollider assegnato!", this);
+        else if (boundsCollider is MeshCollider mc && !mc.convex)
+            Debug.LogWarning($"[ObjectBoundsKeeper] Il boundsCollider '{boundsCollider.name}' è una MeshCollider non-convex: Physics.ClosestPoint non funziona su questo tipo. Rendila convex oppure usa Box/Sphere/Capsule Collider.", this);
     }
 
     void Update()
     {
+
         if (boundsCollider == null) return;
 
         foreach (var obj in trackedObjects)
@@ -57,12 +71,21 @@ public class ObjectBoundsKeeper : MonoBehaviour
             if (obj == null) continue;
 
             bool isOutside = IsOutsideBounds(obj);
+            bool coroutineRunning = m_ActiveCoroutines.ContainsKey(obj);
 
-            if (isOutside && !m_ActiveCoroutines.ContainsKey(obj))
+            if (debugMode)
+                //Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' — fuori: {isOutside} | coroutine attiva: {coroutineRunning}", obj);
+
+            if (isOutside && !coroutineRunning)
             {
+                if (debugMode)
+                    Debug.Log($"[ObjectBoundsKeeper] Avvio ritorno per '{obj.name}'", obj);
+
                 var coroutine = StartCoroutine(ReturnToStartRoutine(obj));
                 m_ActiveCoroutines[obj] = coroutine;
             }
+
+            Debug.Log($"posiozne oggetto {obj.name} in {obj.transform.position}");
         }
     }
 
@@ -83,35 +106,44 @@ public class ObjectBoundsKeeper : MonoBehaviour
     }
 
     /// <summary>
-    /// Imposta isKinematic sull'oggetto, salvando lo stato originale.
-    /// Non fa nulla se l'oggetto non ha un Rigidbody.
+    /// Imposta isKinematic sull'oggetto o sul primo Rigidbody trovato nei figli, salvando lo stato originale.
+    /// Non fa nulla se né l'oggetto né i suoi figli hanno un Rigidbody.
     /// </summary>
     void SetKinematic(GameObject obj, bool kinematic)
     {
-        if (!obj.TryGetComponent<Rigidbody>(out var rb)) return;
+        var rb = obj.GetComponentInChildren<Rigidbody>();
+        if (rb == null)
+        {
+            if (debugMode)
+                Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' e i suoi figli non hanno Rigidbody, isKinematic ignorato.", obj);
+            return;
+        }
 
         if (kinematic)
         {
-            // Salva lo stato originale solo la prima volta
             if (!m_OriginalKinematicState.ContainsKey(obj))
                 m_OriginalKinematicState[obj] = rb.isKinematic;
 
             rb.isKinematic = true;
+
+            if (debugMode)
+                Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' → isKinematic = true (era: {m_OriginalKinematicState[obj]})", obj);
         }
         else
         {
-            // Ripristina lo stato originale
             if (m_OriginalKinematicState.TryGetValue(obj, out var originalState))
             {
                 rb.isKinematic = originalState;
                 m_OriginalKinematicState.Remove(obj);
+
+                if (debugMode)
+                    Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' → isKinematic ripristinato a {originalState}", obj);
             }
         }
     }
 
     IEnumerator ReturnToStartRoutine(GameObject obj)
     {
-        // Imposta kinematic subito, prima del delay
         SetKinematic(obj, true);
 
         if (returnDelay > 0f)
@@ -119,10 +151,14 @@ public class ObjectBoundsKeeper : MonoBehaviour
 
         if (!m_StartPositions.TryGetValue(obj, out var startPos))
         {
+            Debug.LogWarning($"[ObjectBoundsKeeper] Posizione di partenza non trovata per '{obj.name}'. L'oggetto era nella lista quando è stato abilitato il componente?", obj);
             SetKinematic(obj, false);
             m_ActiveCoroutines.Remove(obj);
             yield break;
         }
+
+        if (debugMode)
+            Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' sta tornando a {startPos}", obj);
 
         var fromPos = obj.transform.position;
         float elapsed = 0f;
@@ -137,11 +173,11 @@ public class ObjectBoundsKeeper : MonoBehaviour
         }
 
         obj.transform.position = startPos;
-
-        // Ripristina lo stato kinematic originale
         SetKinematic(obj, false);
-
         m_ActiveCoroutines.Remove(obj);
+
+        if (debugMode)
+            Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' è tornato alla posizione iniziale.", obj);
     }
 
     /// <summary>
@@ -167,7 +203,6 @@ public class ObjectBoundsKeeper : MonoBehaviour
 
     void OnDisable()
     {
-        // Ripristina kinematic e ferma le coroutine attive
         foreach (var kvp in m_ActiveCoroutines)
         {
             if (kvp.Value != null)
