@@ -126,19 +126,19 @@ public class ExecutionOrderController : MonoBehaviour
 
     private void UpdateParallelStepObjs(string main_chapter_name, IChapter newSubChapter)
     {
-        Debug.Log("[ExecutionChapterController] Chiamato UpdateParallelStepObjs");
+        Debug.Log($"[EOC] Chiamato UpdateParallelStepObjs per il sottocapitolo {newSubChapter.Data.Name}");
         CollectStepObjects(newSubChapter, StepObjectMode.UpdateParallelStep, main_chapter_name);
     }
 
     public void GetStepObjects(IChapter chapter)
     {
-        optionalSubChapterObjs.Clear();
+        //optionalSubChapterObjs.Clear();
         parallelStepObjs.Clear();
         CollectStepObjects(chapter, StepObjectMode.CurrentStep);
     }
     public void initializeObjsWithListener(IChapter chapter)
     {
-        optionalSubChapterObjs.Clear();
+        //optionalSubChapterObjs.Clear();
         parallelStepObjs.Clear();
         CollectStepObjects(chapter, StepObjectMode.Initialization);
     }
@@ -154,6 +154,7 @@ public class ExecutionOrderController : MonoBehaviour
         bool attachListener = mode == StepObjectMode.Initialization;
         bool updatesg = mode == StepObjectMode.UpdateParallelStep;
 
+        Debug.Log($"[EOC] CHAPTER: {chapter.Data.Name} -> CollectStepObjects mode: isParallelStep {isParallelStep} | Initialization {attachListener} | Update suchapter Objs {updatesg}");
         if (isParallelStep || attachListener || updatesg) // se non � uno step group e non sto inizilizzando, allora guardo uno step per volta
         {
             steps = chapter.Data.Steps;
@@ -241,6 +242,7 @@ public class ExecutionOrderController : MonoBehaviour
         if (s == null) return;
 
         GameObject go = s.GameObject;
+        Debug.Log($"[EOC] Oggetto processato: {go.name}");
 
         if (attachListener && s.GameObject.GetComponent<InteractionListener>() == null)
         {
@@ -252,7 +254,10 @@ public class ExecutionOrderController : MonoBehaviour
         if (isParallelStep)
         {
             if (parallelStepObjs.Count > 0)
+            {
                 parallelStepObjs[^1].steps.Add(go);
+                Debug.Log($"[EOC] Oggetto {go.name} aggiunto al sottocapitolo parallelo idx {parallelStepObjs.Count-1}");
+            }
         }
         else if (!updatesg)
         {
@@ -277,12 +282,14 @@ public class ExecutionOrderController : MonoBehaviour
             if (subChapterObjesToMainChapter.ContainsKey(main_chapter_name))
             {
                 subChapterObjesToMainChapter[main_chapter_name].Add(go);
+                optionalSubChapterObjs.Add(go);
             }
             else
             {
                 List<GameObject> gos = new List<GameObject>();
                 gos.Add(go);
                 subChapterObjesToMainChapter.Add(main_chapter_name, gos);
+                optionalSubChapterObjs.Add(go);
             }
         }
     }
@@ -314,7 +321,11 @@ public class ExecutionOrderController : MonoBehaviour
                     }
                     else
                     {
-                        GetParallelStepObjects(ch);
+                        SubChapter sch = executeChaptersBehavior.Data.AddedSubChapters.FirstOrDefault(sch => sch.Chapter.Data.Name == ch.Data.Name);
+                        if (sch == null)
+                        {
+                            GetParallelStepObjects(ch);
+                        }
                     }
 
                 int idx = parallelStepObjs.Count - 1;
@@ -346,8 +357,8 @@ public class ExecutionOrderController : MonoBehaviour
                 string objNames = string.Join(", ", parallelStepObjs[i].steps.Select(g => g.name));
                 Debug.Log($"[EOC] Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Oggetti validi: [{objNames}]");
             }
-            Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Oggetto interagito: {go.name}");
-
+           
+            // Se non ho altri sottocapitoli iniziati -> il sottocapitolo che contiene l'oggetto diventa il corrente
             if (ParallelStepIndex == -1 || subch[ParallelStepIndex].LifeCycle.Stage == Stage.Active)
             {
                 for (int i = 0; i < parallelStepObjs.Count; i++)
@@ -361,13 +372,17 @@ public class ExecutionOrderController : MonoBehaviour
                 }
             }
 
+            // Se avevo un sottocapitolo iniziato -> controllo se contiene l'oggetto
             if (ParallelStepIndex != -1 && parallelStepObjs[ParallelStepIndex].steps.Contains(go))
             {
                 Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step.");
                 return;
             }
+
+            Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
         }
 
+        // Se non ho trovato l'oggetto nel sottocapitolo corrente -> lo cerco nei sottocapitoli aggiunti
         if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
         {
             if (chapterOptionalObjecs.Contains(go))
@@ -377,19 +392,13 @@ public class ExecutionOrderController : MonoBehaviour
             }
         }
 
-        if (ParallelStepIndex != -1)
-        {
-            Debug.Log("[EOC] Last subchapter selected: " + subch[ParallelStepIndex].Data.Name + ", last subchapter LifeStage: " + subch[ParallelStepIndex].LifeCycle.Stage + ", interacted object: " + go.name + " is not in current subchapter.");
-        }
-        else
-        {
-            Debug.Log("[EOC] Step group index: " + ParallelStepIndex);
-        }
+        // Non ho trovato l'oggetto -> segno errore
+        Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
 
         if (proxy != null)
         {
             DifferentStepWarningHighlight(proxy);
-
+            Debug.Log($"[EOC] L'oggetto sbagliato era un proxy");
         }
         else
         {
@@ -406,6 +415,7 @@ public class ExecutionOrderController : MonoBehaviour
         }
         else
         {
+            Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
             errorTracker.RegisterError(chapterName, stepName, errorString, (subch[ParallelStepIndex]?.Data.Name != null ? subch[ParallelStepIndex]?.Data.Name : ""));
         }
     }
@@ -414,7 +424,6 @@ public class ExecutionOrderController : MonoBehaviour
 
     public void DifferentStepWarningHighlight(GameObject go)
     {
-        Debug.Log($"Oggetto interagito: {go.name}");
 
         if (go == prevObj) return;
 
