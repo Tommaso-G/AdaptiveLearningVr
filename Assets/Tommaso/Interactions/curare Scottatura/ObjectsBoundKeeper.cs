@@ -7,8 +7,13 @@ using UnityEngine;
 /// Memorizza la posizione iniziale di una lista di oggetti e,
 /// se escono dal collider di riferimento, li riporta alla posizione
 /// di partenza con un'animazione smooth.
-/// Durante il ritorno imposta il Rigidbody come isKinematic (se presente).
-/// Compatibile con collider normali e trigger (isTrigger = true/false).
+/// Durante il ritorno:
+/// - imposta il Rigidbody come isKinematic
+/// - disattiva tutti i Collider dell'oggetto e dei figli
+/// Al termine:
+/// - ripristina isKinematic
+/// - riattiva i Collider precedentemente attivi
+/// Compatibile con collider normali e trigger.
 /// </summary>
 public class ObjectBoundsKeeper : MonoBehaviour
 {
@@ -16,7 +21,7 @@ public class ObjectBoundsKeeper : MonoBehaviour
     public List<GameObject> trackedObjects = new List<GameObject>();
 
     [Header("Collider di confine")]
-    [Tooltip("Il collider entro cui gli oggetti devono rimanere. Funziona sia con Is Trigger attivo che disattivato.")]
+    [Tooltip("Il collider entro cui gli oggetti devono rimanere.")]
     public Collider boundsCollider;
 
     [Header("Impostazioni animazione ritorno")]
@@ -26,21 +31,24 @@ public class ObjectBoundsKeeper : MonoBehaviour
     [Tooltip("Curva di easing per l'animazione di ritorno.")]
     public AnimationCurve returnCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    [Tooltip("Secondi di attesa prima di avviare il ritorno, una volta uscito dal collider.")]
+    [Tooltip("Secondi di attesa prima di avviare il ritorno.")]
     public float returnDelay = 0f;
 
     [Header("Debug")]
-    [Tooltip("Attiva log dettagliati in Console per diagnosticare problemi.")]
     public bool debugMode = false;
 
-    // Posizioni iniziali memorizzate per ogni oggetto
-    readonly Dictionary<GameObject, Vector3> m_StartPositions = new Dictionary<GameObject, Vector3>();
+    readonly Dictionary<GameObject, Vector3> m_StartPositions = new();
+    readonly Dictionary<GameObject, Coroutine> m_ActiveCoroutines = new();
+    readonly Dictionary<GameObject, bool> m_OriginalKinematicState = new();
 
-    // Tiene traccia delle coroutine attive per evitare sovrapposizioni
-    readonly Dictionary<GameObject, Coroutine> m_ActiveCoroutines = new Dictionary<GameObject, Coroutine>();
+    // Salva lo stato originale dei collider
+    readonly Dictionary<GameObject, List<ColliderState>> m_OriginalColliderStates = new();
 
-    // Memorizza lo stato isKinematic originale prima di modificarlo
-    readonly Dictionary<GameObject, bool> m_OriginalKinematicState = new Dictionary<GameObject, bool>();
+    class ColliderState
+    {
+        public Collider collider;
+        public bool wasEnabled;
+    }
 
     void OnEnable()
     {
@@ -49,6 +57,7 @@ public class ObjectBoundsKeeper : MonoBehaviour
         foreach (var obj in trackedObjects)
         {
             if (obj == null) continue;
+
             m_StartPositions[obj] = obj.transform.position;
 
             if (debugMode)
@@ -57,13 +66,10 @@ public class ObjectBoundsKeeper : MonoBehaviour
 
         if (boundsCollider == null)
             Debug.LogWarning("[ObjectBoundsKeeper] Nessun boundsCollider assegnato!", this);
-        else if (boundsCollider is MeshCollider mc && !mc.convex)
-            Debug.LogWarning($"[ObjectBoundsKeeper] Il boundsCollider '{boundsCollider.name}' è una MeshCollider non-convex: Physics.ClosestPoint non funziona su questo tipo. Rendila convex oppure usa Box/Sphere/Capsule Collider.", this);
     }
 
     void Update()
     {
-
         if (boundsCollider == null) return;
 
         foreach (var obj in trackedObjects)
@@ -73,9 +79,6 @@ public class ObjectBoundsKeeper : MonoBehaviour
             bool isOutside = IsOutsideBounds(obj);
             bool coroutineRunning = m_ActiveCoroutines.ContainsKey(obj);
 
-            if (debugMode)
-                //Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' — fuori: {isOutside} | coroutine attiva: {coroutineRunning}", obj);
-
             if (isOutside && !coroutineRunning)
             {
                 if (debugMode)
@@ -84,38 +87,32 @@ public class ObjectBoundsKeeper : MonoBehaviour
                 var coroutine = StartCoroutine(ReturnToStartRoutine(obj));
                 m_ActiveCoroutines[obj] = coroutine;
             }
-
-            Debug.Log($"posiozne oggetto {obj.name} in {obj.transform.position}");
         }
     }
 
-    /// <summary>
-    /// Restituisce true se l'oggetto è fuori dal boundsCollider.
-    /// Usa Physics.ClosestPoint che funziona indipendentemente da isTrigger.
-    /// </summary>
     bool IsOutsideBounds(GameObject obj)
     {
         var point = obj.transform.position;
+
         var closest = Physics.ClosestPoint(
             point,
             boundsCollider,
             boundsCollider.transform.position,
             boundsCollider.transform.rotation
         );
+
         return (closest - point).sqrMagnitude > 1e-6f;
     }
 
-    /// <summary>
-    /// Imposta isKinematic sull'oggetto o sul primo Rigidbody trovato nei figli, salvando lo stato originale.
-    /// Non fa nulla se né l'oggetto né i suoi figli hanno un Rigidbody.
-    /// </summary>
     void SetKinematic(GameObject obj, bool kinematic)
     {
         var rb = obj.GetComponentInChildren<Rigidbody>();
+
         if (rb == null)
         {
             if (debugMode)
-                Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' e i suoi figli non hanno Rigidbody, isKinematic ignorato.", obj);
+                Debug.Log($"[ObjectBoundsKeeper] Nessun Rigidbody trovato su '{obj.name}'", obj);
+
             return;
         }
 
@@ -125,9 +122,6 @@ public class ObjectBoundsKeeper : MonoBehaviour
                 m_OriginalKinematicState[obj] = rb.isKinematic;
 
             rb.isKinematic = true;
-
-            if (debugMode)
-                Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' → isKinematic = true (era: {m_OriginalKinematicState[obj]})", obj);
         }
         else
         {
@@ -135,10 +129,54 @@ public class ObjectBoundsKeeper : MonoBehaviour
             {
                 rb.isKinematic = originalState;
                 m_OriginalKinematicState.Remove(obj);
-
-                if (debugMode)
-                    Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' → isKinematic ripristinato a {originalState}", obj);
             }
+        }
+    }
+
+    /// <summary>
+    /// Disattiva tutti i collider dell'oggetto e dei figli
+    /// salvando il loro stato originale.
+    /// </summary>
+    void SetCollidersEnabled(GameObject obj, bool enabled)
+    {
+        var colliders = obj.GetComponentsInChildren<Collider>(true);
+
+        if (!enabled)
+        {
+            if (!m_OriginalColliderStates.ContainsKey(obj))
+                m_OriginalColliderStates[obj] = new List<ColliderState>();
+
+            m_OriginalColliderStates[obj].Clear();
+
+            foreach (var col in colliders)
+            {
+                m_OriginalColliderStates[obj].Add(new ColliderState
+                {
+                    collider = col,
+                    wasEnabled = col.enabled
+                });
+
+                col.enabled = false;
+            }
+
+            if (debugMode)
+                Debug.Log($"[ObjectBoundsKeeper] Collider disattivati per '{obj.name}'", obj);
+        }
+        else
+        {
+            if (!m_OriginalColliderStates.TryGetValue(obj, out var states))
+                return;
+
+            foreach (var state in states)
+            {
+                if (state.collider != null)
+                    state.collider.enabled = state.wasEnabled;
+            }
+
+            m_OriginalColliderStates.Remove(obj);
+
+            if (debugMode)
+                Debug.Log($"[ObjectBoundsKeeper] Collider ripristinati per '{obj.name}'", obj);
         }
     }
 
@@ -146,19 +184,22 @@ public class ObjectBoundsKeeper : MonoBehaviour
     {
         SetKinematic(obj, true);
 
+        // Disattiva collider durante il ritorno
+        SetCollidersEnabled(obj, false);
+
         if (returnDelay > 0f)
             yield return new WaitForSeconds(returnDelay);
 
         if (!m_StartPositions.TryGetValue(obj, out var startPos))
         {
-            Debug.LogWarning($"[ObjectBoundsKeeper] Posizione di partenza non trovata per '{obj.name}'. L'oggetto era nella lista quando è stato abilitato il componente?", obj);
+            Debug.LogWarning($"[ObjectBoundsKeeper] Posizione iniziale non trovata per '{obj.name}'", obj);
+
             SetKinematic(obj, false);
+            SetCollidersEnabled(obj, true);
+
             m_ActiveCoroutines.Remove(obj);
             yield break;
         }
-
-        if (debugMode)
-            Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' sta tornando a {startPos}", obj);
 
         var fromPos = obj.transform.position;
         float elapsed = 0f;
@@ -166,32 +207,33 @@ public class ObjectBoundsKeeper : MonoBehaviour
         while (elapsed < returnDuration)
         {
             elapsed += Time.deltaTime;
+
             float t = Mathf.Clamp01(elapsed / returnDuration);
             float curvedT = returnCurve.Evaluate(t);
+
             obj.transform.position = Vector3.Lerp(fromPos, startPos, curvedT);
+
             yield return null;
         }
 
         obj.transform.position = startPos;
+
+        // Ripristina stato finale
         SetKinematic(obj, false);
+        SetCollidersEnabled(obj, true);
+
         m_ActiveCoroutines.Remove(obj);
 
         if (debugMode)
             Debug.Log($"[ObjectBoundsKeeper] '{obj.name}' è tornato alla posizione iniziale.", obj);
     }
 
-    /// <summary>
-    /// Aggiorna manualmente la posizione di partenza di un oggetto specifico.
-    /// </summary>
     public void SaveCurrentPosition(GameObject obj)
     {
         if (obj != null)
             m_StartPositions[obj] = obj.transform.position;
     }
 
-    /// <summary>
-    /// Aggiorna le posizioni di partenza di tutti gli oggetti tracciati.
-    /// </summary>
     public void SaveAllCurrentPositions()
     {
         foreach (var obj in trackedObjects)
@@ -215,7 +257,14 @@ public class ObjectBoundsKeeper : MonoBehaviour
                 SetKinematic(obj, false);
         }
 
+        foreach (var obj in new List<GameObject>(m_OriginalColliderStates.Keys))
+        {
+            if (obj != null)
+                SetCollidersEnabled(obj, true);
+        }
+
         m_ActiveCoroutines.Clear();
         m_OriginalKinematicState.Clear();
+        m_OriginalColliderStates.Clear();
     }
 }
