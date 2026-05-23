@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 271.7, y: 9}
-  m_SizeDelta: {x: 548.61, y: 159.65}
+  m_SizeDelta: {x: 548.61, y: 229.16}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5216955600902694176
 CanvasRenderer:
@@ -67,9 +67,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Questo \xE8 il tuo ufficio, \xE8 il luogo dove ti ritroverai ogni volta
-    che dovrai ri-iniziare la prova.\n\nNel pannello alla tua destra sono presenti
-    informazioni utili sulla scuola. Leggile attentamente perch\xE8 potrebbero servirti
-    duratne la procedura."
+    che dovrai iniziare la prova.\n\nNel tuo ufficio sono presenti informazioni utili
+    sulla scuola.Analizza i documenti sulla scrivania e i pannelli appesi.\n\n Memorizza
+    sempre le informazioni trovate prima di uscire dall'ufficio, ti potranno servire
+    durante la prova."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -569,7 +570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: START
+  m_text: Page 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
   m_sharedMaterial: {fileID: 4687939059374929122, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
@@ -796,6 +797,7 @@ MonoBehaviour:
   activationDistance: 18.9
   scaleSpeed: 15
   maxScale: 0.002
+  stayOpen: 0
   isOptionalFeedback: 0
   scrollable: {fileID: 9088784922178284893}
   verticalScrollbar: {fileID: 4888384011194353861}
@@ -864,7 +866,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 271.7, y: -0}
+  m_AnchoredPosition: {x: 271.7, y: -205.99}
   m_SizeDelta: {x: 543.4, y: 90.14}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &6634984933939447654
@@ -1807,8 +1809,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Nel pannello alla tua sinistra invece potrai trovare i tuoi progressi attraverso
-    le varie iterazioni. Tienili d'occhio per capire  il tuo andamento.
+  m_text: Nel pannello a sinistra invece potrai trovare i tuoi progressi attraverso
+    le varie iterazioni. Tienili d'occhio per capire il tuo andamento.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2959,8 +2961,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 271.7, y: -0}
-  m_SizeDelta: {x: 543.4, y: 159.65}
+  m_AnchoredPosition: {x: 271.7, y: -205.99}
+  m_SizeDelta: {x: 543.4, y: 229.16}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5413661101758989868
 MonoBehaviour:
@@ -3120,7 +3122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: START
+  m_text: Page 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
   m_sharedMaterial: {fileID: 4687939059374929122, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}

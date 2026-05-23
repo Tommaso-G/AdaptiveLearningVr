@@ -58,7 +58,7 @@ public class ObjectSelectedCondition : Condition<ObjectSelectedCondition.ObjectS
     {
         public override void Start()
         {
-            XRBaseInteractable interactable = Data.Target.Value.GameObject.GetComponent<XRBaseInteractable>();
+            XRBaseInteractable interactable = Data.Target.Value.GameObject.GetComponentInChildren<XRBaseInteractable>();
             if (interactable != null)
             {
                 interactable.selectEntered.AddListener(OnSelected);

@@ -389,7 +389,7 @@ public class FeedbackDisplayer : MonoBehaviour
                 else if (useGlobalOverviewLabels && orderedPages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
                     textComp.text = "OVERVIEW";
                 else
-                    textComp.text = $"STEPS";
+                    textComp.text = $"Page {i +1}";
             }
 
             SetupPageContent(orderedPages[i], page, feedbackName, container);

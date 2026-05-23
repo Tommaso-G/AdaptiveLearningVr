@@ -440,7 +440,7 @@ MonoBehaviour:
       attivo:
       - ChapterName: Segnalazione incendio
         feedbacks:
-        - FeedbackName: Chiama il personale addetto
+        - FeedbackName: Chiama il personale scolastico
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
@@ -451,7 +451,7 @@ MonoBehaviour:
               usando il telefono. In questo modo il personale scolastico pu\xF2 coordinare
               l'evacuazione degli studenti in maniera ordinata e sicura."
           StepForCompletition:
-          - Grab telefono
+          - Seleziona il tasto "Personale Scolastico"
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
               numero <b>115</b>. Una volta chiamati, saranno loro a chiederti alcune
               informazioni sulla natura dell'emergenza.
           StepForCompletition:
-          - Grab telefono pompieri
+          - Seleziona il tasto "115"
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
