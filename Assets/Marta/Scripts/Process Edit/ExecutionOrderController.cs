@@ -435,10 +435,19 @@ public class ExecutionOrderController : MonoBehaviour
         prevObj = go;
 
         Outline[] outline = go.GetComponentsInChildren<Outline>(true);
+        Outline[] outlineParent = go.GetComponentsInParent<Outline>(true);
 
-        if(outline.Length > 0)
+        if (outline.Length > 0)
         {
             foreach (Outline ol in outline)
+            {
+                ol.enabled = false;
+            }
+        }
+
+        if (outlineParent.Length > 0)
+        {
+            foreach (Outline ol in outlineParent)
             {
                 ol.enabled = false;
             }
