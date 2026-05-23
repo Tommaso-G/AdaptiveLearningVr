@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using VRBuilder.Core;
@@ -366,6 +367,8 @@ public class StepErrorTracker : MonoBehaviour
 
     public CustomErrorMessage CustomErrorMessageRuntime(CustomErrorMessage custom, string custom_word)
     {
+        if (string.IsNullOrEmpty(custom_word)) return null;
+
         string new_message = custom.customMessage.Replace("_", custom_word);
 
         CustomErrorMessage new_custom = new CustomErrorMessage();

@@ -160,6 +160,8 @@ public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.
     }
     public void ResetSpawner()
     {
+        sceneSpawnablesParent.gameObject.SetActive(false);
+        Debug.Log($"[ObstaclesSpawner] ResetSpawner");
         StartCoroutine(ResetCoroutine());
     }
 
@@ -168,11 +170,12 @@ public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.
         while (!Initialized)
             yield return null;
 
+        Initialized = false;
+
         foreach (var spawnable in sceneSpawnables.Where(s => s.gameObject.activeSelf))
         {
             spawnable.PrepareForDestroy();
         }
 
-        Initialized = false;
     }
 }

@@ -13,50 +13,59 @@ public class ReportManager : MonoBehaviour
 
     [Header("Riferimenti")]
     public IterationDataGenerator dataGenerator;
+    public AttivaBambini attivaBambini;
 
     [Header("Dialoghi per insegnanti (ordine fisso 1-2-3)")]
     public List<DialogueLine> teacherDialogues = new List<DialogueLine>(); // size 3
 
     public ErrorReporter ErrorReporter;
 
+    private int missing_children = 0;
+    [SerializeField]
+    private bool childrenCondition = false;
+
     void Start()
     {
         teachers = GetComponentsInChildren<Teacher>();
-        //string lastClassId = "";
-        //for (int i = 0; i < teachers.Length; i++)
+        //if (dataGenerator.isReady)
         //{
-        //    string classId = lastClassId;
-        //    while (classId == lastClassId)
-        //    {
-        //        classId = (UnityEngine.Random.Range(1, 5)).ToString() + (char)UnityEngine.Random.Range('A', 'C');
-        //    }
-        //    lastClassId = classId;
-        //    teachers[i].setClassId(classId);
-
+        //    GenerateTeacherDialogues();
         //}
-        //assignDialogue(teachers);
-        if (dataGenerator.isReady)
-        {
-            GenerateTeacherDialogues();
-        }
-        else
-        {
-            dataGenerator.OnDocumentsGenerated += GenerateTeacherDialogues;
-        }
+        //else
+        //{
+        //    dataGenerator.OnDocumentsGenerated += GenerateTeacherDialogues;
+        //}
     }
-
-    void GenerateTeacherDialogues()
+    public void GenerateTeacherDialogues()
     {
         print("[ReportManager] chiamato generate Teacher Dialogue");
+
+        missing_children = 0;
+        if (attivaBambini != null && childrenCondition)
+        {
+            print("[ReportManager] attiviBambini ok");
+            foreach (GameObject o in attivaBambini.oggetti)
+            {
+                print($"[ReportManager] {o.name} trovato");
+                FollowerAgentWithCheck fp = o.GetComponent<FollowerAgentWithCheck>();
+                if (fp != null && !fp.IsCompleted)
+                {
+                    print($"[ReportManager] {o.name} is completed {fp.IsCompleted}");
+                    missing_children++;
+                }
+            }
+        }
+
         for (int i = 0; i < teachers.Length; i++)
         {
-            CreateDialogueForTeacher(i);
+            bool last = i == teachers.Length - 1;
+            CreateDialogueForTeacher(i, last);
         }
 
         AssignDialog();
     }
 
-    void CreateDialogueForTeacher(int index)
+    void CreateDialogueForTeacher(int index, bool last)
     {
         print("[ReportManager] chiamatocreate dialogue");
         // Numero originale della classe
@@ -65,7 +74,19 @@ public class ReportManager : MonoBehaviour
         int absentStudents = UnityEngine.Random.Range(0, 2);
 
         // Missing tra 0 e 2
-        int missing = UnityEngine.Random.Range(0, 3);
+        int missing = 0;
+        if (missing_children > 0)
+        {
+            if (last)
+            {
+                missing = missing_children;
+            }
+            else
+            {
+                missing = UnityEngine.Random.Range(1, missing_children);
+            }
+            missing_children -= missing;
+        }
 
         // Evacuated = presenti dopo malattie
         int evacuated = totalStudents - absentStudents - missing;
@@ -121,6 +142,11 @@ public class ReportManager : MonoBehaviour
                 Debug.Log("information not found");
             }
         }
+    }
+
+    public void SetChildrenCondition(bool condition)
+    {
+        childrenCondition = condition;
     }
 
     private void Update()

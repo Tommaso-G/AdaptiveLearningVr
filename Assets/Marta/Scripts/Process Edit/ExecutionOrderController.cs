@@ -380,20 +380,20 @@ public class ExecutionOrderController : MonoBehaviour
             }
 
             Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
-        }
 
-        // Se non ho trovato l'oggetto nel sottocapitolo corrente -> lo cerco nei sottocapitoli aggiunti
-        if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
-        {
-            if (chapterOptionalObjecs.Contains(go))
+            // Se non ho trovato l'oggetto nel sottocapitolo corrente -> lo cerco nei sottocapitoli aggiunti
+            if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
             {
-                Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
-                return;
+                if (chapterOptionalObjecs.Contains(go))
+                {
+                    Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+                    return;
+                }
             }
-        }
 
-        // Non ho trovato l'oggetto -> segno errore
-        Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
+            // Non ho trovato l'oggetto -> segno errore
+            Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
+        }
 
         if (proxy != null)
         {
@@ -409,14 +409,19 @@ public class ExecutionOrderController : MonoBehaviour
         string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
         string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
 
-        if (string.IsNullOrEmpty(errorString))
+        if (string.IsNullOrEmpty(errorString) && parallelStepObjs.Count == 1)
         {
             errorTracker.RegisterError(chapterName, stepName, go.name);
         }
         else
         {
             Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
-            errorTracker.RegisterError(chapterName, stepName, errorString, (subch[ParallelStepIndex]?.Data.Name != null ? subch[ParallelStepIndex]?.Data.Name : ""));
+            string subName =
+            ParallelStepIndex >= 0 &&
+            ParallelStepIndex < subch.Count
+                ? subch[ParallelStepIndex]?.Data?.Name ?? ""
+                : "";
+            errorTracker.RegisterError(chapterName, stepName, errorString, subName);
         }
     }
 
