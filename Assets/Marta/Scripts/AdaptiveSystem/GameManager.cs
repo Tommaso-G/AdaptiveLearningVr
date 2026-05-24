@@ -1,5 +1,4 @@
-﻿// GameManager.cs
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,8 +31,14 @@ public class GameManager : MonoBehaviour
     //[Header("Session Control")]
     //[SerializeField] public bool resetAll = false;
 
+    // offlineMode è ora derivato dal SessionManager: true quando è stato scelto un livello offline dal menu.
+    private bool offlineMode => SessionManager.Instance != null && SessionManager.Instance.IsOffline;
+
     private IProcess process;
     private Dictionary<string, string> chaptersIdToName = new Dictionary<string, string>();
+
+    /// <summary>ID sessione generato localmente quando offlineMode = true.</summary>
+    private string _offlineSessionId;
 
     private int currentIterationNumber = 1;
     private List<string> chaptersCompletedThisIteration = new List<string>();
@@ -56,10 +61,13 @@ public class GameManager : MonoBehaviour
         chapterTracker = FindFirstObjectByType<ChapterTracker>();
         feedbackChapterFilter = FindFirstObjectByType<FeedbackChapterFilter>();
         difficultyChapterFilter = FindFirstObjectByType<DifficultyChapterFilter>();
-        stepErrorTracker = FindFirstObjectByType<StepErrorTracker>();   
+        stepErrorTracker = FindFirstObjectByType<StepErrorTracker>();
 
-        AdaptiveSystemClient.OnDecisionReceived += HandleDecision;
-        AdaptiveSystemClient.OnSessionStarted += SaveActiveChapters;
+        if (!offlineMode)
+        {
+            AdaptiveSystemClient.OnDecisionReceived += HandleDecision;
+            AdaptiveSystemClient.OnSessionStarted += SaveActiveChapters;
+        }
         chapterTracker.ObservationDataReady += SendObservation;
 
         //if (resetAll)
@@ -97,6 +105,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeSession()
     {
+        if (offlineMode)
+        {
+            yield return StartCoroutine(StartOfflineSession());
+            yield break;
+        }
 
         bool isNewSession = SessionManager.Instance.IsNewSession();
 
@@ -111,6 +124,153 @@ public class GameManager : MonoBehaviour
             string sessionId = SessionManager.Instance.GetActiveSessionId();
             yield return StartCoroutine(RestoreAndInitialize(sessionId));
         }
+    }
+
+    // ============================
+    // OFFLINE MODE
+    // ============================
+
+    /// <summary>
+    /// Inizializza una sessione puramente locale, senza chiamate di rete.
+    /// Popola chaptersIdToName e active_chapters da allChapters,
+    /// poi lascia VRBuilder procedere normalmente.
+    /// </summary>
+    private IEnumerator StartOfflineSession()
+    {
+        _offlineSessionId = $"OFFLINE_{System.DateTime.Now:yyyyMMdd_HHmmss}";
+        currentIterationNumber = 1;
+        chaptersCompletedThisIteration.Clear();
+        chapterData.Clear();
+
+        if (allChapters == null || allChapters.Count == 0)
+        {
+            Debug.LogWarning("[GameManager][OFFLINE] allChapters e' vuota: nessun capitolo configurato.");
+            yield break;
+        }
+
+        // Recupera il livello scelto nel menu
+        OfflineLevelConfig level = SessionManager.Instance.SelectedOfflineLevel;
+        if (level == null)
+        {
+            Debug.LogWarning("[GameManager][OFFLINE] Nessun livello offline selezionato, uso default.");
+        }
+        else
+        {
+            Debug.Log($"[GameManager][OFFLINE] Livello selezionato: {level.levelName}");
+        }
+
+        // Popola mappa ID Nome 
+        chaptersIdToName.Clear();
+        active_chapters.Clear();
+
+        foreach (var chapter in allChapters)
+        {
+            chaptersIdToName[chapter.chapter_id] = chapter.name;
+
+            // I capitoli opzionali vengono aggiunti solo se presenti nel livello
+            bool isOptional = chapter.name.Contains("Optional");
+            if (!isOptional)
+            {
+                active_chapters.Add(chapter.chapter_id);
+                Debug.Log($"[GameManager][OFFLINE] Optional chapter trovato: {chapter.name}");
+            }
+        }
+
+        // Capitoli opzionali da aggiungere secondo il livello
+        if (level != null && level.optionalChaptersToAdd != null)
+        {
+            List<string> idsToAdd = new List<string>();
+            foreach (var entry in level.optionalChaptersToAdd)
+            {
+                if (entry == null) continue;
+                foreach (var chapter in allChapters)
+                {
+                    if (chapter.name == entry.chapterName)
+                    {
+                        active_chapters.Add(chapter.chapter_id);
+                        idsToAdd.Add(chapter.chapter_id);
+                        Debug.Log($"[GameManager][OFFLINE] Optional chapter aggiunto: {chapter.name}");
+                    }
+                }
+            }
+            StartCoroutine(AddOptionalChapter(idsToAdd));
+        }
+
+        // Feedback per capitolo 
+        if (feedbackChapterFilter != null)
+        {
+            // Default: feedback completo (0) per tutti
+            foreach (var setting in feedbackChapterFilter.chapterSettings)
+                setting.feedbackLevel = 0;
+
+            // Override dal livello
+            if (level != null && level.feedbackOverrides != null)
+            {
+                foreach (var ovr in level.feedbackOverrides)
+                    feedbackChapterFilter.setFeedbackLevel(ovr.chapterName, ovr.feedbackLevel);
+            }
+        }
+
+        // Difficolta' per capitolo 
+        if (difficultyChapterFilter != null && level != null && level.difficultyOverrides != null)
+        {
+            foreach (var ovr in level.difficultyOverrides)
+                difficultyChapterFilter.SetDifficultyLevel(ovr.chapterName, ovr.difficultyLevel);
+        }
+
+        string msg = "[GameManager][OFFLINE] Capitoli attivi:\n";
+        foreach (var id in active_chapters)
+            msg += $"  - {chaptersIdToName[id]}\n";
+        Debug.Log(msg);
+
+        Debug.Log($"[GameManager][OFFLINE] Sessione offline avviata. ID locale: {_offlineSessionId}");
+        yield break;
+    }
+
+    private IEnumerator EndIterationOffline()
+    {
+        _endIterationPending = false;
+
+        string json = BuildIterationJsonOffline();
+        SaveIterationJsonToFileOffline(json);
+
+        Debug.Log($"[GameManager][OFFLINE] Fine iterazione {currentIterationNumber} salvata localmente.");
+        currentIterationNumber++;
+
+        SessionManager.Instance.BackToMenu();
+        yield break;
+    }
+
+    private string BuildIterationJsonOffline()
+    {
+        SessionJson session = new SessionJson();
+        session.session_id = _offlineSessionId;
+        session.iteration = currentIterationNumber;
+
+        foreach (var kvp in chapterData)
+        {
+            var data = kvp.Value;
+            stepErrorTracker.ChapterErrors.TryGetValue(data.chapterName, out var chapterErrorData);
+
+            session.chapters.Add(new ChapterJson
+            {
+                chapter_id = data.chapterId,
+                chapter_name = data.chapterName,
+                time_seconds = data.time,
+                errors = chapterErrorData != null ? chapterErrorData.errors : new List<StepError>()
+            });
+        }
+
+        return JsonUtility.ToJson(session, true);
+    }
+
+    private void SaveIterationJsonToFileOffline(string json)
+    {
+        string dir = Path.Combine(Application.persistentDataPath, "Sessions", _offlineSessionId);
+        Directory.CreateDirectory(dir);
+        string path = Path.Combine(dir, $"iter_{currentIterationNumber}.json");
+        File.WriteAllText(path, json);
+        Debug.Log("[GameManager][OFFLINE] Salvato in: " + path);
     }
 
     private IEnumerator StartNewSession()
@@ -154,7 +314,7 @@ public class GameManager : MonoBehaviour
                             }
                         }
 
-                        AddOptionalChapter(chapterToAdd);
+                        StartCoroutine(AddOptionalChapter(chapterToAdd));
 
                         done = true;
                     }
@@ -178,7 +338,7 @@ public class GameManager : MonoBehaviour
                 if (state == null)
                 {
                     // Server non raggiungibile: non dovrebbe succedere
-                    // se il server è sempre attivo, ma gestiamo il caso
+                    // se il server ÃÂ¨ sempre attivo, ma gestiamo il caso
                     Debug.LogError("[GameManager] Server non raggiungibile.");
                     done = true;
                     return;
@@ -213,7 +373,7 @@ public class GameManager : MonoBehaviour
 
 
 
-                // Imposta il feedback e la difficoltà per ogni capitolo
+                // Imposta il feedback e la difficoltà  per ogni capitolo
                 foreach (var chapterData in state.chapter_details)
                 {
                     if (chaptersIdToName.TryGetValue(chapterData.chapter_id, out string name))
@@ -244,7 +404,7 @@ public class GameManager : MonoBehaviour
 
                 print(message);
 
-                AddOptionalChapter(chapterToAdd);
+                StartCoroutine(AddOptionalChapter(chapterToAdd));
 
                 AdaptiveSystemClient.Instance.StartSession(
                    allChapters.ToArray(),
@@ -324,6 +484,12 @@ public class GameManager : MonoBehaviour
         }
         _endIterationPending = true;
 
+        if (offlineMode)
+        {
+            StartCoroutine(EndIterationOffline());
+            return;
+        }
+
         StartCoroutine(EndIterationCoroutine(active_chapters));
     }
 
@@ -341,7 +507,7 @@ public class GameManager : MonoBehaviour
                     if (result.status == "iteration_complete")
                     {
                         Debug.Log(
-                            $"[GameManager] ✓ Iterazione {result.iteration_number} COMPLETA! " +
+                            $"[GameManager] Iterazione {result.iteration_number} COMPLETA! " +
                             $"Prossima: {result.next_iteration}"
                         );
                         currentIterationNumber = result.next_iteration;
@@ -351,7 +517,7 @@ public class GameManager : MonoBehaviour
                     else if (result.status == "iteration_incomplete")
                     {
                         Debug.LogWarning(
-                            $"[GameManager] ⚠️ Iterazione INCOMPLETA! " +
+                            $"[GameManager] Iterazione INCOMPLETA! " +
                             $"Mancanti: {string.Join(", ", result.incomplete_chapters)}"
 
                         );
@@ -435,8 +601,13 @@ public class GameManager : MonoBehaviour
         //}
     }
 
-    private void AddOptionalChapter(List<string> chapterToAdd)
+    private IEnumerator AddOptionalChapter(List<string> chapterToAdd)
     {
+        while (!chaptersOrderMgr.EditorChaptersReady)
+        {
+            yield return null;
+        }
+
         foreach (string id in chapterToAdd)
         {
             print("[GameManager] Capitolo da aggiungere: " + chaptersIdToName[id]);
@@ -457,6 +628,13 @@ public class GameManager : MonoBehaviour
 
         chapterData[chapter_id].time = time;
 
+        if (offlineMode)
+        {
+            // In modalità offline registriamo solo i dati locali, niente rete.
+            Debug.Log($"[GameManager][OFFLINE] Osservazione registrata localmente per '{chapter_name}': errori={errors}, tempo={time:F1}s");
+            return;
+        }
+
         // Invia al sistema adattivo e gestisci la risposta
         AdaptiveSystemClient.Instance.SendObservation(
             chapterId: chapter_id,
@@ -468,9 +646,12 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
-        AdaptiveSystemClient.OnDecisionReceived -= HandleDecision;
+        if (!offlineMode)
+        {
+            AdaptiveSystemClient.OnDecisionReceived -= HandleDecision;
+            AdaptiveSystemClient.OnSessionStarted -= SaveActiveChapters;
+        }
         chapterTracker.ObservationDataReady -= SendObservation;
-        AdaptiveSystemClient.OnSessionStarted -= SaveActiveChapters;
 
         //if (endIterationButton != null)
         //{

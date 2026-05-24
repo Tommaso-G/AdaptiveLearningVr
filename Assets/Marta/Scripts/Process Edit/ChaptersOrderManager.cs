@@ -85,6 +85,7 @@ public class ChaptersOrderManager : MonoBehaviour
     }
     public void initialize(IProcess process)
     {
+        Debug.Log($"[ChapterManager] Chiamato initialize");
         this.process = process;
         Node previous = null;
 
@@ -145,7 +146,12 @@ public class ChaptersOrderManager : MonoBehaviour
     // chiamata in inizializzazione
     public void AddOptional(string chapterName, string prevName = null)
     {
-        int newIndex = chapterNameToIndex[chapterName];
+
+        if (!chapterNameToIndex.TryGetValue(chapterName, out int newIndex))
+        {
+            Debug.LogError($"[ChapterManager] Capitolo NON trovato: {chapterName}");
+            return;
+        }
 
         if (prevName == null)
         {

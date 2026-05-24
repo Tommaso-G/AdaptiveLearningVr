@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -13,6 +13,13 @@ public class SessionManager : MonoBehaviour
     private bool _isNewSession;
     private Scene _gameScene;
     private bool _gameSceneLoaded = false;
+
+    // ── Offline ───────────────────────────────────────────────────────────
+    /// <summary>Livello offline scelto nel menu. Null = modalità online.</summary>
+    public OfflineLevelConfig SelectedOfflineLevel { get; private set; }
+
+    /// <summary>True se la sessione corrente è offline.</summary>
+    public bool IsOffline => SelectedOfflineLevel != null;
 
     private void Awake()
     {
@@ -31,6 +38,7 @@ public class SessionManager : MonoBehaviour
     public void StartNewSession()
     {
         Debug.Log("[SessionManager] Avvio nuova sessione");
+        SelectedOfflineLevel = null;
         SessionPersistence.Clear();
         SessionPersistence.SetResetAll(true);
         _isNewSession = true;
@@ -46,17 +54,36 @@ public class SessionManager : MonoBehaviour
         }
 
         Debug.Log("[SessionManager] Continuazione sessione");
+        SelectedOfflineLevel = null;
         SessionPersistence.SetResetAll(false);
         _activeSessionId = SessionPersistence.Load();
         _isNewSession = false;
         LoadGameScene();
     }
 
+    /// <summary>
+    /// Avvia il gioco in modalità offline con il livello specificato.
+    /// Chiamato dal MenuUI quando l'utente seleziona un livello offline.
+    /// </summary>
+    public void StartOfflineSession(OfflineLevelConfig level)
+    {
+        if (level == null)
+        {
+            Debug.LogError("[SessionManager] StartOfflineSession: level è null!");
+            return;
+        }
+
+        Debug.Log($"[SessionManager] Avvio sessione offline: {level.levelName}");
+        SelectedOfflineLevel = level;
+        _isNewSession = true;
+        LoadGameScene();
+    }
+
     public void BackToMenu()
     {
         Debug.Log("[SessionManager] Ritorno al menu");
+        SelectedOfflineLevel = null;
         Time.timeScale = 1f;
-
         SceneManager.LoadScene(menuSceneName, LoadSceneMode.Single);
     }
 
@@ -66,10 +93,9 @@ public class SessionManager : MonoBehaviour
 
     private void LoadGameScene()
     {
-        // Se la scena � gi� caricata, non ricaricarla
         if (_gameSceneLoaded && _gameScene.isLoaded)
         {
-            Debug.Log("[SessionManager] ScenaUfficiale gi� caricata");
+            Debug.Log("[SessionManager] ScenaUfficiale già caricata");
             SceneManager.SetActiveScene(_gameScene);
             return;
         }
@@ -80,7 +106,6 @@ public class SessionManager : MonoBehaviour
 
     private IEnumerator LoadGameSceneAsync()
     {
-        // Carica additivamente
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(
             gameSceneName,
             LoadSceneMode.Single
@@ -88,11 +113,9 @@ public class SessionManager : MonoBehaviour
 
         yield return new WaitUntil(() => asyncLoad.isDone);
 
-        // Recupera la scena caricata
         _gameScene = SceneManager.GetSceneByName(gameSceneName);
         _gameSceneLoaded = true;
 
-        // Attivala come scena principale
         SceneManager.SetActiveScene(_gameScene);
 
         Debug.Log($"[SessionManager] {gameSceneName} caricata e attivata");

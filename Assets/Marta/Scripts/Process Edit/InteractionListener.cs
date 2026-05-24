@@ -83,7 +83,7 @@ public class InteractionListener : MonoBehaviour
 
     private void OnButtonUIClicked()
     {
-        chapter_name = process.Data.Current.Data.Name;
+        chapter_name = process?.Data.Current?.Data.Name;
         executionOrderController.checkForObjInStep(gameObject, chapter_name: chapter_name);
         //Debug.Log("Interazione con: " + gameObject.name);
     }
