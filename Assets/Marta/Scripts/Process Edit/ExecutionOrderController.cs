@@ -33,6 +33,9 @@ public class ExecutionOrderController : MonoBehaviour
     [SerializeField] private ChaptersOrderManager co_mgr;
     [SerializeField] private StepErrorTracker errorTracker;
     private Dictionary<string, List<GameObject>> subChapterObjesToMainChapter = new Dictionary<string, List<GameObject>>();
+    // per evitare hihlight sovrapposti
+    private Dictionary<GameObject, Coroutine> _activeFlashes = new();
+    private Dictionary<GameObject, List<Material[]>> _savedMaterials = new();
 
 
     private IChapter previousChapter = null;
@@ -429,51 +432,98 @@ public class ExecutionOrderController : MonoBehaviour
 
     public void DifferentStepWarningHighlight(GameObject go)
     {
-
-        if (go == prevObj) return;
-
-        prevObj = go;
-
-        Outline[] outline = go.GetComponentsInChildren<Outline>(true);
-        Outline[] outlineParent = go.GetComponentsInParent<Outline>(true);
-
-        if (outline.Length > 0)
+        Debug.Log($"[EOC] DifferentStepWarningHighlight per {go.name}");
+        // Ferma l'eventuale flash già in corso su questo oggetto
+        // e ripristina i suoi materiali originali PRIMA di ricominciare
+        if (_activeFlashes.TryGetValue(go, out Coroutine running))
         {
-            foreach (Outline ol in outline)
+            StopCoroutine(running);
+            _activeFlashes.Remove(go);
+            Debug.Log($"[EOC] Fermato highlight per {go.name}");
+
+            if (_savedMaterials.TryGetValue(go, out List<Material[]> saved))
             {
-                ol.enabled = false;
+                Renderer[] existingRenderers = go.GetComponentsInChildren<Renderer>()
+                    .Where(r => !HasExcludedTagInHierarchy(r.transform))
+                    .ToArray();
+
+                for (int i = 0; i < existingRenderers.Length && i < saved.Count; i++)
+                    existingRenderers[i].materials = saved[i];
+
+                Debug.Log($"[EOC] Ripristinati i materiali per {go.name}");
+                _savedMaterials.Remove(go);
             }
         }
 
-        if (outlineParent.Length > 0)
-        {
-            foreach (Outline ol in outlineParent)
-            {
-                ol.enabled = false;
-            }
-        }
+        // Disabilita gli outline
+        foreach (Outline ol in go.GetComponentsInChildren<Outline>(true))
+            ol.enabled = false;
+        foreach (Outline ol in go.GetComponentsInParent<Outline>(true))
+            ol.enabled = false;
 
+        // Cattura i materiali ORIGINALI (sicuramente non highlight ora)
         Renderer[] renderers = go.GetComponentsInChildren<Renderer>()
             .Where(r => !HasExcludedTagInHierarchy(r.transform))
             .ToArray();
 
-        List<Material[]> orgMaterials = new List<Material[]>();
-        List<Material[]> redMaterials = new List<Material[]>();
+        List<Material[]> orgMaterials = new();
+        List<Material[]> redMaterials = new();
 
         foreach (var rend in renderers)
         {
             Material[] mats = rend.materials;
             orgMaterials.Add(mats);
+
             Material[] redArray = new Material[mats.Length];
             Array.Fill(redArray, highlightMat);
             redMaterials.Add(redArray);
-
             rend.materials = redArray;
         }
 
-        StartCoroutine(FadeColor(renderers, orgMaterials, redMaterials, outline));
+        // Salva gli originali nel dizionario prima di avviare
+        _savedMaterials[go] = orgMaterials;
+
+        Outline[] outline = go.GetComponentsInChildren<Outline>(true);
+        Coroutine c = StartCoroutine(FadeColor(go, renderers, orgMaterials, redMaterials, outline));
+        _activeFlashes[go] = c;
+
+        prevObj = go; // se prevObj serve ancora altrove
     }
 
+    private IEnumerator FadeColor(
+        GameObject go,
+        Renderer[] renderers,
+        List<Material[]> orgMaterials,
+        List<Material[]> redMaterials,
+        Outline[] outline)
+    {
+        Debug.Log($"[EOC] FadeColor avviato per {renderers[0].gameObject.name}");
+
+        yield return new WaitForSeconds(0.5f);
+
+        for (int k = 0; k < 3; k++)
+        {
+            for (int i = 0; i < renderers.Length; i++)
+                renderers[i].materials = orgMaterials[i];
+            yield return new WaitForSeconds(0.5f);
+
+            for (int i = 0; i < renderers.Length; i++)
+                renderers[i].materials = redMaterials[i];
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        // Ripristino finale garantito
+        for (int i = 0; i < renderers.Length; i++)
+            renderers[i].materials = orgMaterials[i];
+
+        // Riabilita gli outline
+        foreach (Outline ol in outline)
+            ol.enabled = true;
+
+        _activeFlashes.Remove(go);
+        _savedMaterials.Remove(go);
+        prevObj = null;
+    }
     private bool HasExcludedTagInHierarchy(Transform t)
     {
         while (t != null)
@@ -496,32 +546,6 @@ public class ExecutionOrderController : MonoBehaviour
     //    return renderers;
     //}
 
-    private IEnumerator FadeColor(Renderer[] renderers, List<Material[]> orgMaterials, List<Material[]> redMaterials, Outline[] outline)
-    {
-        yield return new WaitForSeconds(0.5f);
-        int k = 0;
-        while (k < 3)
-        {
-            k++;
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].materials = orgMaterials[i];
-            }
-            yield return new WaitForSeconds(0.5f);
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].materials = redMaterials[i];
-            }
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            renderers[i].materials = orgMaterials[i];
-        }
-
-        prevObj = null;
-    }
 
     private void DifferentStepWarningUI(GameObject go)
     {

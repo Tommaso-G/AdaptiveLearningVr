@@ -28,22 +28,27 @@ public class InteractionListener : MonoBehaviour
         if (button != null)
         {
             button.onPress.AddListener(OnButtonPressed);
+            Debug.Log("Trovata button property su: " + gameObject.name);
         }
         else if (lever != null)
         {
             lever.onLeverActivate.AddListener(OnLeverActivated);
+            Debug.Log("Trovata lever property su: " + gameObject.name);
         }
         else if (buttonUI != null)
         {
             buttonUI.onClick.AddListener(OnButtonUIClicked);
+            Debug.Log("Trovata buttonUI property su: " + gameObject.name);
         }
         else if (door != null)
         {
             door.onDoorClosed.AddListener(OnDoorClosed);
+            Debug.Log("Trovata door property su: " + gameObject.name);
         }
         else if (interactable != null)
         {
             interactable.selectEntered.AddListener(OnInteraction);
+            Debug.Log("Trovata interactable property su: " + gameObject.name);
 
         }
         else if (npc != null)
