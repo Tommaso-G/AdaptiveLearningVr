@@ -99,7 +99,7 @@ public class NavAgentDestinationSetter : MonoBehaviour
         if (doorTransitioner2 != null) doorTransitioner2.Toggle();
     }
 
-    private void CloseDoor()
+private void CloseDoor()
     {
         if (!_doorOpen) return;
         _doorOpen = false;
@@ -107,7 +107,24 @@ public class NavAgentDestinationSetter : MonoBehaviour
         if (doorTransitioner != null) doorTransitioner.Toggle();
         if (doorTransitioner2 != null) doorTransitioner2.Toggle();
 
-        if (exitDoor != null) exitDoor.isBlock(true);
-        if (exitDoor2 != null) exitDoor2.isBlock(true);
+        if (exitDoor != null)
+        {
+            exitDoor.isBlock(true);
+            StartCoroutine(UnblockAfter(exitDoor, doorTransitioner));
+        }
+        if (exitDoor2 != null)
+        {
+            exitDoor2.isBlock(true);
+            StartCoroutine(UnblockAfter(exitDoor2, doorTransitioner2));
+        }
+    }
+
+    private IEnumerator UnblockAfter(ExitDoor door, AngleTransitioner transitioner)
+    {
+        float waitTime = transitioner != null ? transitioner.duration : 0f;
+        yield return new WaitForSeconds(waitTime);
+
+        if (door != null)
+            door.isBlock(false);
     }
 }
