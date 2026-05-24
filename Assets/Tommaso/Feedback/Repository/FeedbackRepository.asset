@@ -1101,26 +1101,18 @@ MonoBehaviour:
       riflessivo:
       - ChapterName: Segnalazione incendio
         feedbacks:
-        - FeedbackName: Chiama il personale addetto
+        - FeedbackName: Chiama il personale scolastico
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Quando si verifica un incendio, la prima azione corretta \xE8
-              <b>avvisare il personale scolastico</b>. Ma perch\xE9 \xE8 cos\xEC
-              importante farlo subito e nel modo giusto? Il personale \xE8 formato
-              per gestire le emergenze e conosce i <b>piani di evacuazione</b>: senza
-              una segnalazione tempestiva, l'intera procedura di sicurezza rischia
-              di non attivarsi in tempo. Usare il <b>telefono</b> garantisce una
-              comunicazione diretta e verificabile. Comunicare con chiarezza la <b>posizione
-              esatta</b> e la <b>gravit\xE0 dell'incendio</b> consente di inviare
-              i soccorsi nel posto giusto, evitando ritardi pericolosi. Ogni dettaglio
-              che fornisci pu\xF2 fare la differenza tra una situazione gestibile
-              e una emergenza fuori controllo."
+            text: "In caso di incendio, <b>avvisa subito il personale scolastico</b>
+              usando il telefono. In questo modo il personale scolastico pu\xF2 coordinare
+              l'evacuazione degli studenti in maniera ordinata e sicura."
           StepForCompletition:
-          - Grab telefono
+          - Seleziona il tasto "Personale Scolastico"
           - Eseguire chiamata
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -1132,16 +1124,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 attivare l'allarme antincendio \xE8 la prima cosa da
-              fare? L'allarme \xE8 progettato per <b>avvisare simultaneamente</b>
-              tutti gli occupanti dell'edificio, cosa impossibile da fare manualmente
-              in poco tempo. I dispositivi sono posizionati strategicamente nei <b>corridoi</b>,
-              vicino alle <b>uscite</b> e agli ingressi, proprio per essere raggiungibili
-              rapidamente in ogni situazione di emergenza. Azionare il <b>pulsante
-              di allarme</b> mette in moto l'intera <b>procedura di evacuazione</b>,
-              riducendo il rischio che qualcuno rimanga ignaro del pericolo. Conoscere
-              in anticipo la posizione degli allarmi nel tuo edificio scolastico
-              \xE8 quindi parte integrante della <b>preparazione alla sicurezza</b>."
+            text: "In caso di incendio, <b>attiva subito l'allarme antincendio</b>
+              pi\xF9 vicino a te. Gli allarmi si trovano nei <b>corridoi</b>, vicino
+              alle <b>uscite</b> e agli ingressi principali. Premi il bottone: in
+              pochi secondi avviserai <b>tutte le persone presenti</b> nell'edificio."
           StepForCompletition:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
@@ -1154,18 +1140,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Dopo aver attivato l'allarme, perch\xE9 \xE8 fondamentale chiamare
-              i <b>Vigili del Fuoco</b> al <b>115</b>? L'allarme interno avvisa le
-              persone nell'edificio, ma non attiva automaticamente i soccorsi esterni.
-              I Vigili del Fuoco hanno mezzi e formazione per <b>spegnere l'incendio</b>
-              e gestire situazioni pericolose che il personale scolastico non pu\xF2
-              affrontare. Fornire informazioni <b>chiare e precise</b> \u2014 posizione,
-              estensione, eventuale presenza di persone in pericolo \u2014 consente
-              ai soccorritori di prepararsi gi\xE0 durante il tragitto, riducendo
-              i tempi di intervento. Una chiamata ben fatta pu\xF2 fare la differenza
-              tra un incendio contenuto e un disastro."
+            text: Prendi il telefono e <b>chiama subito i Vigili del Fuoco</b> al
+              numero <b>115</b>. Una volta chiamati, saranno loro a chiederti alcune
+              informazioni sulla natura dell'emergenza.
           StepForCompletition:
-          - Grab telefono pompieri
+          - Seleziona il tasto "115"
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -1185,7 +1164,55 @@ MonoBehaviour:
               di <b>cortocircuiti</b> o inneschi elettrici che potrebbero aggravare
               l\u2019incendio."
           StepForCompletition:
-          - "Disattiva l'elettricit\xE0"
+          - "Disattiva l'elettricit\xE0 - combinazione 1"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - "Disattiva l'elettricit\xE0 - combinazione 2"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - "Disattiva l'elettricit\xE0 - combinazione 3"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - "Disattiva l'elettricit\xE0 - combinazione 4"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -1201,7 +1228,55 @@ MonoBehaviour:
               si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
               pericolose."
           StepForCompletition:
-          - Disattiva il gas
+          - Disattiva il gas - combinazione 1
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - Disattiva il gas - combinazion 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - Disattiva il gas - combinazione 3
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
+              la manopola della valvola</b> in senso antiorario.\nIn questo modo
+              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
+              pericolose."
+          StepForCompletition:
+          - Disattiva il gas - combinazione 4
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -1214,15 +1289,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 non bisogna tentare di spegnere un incendio troppo grande?
-              Un fuoco esteso consuma ossigeno rapidamente e produce <b>fumo tossico</b>:
-              restare nella stanza mette a rischio la vita anche senza contatto diretto
-              con le fiamme. Uscire subito \xE8 la scelta pi\xF9 sicura. Chiudere
-              la <b>porta dietro di s\xE9</b>, inoltre, non \xE8 un gesto istintivo,
-              ma ha un effetto concreto: priva il fuoco del <b>flusso d'aria</b>
-              necessario ad alimentarsi e crea una barriera fisica che <b>rallenta
-              la propagazione</b> di fumo e fiamme verso corridoi e altre stanze,
-              guadagnando tempo prezioso per l'evacuazione degli altri occupanti."
+            text: "Se l'incendio \xE8 troppo grande, <b>non tentare di spegnerlo</b>.
+              Esci dalla stanza immediatamente e <b>chiudi la porta dietro di te</b>.
+              Questo gesto semplice blocca il <b>flusso d'aria</b> che alimenta il
+              fuoco e rallenta la diffusione di <b>fumo e fiamme</b> nelle altre
+              aree."
           StepForCompletition:
           - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
           - Non puoi domarli tutti... chiudi la porta e scappa
@@ -1236,16 +1307,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Il fumo \xE8 spesso pi\xF9 pericoloso delle fiamme stesse: pu\xF2
-              causare <b>perdita di conoscenza</b> in pochi minuti e rendere impossibile
-              l'orientamento durante l'evacuazione. Tappare le <b>fessure della porta</b>
-              con stracci, asciugamani o indumenti riduce significativamente la quantit\xE0
-              di fumo che entra o esce da una stanza, rallentando la <b>diffusione
-              dei gas tossici</b>. Questo accorgimento semplice, ma efficace, pu\xF2
-              fare la differenza in attesa dei soccorsi, soprattutto se non \xE8
-              possibile evacuare immediatamente. Qualsiasi tessuto disponibile \xE8
-              utile: l'importante \xE8 coprire i <b>bordi inferiori e laterali</b>
-              della porta, dove le fessure sono pi\xF9 ampie."
+            text: 'Se il fumo inizia a diffondersi, <b>tappa le fessure della porta</b>
+              usando qualsiasi tessuto disponibile: stracci, asciugamani o indumenti
+              come una felpa. Posizionali lungo i <b>bordi inferiori e laterali</b>
+              della porta per bloccare il passaggio del fumo e guadagnare tempo prezioso.'
           StepForCompletition:
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
           PersonalizedPrefab: {fileID: 0}
@@ -1260,15 +1325,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Controllare ogni aula prima di evacuare definitivamente \xE8 una
-              procedura fondamentale: una persona disorientata o in preda al panico
-              potrebbe non riuscire a <b>raggiungere l'uscita da sola</b>. Fare il
-              giro sistematico degli ambienti garantisce che nessuno venga lasciato
-              indietro. Se si incontrano <b>fuochi gestibili</b>, intervenire con
-              l'estintore non solo protegge chi sta evacuando, ma preserva i <b>percorsi
-              di uscita</b> per tutti. \xC8 importante valutare rapidamente le dimensioni
-              del fuoco: se non \xE8 contenibile in pochi secondi, la priorit\xE0
-              torna all'<b>evacuazione immediata</b> senza esporsi a rischi inutili."
+            text: "Fai il <b>giro delle aule</b> e controlla che non ci sia nessuno
+              rimasto indietro. Se trovi qualcuno, <b>accompagnalo subito all'uscita
+              pi\xF9 vicina</b>. Se incontri fuochi di dimensioni contenute, usa
+              l'<b>estintore</b> per spegnerli e libera il percorso di evacuazione."
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           PersonalizedPrefab: {fileID: 0}
@@ -1276,41 +1336,35 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: Aula computer
         feedbacks:
-        - FeedbackName: Porta Paolina in salvo
+        - FeedbackName: Porta Paolina  in salvo
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Durante un'evacuazione, chi non ha ancora lasciato l'edificio
-              potrebbe essere disorientato, in preda al panico o non conoscere le
-              <b>vie di uscita</b>. Accompagnare fisicamente la persona \xE8 pi\xF9
-              efficace che indicarle semplicemente la direzione: la presenza di qualcuno
-              che guida riduce l'<b>agitazione</b> e accelera il movimento. Dirigersi
-              verso l'<b>uscita pi\xF9 vicina</b>, e non necessariamente quella abituale,
-              \xE8 fondamentale per ridurre il tempo di esposizione al pericolo."
+            text: "Se una persona non ha ancora evacuato, <b>accompagnala subito</b>
+              verso l'<b>uscita pi\xF9 vicina</b>. Non lasciarla sola: guidala con
+              decisione e mantieni un passo <b>rapido ma controllato</b> per raggiungere
+              la zona sicura nel minor tempo possibile."
           StepForCompletition:
           - "Si c'\xE8 Paolina"
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
-        - FeedbackName: "non c'\xE8 nessuno"
+        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 chiudere la porta anche quando l'aula sembra vuota?
-              In una situazione di emergenza, ogni porta chiusa rappresenta una <b>barriera
-              fisica</b> che rallenta la propagazione del fuoco e del fumo verso
-              altre aree dell'edificio. La priorit\xE0 \xE8 <b>uscire rapidamente</b>
-              e mettere in sicurezza il percorso di evacuazione per tutti gli altri
-              occupanti."
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
+              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
+              e protegge le aree adiacenti.'
           StepForCompletition:
-          - "No, non c'\xE8 nessuno"
+          - "No, non c'\xE8 nessuno in Aula Computer"
           - Chiudi Porta Aula Computer
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -1324,15 +1378,12 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 chiudere la porta anche quando l'aula sembra vuota?
-              In una situazione di emergenza, ogni porta chiusa rappresenta una <b>barriera
-              fisica</b> che rallenta la propagazione del fuoco e del fumo verso
-              altre aree dell'edificio. La priorit\xE0 \xE8 <b>uscire rapidamente</b>
-              e mettere in sicurezza il percorso di evacuazione per tutti gli altri
-              occupanti."
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
+              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
+              e protegge le aree adiacenti.'
           StepForCompletition:
-          - "C'\xE9 qualcuno il Aula 2?"
-          - No, chiudi la porta di aula 2
+          - "No, non c'\xE8 nessuno in Aula 2"
+          - Chiudi Porta Aula 2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -1353,7 +1404,7 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
-      - ChapterName: 'Laboratorio di chimica '
+      - ChapterName: Starting Point
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
           pages:
@@ -1362,12 +1413,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 chiudere la porta anche quando l'aula sembra vuota?
-              In una situazione di emergenza, ogni porta chiusa rappresenta una <b>barriera
-              fisica</b> che rallenta la propagazione del fuoco e del fumo verso
-              altre aree dell'edificio. La priorit\xE0 \xE8 <b>uscire rapidamente</b>
-              e mettere in sicurezza il percorso di evacuazione per tutti gli altri
-              occupanti."
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
+              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
+              e protegge le aree adiacenti.'
           StepForCompletition:
           - "C'\xE8 qualcuno in laboratorio di chimica?"
           - No, chiudi la porta di chimica
@@ -1381,9 +1429,12 @@ MonoBehaviour:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
-            image: {fileID: 21300000, guid: e206667895b910148a760c59a17d4d18, type: 3}
+            image: {fileID: 0}
             video: {fileID: 0}
-            text: 
+            text: "Se una persona non ha ancora evacuato, <b>accompagnala subito</b>
+              verso l'<b>uscita pi\xF9 vicina</b>. Non lasciarla sola: guidala con
+              decisione e mantieni un passo <b>rapido ma controllato</b> per raggiungere
+              la zona sicura nel minor tempo possibile."
           StepForCompletition:
           - "Si. c'\xE8 Paolina in sedie a rotelle"
           - Portala fuori
@@ -1398,8 +1449,8 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
-              porta</b> dietro di te, se presente: rallenta la diffusione di <b>fumo
-              e fiamme</b> e protegge le aree adiacenti.'
+              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
+              e protegge le aree adiacenti.'
           StepForCompletition:
           - "No, Non c'\xE8 nessuo in Biblioteca "
           PersonalizedPrefab: {fileID: 0}
@@ -1414,61 +1465,50 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Durante un'evacuazione, chi non ha ancora lasciato l'edificio
-              potrebbe essere disorientato, in preda al panico o non conoscere le
-              <b>vie di uscita</b>. Accompagnare fisicamente la persona \xE8 pi\xF9
-              efficace che indicarle semplicemente la direzione: la presenza di qualcuno
-              che guida riduce l'<b>agitazione</b> e accelera il movimento. Dirigersi
-              verso l'<b>uscita pi\xF9 vicina</b>, e non necessariamente quella abituale,
-              \xE8 fondamentale per ridurre il tempo di esposizione al pericolo."
+            text: "Se una persona non ha ancora evacuato, <b>accompagnala subito</b>
+              verso l'<b>uscita pi\xF9 vicina</b>. Non lasciarla sola: guidala con
+              decisione e mantieni un passo <b>rapido ma controllato</b> per raggiungere
+              la zona sicura nel minor tempo possibile."
           StepForCompletition:
           - "Si c'\xE8 Michelle"
           - Porta Michelle all'uscita
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
-        - FeedbackName: "Non c'\xE8 nessuno qui"
+        - FeedbackName: "Non c'\xE8 nessuno in mensa"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 chiudere la porta anche quando l'aula sembra vuota?
-              In una situazione di emergenza, ogni porta chiusa rappresenta una <b>barriera
-              fisica</b> che rallenta la propagazione del fuoco e del fumo verso
-              altre aree dell'edificio. La priorit\xE0 \xE8 <b>uscire rapidamente</b>
-              e mettere in sicurezza il percorso di evacuazione per tutti gli altri
-              occupanti."
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
+              porta</b> dietro di te, se presente: rallenta la diffusione di <b>fumo
+              e fiamme</b> e protegge le aree adiacenti.'
           StepForCompletition:
           - "No, non c'\xE8 nessuno in mensa"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
           applyReflectiveEffects: 1
-      - ChapterName: Segnalazione assenti
+      - ChapterName: Estintore generico Optional
         feedbacks:
-        - FeedbackName: Segnala gli assenti
+        - FeedbackName: "C'\xE8 del fumo!"
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 \xE8 importante confrontarsi con gli insegnanti dopo
-              l'evacuazione? Gli insegnanti sono i responsabili del <b>controllo
-              delle presenze</b> e hanno gli strumenti per verificare chi manca all'appello.
-              Segnalare un <b>disperso o un assente</b> tempestivamente consente
-              ai soccorritori di sapere se \xE8 necessario rientrare nell'edificio
-              per una ricerca, riducendo il rischio di lasciare qualcuno in pericolo.
-              Ogni informazione utile, anche parziale, contribuisce a rendere le
-              operazioni di <b>messa in sicurezza</b> pi\xF9 efficaci e coordinate."
+            text: "In presenza di <b>fumo</b>, <b>abbassati immediatamente</b> e
+              procedi vicino al pavimento. Il fumo tende a salire verso l\u2019alto,
+              quindi restando in basso puoi respirare aria pi\xF9 pulita e ridurre
+              il rischio di <b>intossicazione</b>. Se possibile, <b>copri naso e
+              bocca</b> con un panno e <b>prosegui rapidamente</b> verso l\u2019uscita."
           StepForCompletition:
-          - segnala assenti
+          - Mostra Feedback fumo
           PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
+          needsButtonToBeCompleted: 1
           applyReflectiveEffects: 1
-      - ChapterName: Estintore generico Optional
-        feedbacks:
         - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
           pages:
           - Sequenzale_Globale: 0
@@ -1500,13 +1540,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "La <b>chiave di sicurezza</b> \xE8 un dispositivo di protezione
-              che impedisce l'attivazione accidentale dell'estintore durante il trasporto
-              o lo stoccaggio. In una situazione di emergenza \xE8 fondamentale ricordarsi
-              di rimuoverla per prima cosa: finch\xE9 rimane inserita, il meccanismo
-              di erogazione \xE8 <b>completamente bloccato</b> e premere la leva
-              non produrr\xE0 alcun effetto. Conoscere questa procedura in anticipo
-              evita momenti di <b>confusione preziosi</b> durante un intervento."
+            text: "Prima di tutto, <b>rimuovi la chiave di sicurezza</b> dall'estintore.
+              Finch\xE9 rimane inserita, il dispositivo \xE8 bloccato e <b>non eroga
+              alcun getto</b>. Solo dopo averla tolta potrai azionare l'estintore."
           StepForCompletition:
           - Sfaty catch removal
           PersonalizedPrefab: {fileID: 0}
@@ -1519,15 +1555,7 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Puntare correttamente l'<b>ugello</b> \xE8 essenziale per spegnere
-              il fuoco in modo efficace. Nel caso di un incendio su <b>liquidi infiammabili</b>,
-              un getto diretto e perpendicolare alla superficie pu\xF2 schizzare
-              il liquido acceso in altre direzioni, <b>allargando l'incendio</b>
-              invece di spegnerlo. Mantenere il flusso <b>parallelo alla superficie</b>
-              permette all'agente estinguente di coprire progressivamente l'area
-              senza creare turbolenze pericolose. Conoscere questa distinzione pu\xF2
-              fare la differenza tra un intervento riuscito e una situazione che
-              peggiora."
+            text: 'Prendi l''<b>ugello</b> e punta il tubo verso la base delle fiamme. '
           StepForCompletition:
           - grab ejector
           PersonalizedPrefab: {fileID: 0}
@@ -1540,34 +1568,32 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Premere il <b>trigger</b> avvia l'erogazione dell'agente estinguente,
-              ma la fase pi\xF9 critica \xE8 mantenere il <b>flusso costante</b>
-              fino alla completa estinzione. Interrompere il getto prematuramente
-              \xE8 uno degli errori pi\xF9 comuni: il fuoco pu\xF2 sembrare spento
-              in superficie ma mantenere ancora una <b>fonte di calore</b> sufficiente
-              a riprendere. Continuare fino alla completa estinzione garantisce che
-              non rimangano <b>focolai nascosti</b> pronti a riattivarsi."
+            text: "Premi il <b>trigger</b> per azionare il getto di schiuma. Mantieni
+              la leva premuta e <b>non interrompere il flusso</b> finch\xE9 il fuoco
+              non \xE8 completamente estinto. Rilasciare troppo presto rischia di
+              far <b>riprendere le fiamme</b>."
           StepForCompletition:
           - Extinguish fire
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 0
-        - FeedbackName: "C'\xE8 del fumo!"
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: Segnala gli assenti
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "In presenza di <b>fumo</b>, <b>abbassati immediatamente</b> e
-              procedi vicino al pavimento. Il fumo tende a salire verso l\u2019alto,
-              quindi restando in basso puoi respirare aria pi\xF9 pulita e ridurre
-              il rischio di <b>intossicazione</b>. Se possibile, <b>copri naso e
-              bocca</b> con un panno e <b>prosegui rapidamente</b> verso l\u2019uscita."
+            text: Una volta evacuati, <b>parla subito con gli insegnanti</b>. Fornisci
+              informazioni sul numero di studenti e <b>segnala eventuali dispersi
+              o assenti</b>. Una comunicazione rapida permette di organizzare i <b>soccorsi</b>
+              nel minor tempo possibile.
           StepForCompletition:
-          - Mostra Feedback fumo
+          - segnala assenti
           PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
+          needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
       - ChapterName: Primo soccorso Optional
         feedbacks:
@@ -1578,7 +1604,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 
+            text: "Quando qualcuno sta male, la prima azione concreta \xE8 accedere
+              al <b>medikit</b>. La scatola contiene gli strumenti necessari per
+              una <b>prima assistenza</b> e aprirla subito permette di valutare cosa
+              \xE8 disponibile prima ancora di conoscere con precisione il problema. "
           StepForCompletition:
           - Apri medkit
           PersonalizedPrefab: {fileID: 0}
@@ -1591,14 +1620,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Perch\xE9 disinfettare una ferita \xE8 il primo passo fondamentale?
-              Qualsiasi ferita aperta \xE8 esposta a <b>batteri e agenti patogeni</b>
-              presenti nell'ambiente. Il disinfettante agisce eliminando o riducendo
-              i microrganismi presenti sulla superficie della ferita, <b>prevenendo
-              infezioni</b> che potrebbero complicare la guarigione. Versare il contenuto
-              direttamente sulla ferita garantisce una copertura uniforme. \xC8 importante
-              non toccare la ferita con le mani prima di averla disinfettata, per
-              non introdurre ulteriori <b>agenti contaminanti</b>."
+            text: 'Prendi la bottiglia di disinfettante e togli il tappo.
+
+
+              Versa
+              il contenuto sulla ferita di Paolina.'
           StepForCompletition:
           - Grab bottle
           - Grab tappo
@@ -1613,19 +1639,13 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Asciugare la ferita tamponando e non strofinando \xE8 una distinzione
-              importante. Strofinare potrebbe <b>riaprire la ferita</b>, danneggiare
-              i tessuti gi\xE0 traumatizzati e introdurre nuove contaminazioni. Il
-              <b>tamponamento delicato</b> con un panno sterile rimuove il disinfettante
-              in eccesso mantenendo la ferita pulita e preparandola per la fasciatura.
-              Usare il panno sterile presente nel medikit \xE8 fondamentale: un tessuto
-              qualsiasi potrebbe contenere <b>fibre o batteri</b> che compromettono
-              la guarigione."
+            text: "Ugh! Che male! ma ora la ferita \xE8 pulita.\n\nAsciugala tamponando
+              delicatamente con il panno che trovi nella scatola."
           StepForCompletition:
           - Asciuga
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Metti la garza
           pages:
           - Sequenzale_Globale: 0
@@ -1633,18 +1653,16 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "La <b>garza sterile</b> \xE8 l'ultimo passaggio fondamentale della
-              medicazione. A differenza di un tessuto comune, la garza \xE8 progettata
-              per essere <b>non aderente</b> ai tessuti della ferita, riducendo il
-              rischio di strapparli durante la rimozione. Posizionarla correttamente,
-              coprendo <b>tutta l'area della ferita</b>, crea una barriera protettiva
-              contro batteri e agenti esterni. \xC8 importante non toccare la parte
-              della garza a contatto con la ferita per non comprometterne la <b>sterilit\xE0</b>."
+            text: 'Ora non resta che applicare la garza. Prendila e posizionala sopra
+              la ferita.
+
+
+              Fai attenzione, Paolina non vuole star ferma.'
           StepForCompletition:
           - metti garza
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 0
+          applyReflectiveEffects: 1
       - ChapterName: Vie di fuga Optional
         feedbacks:
         - FeedbackName: Seleziona un'uscita
@@ -1654,14 +1672,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Quando il percorso principale \xE8 bloccato, conoscere le <b>vie
-              di uscita alternative</b> \xE8 fondamentale. Per questo motivo i piani
-              di evacuazione prevedono sempre <b>percorsi secondari</b>: nessuna
-              uscita dovrebbe essere l'unica opzione disponibile. Consultare la <b>mappa</b>
-              permette di orientarsi con lucidit\xE0 anche in una situazione di stress,
-              evitando di muoversi a caso e rischiando di avvicinarsi al pericolo.
-              Mantenere la calma e ragionare sul percorso migliore \xE8 spesso pi\xF9
-              efficace che agire d'impulso."
+            text: "Paolina sembra spaesata. Come mai non raggiunge gli altri compagni
+              fuori dall\u2019edificio?\n\nIl mistero \xE8 presto svelato: la porta
+              \xE8 bloccata!\n\nAiuta Paolina a trovare una via d\u2019uscita alternativa.
+              Ruota il controller sinistro per vedere la mappa."
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           PersonalizedPrefab: {fileID: 0}
@@ -1674,8 +1688,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: Quando hai finito chiudi la mappa. Non vorrai mica perderla! Potrebbe
-              servirti ancora.
+            text: "ndica a Paolina la via di fuga pi\xF9 vicina.\n\nAttento a non
+              selezionare un\u2019altra uscita bloccata.\n\nI simboli sulla mappa
+              ti aiuteranno a capire dove ti trovi e se ci sono pericoli sul percorso."
           StepForCompletition:
           - Chiudi la mappa
           PersonalizedPrefab: {fileID: 0}
@@ -1683,18 +1698,18 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: Prendi l'estintore a CoO2
+        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Del <b>liquido infiammabile<b> ha preso fuoco.  Questa volta per
-              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Afferra
-              l'estintore nella stanza."
+            text: "Del <b>liquido infiammabile<b> ha preso fuoco. Questa volta per
+              spegnere le fiamme ti servir\xE0 un <b>estintore specifico<b>. Vanno
+              bene sia l'<b>estintore a C02<b>, che quello a <b>schiuma<b>."
           StepForCompletition:
-          - Prendi l'estintore a CO2
+          - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -1740,7 +1755,7 @@ MonoBehaviour:
               non \xE8 completamente estinto. Rilasciare troppo presto rischia di
               far <b>riprendere le fiamme</b>."
           StepForCompletition:
-          - Estingui il fuoco liquido
+          - Estingui il fuoco (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1

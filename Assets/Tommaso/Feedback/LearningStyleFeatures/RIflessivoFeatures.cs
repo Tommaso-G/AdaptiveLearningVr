@@ -297,7 +297,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         foreach (Animator animator in animators)
         {
-            if (animator.enabled && animator.gameObject.activeInHierarchy)
+            if (animator.enabled && !animator.CompareTag("UI"))
             {
                 animator.enabled = false;
                 pausedAnimators.Add(animator);

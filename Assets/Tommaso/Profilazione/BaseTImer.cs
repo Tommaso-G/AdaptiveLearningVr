@@ -6,7 +6,7 @@ public class EventTimer : MonoBehaviour
     private bool isRunning;
     private float elapsedTime;
 
-    public void Start()
+    private void Start()
     {
         isRunning = true;
         StartTimer();

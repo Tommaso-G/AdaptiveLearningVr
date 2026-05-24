@@ -2330,6 +2330,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "422",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -3892,7 +3893,7 @@
           "$id": "697",
           "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
           "Position": {
-            "x": 1096.8,
+            "x": 1097.6,
             "y": 0.0
           },
           "StepType": "default",
@@ -3938,23 +3939,21 @@
                         "$values": [
                           {
                             "$id": "708",
-                            "$type": "VRBuilder.BasicInteraction.Conditions.GrabbedCondition, VRBuilder.BasicInteraction",
+                            "$type": "GameCompletedCondition, Assembly-CSharp",
                             "Data": {
                               "$id": "709",
-                              "$type": "VRBuilder.BasicInteraction.Conditions.GrabbedCondition+EntityData, VRBuilder.BasicInteraction",
-                              "KeepUnlocked": true,
-                              "Targets": {
+                              "$type": "GameCompletedCondition+GameCompletedData, Assembly-CSharp",
+                              "Target": {
                                 "$id": "710",
-                                "$type": "VRBuilder.Core.SceneObjects.MultipleScenePropertyReference`1[[VRBuilder.BasicInteraction.Properties.IGrabbableProperty, VRBuilder.BasicInteraction]], VRBuilder.Core",
+                                "$type": "VRBuilder.Core.SceneObjects.SingleSceneObjectReference, VRBuilder.Core",
                                 "guids": {
                                   "$id": "711",
                                   "$type": "System.Collections.Generic.List`1[[System.Guid, mscorlib]], mscorlib",
                                   "$values": [
-                                    "151cb4a1-e92a-43c5-8003-b57c8f24728e"
+                                    "f8ca7eca-8306-422f-98ef-9bc656408e13"
                                   ]
                                 }
                               },
-                              "IsCompleted": false,
                               "Metadata": null
                             }
                           }
@@ -5571,6 +5570,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "992",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -5697,6 +5697,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1015",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -5814,6 +5815,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1035",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -5931,6 +5933,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1055",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -6433,6 +6436,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1145",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -7433,6 +7437,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1326",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -7668,6 +7673,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1370",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -7894,6 +7900,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1411",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -8240,6 +8247,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1468",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -8876,6 +8884,7 @@
                                   ]
                                 }
                               },
+                              "KnobThreshold": 0.0,
                               "Metadata": {
                                 "$id": "1582",
                                 "$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
@@ -9898,8 +9907,8 @@
                 "$id": "1757",
                 "$type": "VRBuilder.Core.ViewTransform, VRBuilder.Core",
                 "Position": {
-                  "x": -1726.0,
-                  "y": 85.0,
+                  "x": -2861.6,
+                  "y": 56.8,
                   "z": 0.0
                 },
                 "Scale": {

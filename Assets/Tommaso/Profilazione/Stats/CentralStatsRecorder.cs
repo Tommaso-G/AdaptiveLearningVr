@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using static VisivoVerbaleStatManager;
 
-//C:/Users/lab2a/AppData/LocalLow/DefaultCompany/Adaptive Learning Vr - School Evacuation\Tommaso\Profilazione\Dati
 public class CentralStatsRecorder : MonoBehaviour
 {
 
@@ -15,24 +14,19 @@ public class CentralStatsRecorder : MonoBehaviour
         public VisivoVerbaleSessionData visivoVerbaleData;
         public AssemblySessionData assemblyData;
         public MinigamesSessionData minigamesData; 
-
     }
-
 
     [System.Serializable]
     public class GenericSessionData
     {
         public float sessionTimeSeconds;
         public float feedbackTimeSeconds;
-
     }
 
-    
     [System.Serializable]
     public class LearningSessionSlidesData
     {
         public float mediaTempoPreStep;
-
     }
 
     [System.Serializable]
@@ -50,9 +44,7 @@ public class CentralStatsRecorder : MonoBehaviour
         public string modalita;
         public float tempoTotale;
         public int erroriTotali;
-
         public List<ParametroExtraEntry> parametriExtra = new List<ParametroExtraEntry>();
-
     }
 
     [System.Serializable]
@@ -125,7 +117,7 @@ public class CentralStatsRecorder : MonoBehaviour
     [SerializeField] private MinigameDataRecorder minigameDataRecorder;
     [SerializeField] private List<string> feedbackDaEscludere = new List<string>();
 
-    public string profilingSessionName = "Nome";
+    private string profilingSessionName = "Nome";
 
     void Start()
     {
@@ -133,6 +125,15 @@ public class CentralStatsRecorder : MonoBehaviour
             profilingSessionName = PlayerPrefs.GetString("ProfilingSessionName");
     }
 
+    private string GetFolderPath()
+    {
+        string customPath = PlayerPrefs.GetString("ProfilingSessionPath", "");
+
+        if (!string.IsNullOrEmpty(customPath))
+            return customPath;
+
+        return System.IO.Path.Combine(Application.persistentDataPath, "Tommaso", "Profilazione", "Dati");
+    }
 
     public LearningSessionSlidesData CalcolaMediaSlidesData()
     {
@@ -217,12 +218,12 @@ public class CentralStatsRecorder : MonoBehaviour
     public void SalvaJson(ProfilingSessionData data)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        
-        string folderPath = System.IO.Path.Combine(Application.persistentDataPath, "Tommaso", "Profilazione", "Dati");
-        
+
+        string folderPath = GetFolderPath();
+
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
-        
+
         string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}ProfileSessionData.json");
 
         System.IO.File.WriteAllText(filePath, json);
@@ -233,24 +234,19 @@ public class CentralStatsRecorder : MonoBehaviour
     {
         var result = new ProfilingSessionData();
 
-        // inizializza container
         result.genericData = new GenericSessionData();
 
-        // STOP + READ TIMER
         if (sessionTimer != null)
         {
             sessionTimer.StopTimer();
             result.genericData.sessionTimeSeconds = sessionTimer.GetTime();
         }
 
-        // statistiche esistenti
         result.slidesData = CalcolaMediaSlidesData();
         result.visivoVerbaleData = CalcolaMediaGiochi();
         result.assemblyData = GetAssemblyData();
-        result.minigamesData = GetMinigamesData(); 
+        result.minigamesData = GetMinigamesData();
 
-
-        // somma tutti i tempi totali di osservazione dei feedback
         result.genericData.feedbackTimeSeconds = slidesDataRecorder.GetAllFeedbacks()
             .Sum(f => f.tempoTotaleOsservazione);
 
@@ -311,19 +307,18 @@ public class CentralStatsRecorder : MonoBehaviour
 
             data.feedbacks.Add(entry);
         }
+
         string json = JsonUtility.ToJson(data, prettyPrint: true);
 
-        string folderPath = System.IO.Path.Combine(Application.persistentDataPath, "Tommaso", "Profilazione", "Dati");
+        string folderPath = GetFolderPath();
 
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
 
-        string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}FeedbacksSessionData.json");        
+        string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}FeedbacksSessionData.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[CentralStatsRecorder] Feedback salvati in: {filePath}");
     }
-
-    
 
     void Update()
     {

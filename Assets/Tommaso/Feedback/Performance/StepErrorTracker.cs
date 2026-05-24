@@ -86,8 +86,6 @@ public class StepErrorTracker : MonoBehaviour
         if (learningProfile == null)
             learningProfile = FindFirstObjectByType<LearningProfile>();
 
-        // Notifica il log persistente del profilo corrente
-        // (gestisce reset automatico se il profilo è cambiato)
         if (SessionPersistence.GetResetAll())
         {
             if (errorLog != null)
@@ -137,10 +135,13 @@ public class StepErrorTracker : MonoBehaviour
         TotalErrors++;
         Debug.Log($"[StepErrorTracker] Chapter: '{chapterName}' | {error} | Total errors: {TotalErrors}");
 
-        // Aggiorna i pannelli in base al profilo
+        // Il pannello a mano si aggiorna sempre, indipendentemente dal profilo
+        UpdatePanelOnHand(error, customRuntime);
+
+        // L'errorLog si aggiorna in base al profilo
         if (IsSequenziale())
             UpdatePanelsSequenziale(error, customRuntime);
-        // Per Globale: i pannelli si aggiornano solo a fine capitolo, tramite NotifyChapterCompleted()
+        // Per Globale: l'errorLog si aggiorna solo a fine capitolo, tramite NotifyChapterCompleted()
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -149,7 +150,7 @@ public class StepErrorTracker : MonoBehaviour
 
     /// <summary>
     /// Da chiamare quando un capitolo termina.
-    /// In modalità Globale aggiorna textPanelOnHand con il riepilogo del capitolo appena concluso.
+    /// In modalità Globale aggiorna l'errorLog con il riepilogo del capitolo appena concluso.
     /// </summary>
     public void NotifyChapterCompleted(string completedChapterName)
     {
@@ -158,38 +159,40 @@ public class StepErrorTracker : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────────────────────────
-    // AGGIORNAMENTO PANNELLI — SEQUENZIALE
+    // PANNELLO A MANO — comune a entrambe le modalità
+    // ─────────────────────────────────────────────────────────────────
+
+    private void UpdatePanelOnHand(StepError lastError, string customRuntime)
+    {
+        if (textPanelOnHand == null) return;
+
+        CustomErrorMessage custom = customErrorMessages.Find(c =>
+            string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+
+        if (custom == null)
+        {
+            custom = customErrorMessagesRuntime.Find(c =>
+                string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+
+            if (custom != null)
+                custom = CustomErrorMessageRuntime(custom, customRuntime);
+        }
+
+        textPanelOnHand.text = custom != null
+            ? custom.customMessage
+            : $"Ora non è il momento di interagire con <b><color=#00AAFF>{lastError.interactedObjectName}</color></b> " +
+              $"devi invece eseguire lo step <b><color=#00AAFF>{lastError.missedStepName}</color></b>";
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);
+        handMenuRequester?.OpenMenu();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // AGGIORNAMENTO ERRORLOG — SEQUENZIALE
     // ─────────────────────────────────────────────────────────────────
 
     private void UpdatePanelsSequenziale(StepError lastError, string customRuntime)
     {
-        // textPanelOnHand: solo l'ultimo errore
-        if (textPanelOnHand != null)
-        {
-            CustomErrorMessage custom = customErrorMessages.Find(c =>
-                string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
-
-            if(custom == null)
-            {
-                custom = customErrorMessagesRuntime.Find(c =>
-                    string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
-
-                if (custom != null)
-                {
-                    custom = CustomErrorMessageRuntime(custom, customRuntime);
-                }
-            }
-
-            textPanelOnHand.text = custom != null
-                ? custom.customMessage
-                : $"Ora non è il momento di interagire con {lastError.interactedObjectName} " +
-                  $"devi invece eseguire lo step {lastError.missedStepName}";
-
-            LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);
-            handMenuRequester?.OpenMenu();
-        }
-
-        // errorLog persistente: diviso in Step dimenticati ed Errori commessi
         var sb = new System.Text.StringBuilder();
 
         var stepDimenticati = new Dictionary<string, int>();
@@ -201,15 +204,14 @@ public class StepErrorTracker : MonoBehaviour
             {
                 CustomErrorMessage custom = customErrorMessages.Find(c =>
                     string.Equals(c.interactedObjectName, error.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+
                 if (custom == null)
                 {
                     custom = customErrorMessagesRuntime.Find(c =>
                         string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
 
                     if (custom != null)
-                    {
                         custom = CustomErrorMessageRuntime(custom, customRuntime);
-                    }
                 }
 
                 if (custom != null)
@@ -260,45 +262,11 @@ public class StepErrorTracker : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────────────────────────
-    // AGGIORNAMENTO PANNELLI — GLOBALE
+    // AGGIORNAMENTO ERRORLOG — GLOBALE
     // ─────────────────────────────────────────────────────────────────
 
     private void UpdatePanelsGlobale(string completedChapterName)
     {
-        // textPanelOnHand: nome capitolo appena concluso + step mancati in quel capitolo
-        if (textPanelOnHand != null)
-        {
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(completedChapterName);
-            sb.AppendLine("─────────────────");
-
-        if (chapterErrors.TryGetValue(completedChapterName, out ChapterErrorData data) && data.TotalErrors > 0)
-        {
-            var errorCounts = new Dictionary<string, int>();
-            foreach (var error in data.errors)
-            {
-                if (!errorCounts.ContainsKey(error.missedStepName))
-                    errorCounts[error.missedStepName] = 0;
-                errorCounts[error.missedStepName]++;
-            }
-
-            foreach (var kvp in errorCounts)
-            {
-                string label = kvp.Value > 1 ? $"• {kvp.Key} (x{kvp.Value})" : $"• {kvp.Key}";
-                sb.AppendLine(label);
-            }
-        }
-            else
-            {
-                sb.AppendLine("Nessun errore commesso.");
-            }
-
-            textPanelOnHand.text = sb.ToString();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);
-            handMenuRequester?.OpenMenu();
-        }
-
-        // errorLog persistente: per capitolo, conteggio Step dimenticati ed Errori commessi
         var sbLog = new System.Text.StringBuilder();
 
         foreach (var kvp in chapterErrors)
@@ -336,7 +304,7 @@ public class StepErrorTracker : MonoBehaviour
 
     private bool IsSequenziale()
     {
-        if (learningProfile == null) return true; // fallback sicuro
+        if (learningProfile == null) return true;
         return learningProfile.GetProfileTuple().sequenzialeGlobale
                == LearningEnums.SequenzialeGlobale.Sequenziale;
     }

@@ -37,6 +37,9 @@ public class ExecutionOrderController : MonoBehaviour
     private Dictionary<GameObject, Coroutine> _activeFlashes = new();
     private Dictionary<GameObject, List<Material[]>> _savedMaterials = new();
 
+    [SerializeField] private StepNameAliasMap stepAliasMap;
+
+
 
     private IChapter previousChapter = null;
 
@@ -412,19 +415,21 @@ public class ExecutionOrderController : MonoBehaviour
         string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
         string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
 
+        // ← aggiungi solo questa riga
+        string resolvedStepName = stepAliasMap != null ? stepAliasMap.Resolve(chapterName, stepName) : stepName;
+
         if (string.IsNullOrEmpty(errorString) && parallelStepObjs.Count == 1)
         {
-            errorTracker.RegisterError(chapterName, stepName, go.name);
+            errorTracker.RegisterError(chapterName, resolvedStepName, go.name);  // stepName → resolvedStepName
         }
         else
         {
             Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
             string subName =
-            ParallelStepIndex >= 0 &&
-            ParallelStepIndex < subch.Count
-                ? subch[ParallelStepIndex]?.Data?.Name ?? ""
-                : "";
-            errorTracker.RegisterError(chapterName, stepName, errorString, subName);
+                ParallelStepIndex >= 0 && ParallelStepIndex < subch.Count
+                    ? subch[ParallelStepIndex]?.Data?.Name ?? ""
+                    : "";
+            errorTracker.RegisterError(chapterName, resolvedStepName, errorString, subName);  // stepName → resolvedStepName
         }
     }
 
