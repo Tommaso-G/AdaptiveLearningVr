@@ -455,11 +455,28 @@ public class ExecutionOrderController : MonoBehaviour
             }
         }
 
-        // Disabilita gli outline
-        foreach (Outline ol in go.GetComponentsInChildren<Outline>(true))
-            ol.enabled = false;
-        foreach (Outline ol in go.GetComponentsInParent<Outline>(true))
-            ol.enabled = false;
+        // Disabilita Outline
+        List<Outline> disabledOutlines = new List<Outline>();
+
+        // Children
+        foreach (Outline ol in go.GetComponentsInChildren<Outline>())
+        {
+            if (ol.enabled)
+            {
+                ol.enabled = false;
+                disabledOutlines.Add(ol);
+            }
+        }
+
+        // Parents
+        foreach (Outline ol in go.GetComponentsInParent<Outline>())
+        {
+            if (ol.enabled)
+            {
+                ol.enabled = false;
+                disabledOutlines.Add(ol);
+            }
+        }
 
         // Cattura i materiali ORIGINALI (sicuramente non highlight ora)
         Renderer[] renderers = go.GetComponentsInChildren<Renderer>()
@@ -483,8 +500,7 @@ public class ExecutionOrderController : MonoBehaviour
         // Salva gli originali nel dizionario prima di avviare
         _savedMaterials[go] = orgMaterials;
 
-        Outline[] outline = go.GetComponentsInChildren<Outline>(true);
-        Coroutine c = StartCoroutine(FadeColor(go, renderers, orgMaterials, redMaterials, outline));
+        Coroutine c = StartCoroutine(FadeColor(go, renderers, orgMaterials, redMaterials, disabledOutlines));
         _activeFlashes[go] = c;
 
         prevObj = go; // se prevObj serve ancora altrove
@@ -495,7 +511,7 @@ public class ExecutionOrderController : MonoBehaviour
         Renderer[] renderers,
         List<Material[]> orgMaterials,
         List<Material[]> redMaterials,
-        Outline[] outline)
+        List<Outline> outline)
     {
         Debug.Log($"[EOC] FadeColor avviato per {renderers[0].gameObject.name}");
 
@@ -517,8 +533,8 @@ public class ExecutionOrderController : MonoBehaviour
             renderers[i].materials = orgMaterials[i];
 
         // Riabilita gli outline
-        foreach (Outline ol in outline)
-            ol.enabled = true;
+        //foreach (Outline ol in outline)
+        //    ol.enabled = true;
 
         _activeFlashes.Remove(go);
         _savedMaterials.Remove(go);
