@@ -80,7 +80,7 @@ public class ExecutionOrderController : MonoBehaviour
 
         if (subch != null)
         {
-            Debug.Log($"[EOC] StepStarted — controllo sottocapitoli attivi:");
+            //Debug.Log($"[EOC] StepStarted — controllo sottocapitoli attivi:");
             for (int i = 0; i < subch.Count; i++)
             {
                 string currentStepName = subch[i].Data.Current?.Data.Name ?? "nessuno";
@@ -132,7 +132,7 @@ public class ExecutionOrderController : MonoBehaviour
 
     private void UpdateParallelStepObjs(string main_chapter_name, IChapter newSubChapter)
     {
-        Debug.Log($"[EOC] Chiamato UpdateParallelStepObjs per il sottocapitolo {newSubChapter.Data.Name}");
+        //Debug.Log($"[EOC] Chiamato UpdateParallelStepObjs per il sottocapitolo {newSubChapter.Data.Name}");
         CollectStepObjects(newSubChapter, StepObjectMode.UpdateParallelStep, main_chapter_name);
     }
 
@@ -160,7 +160,7 @@ public class ExecutionOrderController : MonoBehaviour
         bool attachListener = mode == StepObjectMode.Initialization;
         bool updatesg = mode == StepObjectMode.UpdateParallelStep;
 
-        Debug.Log($"[EOC] CHAPTER: {chapter.Data.Name} -> CollectStepObjects mode: isParallelStep {isParallelStep} | Initialization {attachListener} | Update suchapter Objs {updatesg}");
+        //Debug.Log($"[EOC] CHAPTER: {chapter.Data.Name} -> CollectStepObjects mode: isParallelStep {isParallelStep} | Initialization {attachListener} | Update suchapter Objs {updatesg}");
         if (isParallelStep || attachListener || updatesg) // se non � uno step group e non sto inizilizzando, allora guardo uno step per volta
         {
             steps = chapter.Data.Steps;
@@ -248,7 +248,7 @@ public class ExecutionOrderController : MonoBehaviour
         if (s == null) return;
 
         GameObject go = s.GameObject;
-        Debug.Log($"[EOC] Oggetto processato: {go.name}");
+        //Debug.Log($"[EOC] Oggetto processato: {go.name}");
 
         if (attachListener && s.GameObject.GetComponent<InteractionListener>() == null)
         {
@@ -262,7 +262,7 @@ public class ExecutionOrderController : MonoBehaviour
             if (parallelStepObjs.Count > 0)
             {
                 parallelStepObjs[^1].steps.Add(go);
-                Debug.Log($"[EOC] Oggetto {go.name} aggiunto al sottocapitolo parallelo idx {parallelStepObjs.Count-1}");
+                //Debug.Log($"[EOC] Oggetto {go.name} aggiunto al sottocapitolo parallelo idx {parallelStepObjs.Count-1}");
             }
         }
         else if (!updatesg)
@@ -336,7 +336,7 @@ public class ExecutionOrderController : MonoBehaviour
 
                 int idx = parallelStepObjs.Count - 1;
                 string objNames = string.Join(", ", parallelStepObjs[idx].steps.Select(g => g.name));
-                Debug.Log($"[EOC] Sottocapitolo[{idx}] '{ch.Data.Name}' — oggetti validi: [{objNames}]");
+                //Debug.Log($"[EOC] Sottocapitolo[{idx}] '{ch.Data.Name}' — oggetti validi: [{objNames}]");
                 }
                 return true;
             }
@@ -350,7 +350,7 @@ public class ExecutionOrderController : MonoBehaviour
         {
             if (parallelStepObjs[0].steps.Contains(go))
             {
-                Debug.Log("Oggetto " + go.gameObject.name + " nello step.");
+                //Debug.Log("Oggetto " + go.gameObject.name + " nello step.");
                 return;
             }
 
@@ -361,7 +361,7 @@ public class ExecutionOrderController : MonoBehaviour
             for (int i = 0; i < subch.Count; i++)
             {
                 string objNames = string.Join(", ", parallelStepObjs[i].steps.Select(g => g.name));
-                Debug.Log($"[EOC] Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Oggetti validi: [{objNames}]");
+                //Debug.Log($"[EOC] Sottocapitolo[{i}] '{subch[i].Data.Name}' | Stage: {subch[i].LifeCycle.Stage} | Oggetti validi: [{objNames}]");
             }
            
             // Se non ho altri sottocapitoli iniziati -> il sottocapitolo che contiene l'oggetto diventa il corrente
@@ -381,30 +381,30 @@ public class ExecutionOrderController : MonoBehaviour
             // Se avevo un sottocapitolo iniziato -> controllo se contiene l'oggetto
             if (ParallelStepIndex != -1 && parallelStepObjs[ParallelStepIndex].steps.Contains(go))
             {
-                Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step.");
+                //Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step.");
                 return;
             }
 
-            Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
+            //Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
 
             // Se non ho trovato l'oggetto nel sottocapitolo corrente -> lo cerco nei sottocapitoli aggiunti
             if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
             {
                 if (chapterOptionalObjecs.Contains(go))
                 {
-                    Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+                    //Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
                     return;
                 }
             }
 
             // Non ho trovato l'oggetto -> segno errore
-            Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
+            //Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
         }
 
         if (proxy != null)
         {
             DifferentStepWarningHighlight(proxy);
-            Debug.Log($"[EOC] L'oggetto sbagliato era un proxy");
+            //Debug.Log($"[EOC] L'oggetto sbagliato era un proxy");
         }
         else
         {
@@ -424,7 +424,7 @@ public class ExecutionOrderController : MonoBehaviour
         }
         else
         {
-            Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
+            //Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
             string subName =
                 ParallelStepIndex >= 0 && ParallelStepIndex < subch.Count
                     ? subch[ParallelStepIndex]?.Data?.Name ?? ""
@@ -437,14 +437,14 @@ public class ExecutionOrderController : MonoBehaviour
 
     public void DifferentStepWarningHighlight(GameObject go)
     {
-        Debug.Log($"[EOC] DifferentStepWarningHighlight per {go.name}");
+        //Debug.Log($"[EOC] DifferentStepWarningHighlight per {go.name}");
         // Ferma l'eventuale flash già in corso su questo oggetto
         // e ripristina i suoi materiali originali PRIMA di ricominciare
         if (_activeFlashes.TryGetValue(go, out Coroutine running))
         {
             StopCoroutine(running);
             _activeFlashes.Remove(go);
-            Debug.Log($"[EOC] Fermato highlight per {go.name}");
+            //Debug.Log($"[EOC] Fermato highlight per {go.name}");
 
             if (_savedMaterials.TryGetValue(go, out List<Material[]> saved))
             {
@@ -455,7 +455,7 @@ public class ExecutionOrderController : MonoBehaviour
                 for (int i = 0; i < existingRenderers.Length && i < saved.Count; i++)
                     existingRenderers[i].materials = saved[i];
 
-                Debug.Log($"[EOC] Ripristinati i materiali per {go.name}");
+                //Debug.Log($"[EOC] Ripristinati i materiali per {go.name}");
                 _savedMaterials.Remove(go);
             }
         }
@@ -518,7 +518,7 @@ public class ExecutionOrderController : MonoBehaviour
         List<Material[]> redMaterials,
         List<Outline> outline)
     {
-        Debug.Log($"[EOC] FadeColor avviato per {renderers[0].gameObject.name}");
+        //Debug.Log($"[EOC] FadeColor avviato per {renderers[0].gameObject.name}");
 
         yield return new WaitForSeconds(0.5f);
 
@@ -574,7 +574,7 @@ public class ExecutionOrderController : MonoBehaviour
         {
             if (!lockedUI.gameObject.activeSelf)
             {
-                Debug.Log($"Oggetto interagito: {go.name}");
+                //Debug.Log($"Oggetto interagito: {go.name}");
                 lockedUI.transform.position = camera.transform.position;
                 lockedUI.transform.position += camera.transform.forward * 0.6f;
                 lockedUI.transform.forward = camera.transform.forward;

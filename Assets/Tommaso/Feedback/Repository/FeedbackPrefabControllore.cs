@@ -66,44 +66,44 @@ public class FeedbackPrefabController : MonoBehaviour
         playerCamera = Camera.main ?? FindFirstObjectByType<Camera>();
 
         profile = FindFirstObjectByType<LearningProfile>();
-        Debug.Log($"[FeedbackPrefabController] profile trovato: {profile != null}, applyReflectiveEffects: {applyReflectiveEffects}");
+        ////Debug.Log($"[FeedbackPrefabController] profile trovato: {profile != null}, applyReflectiveEffects: {applyReflectiveEffects}");
 
         if (profile != null && applyReflectiveEffects)
         {
             styleBehaviour = profile.GetCurrentBehaviour();
-            Debug.Log($"[FeedbackPrefabController] styleBehaviour: {styleBehaviour?.GetType().Name ?? "NULL"}");
+            ////Debug.Log($"[FeedbackPrefabController] styleBehaviour: {styleBehaviour?.GetType().Name ?? "NULL"}");
 
             if (styleBehaviour is RiflessivoFeatures)
             {
-                Debug.Log("[FeedbackPrefabController] Profilo RIFLESSIVO rilevato.");
+                ////Debug.Log("[FeedbackPrefabController] Profilo RIFLESSIVO rilevato.");
 
                 if (buttonsToClickCanvas != null)
                 {
                     buttonsToClickCanvas.SetActive(true);
-                    Debug.Log("[FeedbackPrefabController] buttonsToClickCanvas attivato.");
+                    ////Debug.Log("[FeedbackPrefabController] buttonsToClickCanvas attivato.");
 
                     Button[] buttons = buttonsToClickCanvas.GetComponentsInChildren<Button>(true);
-                    Debug.Log($"[FeedbackPrefabController] Bottoni trovati: {buttons.Length}");
+                    ////Debug.Log($"[FeedbackPrefabController] Bottoni trovati: {buttons.Length}");
 
                     foreach (Button btn in buttons)
                     {
                         btn.onClick.AddListener(OnReflectiveButtonClicked);
-                        Debug.Log($"[FeedbackPrefabController] Listener aggiunto al bottone: {btn.name}");
+                        ////Debug.Log($"[FeedbackPrefabController] Listener aggiunto al bottone: {btn.name}");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("[FeedbackPrefabController] buttonsToClickCanvas è NULL, impossibile attivarlo.");
+                  //  //////Debug.LogWarning("[FeedbackPrefabController] buttonsToClickCanvas è NULL, impossibile attivarlo.");
                 }
             }
             else
             {
-                Debug.Log("[FeedbackPrefabController] Profilo NON riflessivo, nessun bottone attivato.");
+             //   //////Debug.Log("[FeedbackPrefabController] Profilo NON riflessivo, nessun bottone attivato.");
             }
         }
         else
         {
-            Debug.LogWarning($"[FeedbackPrefabController] Blocco riflessivo saltato — profile null: {profile == null}, applyReflectiveEffects: {applyReflectiveEffects}");
+            //////Debug.LogWarning($"[FeedbackPrefabController] Blocco riflessivo saltato — profile null: {profile == null}, applyReflectiveEffects: {applyReflectiveEffects}");
         }
 
         if (isOptionalFeedback)
@@ -168,7 +168,7 @@ public class FeedbackPrefabController : MonoBehaviour
     {
         if (scrollable == null || content == null)
         {
-            Debug.LogWarning("[FeedbackScrollableController] ScrollRect o Content non assegnati.");
+            //////Debug.LogWarning("[FeedbackScrollableController] ScrollRect o Content non assegnati.");
             return;
         }
 
@@ -194,7 +194,7 @@ public class FeedbackPrefabController : MonoBehaviour
         scrollable.horizontalNormalizedPosition = 0f; // a sinistra
         Canvas.ForceUpdateCanvases();
 
-        //Debug.Log($"[FeedbackScrollableController] Scroll riallineato in alto per '{name}'.");
+        ////////Debug.Log($"[FeedbackScrollableController] Scroll riallineato in alto per '{name}'.");
     }
 
 
@@ -237,7 +237,7 @@ public class FeedbackPrefabController : MonoBehaviour
             DisableFeedbackCorutine();
         }
 
-        // Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
+        // //////Debug.Log($"[ResetScrollOnEnable] Reset scroll eseguito per '{gameObject.name}'");
     }
 
     public void DisableFeedbackCorutine()
@@ -342,7 +342,7 @@ public class FeedbackPrefabController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[OnDestroy] sender è NULL.");
+            //////Debug.LogWarning("[OnDestroy] sender è NULL.");
         }
     }
 

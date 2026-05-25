@@ -28,6 +28,9 @@ public class FeedbackDisplayer : MonoBehaviour
             return null;
         }
 
+        Debug.Log($"[FeedbackAutoManager] Chiamato FindFeedbackPositiononChild per '{parent.name}'.");
+
+
         List<Transform> children = new List<Transform>();
         Transform feedbackPosition = parent.transform.Find("feedbackPosition");
 

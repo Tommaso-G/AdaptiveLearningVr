@@ -186,7 +186,7 @@ public class StepOutlineManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
+        //Debug.Log($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
 
         if (!mainChapterOutlineAllowed)
         {
@@ -206,7 +206,7 @@ public class StepOutlineManager : MonoBehaviour
                 }
             }
 
-            Debug.Log(message_1 + (message_2 != null? message_2 : "Nessuno"));
+            //Debug.Log(message_1 + (message_2 != null? message_2 : "Nessuno"));
         }
 
         if (subChapters.Count < 0) yield break;
@@ -237,7 +237,7 @@ public class StepOutlineManager : MonoBehaviour
 
                 if (currentStep != lastStep[subChapter])
                 {
-                    Debug.Log($"[StepOutlineManager] Last step: {lastStep[subChapter].Data.Name}. Current step: {(currentStep == null ? "Finito il sottocapitolo" : currentStep.Data.Name)}");
+                    //Debug.Log($"[StepOutlineManager] Last step: {lastStep[subChapter].Data.Name}. Current step: {(currentStep == null ? "Finito il sottocapitolo" : currentStep.Data.Name)}");
                     lastStep[subChapter] = currentStep;
                     anyChanged = true;
                 }
@@ -255,7 +255,7 @@ public class StepOutlineManager : MonoBehaviour
                     IStep activeStep = subChapter.Data.Current;
                     if (activeStep != null)
                     {
-                        Debug.Log($"[StepOutlineManager] Step cambiato: {activeStep.Data.Name} in {subChapter.Data.Name}");
+                        //Debug.Log($"[StepOutlineManager] Step cambiato: {activeStep.Data.Name} in {subChapter.Data.Name}");
                         EnableOutlinesForStep(activeStep);
                     }
                 }
@@ -299,13 +299,13 @@ public class StepOutlineManager : MonoBehaviour
             GameObject activeProxy = vproxy?.activeproxy;
             if (activeProxy != null)
             {
-                Debug.Log($"[StepOutlineManager] ActiveProxy {activeProxy.name}, Visual Proxy {vproxy.name}");
+                //Debug.Log($"[StepOutlineManager] ActiveProxy {activeProxy.name}, Visual Proxy {vproxy.name}");
                 FindAndEnableProxyOutlines(activeProxy, vproxy);
                 vproxy.OnProxyChanged += HandleProxyOutline;
             }
             else
             {
-                Debug.Log($"[StepOutlineManager] ActiveProxy null");
+                //Debug.Log($"[StepOutlineManager] ActiveProxy null");
             }
         }
 
@@ -329,7 +329,7 @@ public class StepOutlineManager : MonoBehaviour
             activeProxyOutlines[vproxy].OutlineWidth = minOutlineWidth;
             activeProxyOutlines[vproxy].enabled = false;
 
-            Debug.Log($"[StepOutlineManager] Proxy outline disattivato su: {activeProxyOutlines[vproxy].gameObject.name}");
+            //Debug.Log($"[StepOutlineManager] Proxy outline disattivato su: {activeProxyOutlines[vproxy].gameObject.name}");
 
             activeProxyOutlines.Remove(vproxy);
         }
@@ -363,7 +363,7 @@ public class StepOutlineManager : MonoBehaviour
             outline.OutlineWidth = minOutlineWidth;
             activeOutlines.Add(outline);
 
-            Debug.Log($"[StepOutlineManager] Outline attivato su: {t.gameObject.name}");
+            //Debug.Log($"[StepOutlineManager] Outline attivato su: {t.gameObject.name}");
         }
     }
 
@@ -372,7 +372,7 @@ public class StepOutlineManager : MonoBehaviour
         // Il root deve avere il tag ObjectStep
         if (!root.CompareTag(OBJECT_STEP_TAG))
         {
-            Debug.Log($"[StepOutlineManager] Root tag sbagliato. Root = {root.name}");
+            //Debug.Log($"[StepOutlineManager] Root tag sbagliato. Root = {root.name}");
             return;
         }
 
@@ -387,7 +387,7 @@ public class StepOutlineManager : MonoBehaviour
             outline.OutlineWidth = minOutlineWidth;
             activeProxyOutlines.Add(vproxy, outline);
 
-            Debug.Log($"[StepOutlineManager] Proxy outline attivato su: {t.gameObject.name}");
+            //Debug.Log($"[StepOutlineManager] Proxy outline attivato su: {t.gameObject.name}");
         }
     }
 
@@ -404,7 +404,7 @@ public class StepOutlineManager : MonoBehaviour
         outline.OutlineWidth = minOutlineWidth;
         activeOutlines.Add(outline);
 
-        Debug.Log($"[StepOutlineManager] Outline attivato su: {go.name}");
+        //Debug.Log($"[StepOutlineManager] Outline attivato su: {go.name}");
     }
 
     private void DisableAllActiveOutlines()
@@ -424,7 +424,7 @@ public class StepOutlineManager : MonoBehaviour
             {
                 outline.OutlineWidth = minOutlineWidth;
                 outline.enabled = false;
-                Debug.Log($"[StepOutlineManager] Outline disattivato su: {outline.gameObject.name}");
+                //Debug.Log($"[StepOutlineManager] Outline disattivato su: {outline.gameObject.name}");
             }
         }
         activeOutlines.Clear();
@@ -446,7 +446,7 @@ public class StepOutlineManager : MonoBehaviour
             pair.Value.OutlineWidth = minOutlineWidth;
             pair.Value.enabled = false;
             pair.Key.OnProxyChanged -= HandleProxyOutline;
-            Debug.Log($"[StepOutlineManager] Outline disattivato su: {pair.Value.gameObject.name}");
+            //Debug.Log($"[StepOutlineManager] Outline disattivato su: {pair.Value.gameObject.name}");
         }
         activeProxyOutlines.Clear();
     }

@@ -673,8 +673,83 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 1
           applyReflectiveEffects: 1
+      - ChapterName: Aula 2(in fondo a sinistra)
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. '
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula 2"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiudi la porta di Aula 2
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Chiudi la porta dell'aula per impedire che nessuno ci entri e bloccare
+              l'eventuale propagazione del fuoco
+          StepForCompletition:
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Porta Jackie in salvo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se una persona non ha ancora evacuato, <b>accompagnala subito</b>
+              verso l'<b>uscita pi\xF9 vicina</b>. Non lasciarla sola: guidala con
+              decisione e mantieni un passo <b>rapido ma controllato</b> per raggiungere
+              la zona sicura nel minor tempo possibile."
+          StepForCompletition:
+          - "Si c'\xE8 Paolina in Aula2"
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       - ChapterName: Aula computer
         feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
+              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
+              e protegge le aree adiacenti.'
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula Computer"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiudi la porta di Aula Computer
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Chiudi la porta dell'aula per impedire che nessuno ci entri e bloccare
+              l'eventuale propagazione del fuoco
+          StepForCompletition:
+          - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: Porta Paolina  in salvo
           pages:
           - Sequenzale_Globale: 0
@@ -692,58 +767,7 @@ MonoBehaviour:
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
-        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
-              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
-              e protegge le aree adiacenti.'
-          StepForCompletition:
-          - "No, non c'\xE8 nessuno in Aula Computer"
-          - Chiudi Porta Aula Computer
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Aula 2(in fondo a sinistra)
-        feedbacks:
-        - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
-              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
-              e protegge le aree adiacenti.'
-          StepForCompletition:
-          - "No, non c'\xE8 nessuno in Aula 2"
-          - Chiudi Porta Aula 2
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Porta Paolina 2 in salvo
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona non ha ancora evacuato, <b>accompagnala subito</b>
-              verso l'<b>uscita pi\xF9 vicina</b>. Non lasciarla sola: guidala con
-              decisione e mantieni un passo <b>rapido ma controllato</b> per raggiungere
-              la zona sicura nel minor tempo possibile."
-          StepForCompletition:
-          - "Si c'\xE8 Paolina in Aula2"
-          - Chiudi Porta Aula 2
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Starting Point
+      - ChapterName: Laboratorio di chimica
         feedbacks:
         - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
           pages:
@@ -752,11 +776,22 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. <b>Chiudi la
-              porta</b> dietro di te: rallenta la diffusione di <b>fumo e fiamme</b>
-              e protegge le aree adiacenti.'
+            text: 'Se l''aula sembra vuota, <b>esci rapidamente</b>. '
           StepForCompletition:
           - "C'\xE8 qualcuno in laboratorio di chimica?"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiudi la porta di Laboratorio di Chimica
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Chiudi la porta dell'aula per impedire che nessuno ci entri e bloccare
+              l'eventuale propagazione del fuoco
+          StepForCompletition:
           - No, chiudi la porta di chimica
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0

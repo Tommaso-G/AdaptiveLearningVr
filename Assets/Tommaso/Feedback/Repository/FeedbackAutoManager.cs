@@ -220,15 +220,42 @@ public class FeedbackAutoManager : MonoBehaviour
 
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
+        // Stampa tutti gli StepForCompletition
+        if (feedback.StepForCompletition != null && feedback.StepForCompletition.Count > 0)
+        {
+            Debug.Log("[FeedbackAutoManager] StepForCompletition trovati:");
+
+            foreach (string s in feedback.StepForCompletition)
+            {
+                Debug.Log($" - {s}");
+            }
+        }
+        else
+        {
+            Debug.Log("[FeedbackAutoManager] Nessuno StepForCompletition trovato.");
+        }
+
+        Debug.Log($"[FeedbackAutoManager] OnStepActivated per '{step.Data.Name}'.");
+
         if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
         {
             Debug.Log($"[FeedbackAutoManager] Feedback disabilitato per '{chapterName}'.");
             return;
         }
+
         string stepName = step.Data.Name;
         string firstStep = feedback.StepForCompletition.FirstOrDefault();
-        if (stepName != firstStep) return;
-        if (shownFeedbacks.Contains(feedback)) return;
+
+        if (stepName != firstStep)
+        {
+            Debug.Log($"[FeedbackAutoManager] QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.");
+            return;
+        }
+
+        if (shownFeedbacks.Contains(feedback))
+        {
+            return;
+        }
 
         GameObject target = GetFirstGameObjectFromStep(step);
         if (target == null) return;
@@ -241,9 +268,11 @@ public class FeedbackAutoManager : MonoBehaviour
         foreach (var pos in feedbackPositions)
         {
             Vector3Int key = PositionKey(pos.position);
+
             if (positionCooldowns.TryGetValue(key, out float until))
             {
                 float remaining = until - Time.time;
+
                 if (remaining > delay)
                     delay = remaining;
             }
@@ -253,9 +282,12 @@ public class FeedbackAutoManager : MonoBehaviour
         shownFeedbacks.Add(feedback);
 
         if (!activeFeedbackSteps.ContainsKey(feedback))
-            activeFeedbackSteps[feedback] = (new HashSet<string>(feedback.StepForCompletition), chapterName);
+            activeFeedbackSteps[feedback] =
+                (new HashSet<string>(feedback.StepForCompletition), chapterName);
 
         StartCoroutine(ShowFeedbackAfterDelay(delay, chapterName, feedback, feedbackPositions));
+
+        Debug.Log($"[FeedbackAutoManager] feedback mostrato");
     }
 
     private IEnumerator ShowFeedbackAfterDelay(
@@ -266,7 +298,7 @@ public class FeedbackAutoManager : MonoBehaviour
     {
         if (delay > 0f)
         {
-            Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
+           // Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
             yield return new WaitForSeconds(delay);
         }
 
@@ -318,7 +350,7 @@ public class FeedbackAutoManager : MonoBehaviour
                         // Registra cooldown sulla posizione world prima di chiudere
                         Vector3Int key = PositionKey(prefabs[i].transform.position);
                         positionCooldowns[key] = Time.time + feedbackPositionDelay;
-                        Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
+                       // Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
 
                         prefabs[i].CloseFeedback();
                     }
@@ -353,7 +385,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
         if (feedbacksToClose.Count == 0)
         {
-            Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
+           // Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
             return;
         }
 
@@ -371,7 +403,7 @@ public class FeedbackAutoManager : MonoBehaviour
             shownFeedbacks.Remove(feedback);
         }
 
-        Debug.Log($"[FeedbackAutoManager] Disabilitati e chiusi {feedbacksToClose.Count} feedback per il capitolo '{chapterName}'.");
+        //Debug.Log($"[FeedbackAutoManager] Disabilitati e chiusi {feedbacksToClose.Count} feedback per il capitolo '{chapterName}'.");
     }
 
     private List<FeedbackPrefabController> FindFeedbackInstance(string feedbackName)
@@ -403,7 +435,7 @@ public class FeedbackAutoManager : MonoBehaviour
         if (sender != null)
         {
             float tempo = sender.GetCurrentTotalFocusTime();
-            Debug.Log($"[RegisterTempoPreStep] Sender trovato per '{feedback.FeedbackName}', tempo: {tempo}");
+            //Debug.Log($"[RegisterTempoPreStep] Sender trovato per '{feedback.FeedbackName}', tempo: {tempo}");
             sender.SetTempoPreStep(tempo);
         }
         else

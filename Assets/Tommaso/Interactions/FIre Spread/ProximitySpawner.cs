@@ -47,7 +47,7 @@ public class ProximitySpawner : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"{name}: Start called. localScale = {transform.localScale}, position = {transform.position}");
+        //Debug.Log($"{name}: Start called. localScale = {transform.localScale}, position = {transform.position}");
 
         if (prefabsToSpawn == null)
         {
@@ -110,7 +110,7 @@ public class ProximitySpawner : MonoBehaviour
                 // Scala iniziale sempre forzata a un valore noto, ignorando
                 // qualsiasi scala sporca ereditata dal prefab asset
                 spawned.transform.localScale = Vector3.one * spawnInitialScale;
-                Debug.Log($"Spawned {spawned.name}, scala dopo assign = {spawned.transform.localScale}");
+//                Debug.Log($"Spawned {spawned.name}, scala dopo assign = {spawned.transform.localScale}");
 
                 spawnedTargets.Add(target);
                 StartCoroutine(BurnMaterial(target.gameObject, burnDuration));
@@ -129,7 +129,7 @@ public class ProximitySpawner : MonoBehaviour
         //CASO 1: Player
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entrato nel trigger");
+           // Debug.Log("Player entrato nel trigger");
 
             if (errorTracker == null)
             {
