@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -68,12 +69,29 @@ public class StepErrorTracker : MonoBehaviour
         public string customMessage;
     }
 
+    [System.Serializable]
+    public class CustomErrorMessageToChapter
+    {
+        [Tooltip("Nome del capitolo con errori custom.")]
+        [ChapterDropdown]
+        public string chapterName;
+        [Tooltip("Lista errori custom per il capitolo.")]
+        public List<CustomErrorMessage> customErrorMessages = new List<CustomErrorMessage>();
+
+
+    }
+
     [Header("Messaggi personalizzati")]
     [Tooltip("Se l'oggetto interagito corrisponde, usa il messaggio personalizzato invece di quello standard.")]
     public List<CustomErrorMessage> customErrorMessages = new List<CustomErrorMessage>();
 
     [Header("Messaggi personalizzati Runtime")]
     public List<CustomErrorMessage> customErrorMessagesRuntime = new List<CustomErrorMessage>();
+
+
+    [Header("Messaggi personalizzati per il capitolo indicato")]
+    [Tooltip("Inserire oggetti che hanno bisogno di un errore custom specifico se interagiti durante il capitolo indicato")]
+    public List<CustomErrorMessageToChapter> customErrorMessagesToChapters = new List<CustomErrorMessageToChapter>();
 
     public IProcess CurrentProcess => ProcessRunner.Current;
 
@@ -136,11 +154,11 @@ public class StepErrorTracker : MonoBehaviour
         Debug.Log($"[StepErrorTracker] Chapter: '{chapterName}' | {error} | Total errors: {TotalErrors}");
 
         // Il pannello a mano si aggiorna sempre, indipendentemente dal profilo
-        UpdatePanelOnHand(error, customRuntime);
+        UpdatePanelOnHand(error, customRuntime, chapterName);
 
         // L'errorLog si aggiorna in base al profilo
         if (IsSequenziale())
-            UpdatePanelsSequenziale(error, customRuntime);
+            UpdatePanelsSequenziale(error, customRuntime, chapterName);
         // Per Globale: l'errorLog si aggiorna solo a fine capitolo, tramite NotifyChapterCompleted()
     }
 
@@ -162,7 +180,7 @@ public class StepErrorTracker : MonoBehaviour
     // PANNELLO A MANO — comune a entrambe le modalità
     // ─────────────────────────────────────────────────────────────────
 
-    private void UpdatePanelOnHand(StepError lastError, string customRuntime)
+    private void UpdatePanelOnHand(StepError lastError, string customRuntime, string chapterName)
     {
         if (textPanelOnHand == null) return;
 
@@ -178,6 +196,18 @@ public class StepErrorTracker : MonoBehaviour
                 custom = CustomErrorMessageRuntime(custom, customRuntime);
         }
 
+
+        if (custom == null)
+        {
+            CustomErrorMessageToChapter chapterWithCustom = customErrorMessagesToChapters.Find(c => string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase));
+
+            if (chapterWithCustom != null)
+            {
+                custom = chapterWithCustom.customErrorMessages.Find(c =>
+                    string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
         textPanelOnHand.text = custom != null
             ? custom.customMessage
             : $"Ora non è il momento di interagire con <b><color=#00AAFF>{lastError.interactedObjectName}</color></b> " +
@@ -191,7 +221,7 @@ public class StepErrorTracker : MonoBehaviour
     // AGGIORNAMENTO ERRORLOG — SEQUENZIALE
     // ─────────────────────────────────────────────────────────────────
 
-    private void UpdatePanelsSequenziale(StepError lastError, string customRuntime)
+    private void UpdatePanelsSequenziale(StepError lastError, string customRuntime, string chapterName)
     {
         var sb = new System.Text.StringBuilder();
 
@@ -212,6 +242,17 @@ public class StepErrorTracker : MonoBehaviour
 
                     if (custom != null)
                         custom = CustomErrorMessageRuntime(custom, customRuntime);
+                }
+
+                if (custom == null)
+                {
+                    CustomErrorMessageToChapter chapterWithCustom = customErrorMessagesToChapters.Find(c => string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase));
+
+                    if (chapterWithCustom != null)
+                    {
+                        custom = chapterWithCustom.customErrorMessages.Find(c =>
+                            string.Equals(c.interactedObjectName, lastError.interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+                    }
                 }
 
                 if (custom != null)
