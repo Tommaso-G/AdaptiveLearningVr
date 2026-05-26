@@ -40,6 +40,8 @@ public class ExitDoor : MonoBehaviour
     private GameObject mapButton;
     private Transform target;
 
+    public bool canOpenMenu = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -139,16 +141,22 @@ public class ExitDoor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
-            if (!menuRequester.enabled) return;
+            TryOpenMenu();
+    }
 
-            menuRequester.OpenMenu();
-            correctDoorButton.CallCorrectButton(this);
-        }
+    public void TryOpenMenu()
+    {
+        if (!canOpenMenu) return;
+        if (!menuRequester.enabled) return;
+
+        menuRequester.OpenMenu();
+        correctDoorButton.CallCorrectButton(this);
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (!canOpenMenu) return;
+
         if (other.CompareTag("Player"))
         {
             if (!menuRequester.enabled) return;

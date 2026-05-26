@@ -15,8 +15,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
     [Header("Settings")]
     public float audioFadeDuration = 1.5f;
 
-
-
     [Header("State")]
     [SerializeField] private bool isTimeStopFeatureEnabled = true;
 
@@ -45,6 +43,12 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private ChapterTracker pausedChapterTracker;
     public static bool IsPaused { get; private set; } = false;
 
+    // --- Cache ---
+    private Animator[] _cachedAnimators;
+    private ParticleSystem[] _cachedParticles;
+    private NavMeshAgent[] _cachedNavMeshAgents;
+    private bool _cacheInitialized = false;
+
     // --- Coroutine handles per cancellazione ---
     private Coroutine _audioFadeCoroutine;
     private Coroutine _volumeFadeCoroutine;
@@ -61,6 +65,23 @@ public class RiflessivoFeatures : LearningStyleFeatures
             return _safeRunner;
         }
     }
+
+
+    // --- CACHE ---
+
+    private void EnsureCache()
+    {
+        if (_cacheInitialized) return;
+
+        _cachedAnimators     = Object.FindObjectsByType<Animator>(FindObjectsSortMode.None);
+        _cachedParticles     = Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
+        _cachedNavMeshAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
+
+        _cacheInitialized = true;
+        Debug.Log("[RiflessivoFeatures] Cache animators/particles/agents inizializzata.");
+    }
+
+    public void InitializeCache() => EnsureCache();
 
 
     // --- LOGICA DI CONTROLLO STATO ---
@@ -107,6 +128,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
     public override void resetVariables()
     {
         isTimeStopFeatureEnabled = true;
+        _cacheInitialized = false; // Forza re-scan alla prossima apertura
     }
 
 
@@ -114,6 +136,7 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void ApplyReflectiveEffects(FeedbackPrefabController feedback)
     {
+        EnsureCache();
         EnsureVolumeReference();
 
         // Cancella tutte le coroutine attive prima di avviarne di nuove
@@ -293,11 +316,9 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         pausedAnimators.Clear();
 
-        Animator[] animators = Object.FindObjectsByType<Animator>(FindObjectsSortMode.None);
-
-        foreach (Animator animator in animators)
+        foreach (Animator animator in _cachedAnimators)
         {
-            if (animator.enabled && !animator.CompareTag("UI"))
+            if (animator != null && animator.gameObject.layer != LayerMask.NameToLayer("UI"))
             {
                 animator.enabled = false;
                 pausedAnimators.Add(animator);
@@ -319,11 +340,9 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         pausedParticles.Clear();
 
-        ParticleSystem[] particleSystems = Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
-
-        foreach (ParticleSystem ps in particleSystems)
+        foreach (ParticleSystem ps in _cachedParticles)
         {
-            if (ps.isPlaying && ps.gameObject.activeInHierarchy)
+            if (ps != null && ps.isPlaying && ps.gameObject.activeInHierarchy)
             {
                 ps.Pause();
                 pausedParticles.Add(ps);
@@ -350,18 +369,16 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private void PauseNavMeshAgent()
     {
         pausedNavMeshAgents.Clear();
-        var agents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
 
-        foreach (var nma in agents)
+        foreach (var nma in _cachedNavMeshAgents)
         {
             if (nma != null && nma.gameObject.activeInHierarchy && !nma.isStopped)
             {
                 pausedNavMeshAgents.Add(new AgentState
                 {
-                    agent = nma,
+                    agent       = nma,
                     destination = nma.hasPath ? nma.destination : nma.transform.position
                 });
-
                 nma.isStopped = true;
             }
         }
@@ -377,7 +394,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
                 state.agent.SetDestination(state.destination);
             }
         }
-
         pausedNavMeshAgents.Clear();
     }
 
@@ -416,7 +432,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
         pausedChapterTracker.ResumeTracker();
         Debug.Log($"[RiflessivoFeatures] Chapter tracker ripreso.");
     }
-
 
     public static void SetPaused(bool value)
     {

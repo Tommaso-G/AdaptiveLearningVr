@@ -1712,9 +1712,10 @@ MonoBehaviour:
               \xE8 bloccata!\n\nAiuta Paolina a trovare una via d\u2019uscita alternativa.
               Ruota il controller sinistro per vedere la mappa."
           StepForCompletition:
+          - Guarda la mappa
           - Seleziona una via di fuga alternativa
           PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
+          needsButtonToBeCompleted: 1
           applyReflectiveEffects: 1
         - FeedbackName: Chiudi la mappa
           pages:

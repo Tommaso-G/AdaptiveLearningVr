@@ -86,7 +86,7 @@ public class CorrectDoorButton : MonoBehaviour
 
             if (isBlocked)
             {
-                b.ExitDoor.triggerUICollider.enabled = true;
+                b.ExitDoor.triggerUICollider.enabled = true; // ← ripristinato
                 feedbackPos.SetWorldPose(b.ExitDoor.feedbackPos.GetWorldPose());
 
                 AITarget aiTarget = childAgent.GetComponent<AITarget>();
@@ -96,6 +96,30 @@ public class CorrectDoorButton : MonoBehaviour
                 Transform target = b.ExitDoor.transform.Find("ChildPos");
                 childAgent.Warp(target.position);
                 childAgent.transform.rotation = target.rotation;
+            }
+        }
+    }
+
+    public void AllowOpenMenu()
+    {
+        if (blockedDoor == null) return;
+        
+        blockedDoor.canOpenMenu = true;
+
+        // Controlla se il player è già dentro il trigger
+        Collider trigger = blockedDoor.triggerUICollider;
+        Collider[] hits = Physics.OverlapBox(
+            trigger.bounds.center,
+            trigger.bounds.extents,
+            trigger.transform.rotation
+        );
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                blockedDoor.TryOpenMenu();
+                break;
             }
         }
     }
@@ -147,6 +171,19 @@ public class CorrectDoorButton : MonoBehaviour
                 correctButton = b;
             }
         }
+    }
+
+    public void ActivateBlockedDoorTrigger()
+    {
+        foreach (MapButton b in mapButtons)
+        {
+            if (b.ExitDoor.blocked)
+            {
+                b.ExitDoor.triggerUICollider.enabled = true;
+                return;
+            }
+        }
+        Debug.LogWarning("[CorrectDoorButton] Nessuna porta bloccata trovata.");
     }
 
     public void CheckCorrectButton(MapButton button)

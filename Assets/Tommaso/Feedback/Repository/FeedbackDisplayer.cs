@@ -391,8 +391,9 @@ public class FeedbackDisplayer : MonoBehaviour
                     textComp.text = "VIDEO";
                 else if (useGlobalOverviewLabels && orderedPages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Globale)
                     textComp.text = "OVERVIEW";
-                else
-                    textComp.text = $"Page {i +1}";
+                else if (useGlobalOverviewLabels && orderedPages[i].Sequenzale_Globale == LearningEnums.SequenzialeGlobale.Sequenziale)
+                    textComp.text = $"STEPS";    
+                else textComp.text = $"Page {i +1}";
             }
 
             SetupPageContent(orderedPages[i], page, feedbackName, container);
