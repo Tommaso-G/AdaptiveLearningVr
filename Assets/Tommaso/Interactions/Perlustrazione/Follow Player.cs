@@ -21,6 +21,8 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
     public ErrorReporter ErrorReporter;
 
+    public bool IsFollowing => isFollowing;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

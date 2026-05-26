@@ -1,24 +1,42 @@
 // InteractionSourceAutoAttacher.cs
 using UnityEngine;
-
+using System;
 public class InteractionSourceAutoAttacher : MonoBehaviour
 {
     public static bool AttachIfNeeded(GameObject go)
     {
+        Component fallbackComp = null;
+        Type fallbackSourceType = null;
+
         foreach (var componentType in InteractionSourceRegistry.RegisteredComponentTypes)
         {
-            // Cerca il componente su go e nei suoi parent
-            var comp = go.GetComponentInParent(componentType, includeInactive: true);
-            if (comp == null) continue;
-
             if (!InteractionSourceRegistry.TryGetSourceType(componentType, out var sourceType)) continue;
 
-            // Attacca l'InteractionSource sul GameObject che ospita il componente, non su go
-            var target = comp.gameObject;
+            // Priorità: cerca prima sul gameObject stesso
+            var directComp = go.GetComponent(componentType);
+            if (directComp != null)
+            {
+                if (go.GetComponent(sourceType) != null) continue;
+                go.AddComponent(sourceType);
+                return true;
+            }
 
-            if (target.GetComponent(sourceType) != null) continue;
+            // Fallback: cerca nei parent, salva ma non attaccare ancora
+            if (fallbackComp != null) continue; // tieni solo il primo trovato
+            var parentComp = go.GetComponentInParent(componentType, includeInactive: true);
+            if (parentComp != null && parentComp.gameObject != go)
+            {
+                fallbackComp = parentComp;
+                fallbackSourceType = sourceType;
+            }
+        }
 
-            target.AddComponent(sourceType);
+        // Nessun match diretto — usa il fallback sul parent se disponibile
+        if (fallbackComp != null)
+        {
+            var target = fallbackComp.gameObject;
+            if (target.GetComponent(fallbackSourceType) == null)
+                target.AddComponent(fallbackSourceType);
             return true;
         }
 
