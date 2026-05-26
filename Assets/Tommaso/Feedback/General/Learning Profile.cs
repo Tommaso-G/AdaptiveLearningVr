@@ -16,6 +16,27 @@ public class LearningProfile : MonoBehaviour
     [Tooltip("Se disattivato, i Learning Style Features vengono ignorati.")]
     public bool enableLearningFeatures = true;
 
+    private void Awake()
+    {
+        // Se SessionManager porta un profilo scelto nel menu, sovrascrive i valori
+        // dell'Inspector esattamente come se li avessi impostati prima di premere Play.
+        if (SessionManager.Instance != null)
+        {
+            var sel = SessionManager.Instance.SelectedLearningProfile;
+            if (sel != null)
+            {
+                attivoRiflessivo = sel.attivoRiflessivo;
+                sensitivoIntuitivo = sel.sensitivoIntuitivo;
+                visivoVerbale = sel.visivoVerbale;
+                sequenzialeGlobale = sel.sequenzialeGlobale;
+
+                Debug.Log($"[LearningProfile] Profilo applicato dal menu: " +
+                          $"{attivoRiflessivo} | {sensitivoIntuitivo} | " +
+                          $"{visivoVerbale} | {sequenzialeGlobale}");
+            }
+        }
+    }
+
     public (LearningEnums.AttivoRiflessivo attivoRiflessivo,
             LearningEnums.SensitivoIntuitivo sensitivoIntuitivo,
             LearningEnums.VisivoVerbale visivoVerbale,
@@ -29,17 +50,12 @@ public class LearningProfile : MonoBehaviour
     {
         if (!enableLearningFeatures)
         {
-            Debug.Log("[LearningProfile] Learning features disattivate globalmente — nessun comportamento applicato.");
+            Debug.Log("[LearningProfile] Learning features disattivate globalmente.");
             return null;
         }
 
-        switch (attivoRiflessivo)
-        {
-            case LearningEnums.AttivoRiflessivo.Riflessivo:
-                return riflessivoFeatures;
-            case LearningEnums.AttivoRiflessivo.Attivo:
-            default:
-                return attivoFeatures;
-        }
+        return attivoRiflessivo == LearningEnums.AttivoRiflessivo.Riflessivo
+            ? riflessivoFeatures
+            : attivoFeatures;
     }
 }

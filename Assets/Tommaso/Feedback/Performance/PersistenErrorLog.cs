@@ -80,7 +80,7 @@ public class PersistentErrorLog : MonoBehaviour
             if (textPanelOnStart != null)
                 textPanelOnStart.text = "Prima iterazione: vai campione salvali tutti!";
 
-            Debug.Log($"[PersistentErrorLog] Log azzerato. Motivo: {(profileChanged ? "profilo cambiato" : "reset manuale")}");
+            Debug.Log($"[PersistentErrorLog] Log azzerato. Motivo: {(profileChanged ? "profilo cambiato" : "reset manuale")}. Last profile {_lastProfile} - Current profile {currentProfile}");
         }
         else
         {

@@ -15,11 +15,16 @@ public class SessionManager : MonoBehaviour
     private bool _gameSceneLoaded = false;
 
     // ── Offline ───────────────────────────────────────────────────────────
-    /// <summary>Livello offline scelto nel menu. Null = modalità online.</summary>
     public OfflineLevelConfig SelectedOfflineLevel { get; private set; }
-
-    /// <summary>True se la sessione corrente è offline.</summary>
     public bool IsOffline => SelectedOfflineLevel != null;
+
+    // ── Learning Profile ──────────────────────────────────────────────────
+    /// <summary>
+    /// Profilo scelto nel menu. Viene applicato a LearningProfile in scena all'avvio.
+    /// Valido sia per sessioni offline che online.
+    /// </summary>
+    public LearningProfileSelection SelectedLearningProfile { get; private set; }
+        = new LearningProfileSelection();
 
     private void Awake()
     {
@@ -31,9 +36,14 @@ public class SessionManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
         Debug.Log("[SessionManager] Inizializzato");
     }
+
+    public void SetLearningProfile(LearningProfileSelection profile)
+    {
+        SelectedLearningProfile = profile ?? new LearningProfileSelection();
+    }
+    // ── Sessioni online ───────────────────────────────────────────────────
 
     public void StartNewSession()
     {
@@ -61,9 +71,10 @@ public class SessionManager : MonoBehaviour
         LoadGameScene();
     }
 
+    // ── Sessioni offline ──────────────────────────────────────────────────
+
     /// <summary>
-    /// Avvia il gioco in modalità offline con il livello specificato.
-    /// Chiamato dal MenuUI quando l'utente seleziona un livello offline.
+    /// Chiamato da MenuUI dopo che l'utente ha scelto livello e stile di apprendimento.
     /// </summary>
     public void StartOfflineSession(OfflineLevelConfig level)
     {
@@ -79,6 +90,8 @@ public class SessionManager : MonoBehaviour
         LoadGameScene();
     }
 
+    // ── Navigazione ───────────────────────────────────────────────────────
+
     public void BackToMenu()
     {
         Debug.Log("[SessionManager] Ritorno al menu");
@@ -88,7 +101,6 @@ public class SessionManager : MonoBehaviour
     }
 
     public bool IsNewSession() => _isNewSession;
-
     public string GetActiveSessionId() => _activeSessionId;
 
     private void LoadGameScene()
@@ -107,17 +119,29 @@ public class SessionManager : MonoBehaviour
     private IEnumerator LoadGameSceneAsync()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(
-            gameSceneName,
-            LoadSceneMode.Single
-        );
+            gameSceneName, LoadSceneMode.Single);
 
         yield return new WaitUntil(() => asyncLoad.isDone);
 
         _gameScene = SceneManager.GetSceneByName(gameSceneName);
         _gameSceneLoaded = true;
-
         SceneManager.SetActiveScene(_gameScene);
 
         Debug.Log($"[SessionManager] {gameSceneName} caricata e attivata");
     }
+}
+
+// ── Dati profilo di apprendimento trasportati tra le scene ────────────────
+
+/// <summary>
+/// Semplice contenitore serializzabile con le scelte fatte nel menu.
+/// SessionManager lo porta in scena; LearningProfile lo legge in Awake.
+/// </summary>
+[System.Serializable]
+public class LearningProfileSelection
+{
+    public LearningEnums.AttivoRiflessivo attivoRiflessivo = LearningEnums.AttivoRiflessivo.Attivo;
+    public LearningEnums.SensitivoIntuitivo sensitivoIntuitivo = LearningEnums.SensitivoIntuitivo.Sensitivo;
+    public LearningEnums.VisivoVerbale visivoVerbale = LearningEnums.VisivoVerbale.Visivo;
+    public LearningEnums.SequenzialeGlobale sequenzialeGlobale = LearningEnums.SequenzialeGlobale.Sequenziale;
 }

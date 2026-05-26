@@ -110,8 +110,11 @@ public class StepErrorTracker : MonoBehaviour
                 errorLog.resetOnNext = true;
         }
 
-        string currentProfile = IsSequenziale() ? "Sequenziale" : "Globale";
-        errorLog?.InitSession(currentProfile);
+        if (SessionManager.Instance == null || !SessionManager.Instance.IsOffline)
+        {
+            string currentProfile = IsSequenziale() ? "Sequenziale" : "Globale";
+            errorLog?.InitSession(currentProfile);
+        }
     }
 
     private void OnDestroy()

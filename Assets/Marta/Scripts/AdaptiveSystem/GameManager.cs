@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
             Debug.Log($"[GameManager][OFFLINE] Livello selezionato: {level.levelName}");
         }
 
-        // Popola mappa ID Nome 
+        // Popola mappa ID-nome
         chaptersIdToName.Clear();
         active_chapters.Clear();
 
@@ -172,7 +172,6 @@ public class GameManager : MonoBehaviour
             if (!isOptional)
             {
                 active_chapters.Add(chapter.chapter_id);
-                Debug.Log($"[GameManager][OFFLINE] Optional chapter trovato: {chapter.name}");
             }
         }
 
@@ -189,14 +188,14 @@ public class GameManager : MonoBehaviour
                     {
                         active_chapters.Add(chapter.chapter_id);
                         idsToAdd.Add(chapter.chapter_id);
-                        Debug.Log($"[GameManager][OFFLINE] Optional chapter aggiunto: {chapter.name}");
+                        break;
                     }
                 }
             }
             StartCoroutine(AddOptionalChapter(idsToAdd));
         }
 
-        // Feedback per capitolo 
+        // Feedback per capitolo
         if (feedbackChapterFilter != null)
         {
             // Default: feedback completo (0) per tutti
@@ -211,7 +210,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Difficolta' per capitolo 
+        // Difficolta' per capitolo
         if (difficultyChapterFilter != null && level != null && level.difficultyOverrides != null)
         {
             foreach (var ovr in level.difficultyOverrides)
@@ -224,6 +223,23 @@ public class GameManager : MonoBehaviour
         Debug.Log(msg);
 
         Debug.Log($"[GameManager][OFFLINE] Sessione offline avviata. ID locale: {_offlineSessionId}");
+
+        // Pannello progressi: livello 1 parte pulito, livelli successivi mostrano errori precedenti.
+        if (stepErrorTracker != null && stepErrorTracker.errorLog != null)
+        {
+            if (level != null && level.isFirstLevel)
+            {
+                stepErrorTracker.errorLog.resetOnNext = true;
+            }
+            else
+            {
+                stepErrorTracker.errorLog.resetOnNext = false;
+            }
+
+                string profileKey = "Offline";
+            stepErrorTracker.errorLog.InitSession(profileKey);
+        }
+
         yield break;
     }
 
@@ -373,7 +389,7 @@ public class GameManager : MonoBehaviour
 
 
 
-                // Imposta il feedback e la difficoltà  per ogni capitolo
+                // Imposta il feedback e la difficoltÃÂ  per ogni capitolo
                 foreach (var chapterData in state.chapter_details)
                 {
                     if (chaptersIdToName.TryGetValue(chapterData.chapter_id, out string name))
@@ -404,7 +420,7 @@ public class GameManager : MonoBehaviour
 
                 print(message);
 
-                StartCoroutine(AddOptionalChapter(chapterToAdd));
+                AddOptionalChapter(chapterToAdd);
 
                 AdaptiveSystemClient.Instance.StartSession(
                    allChapters.ToArray(),
@@ -479,7 +495,7 @@ public class GameManager : MonoBehaviour
 
         if (_endIterationPending)
         {
-            Debug.LogWarning("[GameManager] EndIteration già in corso, ignorato.");
+            Debug.LogWarning("[GameManager] EndIteration giÃÂ  in corso, ignorato.");
             return;
         }
         _endIterationPending = true;
@@ -507,7 +523,7 @@ public class GameManager : MonoBehaviour
                     if (result.status == "iteration_complete")
                     {
                         Debug.Log(
-                            $"[GameManager] Iterazione {result.iteration_number} COMPLETA! " +
+                            $"[GameManager] Ã¢ÂÂ Iterazione {result.iteration_number} COMPLETA! " +
                             $"Prossima: {result.next_iteration}"
                         );
                         currentIterationNumber = result.next_iteration;
@@ -517,7 +533,7 @@ public class GameManager : MonoBehaviour
                     else if (result.status == "iteration_incomplete")
                     {
                         Debug.LogWarning(
-                            $"[GameManager] Iterazione INCOMPLETA! " +
+                            $"[GameManager] Ã¢ÂÂ Ã¯Â¸Â Iterazione INCOMPLETA! " +
                             $"Mancanti: {string.Join(", ", result.incomplete_chapters)}"
 
                         );
@@ -538,7 +554,7 @@ public class GameManager : MonoBehaviour
             print(decision.message);
         }
 
-        // se è cambiato il livello di feedback aggiorna
+        // se cambiato il livello di feedback aggiorna
         if (decision.feedback_changed)
         {
             feedbackChapterFilter.setFeedbackLevel(chaptersIdToName[decision.chapter_id], decision.feedback_level);
@@ -555,7 +571,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        // Se è stato rimosso un capitolo opzionale
+        // Se stato rimosso un capitolo opzionale
         if (decision.remove_optional)
         {
             chaptersOrderMgr.RemoveChapter(chapterToRemoveName: chaptersIdToName[decision.removed_chapter_id]);
@@ -563,7 +579,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("[GameManager] Capitolo opzionale rimosso: " + chaptersIdToName[decision.removed_chapter_id]);
         }
 
-        //// Se il capitolo è padroneggiato, puoi mostrare un feedback positivo
+        //// Se il capitolo padroneggiato, puoi mostrare un feedback positivo
         //if (decision.chapter_mastered)
         //{
         //    Debug.Log($"[ChapterTracker] capitolo padroneggiato!");
@@ -607,8 +623,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-
-        foreach (string id in chapterToAdd)
+            foreach (string id in chapterToAdd)
         {
             print("[GameManager] Capitolo da aggiungere: " + chaptersIdToName[id]);
             chaptersOrderMgr.AddOptional(chaptersIdToName[id]);
@@ -632,6 +647,18 @@ public class GameManager : MonoBehaviour
         {
             // In modalità offline registriamo solo i dati locali, niente rete.
             Debug.Log($"[GameManager][OFFLINE] Osservazione registrata localmente per '{chapter_name}': errori={errors}, tempo={time:F1}s");
+
+            // Aggiorna il PersistentErrorLog con gli errori del capitolo appena concluso,
+            // ma solo se non e' il primo capitolo attivo (per il primo non c'e' un precedente).
+            if (stepErrorTracker != null)
+            {
+                bool isFirstChapter = active_chapters.Count > 0
+                    && active_chapters[0] == chapter_id;
+
+                if (!isFirstChapter)
+                    stepErrorTracker.NotifyChapterCompleted(chapter_name);
+            }
+
             return;
         }
 

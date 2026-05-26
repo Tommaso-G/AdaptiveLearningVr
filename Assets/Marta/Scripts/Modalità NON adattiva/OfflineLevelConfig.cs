@@ -45,6 +45,10 @@ public class OfflineLevelConfig : ScriptableObject
     [TextArea(1, 3)]
     public string description = "";
 
+    [Tooltip("Se true, il pannello progressi mostra il messaggio iniziale invece degli errori precedenti. "
+             + "Attivare solo per il primo livello del registry.")]
+    public bool isFirstLevel = false;
+
     [Tooltip("Capitoli opzionali da aggiungere in questo livello.")]
     public List<OptionalChapterEntry> optionalChaptersToAdd = new List<OptionalChapterEntry>();
 
