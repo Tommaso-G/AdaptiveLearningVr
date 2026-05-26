@@ -40,7 +40,6 @@ public class ExecutionOrderController : MonoBehaviour
     [SerializeField] private StepNameAliasMap stepAliasMap;
 
 
-
     private IChapter previousChapter = null;
 
 
@@ -252,9 +251,12 @@ public class ExecutionOrderController : MonoBehaviour
 
         if (attachListener && s.GameObject.GetComponent<InteractionListener>() == null)
         {
-            InteractionListener interactionListeners = s.GameObject.AddComponent<InteractionListener>();
-            interactionListeners.Initialize(process);
-            interactionListeners.executionOrderController = this;
+            if (InteractionSourceAutoAttacher.AttachIfNeeded(s.gameObject))
+            {
+                InteractionListener interactionListeners = s.GameObject.AddComponent<InteractionListener>();
+                interactionListeners.Initialize(process);
+                interactionListeners.executionOrderController = this;
+            }
         }
 
         if (isParallelStep)
