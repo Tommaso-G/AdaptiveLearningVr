@@ -36,7 +36,7 @@ MonoBehaviour:
               vicino alle uscite, premendo il bottone.\r\n3. <b>Chiama il 115</b>
               e fornisci posizione, estensione e qualsiasi dettaglio utile sull'incendio."
           StepForCompletition:
-          - Grab telefono
+          - Seleziona il tasto "Personale Scolastico"
           - completa Domande
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -1016,6 +1016,7 @@ MonoBehaviour:
             text: "Ugh! Che male! ma ora la ferita \xE8 pulita.\n\nAsciugala tamponando
               delicatamente con il panno che trovi nella scatola."
           StepForCompletition:
+          - Grab Asciugamano
           - Asciuga
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
@@ -1033,6 +1034,7 @@ MonoBehaviour:
 
               Fai attenzione, Paolina non vuole star ferma.'
           StepForCompletition:
+          - Predni Garza
           - metti garza
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0

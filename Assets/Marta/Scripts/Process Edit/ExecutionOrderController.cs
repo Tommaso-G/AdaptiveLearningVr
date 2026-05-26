@@ -39,6 +39,8 @@ public class ExecutionOrderController : MonoBehaviour
 
     [SerializeField] private StepNameAliasMap stepAliasMap;
 
+    public FeedbackIconsManager feedbackIconsManager;
+
 
     private IChapter previousChapter = null;
 
@@ -73,9 +75,15 @@ public class ExecutionOrderController : MonoBehaviour
         ErrorEvent.SetProcess(process);
         errorTracker.InitializeChapters(process.Data.Chapters); //recupera tutti i capitoli, messo da tommaso
     }
+
     private void OnStepStarted(object sender, ProcessEventArgs args)
     {
         getCurrenteObjects(process.Data.Current);
+
+        string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
+        string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
+        feedbackIconsManager.OnStepStarted(chapterName, stepName);
+
 
         if (subch != null)
         {
@@ -91,6 +99,8 @@ public class ExecutionOrderController : MonoBehaviour
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {
         //getCurrenteObjects(process.Data.Current);
+        string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
+        feedbackIconsManager.OnChapterStarted(chapterName);
 
         if (previousChapter != null && previousChapter.Data.Name != "Starting Point")
             {

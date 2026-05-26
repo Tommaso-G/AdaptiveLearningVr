@@ -12,12 +12,7 @@ using VRBuilder.Core.Conditions;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 
-/// <summary>
-/// Per ogni step, cerca gli oggetti con tag "ObjectStep" (o nei loro figli)
-/// che abbiano un componente Outline, e lo attiva/disattiva insieme allo step.
-/// Lo spessore (OutlineWidth) oscilla ciclicamente tra MinOutlineWidth e MaxOutlineWidth
-/// con un periodo configurabile dall'inspector.
-/// </summary>
+
 public class StepOutlineManager : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -186,7 +181,7 @@ public class StepOutlineManager : MonoBehaviour
             yield return null;
         }
 
-        //Debug.Log($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
+        ////($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
 
         if (!mainChapterOutlineAllowed)
         {
