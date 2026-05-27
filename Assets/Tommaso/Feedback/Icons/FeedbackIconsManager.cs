@@ -10,7 +10,7 @@ public class FeedbackIconsManager : MonoBehaviour
     {
         [HideInInspector]
         public string stepName;
-        public FeedbackIconController iconController;
+        public List<FeedbackIconController> iconControllers = new List<FeedbackIconController>();
     }
 
     [System.Serializable]
@@ -24,8 +24,8 @@ public class FeedbackIconsManager : MonoBehaviour
     [Header("Step → FeedbackIconController")]
     public List<ChapterStepIconMapping> chapterStepMappings = new List<ChapterStepIconMapping>();
 
-    // Tiene traccia del WayPointSmall attivo nello step precedente (solo Sequenziale)
-    private GameObject previousWaypoint = null;
+    // Tiene traccia dei WayPointSmall attivi nello step precedente (solo Sequenziale)
+    private List<GameObject> previousWaypoints = new List<GameObject>();
 
     void Start()
     {
@@ -61,27 +61,18 @@ public class FeedbackIconsManager : MonoBehaviour
 
     // ─────────────────────────────────────────────────────────────────
     // WAYPOINT — interfaccia pubblica per ExecutionOrderController
-    // La logica Sequenziale/Globale è gestita internamente.
     // ─────────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Chiamare su OnStepStarted. Gestisce internamente Sequenziale e Globale.
-    /// </summary>
     public void OnStepStarted(string chapterName, string stepName)
     {
         if (IsSequenziale())
             HandleStepStartedSequenziale(chapterName, stepName);
-        // In Globale i waypoint si aggiornano solo al cambio capitolo
     }
 
-    /// <summary>
-    /// Chiamare su OnChapterStarted. Gestisce internamente Sequenziale e Globale.
-    /// </summary>
     public void OnChapterStarted(string chapterName)
     {
         if (!IsSequenziale())
             HandleChapterStartedGlobale(chapterName);
-        // In Sequenziale i waypoint si aggiornano step per step
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -90,28 +81,32 @@ public class FeedbackIconsManager : MonoBehaviour
 
     private void HandleStepStartedSequenziale(string chapterName, string stepName)
     {
-        GameObject current = GetWaypoint(chapterName, stepName);
+        List<GameObject> current = GetWaypoints(chapterName, stepName);
 
-        if (current == null)
+        if (current == null || current.Count == 0)
         {
             Debug.Log($"[FeedbackIconsManager] Nessun waypoint per step '{stepName}' — nessuna modifica.");
             return;
         }
 
-        // Stesso waypoint dello step precedente: lascia tutto invariato
-        if (current == previousWaypoint)
+        // Se i waypoint sono gli stessi del precedente, lascia tutto invariato
+        if (SameWaypoints(current, previousWaypoints))
         {
-            Debug.Log($"[FeedbackIconsManager] Stesso waypoint per step '{stepName}' — nessuna modifica.");
+            Debug.Log($"[FeedbackIconsManager] Stessi waypoint per step '{stepName}' — nessuna modifica.");
             return;
         }
 
-        if (previousWaypoint != null)
-            previousWaypoint.SetActive(false);
+        // Disattiva i precedenti
+        foreach (GameObject wp in previousWaypoints)
+            if (wp != null) wp.SetActive(false);
 
-        current.SetActive(true);
-        previousWaypoint = current;
+        // Attiva i correnti
+        foreach (GameObject wp in current)
+            if (wp != null) wp.SetActive(true);
 
-        Debug.Log($"[FeedbackIconsManager] Waypoint attivato per step '{stepName}': {current.name}");
+        previousWaypoints = current;
+
+        Debug.Log($"[FeedbackIconsManager] {current.Count} waypoint attivati per step '{stepName}'.");
     }
 
     private void HandleChapterStartedGlobale(string chapterName)
@@ -129,13 +124,15 @@ public class FeedbackIconsManager : MonoBehaviour
 
         foreach (var mapping in chapter.steps)
         {
-            if (mapping.iconController == null) continue;
-
-            GameObject wp = GetWaypointFromController(mapping.iconController);
-            if (wp != null)
+            foreach (var controller in mapping.iconControllers)
             {
-                wp.SetActive(true);
-                Debug.Log($"[FeedbackIconsManager] Waypoint attivato per step '{mapping.stepName}': {wp.name}");
+                if (controller == null) continue;
+                GameObject wp = GetWaypointFromController(controller);
+                if (wp != null)
+                {
+                    wp.SetActive(true);
+                    Debug.Log($"[FeedbackIconsManager] Waypoint attivato per step '{mapping.stepName}': {wp.name}");
+                }
             }
         }
     }
@@ -154,10 +151,11 @@ public class FeedbackIconsManager : MonoBehaviour
         StepIconMapping mapping = chapter.steps.Find(m =>
             string.Equals(m.stepName, stepName, System.StringComparison.OrdinalIgnoreCase));
 
-        if (mapping == null || mapping.iconController == null) return;
+        if (mapping == null || mapping.iconControllers.Count == 0) return;
 
-        // TODO: chiama il metodo corretto su mapping.iconController
-        // mapping.iconController.???();
+        // TODO: chiama il metodo corretto su ogni controller
+        // foreach (var controller in mapping.iconControllers)
+        //     controller.???();
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -170,11 +168,11 @@ public class FeedbackIconsManager : MonoBehaviour
         foreach (GameObject wp in waypoints)
             wp.SetActive(false);
 
-        previousWaypoint = null;
+        previousWaypoints.Clear();
         Debug.Log($"[FeedbackIconsManager] Disattivati {waypoints.Length} waypoint.");
     }
 
-    private GameObject GetWaypoint(string chapterName, string stepName)
+    private List<GameObject> GetWaypoints(string chapterName, string stepName)
     {
         ChapterStepIconMapping chapter = chapterStepMappings.Find(c =>
             string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase));
@@ -184,9 +182,17 @@ public class FeedbackIconsManager : MonoBehaviour
         StepIconMapping mapping = chapter.steps.Find(m =>
             string.Equals(m.stepName, stepName, System.StringComparison.OrdinalIgnoreCase));
 
-        if (mapping == null || mapping.iconController == null) return null;
+        if (mapping == null) return null;
 
-        return GetWaypointFromController(mapping.iconController);
+        List<GameObject> result = new List<GameObject>();
+        foreach (var controller in mapping.iconControllers)
+        {
+            if (controller == null) continue;
+            GameObject wp = GetWaypointFromController(controller);
+            if (wp != null)
+                result.Add(wp);
+        }
+        return result;
     }
 
     private GameObject GetWaypointFromController(FeedbackIconController controller)
@@ -206,6 +212,14 @@ public class FeedbackIconsManager : MonoBehaviour
         }
 
         return waypoint.gameObject;
+    }
+
+    private bool SameWaypoints(List<GameObject> a, List<GameObject> b)
+    {
+        if (a.Count != b.Count) return false;
+        foreach (GameObject wp in a)
+            if (!b.Contains(wp)) return false;
+        return true;
     }
 
     private Transform FindChildWithTag(Transform parent, string tag)

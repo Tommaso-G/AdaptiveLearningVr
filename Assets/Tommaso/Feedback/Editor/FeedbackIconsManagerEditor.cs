@@ -11,21 +11,16 @@ public class FeedbackIconsManagerEditor : Editor
     {
         FeedbackIconsManager manager = (FeedbackIconsManager)target;
 
-        // Campi base
         manager.learningProfile = (LearningProfile)EditorGUILayout.ObjectField(
             "Learning Profile", manager.learningProfile, typeof(LearningProfile), true);
 
         EditorGUILayout.Space(8);
-
         EditorGUILayout.LabelField("Percorso JSON processo", EditorStyles.boldLabel);
         defaultPath = EditorGUILayout.TextField(defaultPath);
-
         EditorGUILayout.Space(4);
 
         if (GUILayout.Button("Carica step", GUILayout.Height(28)))
-        {
             LoadSteps(manager);
-        }
 
         EditorGUILayout.Space(12);
 
@@ -33,34 +28,50 @@ public class FeedbackIconsManagerEditor : Editor
         foreach (var chapter in manager.chapterStepMappings)
         {
             EditorGUILayout.LabelField(chapter.chapterName, EditorStyles.boldLabel);
-
             EditorGUI.indentLevel++;
-
-            // Header colonne
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Step", EditorStyles.miniBoldLabel, GUILayout.Width(220));
-            EditorGUILayout.LabelField("Icon Controller", EditorStyles.miniBoldLabel);
-            EditorGUILayout.EndHorizontal();
 
             foreach (var mapping in chapter.steps)
             {
-                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(mapping.stepName, EditorStyles.miniBoldLabel);
+                EditorGUI.indentLevel++;
 
-                // stepName: label read-only
-                EditorGUILayout.LabelField(mapping.stepName, GUILayout.Width(220));
-
-                // iconController: campo oggetto editabile
-                EditorGUI.BeginChangeCheck();
-                FeedbackIconController newController = (FeedbackIconController)EditorGUILayout.ObjectField(
-                    mapping.iconController, typeof(FeedbackIconController), true);
-                if (EditorGUI.EndChangeCheck())
+                // Lista controller
+                for (int i = 0; i < mapping.iconControllers.Count; i++)
                 {
-                    Undo.RecordObject(manager, "Modifica FeedbackIconController");
-                    mapping.iconController = newController;
+                    EditorGUILayout.BeginHorizontal();
+
+                    EditorGUI.BeginChangeCheck();
+                    FeedbackIconController newController = (FeedbackIconController)EditorGUILayout.ObjectField(
+                        mapping.iconControllers[i], typeof(FeedbackIconController), true);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(manager, "Modifica FeedbackIconController");
+                        mapping.iconControllers[i] = newController;
+                        EditorUtility.SetDirty(manager);
+                    }
+
+                    // Bottone rimuovi
+                    if (GUILayout.Button("-", GUILayout.Width(24)))
+                    {
+                        Undo.RecordObject(manager, "Rimuovi FeedbackIconController");
+                        mapping.iconControllers.RemoveAt(i);
+                        EditorUtility.SetDirty(manager);
+                        break;
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                // Bottone aggiungi slot
+                if (GUILayout.Button("+ Aggiungi controller"))
+                {
+                    Undo.RecordObject(manager, "Aggiungi FeedbackIconController");
+                    mapping.iconControllers.Add(null);
                     EditorUtility.SetDirty(manager);
                 }
 
-                EditorGUILayout.EndHorizontal();
+                EditorGUI.indentLevel--;
+                EditorGUILayout.Space(4);
             }
 
             EditorGUI.indentLevel--;
@@ -103,11 +114,11 @@ public class FeedbackIconsManagerEditor : Editor
             return;
         }
 
-        // Preserva i controller già assegnati — chiave: "chapterName::stepName"
-        var existing = new Dictionary<string, FeedbackIconController>();
+        // Preserva i controller già assegnati — chiave: "chapterName::stepName" → List<FeedbackIconController>
+        var existing = new Dictionary<string, List<FeedbackIconController>>();
         foreach (var ch in manager.chapterStepMappings)
             foreach (var m in ch.steps)
-                existing[$"{ch.chapterName}::{m.stepName}"] = m.iconController;
+                existing[$"{ch.chapterName}::{m.stepName}"] = new List<FeedbackIconController>(m.iconControllers);
 
         manager.chapterStepMappings.Clear();
 
@@ -117,11 +128,9 @@ public class FeedbackIconsManagerEditor : Editor
         {
             string trimmed = entry.Trim();
 
-            // Separatore capitolo: "--- NOME ---"
             if (trimmed.StartsWith("---") && trimmed.EndsWith("---"))
             {
                 string chapterName = trimmed.Replace("---", "").Trim();
-
                 string matchedName = rawChapters.Find(c =>
                     string.Equals(c.ToUpper(), chapterName, System.StringComparison.OrdinalIgnoreCase));
 
@@ -140,12 +149,12 @@ public class FeedbackIconsManagerEditor : Editor
             }
 
             string key = $"{currentChapter.chapterName}::{trimmed}";
-            existing.TryGetValue(key, out FeedbackIconController savedController);
+            existing.TryGetValue(key, out List<FeedbackIconController> savedControllers);
 
             currentChapter.steps.Add(new FeedbackIconsManager.StepIconMapping
             {
                 stepName       = trimmed,
-                iconController = savedController
+                iconControllers = savedControllers ?? new List<FeedbackIconController>()
             });
         }
 
