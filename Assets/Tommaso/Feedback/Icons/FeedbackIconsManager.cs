@@ -27,6 +27,9 @@ public class FeedbackIconsManager : MonoBehaviour
     // Tiene traccia dei WayPointSmall attivi nello step precedente (solo Sequenziale)
     private List<GameObject> previousWaypoints = new List<GameObject>();
 
+    [Header("Debug / Override")]
+    public bool forceDisableSequentialIcons = true;
+
     void Start()
     {
         ApplyLearningStyle();
@@ -81,6 +84,14 @@ public class FeedbackIconsManager : MonoBehaviour
 
     private void HandleStepStartedSequenziale(string chapterName, string stepName)
     {
+        // Override: disattiva sempre tutte le icone nel profilo sequenziale
+        if (forceDisableSequentialIcons)
+        {
+            DeactivateAllWaypoints();
+            Debug.Log("[FeedbackIconsManager] Waypoint disattivati forzatamente per profilo sequenziale.");
+            return;
+        }
+
         List<GameObject> current = GetWaypoints(chapterName, stepName);
 
         if (current == null || current.Count == 0)

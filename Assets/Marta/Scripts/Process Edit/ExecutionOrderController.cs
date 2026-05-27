@@ -84,7 +84,6 @@ public class ExecutionOrderController : MonoBehaviour
         string stepName = process.Data.Current?.Data.Current?.Data.Name ?? "Unknown Step";
         feedbackIconsManager.OnStepStarted(chapterName, stepName);
 
-
         if (subch != null)
         {
             //Debug.Log($"[EOC] StepStarted — controllo sottocapitoli attivi:");

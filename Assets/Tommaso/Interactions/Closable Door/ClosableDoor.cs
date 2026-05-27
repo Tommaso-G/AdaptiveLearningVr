@@ -127,7 +127,7 @@ namespace UnityEngine.XR.Content.Interaction
 
             m_Rigidbody.isKinematic = false;
             was_closed = true;
-
+            Debug.Log("Aperta porta con OpenWithSPring");
             m_DoorJoint.useSpring = true;
             JointSpring spring = m_DoorJoint.spring;
             spring.spring = initialSpring;

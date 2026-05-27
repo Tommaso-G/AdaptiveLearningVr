@@ -20,6 +20,8 @@ public class StepOutlineManager : MonoBehaviour
     // -------------------------------------------------------------------------
     private const string OBJECT_STEP_TAG = "ObjectStep";
 
+    [SerializeField] private FeedbackIconsManager feedbackIconsManager;
+
     // -------------------------------------------------------------------------
     // Campi configurabili dall'inspector
     // -------------------------------------------------------------------------
@@ -190,6 +192,8 @@ public class StepOutlineManager : MonoBehaviour
             OptionalSubChapters = executeChaptersBehavior.Data.AddedSubChapters;
             subChapters.Clear();
 
+            Debug.Log("IconManager per sottocapitolo??");
+
             string message_2 = null;
             foreach (SubChapter sc in OptionalSubChapters)
             {
@@ -204,15 +208,32 @@ public class StepOutlineManager : MonoBehaviour
             //Debug.Log(message_1 + (message_2 != null? message_2 : "Nessuno"));
         }
 
+
         if (subChapters.Count < 0) yield break;
 
         // Abilita gli outline per lo step attivo iniziale
         foreach (IChapter subChapter in subChapters)
         {
+
+  
+
             IStep activeStep = subChapter?.Data?.Current;
+
             if (activeStep != null)
+            {
+                 Debug.Log("IconManager per sottocapitolo??");
+                feedbackIconsManager.OnChapterStarted(
+                    subChapter.Data.Name);
+
+                feedbackIconsManager.OnStepStarted(
+                    subChapter.Data.Name,
+                    activeStep.Data.Name);
+
                 EnableOutlinesForStep(activeStep);
+            }
         }
+
+                  Debug.Log("IconManager per sottocapitolo??");
 
         // Snapshot iniziale
         var lastStep = new Dictionary<IChapter, IStep>();
@@ -230,11 +251,13 @@ public class StepOutlineManager : MonoBehaviour
 
                 IStep currentStep = subChapter.Data.Current;
 
-                if (currentStep != lastStep[subChapter])
+                if (currentStep != null)
                 {
-                    //Debug.Log($"[StepOutlineManager] Last step: {lastStep[subChapter].Data.Name}. Current step: {(currentStep == null ? "Finito il sottocapitolo" : currentStep.Data.Name)}");
-                    lastStep[subChapter] = currentStep;
-                    anyChanged = true;
+                    feedbackIconsManager.OnStepStarted(
+                        subChapter.Data.Name,
+                        currentStep.Data.Name);
+
+                        Debug.Log("IconManager per sottocapitolo");
                 }
             }
 
@@ -255,6 +278,8 @@ public class StepOutlineManager : MonoBehaviour
                     }
                 }
             }
+
+                      Debug.Log("IconManager per sottocapitolo??");
 
             yield return null;
         }
