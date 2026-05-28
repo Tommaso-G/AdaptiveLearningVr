@@ -60,7 +60,7 @@ public class ChapterTimer : MonoBehaviour
         {
             currentChapter.elapsedTime += Time.deltaTime;
 
-            // Mid-event: abbassa il feedbackLevel di 1 al raggiungimento di midEventTime
+            // Mid-event: rende outline e waypoints visibili attraverso gli oggetti
             if (currentChapter.useMidEvent
                 && !currentChapter.midEventTriggered
                 && currentChapter.elapsedTime >= currentChapter.midEventTime)
@@ -81,7 +81,7 @@ public class ChapterTimer : MonoBehaviour
 
         print($"[ChapterTimer] Mid-event scattato per '{chapterName}' a {currentChapter.elapsedTime:F1}s");
 
-        if (feedbackChapterFilter != null)
+        if (feedbackChapterFilter != null && currentChapter.useMidEvent)
         {
             feedbackChapterFilter.SetOutlineAlwaysVisibile(currentChapter.chapterWithTimer);
             print($"[ChapterTimer] FeedbackLevel '{chapterName}': outline sempre visibile");
@@ -91,17 +91,27 @@ public class ChapterTimer : MonoBehaviour
             Debug.LogWarning("[ChapterTimer] feedbackChapterFilter non assegnato, mid-event non può aggiornare il livello.");
         }
 
-        OnMidEventTriggered?.Invoke(chapterName);
+        if (currentChapter.useMidEvent)
+        {
+            OnMidEventTriggered?.Invoke(chapterName);
+        }
     }
 
-    public void EndTimer(ChapterTimerSettings currentChapter)
+    public void DisableMidEventTrigger(string chapterWithMidEventToDisable)
+    {
+        ChapterTimerSettings chapterSetting = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterWithMidEventToDisable);
+        chapterSetting.useMidEvent = false;
+        Debug.Log($"[ChapterTimer] disabilitato Mid Event Trigger per il capitolo {chapterWithMidEventToDisable}.");
+    }
+
+    public void EndTimer(ChapterTimerSettings currentChapter, bool registerError = true)
     {
         if (currentChapter == null || !currentChapter.timerOn)
             return;
 
         print($"[ChapterTimer] Terminato il timer per il capitolo {currentChapter.chapterWithTimer} (Tempo Scaduto)");
 
-        if (errorTracker != null || executionOrderController != null)
+        if ((errorTracker != null || executionOrderController != null) && registerError)
         {
             ErrorReporter errorReporter = new ErrorReporter();
             errorReporter.setReference(errorTracker, executionOrderController);
@@ -187,6 +197,16 @@ public class ChapterTimer : MonoBehaviour
         Debug.Log($"[ChapterTimer] Timer INTERROTTO e RESETTATO per {chapterName}");
     }
 
+    public void EarlyEndChapterTimer(string chapterName)
+    {
+        ChapterTimerSettings currentChapter = timerSettings.FirstOrDefault(cs => cs.chapterWithTimer == chapterName);
+
+        if (currentChapter == null)
+            return;
+
+        EarlyEndChapterTimerInteranal(currentChapter);
+    }
+
     // ─────────────────────────────────────────────────────────────────
     // METODI INTERNI DI SUPPORTO
     // ─────────────────────────────────────────────────────────────────
@@ -221,5 +241,11 @@ public class ChapterTimer : MonoBehaviour
         chapter.isPaused = false;
         chapter.elapsedTime = 0f;
         chapter.midEventTriggered = false;
+    }
+
+    private void EarlyEndChapterTimerInteranal(ChapterTimerSettings currentChapter)
+    {
+        EndTimer(currentChapter, registerError: false);
+        Debug.Log($"[ChapterTimer] Capitolo {currentChapter.chapterWithTimer} saltato con EarlyEndChapterTimer");
     }
 }

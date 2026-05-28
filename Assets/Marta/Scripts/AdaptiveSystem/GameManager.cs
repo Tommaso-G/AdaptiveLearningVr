@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StepErrorTracker stepErrorTracker;
     [SerializeField] private FeedbackChapterFilter feedbackChapterFilter = null;
     [SerializeField] private DifficultyChapterFilter difficultyChapterFilter = null;
+    [SerializeField] private ChapterTimer chapterTimer = null;
 
     //[Header("Iteration Control")]
     //[SerializeField] private Button endIterationButton = null;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
         feedbackChapterFilter = FindFirstObjectByType<FeedbackChapterFilter>();
         difficultyChapterFilter = FindFirstObjectByType<DifficultyChapterFilter>();
         stepErrorTracker = FindFirstObjectByType<StepErrorTracker>();
+        chapterTimer = FindFirstObjectByType<ChapterTimer>();
 
         if (!offlineMode)
         {
@@ -603,12 +605,19 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         // ===== MODIFICATO: Z per salvare fine iterazione =====
-        if (Input.GetKeyUp(KeyCode.Z))
+        if (Input.GetKeyUp(KeyCode.Keypad0))
         {
-            Debug.Log("[GameManager] Z: Fine iterazione");
+            Debug.Log("[GameManager] Keypad0: Fine iterazione");
             OnEndIterationButtonPressed();
         }
 
+
+        if (Input.GetKeyUp(KeyCode.Keypad9))
+        {
+            string currentChapter = process?.Data.Current?.Data.Name;
+            Debug.Log($"[GameManager] Keypad9: end timer forzato per il capitolo {currentChapter}");
+            chapterTimer.EarlyEndChapterTimer(currentChapter);
+        }
         // ===== NUOVO: ESC per tornare al menu =====
         //if (Input.GetKeyUp(KeyCode.Space))
         //{
