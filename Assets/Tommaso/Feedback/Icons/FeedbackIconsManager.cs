@@ -30,6 +30,8 @@ public class FeedbackIconsManager : MonoBehaviour
     [Header("Debug / Override")]
     public bool forceDisableSequentialIcons = true;
 
+    private bool isHandlingSubChapters = false;
+
     void Start()
     {
         ApplyLearningStyle();
@@ -72,12 +74,27 @@ public class FeedbackIconsManager : MonoBehaviour
             HandleStepStartedSequenziale(chapterName, stepName);
     }
 
+
+
     public void OnChapterStarted(string chapterName)
     {
-        if (!IsSequenziale())
+        if (!IsSequenziale() && !isHandlingSubChapters)
             HandleChapterStartedGlobale(chapterName);
     }
 
+    public void OnSubChapterStarted(string subChapterName)
+    {
+        DeactivateAllWaypoints();
+
+        isHandlingSubChapters = true;
+        HandleChapterStartedGlobale(subChapterName);
+        isHandlingSubChapters = false;
+    }
+
+    public void OnSubChaptersEnded()
+    {
+        isHandlingSubChapters = false;
+    }
     // ─────────────────────────────────────────────────────────────────
     // WAYPOINT — implementazioni private
     // ─────────────────────────────────────────────────────────────────
@@ -123,6 +140,9 @@ public class FeedbackIconsManager : MonoBehaviour
     private void HandleChapterStartedGlobale(string chapterName)
     {
         DeactivateAllWaypoints();
+
+        Debug.Log($"[FIM] HandleChapterStartedGlobale → chapter: '{chapterName}' | chapter trovato in mappa: {chapterStepMappings.Find(c => string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase)) != null}");
+
 
         ChapterStepIconMapping chapter = chapterStepMappings.Find(c =>
             string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase));

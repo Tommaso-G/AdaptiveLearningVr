@@ -17,6 +17,58 @@ MonoBehaviour:
   chapters:
   - ChapterName: Introduzione
     feedbacks:
+    - FeedbackName: Istruzioni iniziali
+      pages:
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "Questa che stai leggendo \xE8 una delle tante diapositive che ti guider\xE0
+          durante l'applicazione. Le diapositive contengono dei segnalibri che ti
+          permettono di scorrere tra le pagine.\n\nLa pagina \"OVERVIEW\" fornisce
+          informazioni generali sui task da svolgere ed \xE8 divisa in sezioni di
+          diverso tipo.\n\nLa pagina \"STEPS\" contiene l'elenco dei passaggi che
+          devi completare per un determinato task.\n\nLa pagina \"VIDEO\" contiene
+          un video esplicativo del task da svolgere. Non sempre \xE8 presente.\n\nScorri
+          tra le pagine per vedere come sono strutturate."
+      - Sequenzale_Globale: 1
+        Visivo_Verbale: 1
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "<color=#888787><size=85%><b>Scopo</b></size></color>\n<size=90%>Mostrare
+          in modo chiaro l\u2019obiettivo principale dell\u2019attivit\xE0 che l\u2019utente
+          dovr\xE0 completare.</size>\n\n<color=#888787><size=85%><b>Mosse</b></size></color>\n<size=90%>\u2022
+          Presentare le principali azioni disponibili durante l\u2019interazione\n\u2022
+          Guidare l\u2019utente nell\u2019utilizzo degli elementi presenti nella
+          scena\n\u2022 Descrivere le operazioni necessarie per completare l\u2019attivit\xE0</size>\n\n<color=#888787><size=85%><b>Attenzione</b></size></color>\n<size=90%>\u2022
+          Eventuali suggerimenti o informazioni utili vengono mostrati in questa
+          sezione</size>"
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 1
+        isIntroductory: 1
+        image: {fileID: 0}
+        video: {fileID: 0}
+        text: "<color=#888787><size=85%><b>Struttura della pagina STEPS</b></size></color>\n\n<b><size=90%><color=#67FFCA>1.</color></size></b>
+          Ogni sezione di questa pagina presenta uno step dell\u2019attivit\xE0 accompagnato
+          da una breve descrizione esplicativa.\n\n<b><size=90%><color=#67FFCA>2.</color></size></b>
+          Le istruzioni sono organizzate in ordine sequenziale per guidare l\u2019utente
+          passo dopo passo durante l\u2019esecuzione.\n\n<b><size=90%><color=#67FFCA>3.</color></size></b>
+          L\u2019utente pu\xF2 procedere seguendo gli step nell\u2019ordine mostrato
+          fino al completamento dell\u2019attivit\xE0."
+      - Sequenzale_Globale: 0
+        Visivo_Verbale: 0
+        isIntroductory: 0
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: c6e163ad5fec7d348b2e9f5c72209cd5, type: 3}
+        text: <i><size=60%>Puoi usare i tasti per far ripartire il video, fermarlo
+          o andare avanti e indietro. Premi il tasto "Play"</size></i>
+      StepForCompletition:
+      - Istruzioni generiche
+      PersonalizedPrefab: {fileID: 0}
+      needsButtonToBeCompleted: 1
+      applyReflectiveEffects: 1
     - FeedbackName: Introduzione
       pages:
       - Sequenzale_Globale: 0
@@ -32,7 +84,7 @@ MonoBehaviour:
           comparir\xE0 un simbolo di \"check\"\n\nProva ad allontanarti dalla diapositiva
           utilizzando la levetta di sinistra."
       StepForCompletition:
-      - Guarda il primo feedback
+      - Istruzioni generiche
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
       applyReflectiveEffects: 1
@@ -198,7 +250,7 @@ MonoBehaviour:
           il bottone. Per premere oggetti come i bottoni, avvicina il controller
           al bottone come faresti con la mano. Adios!"
       StepForCompletition:
-      - Premi il bottone per aprire la porta
+      - Guarda il primo feedback
       PersonalizedPrefab: {fileID: 0}
       needsButtonToBeCompleted: 0
       applyReflectiveEffects: 1
