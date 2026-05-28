@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using VRBuilder.Core;
 using VRBuilder.Core.Behaviors;
 using System.Linq;
+using static ChapterTimer;
 
 public class FeedbackChapterFilter : MonoBehaviour
 {
@@ -11,15 +12,20 @@ public class FeedbackChapterFilter : MonoBehaviour
     {
         [HideInInspector]
         public string chapterName;
+        //  0 = feedback + outline normali
+        //  1 = solo outline (no feedback)
+        //  2 = niente (nessun aiuto)
         [Range(0, 2)]
         public int feedbackLevel;
+        public bool outlineAlwaysVisibile = false;
     }
+
 
     public List<ChapterFeedbackSetting> chapterSettings = new List<ChapterFeedbackSetting>();
 
     private Dictionary<string, string> parentMap = new Dictionary<string, string>();
 
-    public void setFeedbackLevel(string chapterName, int level)
+    public void SetFeedbackLevel(string chapterName, int level)
     {
         ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
         if (chapter == null)
@@ -28,7 +34,22 @@ public class FeedbackChapterFilter : MonoBehaviour
             return;
         }
 
-        chapter.feedbackLevel = level;
+        chapter.feedbackLevel = Mathf.Clamp(level, 0, 2);
+    }
+
+    /// <summary>
+    /// Restituisce il livello di feedback corrente per il capitolo.
+    /// Ritorna 0 se il capitolo non è registrato.
+    /// </summary>
+    public int GetFeedbackLevel(string chapterName)
+    {
+        ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
+        if (chapter == null)
+        {
+            Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' non trovato in chapterSettings.");
+            return 0;
+        }
+        return chapter.feedbackLevel;
     }
 
     public void NoneLevelChangeChapter(string chapterName)
@@ -124,6 +145,7 @@ public class FeedbackChapterFilter : MonoBehaviour
             Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' non trovato.");
             return true;
         }
+        // Feedback visibile a livello -1 e 0
         return GetEffectiveFeedbackLevel(chapterName) == 0;
     }
 
@@ -135,6 +157,26 @@ public class FeedbackChapterFilter : MonoBehaviour
             Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' non trovato.");
             return true;
         }
+        // Outline visibile a livello -1, 0 e 1
         return GetEffectiveFeedbackLevel(chapterName) <= 1;
+    }
+
+    public void SetOutlineAlwaysVisibile(string chapterName)
+    {
+        var setting = chapterSettings.Find(s => s.chapterName == chapterName);
+        if (setting == null) return;
+        setting.outlineAlwaysVisibile = true;
+    }
+
+    /// <summary>
+    /// Restituisce true quando il livello è -1:
+    /// OutlineManager deve passare a "Outline All" e i waypoint
+    /// devono essere spostati sul layer Default.
+    /// </summary>
+    public bool IsHardAssistActive(string chapterName)
+    {
+        var setting = chapterSettings.Find(s => s.chapterName == chapterName);
+        if (setting == null) return false;
+        return setting.outlineAlwaysVisibile;
     }
 }

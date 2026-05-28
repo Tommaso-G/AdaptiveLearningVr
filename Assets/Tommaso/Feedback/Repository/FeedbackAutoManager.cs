@@ -21,6 +21,15 @@ public class FeedbackAutoManager : MonoBehaviour
     public FeedbackSetHolder feedbackHolder;
     public FeedbackDisplayer feedbackDisplayer;
     public FeedbackChapterFilter chapterFilter;
+    public ChapterTimer chapterTimer;
+
+    [Header("Hard Assist (Outline e icone sempre visibili")]
+    [Tooltip("OutlineManager della scena")]
+    public StepOutlineManager outlineManager;
+    [Tooltip("Layer usato dai waypoint in condizioni normali (es. 'UI' o 'Waypoint')")]
+    public string normalWaypointLayer = "UI";
+    [Tooltip("Layer assegnato ai waypoint quando scatta Hard Assist")]
+    public string hardAssistWaypointLayer = "Default";
 
     [Header("Impostazioni Delay")]
     [Tooltip("Secondi di attesa tra chiusura e apertura di un feedback sulla stessa posizione")]
@@ -46,11 +55,17 @@ public class FeedbackAutoManager : MonoBehaviour
         {
             ProcessRunner.Events.ProcessStarted += OnProcessStarted;
         }
+
+        if (chapterTimer != null)
+            chapterTimer.OnMidEventTriggered += OnChapterMidEvent;
     }
 
     private void OnDisable()
     {
         ProcessRunner.Events.ProcessStarted -= OnProcessStarted;
+
+        if (chapterTimer != null)
+            chapterTimer.OnMidEventTriggered -= OnChapterMidEvent;
     }
 
     private void OnProcessStarted(object sender, ProcessEventArgs args)
@@ -298,7 +313,7 @@ public class FeedbackAutoManager : MonoBehaviour
     {
         if (delay > 0f)
         {
-           // Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
+            // Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
             yield return new WaitForSeconds(delay);
         }
 
@@ -350,7 +365,7 @@ public class FeedbackAutoManager : MonoBehaviour
                         // Registra cooldown sulla posizione world prima di chiudere
                         Vector3Int key = PositionKey(prefabs[i].transform.position);
                         positionCooldowns[key] = Time.time + feedbackPositionDelay;
-                       // Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
+                        // Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
 
                         prefabs[i].CloseFeedback();
                     }
@@ -375,7 +390,7 @@ public class FeedbackAutoManager : MonoBehaviour
     {
         // 1. Disabilita i feedback futuri tramite chapterFilter
         if (chapterFilter != null)
-            chapterFilter.setFeedbackLevel(chapterName, 2);
+            chapterFilter.SetFeedbackLevel(chapterName, 2);
 
         // 2. Trova tutti i feedback attivi che appartengono al capitolo
         var feedbacksToClose = activeFeedbackSteps
@@ -385,7 +400,7 @@ public class FeedbackAutoManager : MonoBehaviour
 
         if (feedbacksToClose.Count == 0)
         {
-           // Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
+            // Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
             return;
         }
 
@@ -440,6 +455,75 @@ public class FeedbackAutoManager : MonoBehaviour
         }
         else
             Debug.LogWarning($"[FeedbackAutoManager] Nessun sender trovato per '{feedback.FeedbackName}'");
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // HARD ASSIST —
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Chiamato da ChapterTimer.OnMidEventTriggered quando il mid-event abbassa
+    /// il feedbackLevel a -1. Attiva outline "Outline All" e sposta i waypoint
+    /// sul layer Default.
+    /// </summary>
+    private void OnChapterMidEvent(string chapterName)
+    {
+        if (chapterFilter == null || !chapterFilter.IsHardAssistActive(chapterName))
+            return;
+
+        Debug.Log($"[FeedbackAutoManager] Hard Assist attivato per '{chapterName}'.");
+
+        ApplyOutlineAll();
+        SetWaypointLayer(hardAssistWaypointLayer);
+    }
+
+    /// <summary>
+    /// Imposta OutlineMode = OutlineAll su tutti gli oggetti gestiti dall'OutlineManager.
+    /// </summary>
+    private void ApplyOutlineAll()
+    {
+        if (outlineManager == null)
+        {
+            Debug.LogWarning("[FeedbackAutoManager] OutlineManager non assegnato, impossibile applicare Outline All.");
+            return;
+        }
+
+        outlineManager.SetOutlineModeAll();
+        Debug.Log("[FeedbackAutoManager] OutlineManager: modalità 'Outline All' applicata.");
+    }
+
+    /// <summary>
+    /// Cambia il layer di tutti i waypoint istanziati da FeedbackPrefabController
+    /// e di tutti i GameObject taggati WayPointSmall nella scena.
+    /// </summary>
+    private void SetWaypointLayer(string layerName)
+    {
+        int layer = LayerMask.NameToLayer(layerName);
+        if (layer == -1)
+        {
+            Debug.LogWarning($"[FeedbackAutoManager] Layer '{layerName}' non trovato nel progetto.");
+            return;
+        }
+
+        // Waypoint nei FeedbackPrefabController attivi
+        GameObject[] Waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
+        foreach (GameObject wp in Waypoints)
+            wp.layer = layer;
+
+        // Waypoint liberi nella scena (tag WayPointSmall)
+        GameObject[] sceneWaypoints = GameObject.FindGameObjectsWithTag("WayPointSmall");
+        foreach (GameObject wp in sceneWaypoints)
+        {
+            if (wp.transform.parent == null)
+            {
+                Debug.LogWarning($"{wp.name} non ha parent");
+                continue;
+            }
+
+            wp.transform.parent.gameObject.layer = layer;
+        }
+
+        Debug.Log($"[FeedbackAutoManager] Layer waypoint impostato a '{layerName}'.");
     }
 
 }

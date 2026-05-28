@@ -144,6 +144,24 @@ public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.
         currentSceneSpawnables.Add(target);
     }
 
+    public void ActivateAreaEffect()
+    {
+        StartCoroutine(ActivateAreaEffectCorutine());
+    }
+
+    private IEnumerator ActivateAreaEffectCorutine()
+    {
+        while (!Initialized)
+        {
+            yield return null;
+        }
+
+        foreach(var sp in currentSceneSpawnables)
+        {
+            sp.AssignedSpawnArea.effectActive = true;
+        }
+    }
+
     public void OnSpawnedObjDestroyed(SpawnableObj obj, SpawnArea spawnArea)
     {
         obj.SpawnableObjDestroyed -= OnSpawnedObjDestroyed;
@@ -156,7 +174,10 @@ public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.
     public void ActivateChildren()
     {
         foreach (var s in currentSceneSpawnables)
+        {
             s.gameObject.SetActive(true);
+            s.AssignedSpawnArea.SpawnEffect();
+        }
     }
     public void ResetSpawner()
     {

@@ -221,7 +221,7 @@ public class StepOutlineManager : MonoBehaviour
 
             if (activeStep != null)
             {
-                 Debug.Log("IconManager per sottocapitolo??");
+                Debug.Log("IconManager per sottocapitolo??");
                 feedbackIconsManager.OnChapterStarted(
                     subChapter.Data.Name);
 
@@ -233,7 +233,7 @@ public class StepOutlineManager : MonoBehaviour
             }
         }
 
-                  Debug.Log("IconManager per sottocapitolo??");
+        Debug.Log("IconManager per sottocapitolo??");
 
         // Snapshot iniziale
         var lastStep = new Dictionary<IChapter, IStep>();
@@ -279,7 +279,7 @@ public class StepOutlineManager : MonoBehaviour
                 }
             }
 
-                      Debug.Log("IconManager per sottocapitolo??");
+            Debug.Log("IconManager per sottocapitolo??");
 
             yield return null;
         }
@@ -379,6 +379,7 @@ public class StepOutlineManager : MonoBehaviour
             if (outline == null) continue;
             if (activeOutlines.Contains(outline)) continue;
 
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.enabled = true;
             outline.OutlineWidth = minOutlineWidth;
             activeOutlines.Add(outline);
@@ -403,6 +404,7 @@ public class StepOutlineManager : MonoBehaviour
             if (outline == null) continue;
             if (activeProxyOutlines.ContainsKey(vproxy)) continue;
 
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.enabled = true;
             outline.OutlineWidth = minOutlineWidth;
             activeProxyOutlines.Add(vproxy, outline);
@@ -427,6 +429,18 @@ public class StepOutlineManager : MonoBehaviour
         //Debug.Log($"[StepOutlineManager] Outline attivato su: {go.name}");
     }
 
+    public void SetOutlineModeAll()
+    {
+        foreach (Outline outline in activeOutlines)
+        {
+            outline.OutlineMode = Outline.Mode.OutlineAll;
+        }
+
+        foreach (KeyValuePair<VisualProxy, Outline> pair in activeProxyOutlines)
+        {
+            pair.Value.OutlineMode = Outline.Mode.OutlineAll;
+        }
+    }
     private void DisableAllActiveOutlines()
     {
         StopSubChapterMonitor();

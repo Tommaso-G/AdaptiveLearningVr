@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
             if (level != null && level.feedbackOverrides != null)
             {
                 foreach (var ovr in level.feedbackOverrides)
-                    feedbackChapterFilter.setFeedbackLevel(ovr.chapterName, ovr.feedbackLevel);
+                    feedbackChapterFilter.SetFeedbackLevel(ovr.chapterName, ovr.feedbackLevel);
             }
         }
 
@@ -394,7 +394,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (chaptersIdToName.TryGetValue(chapterData.chapter_id, out string name))
                     {
-                        feedbackChapterFilter.setFeedbackLevel(name, chapterData.feedback_level);
+                        feedbackChapterFilter.SetFeedbackLevel(name, chapterData.feedback_level);
                     }
 
                     if (difficultyChapterFilter != null)
@@ -557,7 +557,7 @@ public class GameManager : MonoBehaviour
         // se cambiato il livello di feedback aggiorna
         if (decision.feedback_changed)
         {
-            feedbackChapterFilter.setFeedbackLevel(chaptersIdToName[decision.chapter_id], decision.feedback_level);
+            feedbackChapterFilter.SetFeedbackLevel(chaptersIdToName[decision.chapter_id], decision.feedback_level);
         }
 
         if (decision.difficulty_changed)

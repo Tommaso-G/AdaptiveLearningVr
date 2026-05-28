@@ -72,11 +72,7 @@ public class SpawnArea : MonoBehaviour
         isOccupied = value;
         onSpawnAreaChange?.Invoke(this, value);
         print("OnAreaChange");
-        if (value && effectActive)
-        {
-            SpawnEffect();
-        }
-        else
+        if (!value)
         {
             ResetArea();
         }
@@ -84,6 +80,8 @@ public class SpawnArea : MonoBehaviour
 
     public void SpawnEffect()
     {
+        if (!effectActive) return;
+
         checkFumo.gameObject.SetActive(false);
         Collider volume = GetComponent<Collider>();
         if (areaPSEffect == null || volume == null)

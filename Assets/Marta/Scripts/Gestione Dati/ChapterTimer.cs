@@ -15,6 +15,9 @@ public class ChapterTimer : MonoBehaviour
         public string chapterWithTimer;
         public float max_time = 150f;
         public bool timerOn = false;
+        [Header("Mid timer event")]
+        public bool useMidEvent = false;
+        public float midEventTime = 60f;
 
         // ─────────────────────────────────────────────────────────────────
         // NUOVI CAMPI DI RUNTIME (Nascosti nell'Inspector)
@@ -22,13 +25,16 @@ public class ChapterTimer : MonoBehaviour
         [System.NonSerialized] public float elapsedTime = 0f;
         [System.NonSerialized] public Coroutine activeCoroutine = null;
         [System.NonSerialized] public bool isPaused = false;
+        [System.NonSerialized] public bool midEventTriggered = false;
     }
 
     [SerializeField] ExecutionOrderController executionOrderController;
     [SerializeField] StepErrorTracker errorTracker;
+    [SerializeField] FeedbackChapterFilter feedbackChapterFilter;
     public List<ChapterTimerSettings> timerSettings = new List<ChapterTimerSettings>();
 
     public event Action OnTimeExceeded;
+    public event Action<string> OnMidEventTriggered;
 
     /// <summary>
     /// Avvia il timer o lo riprende (Resume) se era stato messo in pausa.
@@ -53,10 +59,39 @@ public class ChapterTimer : MonoBehaviour
         while (currentChapter.elapsedTime < currentChapter.max_time)
         {
             currentChapter.elapsedTime += Time.deltaTime;
+
+            // Mid-event: abbassa il feedbackLevel di 1 al raggiungimento di midEventTime
+            if (currentChapter.useMidEvent
+                && !currentChapter.midEventTriggered
+                && currentChapter.elapsedTime >= currentChapter.midEventTime)
+            {
+                currentChapter.midEventTriggered = true;
+                TriggerMidEvent(currentChapter);
+            }
+
             yield return null;
         }
 
         EndTimer(currentChapter);
+    }
+
+    private void TriggerMidEvent(ChapterTimerSettings currentChapter)
+    {
+        string chapterName = currentChapter.chapterWithTimer;
+
+        print($"[ChapterTimer] Mid-event scattato per '{chapterName}' a {currentChapter.elapsedTime:F1}s");
+
+        if (feedbackChapterFilter != null)
+        {
+            feedbackChapterFilter.SetOutlineAlwaysVisibile(currentChapter.chapterWithTimer);
+            print($"[ChapterTimer] FeedbackLevel '{chapterName}': outline sempre visibile");
+        }
+        else
+        {
+            Debug.LogWarning("[ChapterTimer] feedbackChapterFilter non assegnato, mid-event non può aggiornare il livello.");
+        }
+
+        OnMidEventTriggered?.Invoke(chapterName);
     }
 
     public void EndTimer(ChapterTimerSettings currentChapter)
@@ -185,5 +220,6 @@ public class ChapterTimer : MonoBehaviour
         chapter.timerOn = false;
         chapter.isPaused = false;
         chapter.elapsedTime = 0f;
+        chapter.midEventTriggered = false;
     }
 }
