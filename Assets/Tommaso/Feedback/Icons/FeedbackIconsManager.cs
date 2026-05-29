@@ -188,7 +188,6 @@ public class FeedbackIconsManager : MonoBehaviour
 
     private void DeactivateWaypoint(FeedbackIconController controller)
     {
-        ImageFader fader = controller.GetComponentInChildren<ImageFader>(true);
         if (fader != null)
             fader.Fade();
 
