@@ -52,5 +52,6 @@ public class InteractionListener : MonoBehaviour
             data.context,
             data.errorString
         );
+        Debug.Log($"InteractionListener attaccato a {gameObject.name} ha lanciato HandleInteraction.");
     }
 }

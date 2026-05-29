@@ -254,11 +254,12 @@ public class ExecutionOrderController : MonoBehaviour
         GameObject go = s.GameObject;
         //Debug.Log($"[EOC] Oggetto processato: {go.name}");
 
-        if (attachListener && s.GameObject.GetComponent<InteractionListener>() == null)
+        if (attachListener)
         {
-            if (InteractionSourceAutoAttacher.AttachIfNeeded(s.gameObject))
+            (bool success, GameObject obj) = InteractionSourceAutoAttacher.AttachIfNeeded(s.gameObject);
+            if (success && obj.GetComponent<InteractionListener>() == null)
             {
-                InteractionListener interactionListeners = s.GameObject.AddComponent<InteractionListener>();
+                InteractionListener interactionListeners = obj.AddComponent<InteractionListener>();
                 interactionListeners.Initialize(process);
                 interactionListeners.executionOrderController = this;
             }
@@ -353,6 +354,7 @@ public class ExecutionOrderController : MonoBehaviour
 
     public void checkForObjInStep(GameObject go, string chapter_name, GameObject proxy = null, string errorString = "")
     {
+        Debug.Log($"[EOC] Oggetto interagito {go.name}");
         if (parallelStepObjs.Count == 1)
         {
             if (parallelStepObjs[0].steps.Contains(go))
@@ -431,7 +433,7 @@ public class ExecutionOrderController : MonoBehaviour
         }
         else
         {
-            //Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
+            Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
             string subName =
                 ParallelStepIndex >= 0 && ParallelStepIndex < subch.Count
                     ? subch[ParallelStepIndex]?.Data?.Name ?? ""
@@ -444,6 +446,26 @@ public class ExecutionOrderController : MonoBehaviour
 
     public void DifferentStepWarningHighlight(GameObject go)
     {
+        Transform overrideChild = null;
+        foreach (Transform child in go.GetComponentsInChildren<Transform>())
+        {
+            if (child.CompareTag("HighlightTarget"))
+            {
+                overrideChild = child;
+                break;
+            }
+        }
+        if (overrideChild != null)
+        {
+            HighlightTarget target = overrideChild.GetComponent<HighlightTarget>();
+            GameObject targetgo = target?.GetTargetToHighlight();
+
+            if (targetgo != null)
+            {
+                go = targetgo;
+            }
+        }
+
         //Debug.Log($"[EOC] DifferentStepWarningHighlight per {go.name}");
         // Ferma l'eventuale flash già in corso su questo oggetto
         // e ripristina i suoi materiali originali PRIMA di ricominciare

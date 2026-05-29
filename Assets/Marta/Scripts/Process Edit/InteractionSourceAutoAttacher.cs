@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 public class InteractionSourceAutoAttacher : MonoBehaviour
 {
-    public static bool AttachIfNeeded(GameObject go)
+    public static (bool, GameObject) AttachIfNeeded(GameObject go)
     {
         Component fallbackComp = null;
         Type fallbackSourceType = null;
@@ -18,7 +18,7 @@ public class InteractionSourceAutoAttacher : MonoBehaviour
             {
                 if (go.GetComponent(sourceType) != null) continue;
                 go.AddComponent(sourceType);
-                return true;
+                return (true, go);
             }
 
             // Fallback: cerca nei parent, salva ma non attaccare ancora
@@ -37,10 +37,10 @@ public class InteractionSourceAutoAttacher : MonoBehaviour
             var target = fallbackComp.gameObject;
             if (target.GetComponent(fallbackSourceType) == null)
                 target.AddComponent(fallbackSourceType);
-            return true;
+            return (true, target);
         }
 
         Debug.Log($"[InteractionSourceAutoAttacher] Non trovata una Interaction Source compatibile con {go.name}.");
-        return false;
+        return (false, null);
     }
 }
