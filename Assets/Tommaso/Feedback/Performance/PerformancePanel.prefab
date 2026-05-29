@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3422916145054373232}
   - component: {fileID: 1036525532177585936}
   - component: {fileID: 8654653113748232833}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 6317205400121577133}
   - component: {fileID: 2845779591029808656}
   - component: {fileID: 1433943242436079424}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: -72}
+  m_AnchoredPosition: {x: 175, y: -80.94}
   m_SizeDelta: {x: 318, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6317205400121577133
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Nessun errore commesso
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -232,8 +232,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.8
-  m_fontSizeBase: 26.8
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 3344696420258224123}
   - component: {fileID: 6211935739467217144}
   - component: {fileID: 8472222271760239810}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Registro errori
+  m_text: Capitolo completato
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 371987956581051150}
   - component: {fileID: 1305166946157567587}
   - component: {fileID: 8008863245294637185}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,21 +551,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HandMenu, Assembly-CSharp
-        m_MethodName: RequestClose
-        m_Mode: 5
+        m_MethodName: CloseCurrent
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -611,7 +599,7 @@ GameObject:
   - component: {fileID: 3406652844876603041}
   - component: {fileID: 5388549625706785474}
   - component: {fileID: 3417092759800017944}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: PerformancePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +673,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2312680196927516215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 1
+  m_VerticalFit: 2
 --- !u!114 &5388549625706785474
 MonoBehaviour:
   m_ObjectHideFlags: 0

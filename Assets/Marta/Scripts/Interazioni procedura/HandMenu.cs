@@ -51,6 +51,7 @@ public class HandMenu : MonoBehaviour
 
     private bool isTransitioning = false;
 
+  
     [System.Serializable]
     public class MenuEntry
     {
@@ -60,6 +61,7 @@ public class HandMenu : MonoBehaviour
         public bool allowMultipleRequests;
         public bool automaticallyClose;
         public float autoCloseDelay = 10f;
+        public Color flashColor = Color.white; // ← aggiungi
     }
 
 
@@ -261,16 +263,18 @@ public class HandMenu : MonoBehaviour
 
     private void OnMenuOpened()
     {
+        // Avvia auto-chiusura se configurata
+        var entry = menus.Find(m => m.id == currentMenu.MenuId);
         TriggerHaptic();
-        HighlightController();
+        Color flash = entry != null ? entry.flashColor : Color.white;
+        HighlightController(flash);
         if (rotationCoroutine == null)
         {
             rotationCoroutine = StartCoroutine(ShowRotationUI());
         }
         isMenuActive = true;
 
-        // Avvia auto-chiusura se configurata
-        var entry = menus.Find(m => m.id == currentMenu.MenuId);
+
         if (entry != null && entry.automaticallyClose)
         {
             if (autoCloseCoroutine != null)
@@ -300,12 +304,12 @@ public class HandMenu : MonoBehaviour
             controller.SendHapticImpulse(intensity, duration);
         }
     }
-    private void HighlightController()
+    private void HighlightController(Color flashColor)
     {
-        StartCoroutine(blinkColor(baseMats));
+        StartCoroutine(blinkColor(baseMats, flashColor));
     }
 
-    private IEnumerator blinkColor(List<Material> mats)
+    private IEnumerator blinkColor(List<Material> mats, Color flashColor)
     {
         int k = 3;
         while (k > 0)
@@ -313,13 +317,13 @@ public class HandMenu : MonoBehaviour
             foreach (Material mat in mats)
             {
                 mat.EnableKeyword("_EMISSION");
-                mat.SetColor("_EmissionColor", mat.color * 2f);
+                mat.SetColor("_EmissionColor", flashColor * 2f);
             }
             yield return new WaitForSeconds(0.5f);
             foreach (Material mat in mats)
             {
                 mat.EnableKeyword("_EMISSION");
-                mat.SetColor("_EmissionColor", mat.color * 0.5f);
+                mat.SetColor("_EmissionColor", flashColor * 0.5f);
             }
             yield return new WaitForSeconds(0.5f);
             k--;
