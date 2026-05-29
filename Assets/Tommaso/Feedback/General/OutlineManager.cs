@@ -225,17 +225,25 @@ private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBe
             {
                 if (subChapter?.Data == null) continue;
 
-                IStep currentStep = subChapter.Data.Current;
-                if (currentStep == null) continue;
+                IStep currentStep = subChapter.Data.Current; // può essere null se capitolo finito
 
                 if (currentStep != lastStep[subChapter])
                 {
+                    IStep previousStep = lastStep[subChapter];
                     lastStep[subChapter] = currentStep;
                     anyChanged = true;
 
-                    // Disattiva solo i waypoint di questo subchapter, poi attiva il nuovo step
-                    feedbackIconsManager.DeactivateWaypointsForChapter(subChapter.Data.Name);
-                    feedbackIconsManager.ActivateWaypointsForStep(subChapter.Data.Name, currentStep.Data.Name);
+                    if (currentStep == null)
+                    {
+                        // Sottocapitolo completato: disattiva waypoint ma non attivarne di nuovi
+                        feedbackIconsManager.DeactivateWaypointsForChapter(subChapter.Data.Name);
+                        Debug.Log($"[StepOutlineManager] Sottocapitolo completato: {subChapter.Data.Name}");
+                    }
+                    else
+                    {
+                        feedbackIconsManager.DeactivateWaypointsForChapter(subChapter.Data.Name);
+                        feedbackIconsManager.ActivateWaypointsForStep(subChapter.Data.Name, currentStep.Data.Name);
+                    }
                 }
             }
 
@@ -249,7 +257,7 @@ private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBe
                     if (subChapter?.Data == null) continue;
 
                     IStep activeStep = subChapter.Data.Current;
-                    if (activeStep != null)
+                    if (activeStep != null) // solo se il capitolo non è ancora finito
                         EnableOutlinesForStep(activeStep);
                 }
             }
