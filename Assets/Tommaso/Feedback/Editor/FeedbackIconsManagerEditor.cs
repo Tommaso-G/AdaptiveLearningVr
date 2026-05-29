@@ -14,15 +14,19 @@ public class FeedbackIconsManagerEditor : Editor
         manager.learningProfile = (LearningProfile)EditorGUILayout.ObjectField(
             "Learning Profile", manager.learningProfile, typeof(LearningProfile), true);
 
-        EditorGUILayout.Space(8);
-        EditorGUILayout.LabelField("Percorso JSON processo", EditorStyles.boldLabel);
-        defaultPath = EditorGUILayout.TextField(defaultPath);
         EditorGUILayout.Space(4);
 
-        if (GUILayout.Button("Carica step", GUILayout.Height(28)))
-            LoadSteps(manager);
+        // ← aggiungi questo
+        EditorGUI.BeginChangeCheck();
+        bool newValue = EditorGUILayout.Toggle("Force Disable Sequential Icons", manager.forceDisableSequentialIcons);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(manager, "Modifica Force Disable Sequential Icons");
+            manager.forceDisableSequentialIcons = newValue;
+            EditorUtility.SetDirty(manager);
+        }
 
-        EditorGUILayout.Space(12);
+        EditorGUILayout.Space(8);
 
         // Tabella raggruppata per capitolo
         foreach (var chapter in manager.chapterStepMappings)

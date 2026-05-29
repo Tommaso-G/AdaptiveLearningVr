@@ -103,9 +103,6 @@ public class FeedbackIconsManager : MonoBehaviour
             string.Equals(m.stepName, stepName, System.StringComparison.OrdinalIgnoreCase));
         if (mapping == null || mapping.iconControllers.Count == 0) return;
 
-        // TODO: chiama il metodo corretto su ogni controller
-        // foreach (var controller in mapping.iconControllers)
-        //     controller.???();
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -114,6 +111,14 @@ public class FeedbackIconsManager : MonoBehaviour
 
     public void ActivateWaypointsForStep(string chapterName, string stepName)
     {
+        if (IsSequenziale() && forceDisableSequentialIcons)
+            {
+                Debug.Log("[FeedbackIconsManager] ActivateWaypointsForStep bloccato — forceDisableSequentialIcons attivo.");
+                return;
+            }
+        
+        Debug.Log($"[FIM] ActivateWaypointsForStep chiamato | sequenziale: {IsSequenziale()} | forceDisable: {forceDisableSequentialIcons}");
+
         ChapterStepIconMapping chapter = chapterStepMappings.Find(c =>
             string.Equals(c.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase));
 
@@ -145,6 +150,17 @@ public class FeedbackIconsManager : MonoBehaviour
     }
 
 
+    private void DeactivateAllWaypoints()
+    {
+        FeedbackIconController[] allControllers = FindObjectsByType<FeedbackIconController>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        foreach (var controller in allControllers)
+            DeactivateWaypoint(controller);
+    }
+
     public void DeactivateWaypointsForChapter(string chapterName)
     {
         ChapterStepIconMapping chapter = chapterStepMappings.Find(c =>
@@ -156,27 +172,9 @@ public class FeedbackIconsManager : MonoBehaviour
             foreach (var controller in mapping.iconControllers)
             {
                 if (controller == null) continue;
-                GameObject wp = GetWaypointFromController(controller);
-                if (wp != null)
-                    wp.SetActive(false);
+                DeactivateWaypoint(controller);
             }
     }
-
-        private void DeactivateAllWaypoints()
-        {
-            // Cerca tutti i FeedbackIconController in scena, inclusi gli inattivi
-            FeedbackIconController[] allControllers = FindObjectsByType<FeedbackIconController>(
-                FindObjectsInactive.Include,
-                FindObjectsSortMode.None
-            );
-
-            foreach (var controller in allControllers)
-            {
-                GameObject wp = GetWaypointFromController(controller);
-                if (wp != null)
-                    wp.SetActive(false);
-            }
-        }
     private GameObject GetWaypointFromController(FeedbackIconController controller)
     {
         Transform iconFeedback = FindChildWithTag(controller.transform, "IconFeedback");
@@ -186,6 +184,17 @@ public class FeedbackIconsManager : MonoBehaviour
         if (waypoint == null) return null;
 
         return waypoint.gameObject;
+    }
+
+    private void DeactivateWaypoint(FeedbackIconController controller)
+    {
+        ImageFader fader = controller.GetComponentInChildren<ImageFader>(true);
+        if (fader != null)
+            fader.Fade();
+
+        GameObject wp = GetWaypointFromController(controller);
+        if (wp != null)
+            wp.SetActive(false);
     }
 
     private Transform FindChildWithTag(Transform parent, string tag)
