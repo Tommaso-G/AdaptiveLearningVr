@@ -5,40 +5,51 @@ using VRBuilder.Core;
 
 public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 {
+    [System.Serializable]
+    public class ExitColliderData
+    {
+        public Collider collider;
+        public int priority;
+    }
+
     public bool IsCompleted { get; private set; } = false;
 
     private NavMeshAgent agent;
     private bool _hasAgent = false;
+
     private Transform playerTransform;
     private bool isFollowing = false;
 
     public Animator MyAnimator;
 
-    public List<Collider> destinationColliders = new List<Collider>();
-    public string wrongStepName = "l'uscita non era la più vicina";
-
-    private Collider _closestCollider;
+    [Header("Collider uscite")]
+    public List<ExitColliderData> exitColliders = new List<ExitColliderData>();
 
     public ErrorReporter ErrorReporter;
+
+    private Collider _bestCollider;
 
     public bool IsFollowing => isFollowing;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
         if (agent != null)
         {
             _hasAgent = true;
         }
         else
         {
-            Debug.LogWarning($"[FollowerAgentWithCheck] [{name}] Nessun NavMeshAgent trovato — il movimento sarà disabilitato ma il controllo collider rimane attivo.");
+            Debug.LogWarning(
+                $"[FollowerAgentWithCheck] [{name}] Nessun NavMeshAgent trovato."
+            );
         }
     }
 
     void Start()
     {
-        ComputeClosestCollider();
+        ComputeBestCollider();
     }
 
     void OnEnable()
@@ -51,32 +62,6 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         FollowPlayerBehavior.OnFollowPlayerTriggered -= HandleFollowTriggered;
     }
 
-    private void ComputeClosestCollider()
-    {
-        if (destinationColliders == null || destinationColliders.Count == 0) return;
-
-        Collider closest = null;
-        float minDist = float.MaxValue;
-
-        foreach (Collider c in destinationColliders)
-        {
-            if (c == null) continue;
-
-            ExitDoor exitDoor = c.GetComponentInChildren<ExitDoor>();
-            if (exitDoor != null && exitDoor.blocked) continue;
-
-            float dist = Vector3.Distance(transform.position, c.bounds.center);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = c;
-            }
-        }
-
-        _closestCollider = closest;
-        Debug.Log($"[FollowerAgentWithCheck] [{name}] Collider più vicino all'avvio: {_closestCollider?.name}");
-    }
-
     private void HandleFollowTriggered(GameObject follower, GameObject player)
     {
         if (follower != gameObject) return;
@@ -85,39 +70,96 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         isFollowing = true;
 
         if (_hasAgent)
+        {
             MyAnimator.SetBool("GoToRun", true);
+        }
     }
 
     void Update()
     {
         if (isFollowing && playerTransform != null && _hasAgent)
+        {
             agent.SetDestination(playerTransform.position);
+        }
+    }
+
+    private void ComputeBestCollider()
+    {
+        _bestCollider = null;
+
+        int bestPriority = int.MaxValue;
+
+        foreach (ExitColliderData data in exitColliders)
+        {
+            if (data == null || data.collider == null)
+                continue;
+
+            ExitDoor exitDoor =
+                data.collider.GetComponentInChildren<ExitDoor>();
+
+            // Se blocked, ignoralo
+            if (exitDoor != null && exitDoor.blocked)
+                continue;
+
+            // Cerca la priority più piccola
+            if (data.priority < bestPriority)
+            {
+                bestPriority = data.priority;
+                _bestCollider = data.collider;
+            }
+        }
+
+        Debug.Log(
+            $"[FollowerAgentWithCheck] [{name}] Collider corretto: {_bestCollider?.name}"
+        );
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (IsCompleted) return;
-        if (destinationColliders == null || destinationColliders.Count == 0) return;
-        if (!destinationColliders.Contains(other)) return;
 
-        ExitDoor exitDoor = other.GetComponentInChildren<ExitDoor>();
+        ExitColliderData matchedData = null;
 
-        if (exitDoor == null)
+        foreach (ExitColliderData data in exitColliders)
         {
-            Debug.LogError($"[FollowerAgentWithCheck] [{name}] Nessuna ExitDoor trovata tra i figli di '{other.gameObject.name}'.");
-            return;
+            if (data.collider == other)
+            {
+                matchedData = data;
+                break;
+            }
         }
 
-        if (exitDoor.blocked) return;
+        if (matchedData == null)
+            return;
 
+        ExitDoor exitDoor =
+            matchedData.collider.GetComponentInChildren<ExitDoor>();
+
+        // Se blocked non fare nulla
+        if (exitDoor != null && exitDoor.blocked)
+            return;
+
+        bool shouldRegisterError = other != _bestCollider;
+
+        CompleteStep(shouldRegisterError);
+    }
+
+    private void CompleteStep(bool registerError)
+    {
         IsCompleted = true;
 
-        if (_closestCollider != null && other != _closestCollider)
+        if (registerError)
         {
             if (ErrorReporter != null)
+            {
                 ErrorReporter.RegisterError(gameObject.name + "_uscita");
+            }
             else
-                Debug.LogError("[FollowerAgentWithCheck] ErrorReporter non assegnato.");
+            {
+                Debug.LogError(
+                    "[FollowerAgentWithCheck] ErrorReporter non assegnato."
+                );
+            }
         }
 
         isFollowing = false;

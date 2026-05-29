@@ -98,21 +98,10 @@ public class ExecutionOrderController : MonoBehaviour
     private void OnChapterStarted(object sender, ProcessEventArgs args)
     {
         string chapterName = process.Data.Current?.Data.Name ?? "Unknown Chapter";
-        
-        // Se il capitolo non ha subchapter, notifica FeedbackIconsManager
-        // così può gestire normalmente OnChapterStarted
-        bool hasSubChapters = process.Data.Current?.Data.Steps
-            .Any(s => s.Data.Behaviors?.Data.Behaviors.FirstOrDefault() is ExecuteChaptersBehavior) ?? false;
-
-        if (hasSubChapters)
-            feedbackIconsManager.OnSubChaptersEnded(); // resetta il flag prima che StepOutlineManager chiami OnSubChapterStarted
-        else
-            feedbackIconsManager.OnChapterStarted(chapterName);
+        feedbackIconsManager.OnChapterStarted(chapterName);
 
         if (previousChapter != null && previousChapter.Data.Name != "Starting Point")
-        {
             errorTracker.NotifyChapterCompleted(previousChapter.Data.Name);
-        }
 
         previousChapter = process.Data.Current;
     }

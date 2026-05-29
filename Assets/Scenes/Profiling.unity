@@ -12377,6 +12377,10 @@ MonoBehaviour:
   feedbackHolder: {fileID: 1072921159}
   feedbackDisplayer: {fileID: 1072921157}
   chapterFilter: {fileID: 0}
+  chapterTimer: {fileID: 0}
+  outlineManager: {fileID: 0}
+  normalWaypointLayer: UI
+  hardAssistWaypointLayer: Default
   feedbackPositionDelay: 3
 --- !u!114 &1072921159
 MonoBehaviour:
@@ -13432,7 +13436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -166,7 +166,7 @@ public class StepOutlineManager : MonoBehaviour
     /// Monitora ogni frame i sottocapitoli: quando uno step cambia,
     /// aggiorna gli outline esattamente come farebbe StepStarted.
     /// </summary>
-    private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBehavior, bool mainChapterOutlineAllowed = true)
+private IEnumerator MonitorSubChapters(ExecuteChaptersBehavior executeChaptersBehavior, bool mainChapterOutlineAllowed = true)
     {
         // Aspetta finché almeno un sottocapitolo ha uno step attivo
         List<IChapter> subChapters = null;
@@ -183,64 +183,40 @@ public class StepOutlineManager : MonoBehaviour
             yield return null;
         }
 
-        ////($"[StepOutlineManager] Sottocapitoli attivi trovati: {subChapters.Count}");
-
         if (!mainChapterOutlineAllowed)
         {
-            string message_1 = ($"[StepOutlineManager] Main chapter non amette outline.\nOutline attivo per i seguenti sottocapitli opzionali:\n");
-            List<SubChapter> OptionalSubChapters = null;
-            OptionalSubChapters = executeChaptersBehavior.Data.AddedSubChapters;
+            List<SubChapter> optionalSubChapters = executeChaptersBehavior.Data.AddedSubChapters;
             subChapters.Clear();
 
-            Debug.Log("IconManager per sottocapitolo??");
-
-            string message_2 = null;
-            foreach (SubChapter sc in OptionalSubChapters)
+            foreach (SubChapter sc in optionalSubChapters)
             {
                 IChapter chapter = sc.Chapter;
                 if (chapterFilter.IsOutlineAllowed(chapter.Data.Name))
-                {
                     subChapters.Add(chapter);
-                    message_2 += $"{chapter.Data.Name}\n";
-                }
             }
-
-            //Debug.Log(message_1 + (message_2 != null? message_2 : "Nessuno"));
         }
 
+        if (subChapters.Count <= 0) yield break;
 
-        if (subChapters.Count < 0) yield break;
+        // Disattiva tutto una volta sola prima di attivare i waypoint dei subchapter
+        feedbackIconsManager.OnChapterStarted("");
 
-        // Abilita gli outline per lo step attivo iniziale
+        // Snapshot iniziale e attivazione outline + waypoint per ogni subchapter attivo
+        var lastStep = new Dictionary<IChapter, IStep>();
         foreach (IChapter subChapter in subChapters)
         {
-
-  
-
             IStep activeStep = subChapter?.Data?.Current;
+            lastStep[subChapter] = activeStep;
 
             if (activeStep != null)
             {
-                Debug.Log("IconManager per sottocapitolo??");
-                feedbackIconsManager.OnChapterStarted(
-                    subChapter.Data.Name);
-
-                feedbackIconsManager.OnStepStarted(
-                    subChapter.Data.Name,
-                    activeStep.Data.Name);
-
+                // Attiva solo il waypoint di questo subchapter senza disattivare gli altri
+                feedbackIconsManager.ActivateWaypointsForStep(subChapter.Data.Name, activeStep.Data.Name);
                 EnableOutlinesForStep(activeStep);
             }
         }
 
-        Debug.Log("IconManager per sottocapitolo??");
-
-        // Snapshot iniziale
-        var lastStep = new Dictionary<IChapter, IStep>();
-        foreach (IChapter subChapter in subChapters)
-            lastStep[subChapter] = subChapter?.Data?.Current;
-
-        // Monitor continuo
+        // Monitor continuo — aggiorna solo quando lo step cambia
         while (true)
         {
             bool anyChanged = false;
@@ -250,14 +226,16 @@ public class StepOutlineManager : MonoBehaviour
                 if (subChapter?.Data == null) continue;
 
                 IStep currentStep = subChapter.Data.Current;
+                if (currentStep == null) continue;
 
-                if (currentStep != null)
+                if (currentStep != lastStep[subChapter])
                 {
-                    feedbackIconsManager.OnStepStarted(
-                        subChapter.Data.Name,
-                        currentStep.Data.Name);
+                    lastStep[subChapter] = currentStep;
+                    anyChanged = true;
 
-                        Debug.Log("IconManager per sottocapitolo");
+                    // Disattiva solo i waypoint di questo subchapter, poi attiva il nuovo step
+                    feedbackIconsManager.DeactivateWaypointsForChapter(subChapter.Data.Name);
+                    feedbackIconsManager.ActivateWaypointsForStep(subChapter.Data.Name, currentStep.Data.Name);
                 }
             }
 
@@ -272,19 +250,13 @@ public class StepOutlineManager : MonoBehaviour
 
                     IStep activeStep = subChapter.Data.Current;
                     if (activeStep != null)
-                    {
-                        //Debug.Log($"[StepOutlineManager] Step cambiato: {activeStep.Data.Name} in {subChapter.Data.Name}");
                         EnableOutlinesForStep(activeStep);
-                    }
                 }
             }
-
-            Debug.Log("IconManager per sottocapitolo??");
 
             yield return null;
         }
     }
-
     private void StopSubChapterMonitor()
     {
         if (subChapterMonitorCoroutine != null)
