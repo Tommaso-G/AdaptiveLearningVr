@@ -188,9 +188,6 @@ public class FeedbackIconsManager : MonoBehaviour
 
     private void DeactivateWaypoint(FeedbackIconController controller)
     {
-        if (fader != null)
-            fader.Fade();
-
         GameObject wp = GetWaypointFromController(controller);
         if (wp != null)
             wp.SetActive(false);
