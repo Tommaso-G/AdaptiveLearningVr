@@ -447,9 +447,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "In caso di incendio, <b>avvisa subito il personale scolastico</b>
-              usando il telefono. In questo modo il personale scolastico pu\xF2 coordinare
-              l'evacuazione degli studenti in maniera ordinata e sicura."
+            text: "In caso di incendio, <b><color=#00DFA2>avvisa subito il personale
+              scolastico usando il telefono</color></b>. \n\nPremi \"personale scolastico\"
+              sul tastierino e alza la cornetta.\r\n"
           StepForCompletition:
           - Seleziona il tasto "Personale Scolastico"
           - Eseguire chiamata
@@ -463,10 +463,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "In caso di incendio, <b>attiva subito l'allarme antincendio</b>
-              pi\xF9 vicino a te. Gli allarmi si trovano nei <b>corridoi</b>, vicino
-              alle <b>uscite</b> e agli ingressi principali. Premi il bottone: in
-              pochi secondi avviserai <b>tutte le persone presenti</b> nell'edificio."
+            text: "Successivamente, <b><color=#00DFA2>attiva il pulsante di allarme
+              antincendio pi\xF9 vicino</color></b> per avvisare tutte le persone
+              presenti nell'edificio. \n\nSolleva la copertura di sicurezza e premi
+              il pulsante.\r\n"
           StepForCompletition:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
@@ -479,9 +479,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: Prendi il telefono e <b>chiama subito i Vigili del Fuoco</b> al
-              numero <b>115</b>. Una volta chiamati, saranno loro a chiederti alcune
-              informazioni sulla natura dell'emergenza.
+            text: "Prendi il telefono e <b><color=#00DFA2>chiama subito i Vigili
+              del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.\r\n\r\nPremi
+              <b><color=#00DFA2>\"115\"</color></b> sul tastierino, alza la cornetta
+              e rispondi alle domande dell\u2019operatore tramite il pannello sulla
+              mano.\r\n"
           StepForCompletition:
           - Seleziona il tasto "115"
           - completa Domande
@@ -497,61 +499,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b>interrompi l\u2019elettricit\xE0</b>
-              agendo sul quadro elettrico: <b>solleva o abbassa l\u2019interruttore
-              generale</b>.\nQuesta azione elimina la corrente e riduce il rischio
-              di <b>cortocircuiti</b> o inneschi elettrici che potrebbero aggravare
-              l\u2019incendio."
+            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
+              dal quadro elettrico</color></b>utilizzando gli interruttori giusti.
+              Questo riduce il rischio di cortocircuiti e ulteriori inneschi dell\u2019incendio.\r\n"
           StepForCompletition:
-          - "Disattiva l'elettricit\xE0 - combinazione 1"
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> in senso antiorario.\nIn questo modo
-              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
-              pericolose."
-          StepForCompletition:
-          - "Disattiva l'elettricit\xE0 - combinazione 2"
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> in senso antiorario.\nIn questo modo
-              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
-              pericolose."
-          StepForCompletition:
-          - "Disattiva l'elettricit\xE0 - combinazione 3"
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> in senso antiorario.\nIn questo modo
-              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
-              pericolose."
-          StepForCompletition:
-          - "Disattiva l'elettricit\xE0 - combinazione 4"
+          - "Disattiva elettricit\xE0 e gas"
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -562,10 +514,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b>interrompi il gas</b>: <b>gira
-              la manopola della valvola</b> in senso antiorario.\nIn questo modo
-              si blocca il flusso, riducendo il rischio di <b>esplosioni</b> e fughe
-              pericolose."
+            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b> ruotando
+              la valvola in senso antiorario. Questo blocca il flusso ed evita possibili
+              fughe pericolose.
+
+'
           StepForCompletition:
           - Attiva feedback gas
           - Play audio Gas
