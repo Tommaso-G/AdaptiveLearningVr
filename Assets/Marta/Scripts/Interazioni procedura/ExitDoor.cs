@@ -28,6 +28,10 @@ public class ExitDoor : MonoBehaviour
 
     private XRKnob interactable;
 
+    [Header("Door Closed Settings")]
+    [SerializeField] private float closedAngleThreshold = 5f;
+    public bool isDoorClosed = false;
+
     private Rigidbody BlockedRb;
     private Rigidbody secondDoorRb;
 
@@ -72,14 +76,17 @@ public class ExitDoor : MonoBehaviour
     void Update()
     {
         if (rend != null)
-        {
             changeColorAndIcon();
-        }
 
-        //if(BlockedRb != null)
-        //{
-        //    isBlock(blocked);
-        //}
+        // Controlla se le porte sono chiuse
+        float exitAngle = transform.localEulerAngles.y;
+        float secondAngle = secondDoor.transform.localEulerAngles.y;
+
+        if (exitAngle > 180f) exitAngle -= 360f;
+        if (secondAngle > 180f) secondAngle -= 360f;
+
+        isDoorClosed = Mathf.Abs(exitAngle) <= closedAngleThreshold &&
+                    Mathf.Abs(secondAngle - 90f) <= closedAngleThreshold;
     }
 
     private void changeColorAndIcon()
