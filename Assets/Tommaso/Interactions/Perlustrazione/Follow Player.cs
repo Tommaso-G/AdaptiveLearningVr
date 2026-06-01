@@ -28,6 +28,9 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     public ErrorReporter ErrorReporter;
 
     private Collider _bestCollider;
+    private Transform _currentDestination = null;
+    private bool _reachedExit = false;
+    private bool _pendingError = false;
 
     public bool IsFollowing => isFollowing;
 
@@ -77,7 +80,20 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
     void Update()
     {
-        if (isFollowing && playerTransform != null && _hasAgent)
+        if (!_hasAgent) return;
+
+        if (_reachedExit && _currentDestination != null)
+        {
+            agent.SetDestination(_currentDestination.position);
+
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                CompleteStep(_pendingError);
+                _reachedExit = false;
+                _currentDestination = null;
+            }
+        }
+        else if (isFollowing && playerTransform != null)
         {
             agent.SetDestination(playerTransform.position);
         }
@@ -94,14 +110,11 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
             if (data == null || data.collider == null)
                 continue;
 
-            ExitDoor exitDoor =
-                data.collider.GetComponentInChildren<ExitDoor>();
+            ExitDoor exitDoor = data.collider.GetComponentInChildren<ExitDoor>();
 
-            // Se blocked, ignoralo
             if (exitDoor != null && exitDoor.blocked)
                 continue;
 
-            // Cerca la priority più piccola
             if (data.priority < bestPriority)
             {
                 bestPriority = data.priority;
@@ -117,6 +130,7 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     private void OnTriggerEnter(Collider other)
     {
         if (IsCompleted) return;
+        if (_reachedExit) return;
 
         ExitColliderData matchedData = null;
 
@@ -132,16 +146,31 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         if (matchedData == null)
             return;
 
-        ExitDoor exitDoor =
-            matchedData.collider.GetComponentInChildren<ExitDoor>();
+        ExitDoor exitDoor = matchedData.collider.GetComponentInChildren<ExitDoor>();
 
-        // Se blocked non fare nulla
         if (exitDoor != null && exitDoor.blocked)
             return;
 
-        bool shouldRegisterError = other != _bestCollider;
+        // Prima cosa: chiama Toggle su tutti gli AngleTransitioner
+       // AngleTransitioner[] transitioners = matchedData.collider.GetComponentsInChildren<AngleTransitioner>();
+        //foreach (AngleTransitioner t in transitioners)
+        //{
+           // t.Toggle();
+        //}
 
-        CompleteStep(shouldRegisterError);
+        Transform destination = matchedData.collider.transform.Find("destination");
+        if (destination != null)
+        {
+            _currentDestination = destination;
+            _reachedExit = true;
+            _pendingError = other != _bestCollider;
+            isFollowing = false;
+            Debug.Log($"[FollowerAgentWithCheck] [{name}] Destinazione finale: {destination.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"[FollowerAgentWithCheck] [{name}] Nessun figlio 'destination' trovato in {matchedData.collider.name}");
+        }
     }
 
     private void CompleteStep(bool registerError)
