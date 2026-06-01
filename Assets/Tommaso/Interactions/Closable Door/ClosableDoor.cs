@@ -149,5 +149,14 @@ namespace UnityEngine.XR.Content.Interaction
 
             onDoorClosed?.Invoke();
         }
+
+        public void DisableInteractionListener()
+        {
+            InteractionListener interactionListener = GetComponent<InteractionListener>();
+            if (interactionListener != null)
+            {
+                interactionListener.enabled = false;
+            }
+        }
     }
 }
