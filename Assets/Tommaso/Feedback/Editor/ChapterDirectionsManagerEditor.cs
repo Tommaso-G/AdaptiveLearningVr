@@ -17,6 +17,12 @@ public class ChapterDirectionsManagerEditor : Editor
         manager.textPanel = (TMPro.TMP_Text)EditorGUILayout.ObjectField(
             "Text Panel", manager.textPanel, typeof(TMPro.TMP_Text), true);
 
+        manager.learningProfile = (LearningProfile)EditorGUILayout.ObjectField(
+            "Learning Profile", manager.learningProfile, typeof(LearningProfile), true);
+
+        manager.chapterFilter = (FeedbackChapterFilter)EditorGUILayout.ObjectField(
+            "Chapter Filter", manager.chapterFilter, typeof(FeedbackChapterFilter), true);
+
         EditorGUILayout.Space(8);
         EditorGUILayout.LabelField("Percorso JSON processo", EditorStyles.boldLabel);
         defaultPath = EditorGUILayout.TextField(defaultPath);
@@ -27,24 +33,41 @@ public class ChapterDirectionsManagerEditor : Editor
 
         EditorGUILayout.Space(12);
 
-        // Tabella capitolo → messaggio
         EditorGUILayout.LabelField("Capitolo → Messaggio", EditorStyles.boldLabel);
         EditorGUILayout.Space(4);
 
         foreach (var entry in manager.chapterDirections)
         {
-            EditorGUILayout.LabelField(entry.chapterName, EditorStyles.miniBoldLabel);
+            EditorGUILayout.LabelField(entry.chapterName, EditorStyles.boldLabel);
 
+            EditorGUI.indentLevel++;
+
+            // Sequenziale
+            EditorGUILayout.LabelField("Sequenziale", EditorStyles.miniBoldLabel);
             EditorGUI.BeginChangeCheck();
-            string newMessage = EditorGUILayout.TextArea(entry.message, GUILayout.MinHeight(40));
+            string newSeq = EditorGUILayout.TextArea(entry.messageSequenziale, GUILayout.MinHeight(40));
             if (EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(manager, "Modifica messaggio capitolo");
-                entry.message = newMessage;
+                Undo.RecordObject(manager, "Modifica messaggio sequenziale");
+                entry.messageSequenziale = newSeq;
                 EditorUtility.SetDirty(manager);
             }
 
-            EditorGUILayout.Space(4);
+            EditorGUILayout.Space(2);
+
+            // Globale
+            EditorGUILayout.LabelField("Globale", EditorStyles.miniBoldLabel);
+            EditorGUI.BeginChangeCheck();
+            string newGlob = EditorGUILayout.TextArea(entry.messageGlobale, GUILayout.MinHeight(40));
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(manager, "Modifica messaggio globale");
+                entry.messageGlobale = newGlob;
+                EditorUtility.SetDirty(manager);
+            }
+
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space(8);
         }
     }
 
@@ -77,19 +100,26 @@ public class ChapterDirectionsManagerEditor : Editor
         }
 
         // Preserva i messaggi già inseriti
-        var existing = new Dictionary<string, string>();
+        var existingSeq  = new Dictionary<string, string>();
+        var existingGlob = new Dictionary<string, string>();
         foreach (var entry in manager.chapterDirections)
-            existing[entry.chapterName] = entry.message;
+        {
+            existingSeq[entry.chapterName]  = entry.messageSequenziale;
+            existingGlob[entry.chapterName] = entry.messageGlobale;
+        }
 
         manager.chapterDirections.Clear();
 
         foreach (string name in chapters)
         {
-            existing.TryGetValue(name, out string savedMessage);
+            existingSeq.TryGetValue(name,  out string savedSeq);
+            existingGlob.TryGetValue(name, out string savedGlob);
+
             manager.chapterDirections.Add(new ChapterDirectionsManager.ChapterDirectionEntry
             {
-                chapterName = name,
-                message     = savedMessage ?? string.Empty
+                chapterName        = name,
+                messageSequenziale = savedSeq  ?? string.Empty,
+                messageGlobale     = savedGlob ?? string.Empty
             });
         }
 

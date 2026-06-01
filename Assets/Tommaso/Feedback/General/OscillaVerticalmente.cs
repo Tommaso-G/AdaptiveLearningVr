@@ -2,25 +2,24 @@ using UnityEngine;
 
 public class OscillaVerticalmente : MonoBehaviour
 {
-    [Header("Movimento")]
-    public float ampiezza = 1f;     // Quanto si sposta in alto e in basso
-    public float velocita = 1f;    // Velocità dell'oscillazione
+    public float ampiezza = 1f;
+    public float velocita = 1f;
 
-    private Vector3 posizioneIniziale;
+    private Vector3 posizioneInizialeLocale;
 
     void Start()
     {
-        posizioneIniziale = transform.position;
+        posizioneInizialeLocale = transform.localPosition;
     }
 
     void Update()
     {
         float offsetY = Mathf.Sin(Time.time * velocita) * ampiezza;
 
-        transform.position = new Vector3(
-            posizioneIniziale.x,
-            posizioneIniziale.y + offsetY,
-            posizioneIniziale.z
+        transform.localPosition = new Vector3(
+            posizioneInizialeLocale.x,
+            posizioneInizialeLocale.y + offsetY,
+            posizioneInizialeLocale.z
         );
     }
 }
