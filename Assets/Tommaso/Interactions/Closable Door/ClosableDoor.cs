@@ -16,6 +16,8 @@ namespace UnityEngine.XR.Content.Interaction
 
         public bool IsGrabbed = false;
 
+        public bool simulateHandle = false;
+
         [Header("Door Initial State")]
         public bool startsOpen = true;
 
@@ -71,6 +73,8 @@ namespace UnityEngine.XR.Content.Interaction
 
         public override void Update()
         {
+            if (simulateHandle) return;
+
             float currentAngle = Quaternion.Angle(initialRotation, m_DoorJoint.transform.localRotation);
 
             Rigidbody rb = m_DoorJoint.GetComponent<Rigidbody>();
@@ -78,6 +82,7 @@ namespace UnityEngine.XR.Content.Interaction
             // Porta chiusa
             if (!m_Closed && currentAngle >= closed_angle && !IsGrabbed)
             {
+                Debug.Log("Update !m_Closed && currentAngle >= closed_angle && !IsGrabbed");
                 m_Closed = true;
                 was_closed = true;
                 m_Rigidbody.angularVelocity = Vector3.zero;
@@ -90,6 +95,7 @@ namespace UnityEngine.XR.Content.Interaction
             // Porta aperta
             else if (m_Closed && currentAngle <= closed_angle && !isPermanentlyClosed)
             {
+                Debug.Log("Update m_Closed && currentAngle <= closed_angle && !isPermanentlyClosed");
                 m_Closed = false;
                 onDoorOpened?.Invoke();
             }
@@ -148,6 +154,12 @@ namespace UnityEngine.XR.Content.Interaction
             was_closed = true;
 
             onDoorClosed?.Invoke();
+        }
+
+        public void SimulateHandle()
+        {
+            m_Closed = !m_Closed;
+            if (m_Closed) onDoorClosed?.Invoke();
         }
 
         public void DisableInteractionListener()

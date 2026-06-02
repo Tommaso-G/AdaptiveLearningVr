@@ -92,6 +92,7 @@ namespace UnityEngine.XR.Content.Interaction
 
                 if (Mathf.Abs(m_DoorJoint.angle) < m_HingeCloseAngle)
                 {
+                    Debug.Log("Update Mathf.Abs(m_DoorJoint.angle) < m_HingeCloseAngle");
                     m_DoorJoint.limits = m_ClosedDoorLimits;
                     m_Closed = true;
                     m_OnClosure.Invoke();
@@ -135,6 +136,7 @@ namespace UnityEngine.XR.Content.Interaction
 
             if (handleValue < m_HandleOpenValue)
             {
+                Debug.Log("Update handleValue < m_HandleOpenValue");
                 m_DoorJoint.limits = m_OpenDoorLimits;
                 m_Closed = false;
             }
