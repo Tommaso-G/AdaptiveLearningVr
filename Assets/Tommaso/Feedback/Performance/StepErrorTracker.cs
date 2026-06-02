@@ -213,7 +213,7 @@ public class StepErrorTracker : MonoBehaviour
 
         textPanelOnHand.text = custom != null
             ? custom.customMessage
-            : $"Ora non è il momento di interagire con <b><color=#00AAFF>{lastError.interactedObjectName}</color></b> " +
+            : $"Ora non è il momento di interagire con <b><color=#FFAF00>{lastError.interactedObjectName}</color></b> " +
               $"devi invece eseguire lo step <b><color=#00AAFF>{lastError.missedStepName}</color></b>";
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(textPanelOnHand.rectTransform);

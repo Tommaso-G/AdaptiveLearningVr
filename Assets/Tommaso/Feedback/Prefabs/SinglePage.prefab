@@ -503,6 +503,9 @@ MonoBehaviour:
   maxScale: 0.002
   stayOpen: 0
   isOptionalFeedback: 0
+  optionalScrollableColor: {r: 0.7372549, g: 0.62352943, b: 0.2, a: 1}
+  defaultScrollableColor: {r: 0.08627451, g: 0.27450982, b: 0.84313726, a: 1}
+  scrollableImage: {fileID: 0}
   scrollable: {fileID: 9088784922178284893}
   verticalScrollbar: {fileID: 7037563214638904762}
   content: {fileID: 2696181342263337201}
@@ -2155,7 +2158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -0.000045776367}
+  m_AnchoredPosition: {x: -0, y: -0.0021972656}
   m_SizeDelta: {x: 559.61, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628609877651487099
@@ -2413,8 +2416,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3292046231320405482}
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.999997
+  m_Value: 1
+  m_Size: 0.9999954
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2683,7 +2686,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -226.62617, y: 0, z: -222.40671, w: 0}
+  m_margin: {x: -299.532, y: 0, z: -297.25418, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

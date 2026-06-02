@@ -21,6 +21,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
     // Layer mask contenente solo il layer "UI", calcolato a runtime per evitare
     // chiamate a NameToLayer durante la serializzazione (UnityException)
     private static int? _uiLayerMask;
+
+    private int _activeFeedbackCount = 0;
+
+    private bool EffectsActive => _activeFeedbackCount > 0;
     private static int UILayerMask
     {
         get
@@ -37,7 +41,13 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private Volume globalVolume;
     private readonly List<Animator> pausedAnimators = new();
-    private readonly List<ParticleSystem> pausedParticles = new();
+    private class ParticleSnapshot
+    {
+        public ParticleSystem ps;
+        public bool wasPlaying;
+    }
+
+    private readonly Dictionary<ParticleSystem, ParticleSnapshot> particleStates = new();
     private readonly List<AgentState> pausedNavMeshAgents = new();
     private ChapterTimer pausedChapterTimer;
     private ChapterTracker pausedChapterTracker;
@@ -55,6 +65,8 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private Coroutine _resetCoroutine;
 
     private FeedbackAutoManager _safeRunner;
+
+    private bool _effectsCurrentlyApplied = false;
 
     private FeedbackAutoManager SafeRunner
     {
@@ -105,30 +117,63 @@ public class RiflessivoFeatures : LearningStyleFeatures
     public override void OnFeedbackOpened(FeedbackPrefabController feedback)
     {
         if (feedback == null || !isTimeStopFeatureEnabled)
-        {
-            Debug.Log($"impossibile, isTimeStopFeature è: {isTimeStopFeatureEnabled}");
             return;
-        }
 
-        Debug.Log($"[RiflessivoFeatures] Apertura feedback: applicazione effetti.");
-        ApplyReflectiveEffects(feedback);
+        _activeFeedbackCount++;
+
+        Debug.Log(
+            $"[RiflessivoFeatures] Feedback aperto. Count = {_activeFeedbackCount}"
+        );
+
+        if (_activeFeedbackCount == 1)
+        {
+            Debug.Log(
+                "[RiflessivoFeatures] Primo feedback aperto -> applicazione effetti."
+            );
+
+            ApplyReflectiveEffects(feedback);
+        }
     }
 
     public override void OnFeedbackClosed(FeedbackPrefabController feedback)
     {
-        if (feedback == null) return;
+        if (feedback == null)
+            return;
 
-        // Cancella eventuale reset in corso prima di avviarne uno nuovo
-        if (_resetCoroutine != null)
-            SafeRunner?.StopCoroutineSafe(_resetCoroutine);
+        _activeFeedbackCount--;
 
-        _resetCoroutine = SafeRunner?.RunCoroutineSafe(WaitForVolumeAndReset(feedback));
+        if (_activeFeedbackCount < 0)
+            _activeFeedbackCount = 0;
+
+        Debug.Log(
+            $"[RiflessivoFeatures] Feedback chiuso. Count = {_activeFeedbackCount}"
+        );
+
+        if (_activeFeedbackCount == 0)
+        {
+            Debug.Log(
+                "[RiflessivoFeatures] Ultimo feedback chiuso -> reset effetti."
+            );
+
+            if (_resetCoroutine != null)
+                SafeRunner?.StopCoroutineSafe(_resetCoroutine);
+
+            _resetCoroutine = SafeRunner?.RunCoroutineSafe(
+                WaitForVolumeAndReset(feedback)
+            );
+        }
     }
 
     public override void resetVariables()
     {
         isTimeStopFeatureEnabled = true;
-        _cacheInitialized = false; // Forza re-scan alla prossima apertura
+        _cacheInitialized = false;
+
+        _activeFeedbackCount = 0;
+
+        Debug.Log(
+            "[RiflessivoFeatures] Variabili resettate."
+        );
     }
 
 
@@ -136,6 +181,12 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void ApplyReflectiveEffects(FeedbackPrefabController feedback)
     {
+
+        if (EffectsActive == false &&
+            _activeFeedbackCount != 1)
+        {
+            return;
+        }
         EnsureCache();
         EnsureVolumeReference();
 
@@ -240,8 +291,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
     /// </summary>
     private void RestrictCastersToUILayer()
     {
-        _sphereOriginalMasks.Clear();
-        _curveOriginalMasks.Clear();
+        if (_sphereOriginalMasks.Count > 0 ||
+            _curveOriginalMasks.Count > 0)
+        {
+            return;
+        }
 
         foreach (var caster in Object.FindObjectsByType<SphereInteractionCaster>(FindObjectsSortMode.None))
         {
@@ -338,26 +392,42 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void PauseParticles()
     {
-        pausedParticles.Clear();
-
-        foreach (ParticleSystem ps in _cachedParticles)
+        foreach (var ps in _cachedParticles)
         {
-            if (ps != null && ps.isPlaying && ps.gameObject.activeInHierarchy)
+            if (ps == null || !ps.gameObject.activeInHierarchy)
+                continue;
+
+            // salva SOLO una volta
+            if (!particleStates.ContainsKey(ps))
             {
-                ps.Pause();
-                pausedParticles.Add(ps);
+                particleStates[ps] = new ParticleSnapshot
+                {
+                    ps = ps,
+                    wasPlaying = ps.isPlaying
+                };
             }
+
+            ps.Pause(true);
         }
     }
 
     private void ResumeParticles()
     {
-        foreach (ParticleSystem ps in pausedParticles)
+        foreach (var kv in particleStates)
         {
-            if (ps != null)
-                ps.Play();
+            var ps = kv.Key;
+            var state = kv.Value;
+
+            if (ps == null)
+                continue;
+
+            if (state.wasPlaying)
+            {
+                ps.Play(true);
+            }
         }
-        pausedParticles.Clear();
+
+        particleStates.Clear();
     }
 
     private class AgentState
@@ -438,6 +508,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
         IsPaused = value;
     }
 
-    public override void OnStepActivated(IStep step) { }
+    public override void OnStepActivated(IStep step)
+    {
+        _activeFeedbackCount = 0;
+        _cacheInitialized = false;
+        isTimeStopFeatureEnabled = true;
+    }
     public override void OnStepCompleted(IStep step) { }
 }

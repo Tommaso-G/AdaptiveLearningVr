@@ -28,40 +28,11 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nSegnalare immediatamente
               l'incendio per avvisare il personale scolastico, gli occupanti dell'edificio
-              e i soccorritori.\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<b>1.</b>
-              Avvisa il personale scolastico  \r\n<b>2.</b> Attiva l'allarme antincendio 
-              \r\n<b>3.</b> Chiama il 115\r\n"
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Per avvertire il personale scolastico, <b><color=#00DFA2>utilizza
-              il telefono</color></b>.
-
-
-
-              Premi "personale scolastico"
-              sul tastierino e alza la cornetta.'
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Successivamente, <b><color=#00DFA2>attiva il pulsante di allarme
-              antincendio pi\xF9 vicino</color></b> per avvisare tutte le persone
-              presenti nell'edificio. lo puoi trovare in corridoio.\n\nSolleva la
-              copertura di sicurezza e premi il pulsante."
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Come ultima cosa, prendi il telefono e <b><color=#00DFA2>chiama
-              subito i Vigili del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.\n\nPremi
-              <b><color=#00DFA2>\"115\"</color></b> sul tastierino, alza la cornetta
-              e rispondi alle domande dell\u2019operatore tramite il pannello sulla
-              mano.\n"
+              e i soccorritori.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
+              Avvisa il personale scolastico utilizzando il telefono\r\n<color=#555555><b>2.</b></color>
+              Attiva l'allarme antincendio in corridoio  \r\n<color=#555555><b>3.</b></color>
+              Avvisa i vigili del fuoco utiizzando il telefono al numero 115 e fornisci
+              loro informazioni"
           StepForCompletition:
           - Seleziona il tasto "Personale Scolastico"
           - completa Domande
@@ -78,24 +49,12 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Obbiettivo</b></color>\nPrima di lasciare l'area,
-              interrompi le fonti di rischio per evitare che l'incendio si aggravi.\n\n<color=#00DFA2><b>Procedura</b></color>\n<b>1.</b>
-              Solleva gli interruttori elettrici per eliminare il rischio di cortocircuiti. 
-              \n<b>2.</b> Gira la manopola del gas per evitare il rischio di esplosioni."
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Per disattivare l\u2019elettricit\xE0, utilizza gli <b><color=#00DFA2>interruttori
-              giusti</color></b> secondo le informazioni presenti nel tuo ufficio."
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Successivamente, <b><color=#00DFA2>interrompi il gas</color></b>
-              ruotando la valvola giusta in senso antiorario. '
+            text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nPrima di lasciare
+              l'area, interrompi le fonti di rischio per evitare che l'incendio si
+              aggravi.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
+              Solleva gli interruttori elettrici giusti per eliminare il rischio
+              di cortocircuiti.  \r\n<color=#555555><b>2.</b></color> Gira la manopola
+              del gas per evitare il rischio di esplosioni."
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Play audio Gas
@@ -118,22 +77,6 @@ MonoBehaviour:
               spegnerlo.  \n<b>2.</b> Chiudi la porta per rallentare fuoco e fumo. 
               \n<b>3.</b> Tappa le fessure con tessuti disponibili per bloccare il
               fumo."
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Per fuochi come quello che troverai in questa stanza, <b><color=#00DFA2>tentare
-              di spegnerlo \xE8 troppo pericoloso</color></b>. Entra solo per una
-              rapida valutazione ed esci immediatamente.\n"
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: <b><color=#00DFA2>Chiudi la porta</color></b> una volta uscito
-              e isola il fumo utilizzando tessuti o indumenti. Utilizza i vestiti
-              dietro di te. Prendine uno e posizionalo dove indicato.
           StepForCompletition:
           - Istruzioni isola Incendio
           - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
@@ -150,22 +93,24 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nVerificare che nessuno
-              sia rimasto nelle aule e assistere chi non ha ancora evacuato.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<b>1.</b>
+              sia rimasto nelle aule e assistere chi non ha ancora evacuato.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
               Fai il giro delle aule e controlla che non ci sia nessuno rimasto indietro. 
-              \r\n<b>2.</b> Se trovi qualcuno, accompagnalo subito verso l\u2019uscita
-              pi\xF9 vicina."
+              \r\n<color=#555555><b>2.</b></color> Se trovi qualcuno, accompagnalo
+              subito verso l\u2019uscita pi\xF9 vicina.  \r\n<color=#555555><b>3.</b></color>
+              Chiudi sempre la porta dell'aula una volta perlustrata."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.\n\nSe
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>
+              e <b><color=#00DFA2>chiudi la porta</color></b> di dietro di te.\n\nSe
               una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
-              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>.
-              Se hai dubbi, consulta la mappa di evacuazione: i numeri verdi indicano
-              l\u2019ordine di vicinanza delle uscite, ma verifica che non siano
-              bloccate.\n\nLe persone con disabilit\xE0 potrebbero aver bisogno di
-              <b><color=#00DFA2>aiuto aggiuntivo</b>."
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>.e
+              chiudi la porta dell'aula. Se hai dubbi, consulta la mappa di evacuazione:
+              i numeri verdi indicano l\u2019ordine di vicinanza delle uscite, ma
+              verifica che non siano bloccate.\n\nLe persone con disabilit\xE0 potrebbero
+              aver bisogno di <b><color=#00DFA2>aiuto aggiuntivo</b>."
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           - Perlustra tutta la scuola e chiudi le porte
@@ -198,26 +143,27 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nSpegnere in sicurezza
-              un incendio gestibile per liberare il percorso e proseguire con l'evacuazione.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<b>1.</b>
+            text: "<color=#FFD700><b>Obbiettivo</b></color>\r\nSpegnere in sicurezza
+              un incendio gestibile per liberare il percorso e proseguire con l'evacuazione.\r\n\r\n<color=#FFD700><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
               Valuta i materiali coinvolti e scegli l\u2019estintore pi\xF9 adatto. 
-              \r\n<b>2.</b> Rimuovi la chiave di sicurezza.  \r\n<b>3.</b> Punta
-              l\u2019ugello alla base delle fiamme.  \r\n<b>4.</b> Premi il trigger
+              \r\n<color=#555555><b>2.</b></color> Rimuovi la chiave di sicurezza. 
+              \r\n<color=#555555><b>3.</b></color> Punta l\u2019ugello alla base
+              delle fiamme.  \r\n<color=#555555><b>4.</b></color> Premi il trigger
               e mantieni il flusso fino allo spegnimento completo del fuoco."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Se stanno bruciando <b><color=#00DFA2>materiali solidi</color></b>
-              (come carta, legno o arredi), usa un estintore ad <b><color=#00DFA2>acqua</color></b>
-              o a <b><color=#00DFA2>schiuma</color></b>.
+            text: 'Se stanno bruciando <b><color=#FFD700>materiali solidi</color></b>
+              (come carta, legno o arredi), usa un estintore ad <b><color=#FFD700>acqua</color></b>
+              o a <b><color=#FFD700>schiuma</color></b>.
 
+              
 
-
-              Se invece
-              si tratta di <b><color=#00DFA2>materiali elettrici</color></b>, utilizza
-              un estintore a <b><color=#00DFA2>CO2</color></b>.'
+              Se
+              invece si tratta di <b><color=#FFD700>materiali elettrici</color></b>,
+              utilizza un estintore a <b><color=#FFD700>CO2</color></b>.'
           StepForCompletition:
           - (solido) Grab extiguisher
           - Extinguish fire
@@ -233,11 +179,14 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nPrestare il primo
-              soccorso alla persona ferita per trattare la lesione in sicurezza.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>
-              \n<b>1.</b> Disinfetta la ferita con acqua ossigenata. \n<b>2.</b>
-              Asciuga delicatamente la zona con il panno. \n<b>3.</b> Applica la
-              garza per proteggere la ferita.\r\n"
+            text: "<color=#FFD700><b>Obbiettivo</b></color>\r\nPrestare il primo
+              soccorso a una lieve scottatura per ridurre il dolore e limitare il
+              danno ai tessuti.\r\n\r\n<color=#FFD700><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
+              Raffredda la zona scottata con acqua corrente fresca per ridurre la
+              temperatura della pelle.  \r\n<color=#555555><b>2.</b></color> Asciuga
+              delicatamente senza strofinare per evitare ulteriori irritazioni dei
+              tessuti.  \r\n<color=#555555><b>3.</b></color> Proteggi la zona con
+              una garza sterile o una medicazione leggera."
           StepForCompletition:
           - Grab bottle
           - play audio
@@ -253,11 +202,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nAiutare le persone
-              a raggiungere un'uscita sicura quando il percorso scelto \xE8 bloccato.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<b>1.</b>
-              <b><color=#00DFA2>Indica l\u2019uscita pi\xF9 vicina</color></b> alla
-              persona utilizzando la mappa sul pannello della mano.  \r\n<b>2.</b>
-              <b><color=#00DFA2>Chiudi la mappa</color></b> e prosegui con l\u2019evacuazione."
+            text: "<color=#FFD700><b>Obbiettivo</b></color>\r\nAiutare le persone
+              a raggiungere un'uscita sicura quando il percorso scelto \xE8 bloccato.\r\n\r\n<color=#FFD700><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
+              <b><color=#FFD700>Indica l\u2019uscita pi\xF9 vicina</color></b> alla
+              persona utilizzando la mappa sul pannello della mano.  \r\n<color=#555555><b>2.</b></color>
+              <b><color=#FFD700>Chiudi la mappa</color></b> e prosegui con l\u2019evacuazione."
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           - Chiudi la mappa
@@ -273,22 +222,17 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Obbiettivo</b></color>\r\nSpegnere in sicurezza
-              un incendio causato da un liquido infiammabile senza propagare le fiamme.\r\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<b>1.</b>
-              Identifica il materiale coinvolto come <b><color=#00DFA2>liquido infiammabile</color></b>. 
-              \r\n<b>2.</b> Utilizza un <b><color=#00DFA2>estintore a CO\u2082</color></b>
-              oppure a <b><color=#00DFA2>schiuma</color></b>.\r\n"
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di tutto, <b><color=#00DFA2>rimuovi la chiave di sicurezza</color></b>
-              dall\u2019estintore. Solo dopo averla tolta potrai utilizzarlo.\r\n\r\nPrendi
-              l\u2019<b><color=#00DFA2>ugello</color></b> e punta il tubo verso la
-              base delle fiamme. In presenza di liquidi infiammabili, mantieni il
-              getto il pi\xF9 possibile parallelo al pavimento per evitare schizzi
-              che potrebbero propagare l\u2019incendio."
+            text: "<color=#FFD700><b>Obbiettivo</b></color>\r\nSpegnere in sicurezza
+              un incendio causato da un liquido infiammabile senza propagare le fiamme.\r\n\r\n<color=#FFD700><b>Procedura</b></color>\r\n<color=#555555><b>1.</b></color>
+              Identifica il materiale coinvolto come <b><color=#FFD700>liquido infiammabile</color></b>. 
+              \r\n<color=#555555><b>2.</b></color> Utilizza un <b><color=#FFD700>estintore
+              a CO2</color></b> oppure a <b><color=#FFD700>schiuma</color></b>. 
+              \r\n<color=#555555><b>3.</b></color> Rimuovi la <b><color=#FFD700>chiave
+              di sicurezza</color></b> dall\u2019estintore prima dell\u2019uso. 
+              \r\n<color=#555555><b>4.</b></color> Prendi l\u2019<b><color=#FFD700>ugello</color></b>
+              e punta il tubo verso la base delle fiamme.  \r\n<color=#555555><b>5.</b></color>
+              Mantieni il getto il pi\xF9 possibile parallelo al pavimento per evitare
+              schizzi e propagazione dell\u2019incendio."
           StepForCompletition:
           - Grab bottle
           - play audio

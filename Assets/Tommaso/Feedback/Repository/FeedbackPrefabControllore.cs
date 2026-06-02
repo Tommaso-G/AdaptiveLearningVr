@@ -23,6 +23,12 @@ public class FeedbackPrefabController : MonoBehaviour
     private Coroutine scaleRoutine;
     private bool isVisible = false;
 
+    [Header("Optional Waypoint UI")]
+    public Color optionalScrollableColor = Color.yellow;
+    public Color defaultScrollableColor = Color.white;
+
+    public Image scrollableImage;
+
  //   public Button reflectiveButtonActivate;
 
  //   public Button reflectiveButtonDeactivate;
@@ -52,6 +58,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
     public bool applyReflectiveEffects = true;
 
+    private bool _hasRegisteredOpen = false;
+
 
 
     private void Start()
@@ -63,47 +71,36 @@ public class FeedbackPrefabController : MonoBehaviour
             else buttonsToClickCanvas.SetActive(false);
         }
 
+        if (scrollableImage == null && scrollable != null)
+        {
+            scrollableImage = scrollable.GetComponent<Image>();
+        }
+
         playerCamera = Camera.main ?? FindFirstObjectByType<Camera>();
 
         profile = FindFirstObjectByType<LearningProfile>();
-        ////Debug.Log($"[FeedbackPrefabController] profile trovato: {profile != null}, applyReflectiveEffects: {applyReflectiveEffects}");
 
         if (profile != null && applyReflectiveEffects)
         {
             styleBehaviour = profile.GetCurrentBehaviour();
-            ////Debug.Log($"[FeedbackPrefabController] styleBehaviour: {styleBehaviour?.GetType().Name ?? "NULL"}");
 
             if (styleBehaviour is RiflessivoFeatures)
             {
-                ////Debug.Log("[FeedbackPrefabController] Profilo RIFLESSIVO rilevato.");
 
                 if (buttonsToClickCanvas != null)
                 {
                     buttonsToClickCanvas.SetActive(true);
-                    ////Debug.Log("[FeedbackPrefabController] buttonsToClickCanvas attivato.");
 
                     Button[] buttons = buttonsToClickCanvas.GetComponentsInChildren<Button>(true);
-                    ////Debug.Log($"[FeedbackPrefabController] Bottoni trovati: {buttons.Length}");
 
                     foreach (Button btn in buttons)
                     {
                         btn.onClick.AddListener(OnReflectiveButtonClicked);
-                        ////Debug.Log($"[FeedbackPrefabController] Listener aggiunto al bottone: {btn.name}");
                     }
                 }
-                else
-                {
-                  //  //////Debug.LogWarning("[FeedbackPrefabController] buttonsToClickCanvas è NULL, impossibile attivarlo.");
-                }
+
             }
-            else
-            {
-             //   //////Debug.Log("[FeedbackPrefabController] Profilo NON riflessivo, nessun bottone attivato.");
-            }
-        }
-        else
-        {
-            //////Debug.LogWarning($"[FeedbackPrefabController] Blocco riflessivo saltato — profile null: {profile == null}, applyReflectiveEffects: {applyReflectiveEffects}");
+
         }
 
         if (isOptionalFeedback)
@@ -113,17 +110,23 @@ public class FeedbackPrefabController : MonoBehaviour
                 waypointInstance = Instantiate(OptionalWayPoint, transform.position, Quaternion.identity);
                 waypointInstance.name = $"OptionalWaypoint_{name}";
                 waypointInstance.SetActive(true);
+
+                ApplyOptionalUI(true);
             }
         }
-        else if (waypointPrefab != null)
+        else
         {
-            waypointInstance = Instantiate(waypointPrefab, transform.position, Quaternion.identity);
-            waypointInstance.name = $"Waypoint_{name}";
-            waypointInstance.SetActive(true);
-        }
+            if (waypointPrefab != null)
+            {
+                waypointInstance = Instantiate(waypointPrefab, transform.position, Quaternion.identity);
+                waypointInstance.name = $"Waypoint_{name}";
+                waypointInstance.SetActive(true);
 
+                ApplyOptionalUI(false);
+            }
+        }
         transform.localScale = Vector3.zero;
-        styleBehaviour?.resetVariables();
+        //styleBehaviour?.resetVariables();
         StartCoroutine(CheckDistanceRoutine());
     }
 
@@ -142,17 +145,24 @@ public class FeedbackPrefabController : MonoBehaviour
 
             StartScaling(Vector3.one * maxScale);
             if (!_reflectiveEffectsConsumed)
+            {
                 styleBehaviour?.OnFeedbackOpened(this);
+                _hasRegisteredOpen = true;
+            }
         }
         else if (distance > activationDistance && isVisible && !isClosing)
         {
+            Debug.Log("ENTRATO QUIIIIII");
             isVisible = false;
             if (waypointInstance != null)
                 waypointInstance.SetActive(true);
 
             StartScaling(Vector3.zero);
-            if (!_reflectiveEffectsConsumed)
+            if (_hasRegisteredOpen)
+            {
                 styleBehaviour?.OnFeedbackClosed(this);
+                _hasRegisteredOpen = false;
+            }
         }
             yield return null;
         }
@@ -324,9 +334,25 @@ public class FeedbackPrefabController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void ApplyOptionalUI(bool isOptional)
+    {
+        if (scrollableImage == null)
+            return;
+
+        scrollableImage.color = isOptional
+            ? optionalScrollableColor
+            : defaultScrollableColor;
+    }
+
 
     private void OnDestroy()
     {
+        
+        if (_hasRegisteredOpen && isVisible)
+            {
+                styleBehaviour?.OnFeedbackClosed(this);
+                _hasRegisteredOpen = false;
+            }
         foreach (RectTransform child in content)
         {
             SlideData sd = child.GetComponent<SlideData>();
