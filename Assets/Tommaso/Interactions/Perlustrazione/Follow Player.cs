@@ -151,19 +151,21 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         if (exitDoor != null && exitDoor.blocked)
             return;
 
-        // Prima cosa: chiama Toggle su tutti gli AngleTransitioner
-       // AngleTransitioner[] transitioners = matchedData.collider.GetComponentsInChildren<AngleTransitioner>();
-        //foreach (AngleTransitioner t in transitioners)
-        //{
-           // t.Toggle();
-        //}
+        bool isError = other != _bestCollider;
+
+        if (!_hasAgent)
+        {
+            // Nessun NavMeshAgent: completa subito senza logica di destination
+            CompleteStep(isError);
+            return;
+        }
 
         Transform destination = matchedData.collider.transform.Find("destination");
         if (destination != null)
         {
             _currentDestination = destination;
             _reachedExit = true;
-            _pendingError = other != _bestCollider;
+            _pendingError = isError;
             isFollowing = false;
             Debug.Log($"[FollowerAgentWithCheck] [{name}] Destinazione finale: {destination.name}");
         }

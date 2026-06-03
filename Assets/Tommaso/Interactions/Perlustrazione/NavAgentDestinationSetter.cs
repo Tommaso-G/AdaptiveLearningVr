@@ -31,7 +31,7 @@ public class NavAgentDestinationSetter : MonoBehaviour
         {
             int alive = 0;
             foreach (NavMeshAgent agent in agents)
-                if (agent != null) alive++;
+                if (agent != null && agent.gameObject.activeInHierarchy) alive++;
 
             if (alive == 0)
                 CloseDoor();
@@ -47,9 +47,19 @@ public class NavAgentDestinationSetter : MonoBehaviour
             return;
         }
 
+        // Controlla che la destinazione sia attiva
+        if (!targetCollider.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning("[NavAgentSetter] Il targetCollider è inattivo, operazione annullata.");
+            return;
+        }
+
         foreach (NavMeshAgent agent in agents)
         {
             if (agent == null) continue;
+
+            // Salta gli agenti inattivi
+            if (!agent.gameObject.activeInHierarchy) continue;
 
             AgentSelfDestruct sd = agent.gameObject.GetComponent<AgentSelfDestruct>();
             if (sd == null) sd = agent.gameObject.AddComponent<AgentSelfDestruct>();
@@ -73,18 +83,16 @@ public class NavAgentDestinationSetter : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (agent != null && targetCollider != null)
+        if (agent != null && agent.gameObject.activeInHierarchy && targetCollider != null && targetCollider.gameObject.activeInHierarchy)
         {
             agent.SetDestination(targetCollider.bounds.center);
             OpenDoor();
         }
 
-         yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f);
 
-        if (anim != null)
+        if (anim != null && anim.gameObject.activeInHierarchy)
             anim.SetTrigger("GoToWalk");
-
-
     }
 
     private void OpenDoor()
@@ -99,7 +107,7 @@ public class NavAgentDestinationSetter : MonoBehaviour
         if (doorTransitioner2 != null) doorTransitioner2.Toggle();
     }
 
-private void CloseDoor()
+    private void CloseDoor()
     {
         if (!_doorOpen) return;
         _doorOpen = false;
