@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19dd4061a1f2d754ea6a2c095c572429, type: 3}
   m_Name: FeedbackRepository
   m_EditorClassIdentifier: 
-  SingleContainer: {fileID: 781630661673262138, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
-  MultipleContainer: {fileID: 781630661673262138, guid: 4689bb12224f63240ac0e3056d230e01, type: 3}
+  SingleContainer: {fileID: 781630661673262138, guid: 0af613de78e3851479d373ae47fafa88, type: 3}
+  MultipleContainer: {fileID: 781630661673262138, guid: 54ee856b97887bd4ca92758fc607acc9, type: 3}
   globalPath:
     verbalPath:
       attivo:
@@ -572,8 +572,7 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "<color=#FFD700><b>Procedura</b></color>\n\r\n<color=#888888>\u2022</color>
               Per prima cosa prendi un <b><color=#FFD700>estintore a CO\u2082</color></b>
-              oppure a <b><color=#FFD700>schiuma</color></b>, scegliendo quello pi\xF9
-              adatto a contenere il tipo di combustibile coinvolto.  \r\n<color=#888888>\u2022</color>
+              oppure a <b><color=#FFD700>schiuma</color></b>.\r\n<color=#888888>\u2022</color>
               Rimuovi la <b><color=#FFD700>chiave di sicurezza</color></b> per sbloccare
               il dispositivo e renderlo operativo.  \r\n<color=#888888>\u2022</color>
               Afferra il cono e mantieni il getto il pi\xF9 possibile parallelo al
@@ -584,9 +583,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "La CO2 \xE8 indicata perch\xE9 <b><color=#FFD700>soffoca le fiamme
-              riducendo l\u2019ossigeno disponibile</color></b> e non lascia residui
-              che potrebbero alimentare ulteriormente la combustione. "
+            text: "La CO2 o la schiuma sono indicati perch\xE9 <b><color=#FFD700>soffocano
+              le fiamme riducendo l\u2019ossigeno disponibile</color></b> e non lasciano
+              residui che potrebbero alimentare ulteriormente la combustione. "
           StepForCompletition:
           - Trova L'estintore a CO2
           - Estingui il fuoco (CO2)
@@ -594,8 +593,495 @@ MonoBehaviour:
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
     visualPath:
-      attivo: []
-      riflessivo: []
+      attivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 1</color>: Segnalazione Incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 5259f7f02cf1a3e449e5ab0557713133, type: 3}
+            video: {fileID: 0}
+            text: Segnala l'incendio per avvisare il personale scolastico, gli occupanti
+              dell'edificio e i soccorritori.
+          StepForCompletition:
+          - Seleziona il tasto "Personale Scolastico"
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "<color=#00DFA2>Capitolo 2</color>: Disattiva elettricit\xE0
+            e gas"
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 4b95417b8e1bf1d4fb4a0b7084e811ed, type: 3}
+            video: {fileID: 0}
+            text: Prima di lasciare l'area, interrompi le fonti di rischio per evitare
+              che l'incendio si aggravi.
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 3</color>: Isolamento incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 07ba008fbcb83234b85f9786901548aa, type: 3}
+            video: {fileID: 0}
+            text: 'Valuta rapidamente l''incendio e isola la stanza per limitare
+              fiamme e fumo.
+
+'
+          StepForCompletition:
+          - Istruzioni isola Incendio
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 4</color>: Giro di Perlustrazione'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: c0c359d340409e64fa786b2a2d63747c, type: 3}
+            video: {fileID: 0}
+            text: "Verifica che nessuno sia rimasto nelle aule e assisti chi non
+              ha ancora evacuato.\n\t\r\n"
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
+              di evacuazione</color></b>: i <b><color=#00DFA2>numeri verdi</color></b>
+              indicano l\u2019ordine di vicinanza delle uscite. Se l\u2019uscita
+              pi\xF9 vicina \xE8 bloccata, utilizza la successiva disponibile.\r\n\r\nLe
+              persone con <b><color=#00DFA2>disabilit\xE0</color></b> potrebbero
+              aver bisogno di supporto aggiuntivo, come la <b><color=#00DFA2>spinta
+              della sedia a rotelle</color></b> per raggiungere l\u2019uscita in
+              sicurezza."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          - Perlustra tutta la scuola e chiudi le porte
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 5</color>: Segnalazione assenti'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 2fd649fa4f5e2e345bc9f88280f81100, type: 3}
+            video: {fileID: 0}
+            text: 'Parla con i professori e segnalare eventuali dispersi.
+
+'
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su solido'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: ecbea497c12a6a441be3e754a55f21b5, type: 3}
+            video: {fileID: 0}
+            text: "Se un incendio \xE8 gestibile, puoi spegnerlo utilizzando l'estintore\n"
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Se stanno bruciando <b><color=#FFD700>materiali solidi</color></b>
+              (come carta, legno o arredi), usa un estintore ad <b><color=#FFD700>acqua</color></b>
+              o a <b><color=#FFD700>schiuma</color></b>.
+
+
+
+              Se invece
+              si tratta di <b><color=#FFD700>materiali elettrici</color></b>, utilizza
+              un estintore a <b><color=#FFD700>CO2</color></b>.
+
+
+              Attenzione,
+              in caso di <b><color=#FFD700>fumo</color></b>, resta abbassato per
+              evitare di respirarlo'
+          StepForCompletition:
+          - (solido) Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Primo soccorso'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 35f22f6cec70767439c767fb1ff3364a, type: 3}
+            video: {fileID: 0}
+            text: '
+
+
+
+              .'
+          StepForCompletition:
+          - Grab bottle
+          - play audio
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Vie di fuga Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Via di fuga bloccata'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: ea086a474fb4fd241a3ea1fec6441487, type: 3}
+            video: {fileID: 0}
+            text: '
+
+
+
+'
+          StepForCompletition:
+          - Seleziona una via di fuga alternativa
+          - Chiudi la mappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Fuoco su liquido Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su liquido infiammabile'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 97d64c3765b1f3d4d9c9d8a0d44a1be1, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Trova L'estintore a CO2
+          - Estingui il fuoco (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      riflessivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 1</color>: Segnalazione Incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 5259f7f02cf1a3e449e5ab0557713133, type: 3}
+            video: {fileID: 0}
+            text: Segnala l'incendio per avvisare il personale scolastico, gli occupanti
+              dell'edificio e i soccorritori.
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: f2141a04b13e40d48a140f065de8ee23, type: 3}
+            text: 
+          StepForCompletition:
+          - Seleziona il tasto "Personale Scolastico"
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "<color=#00DFA2>Capitolo 2</color>: Disattiva elettricit\xE0
+            e gas"
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 4b95417b8e1bf1d4fb4a0b7084e811ed, type: 3}
+            video: {fileID: 0}
+            text: Prima di lasciare l'area, interrompi le fonti di rischio per evitare
+              che l'incendio si aggravi.
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 95a1eb57c5cd5a34893a983480981527, type: 3}
+            text: 
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 3</color>: Isolamento incendio'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 07ba008fbcb83234b85f9786901548aa, type: 3}
+            video: {fileID: 0}
+            text: 'Valuta rapidamente l''incendio e isola la stanza per limitare
+              fiamme e fumo.
+
+'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 8c1403ed4e3f7104087b94cacf5bd1f9, type: 3}
+            text: 
+          StepForCompletition:
+          - Istruzioni isola Incendio
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 4</color>: Giro di Perlustrazione'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: c0c359d340409e64fa786b2a2d63747c, type: 3}
+            video: {fileID: 0}
+            text: "Verifica che nessuno sia rimasto nelle aule e assisti chi non
+              ha ancora evacuato.\n\t\r\n"
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 190d3a126c4830a49b7a5733dc1de437, type: 3}
+            text: 
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
+              di evacuazione</color></b>: i <b><color=#00DFA2>numeri verdi</color></b>
+              indicano l\u2019ordine di vicinanza delle uscite. Se l\u2019uscita
+              pi\xF9 vicina \xE8 bloccata, utilizza la successiva disponibile.\r\n\r\nLe
+              persone con <b><color=#00DFA2>disabilit\xE0</color></b> potrebbero
+              aver bisogno di supporto aggiuntivo, come la <b><color=#00DFA2>spinta
+              della sedia a rotelle</color></b> per raggiungere l\u2019uscita in
+              sicurezza."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          - Perlustra tutta la scuola e chiudi le porte
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: '<color=#00DFA2>Capitolo 5</color>: Segnalazione assenti'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 2fd649fa4f5e2e345bc9f88280f81100, type: 3}
+            video: {fileID: 0}
+            text: 'Parla con i professori e segnalare eventuali dispersi.
+
+'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 37c279bb035828e4c8325d6a4f215123, type: 3}
+            text: 
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su solido'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: ecbea497c12a6a441be3e754a55f21b5, type: 3}
+            video: {fileID: 0}
+            text: "Se un incendio \xE8 gestibile, puoi spegnerlo utilizzando l'estintore\n"
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Se stanno bruciando <b><color=#FFD700>materiali solidi</color></b>
+              (come carta, legno o arredi), usa un estintore ad <b><color=#FFD700>acqua</color></b>
+              o a <b><color=#FFD700>schiuma</color></b>.
+
+
+
+              Se invece
+              si tratta di <b><color=#FFD700>materiali elettrici</color></b>, utilizza
+              un estintore a <b><color=#FFD700>CO2</color></b>.
+
+
+              Attenzione,
+              in caso di <b><color=#FFD700>fumo</color></b>, resta abbassato per
+              evitare di respirarlo'
+          StepForCompletition:
+          - (solido) Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su solido'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: ecbea497c12a6a441be3e754a55f21b5, type: 3}
+            video: {fileID: 0}
+            text: "Se un incendio \xE8 gestibile, puoi spegnerlo utilizzando l'estintore\n"
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 219338ba2180c7b4aa03fb0fd3180b24, type: 3}
+            text: 
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Se stanno bruciando <b><color=#FFD700>materiali solidi</color></b>
+              (come carta, legno o arredi), usa un estintore ad <b><color=#FFD700>acqua</color></b>
+              o a <b><color=#FFD700>schiuma</color></b>.
+
+
+
+              Se invece
+              si tratta di <b><color=#FFD700>materiali elettrici</color></b>, utilizza
+              un estintore a <b><color=#FFD700>CO2</color></b>.
+
+
+              Attenzione,
+              in caso di <b><color=#FFD700>fumo</color></b>, resta abbassato per
+              evitare di respirarlo'
+          StepForCompletition:
+          - (solido) Grab extiguisher
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Primo soccorso'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 35f22f6cec70767439c767fb1ff3364a, type: 3}
+            video: {fileID: 0}
+            text: '
+
+
+
+              .'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: f67e71a673b5ebe438e9a7e76d248f42, type: 3}
+            text: '
+
+
+
+              .'
+          StepForCompletition:
+          - Grab bottle
+          - play audio
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Vie di fuga Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Via di fuga bloccata'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: ea086a474fb4fd241a3ea1fec6441487, type: 3}
+            video: {fileID: 0}
+            text: '
+
+
+
+'
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: b7d8fdd1cb678e9408e48929add7d6cc, type: 3}
+            text: '
+
+
+
+'
+          StepForCompletition:
+          - Seleziona una via di fuga alternativa
+          - Chiudi la mappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Fuoco su liquido Optional
+        feedbacks:
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su liquido infiammabile'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 97d64c3765b1f3d4d9c9d8a0d44a1be1, type: 3}
+            video: {fileID: 0}
+            text: 
+          StepForCompletition:
+          - Trova L'estintore a CO2
+          - Estingui il fuoco (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su liquido infiammabile'
+          pages:
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 39164e27a1e825a40ba2f30684dba497, type: 3}
+            text: 
+          StepForCompletition:
+          - Trova L'estintore a CO2
+          - Estingui il fuoco (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
   sequentialPath:
     verbalPath:
       attivo:
@@ -979,14 +1465,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#00DFA2><b>Azione</b></color>\r\nUna volta evacuati, <b><color=#00DFA2>parla
-              subito con gli insegnanti</color></b> e chiedi informazioni sul numero
-              di studenti presenti quel giorno. <b><color=#00DFA2>Segnala eventuali
-              dispersi o assenti</color></b>. Avvicinati a ciascun insegnante e seleziona
-              le opzioni disponibili utilizzando i pulsanti scorrevoli.\r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nPermette
-              di ottenere un <b><color=#00DFA2>quadro aggiornato della presenza degli
-              studenti</color></b> e di facilitare l\u2019individuazione per i soccorritori
-              di <b><color=#00DFA2>eventuali persone mancanti</color></b> dopo l\u2019evacuazione."
+            text: 'Una volta evacuati, <b><color=#00DFA2>parla subito con gli insegnanti</color></b>
+              e chiedi informazioni sul numero di studenti presenti quel giorno.
+              <b><color=#00DFA2>Segnala eventuali dispersi o assenti</color></b>. '
           StepForCompletition:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
@@ -1017,636 +1498,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Prendi la bottiglia di disinfettante e togli il tappo.
-
-
-              Versa
-              il contenuto sulla ferita di Paolina.'
-          StepForCompletition:
-          - Grab bottle
-          - Grab tappo
-          - Versa acqua
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Asciuga la ferita
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Ugh! Che male! ma ora la ferita \xE8 pulita.\n\nAsciugala tamponando
-              delicatamente con il panno che trovi nella scatola."
-          StepForCompletition:
-          - Asciuga
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Metti la garza
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Ora non resta che applicare la garza. Prendila e posizionala sopra
-              la ferita.
-
-
-              Fai attenzione, Paolina non vuole star ferma.'
-          StepForCompletition:
-          - metti garza
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Vie di fuga Optional
-        feedbacks:
-        - FeedbackName: Seleziona un'uscita
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona tenta di evacuare da un\u2019uscita bloccata, <b><color=#00DFA2>aiutala
-              indicando l\u2019uscita pi\xF9 vicina</color></b>. Usa la mappa sul
-              pannello della mano per segnalarla.\r\n"
-          StepForCompletition:
-          - Seleziona una via di fuga alternativa
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Chiudi la mappa
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "<b><color=#00DFA2>Chiudi la mappa sul pannello</color></b> e prosegui
-              con l\u2019evacuazione."
-          StepForCompletition:
-          - Chiudi la mappa
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Fuoco su liquido Optional
-        feedbacks:
-        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Un <b><color=#00DFA2>liquido infiammabile</color></b> ha preso
-              fuoco. In questo caso serve un estintore specifico e utilizzarlo nella
-              maniera giusta: usa un <b><color=#00DFA2>estintore a CO\u2082</color></b>
-              oppure a <b><color=#00DFA2>schiuma</color></b>."
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Un <b><color=#00DFA2>liquido infiammabile</color></b> ha preso
-              fuoco. In questo caso serve un estintore specifico e utilizzarlo nella
-              maniera giusta: usa un <b><color=#00DFA2>estintore a CO\u2082</color></b>
-              oppure a <b><color=#00DFA2>schiuma</color></b>."
-          StepForCompletition:
-          - Trova L'estintore a CO2
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Estrai la sicura
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di tutto, <b><color=#00DFA2>rimuovi la chiave di sicurezza</color></b>
-              dall\u2019estintore."
-          StepForCompletition:
-          - Rimuovi la sicura (CO2)
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Afferra l'ugello
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prendi l\u2019<b><color=#00DFA2>ugello</color></b> e punta il
-              tubo verso le fiamme"
-          StepForCompletition:
-          - Prendi l'eiettore (CO2)
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Spegni il fuoco su liquido
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Per evitare che il getto schizzi il liquido e allarghi le fiamme,
-              punta l\u2019<b><color=#00DFA2>ugello</color></b> mantenendo il getto
-              il pi\xF9 possibile parallelo al pavimento."
-          StepForCompletition:
-          - Estingui il fuoco (CO2)
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      riflessivo:
-      - ChapterName: Segnalazione incendio
-        feedbacks:
-        - FeedbackName: Chiama il personale scolastico
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'In caso di incendio, <b><color=#00DFA2>per prima cosa avvisa il
-              personale scolastico usando il telefono</color></b>. Premi "personale
-              scolastico" sul tastierino con il controller o selezionalo con il raggio.
-              Poi alza la cornetta per metterti in contatto con il personale.
-
-
-
-              La
-              <b><color=#00DFA2>segnalazione </color></b> permette al personale scolastico
-              di <b><color=#00DFA2>attivare le procedure di emergenza</color></b>
-              e coordinare l''evacuazione in modo ordinato.'
-          StepForCompletition:
-          - Seleziona il tasto "Personale Scolastico"
-          - Eseguire chiamata
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Attiva allarme
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "<color=#00DFA2><b>Azione</b></color>\r\nSuccessivamente, <b><color=#00DFA2>attiva
-              il pulsante di allarme antincendio pi\xF9 vicino</color></b>.Lo puoi
-              trovare in corridoio. \nSolleva la copertura di sicurezza afferandola
-              con il controller e premi il pulsante per attivare il segnale di emergenza.\r\n\r\nL'<b><color=#00DFA2>allarme
-              antincendio</color></b> informa immediatamente i restanti occupanti,
-              come studenti e insegnanti, del pericolo e permette di <b><color=#00DFA2>avviare
-              l'evacuazione</color></b>."
-          StepForCompletition:
-          - Attiva Allarme
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Chiama i vigili del fuoco
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "<color=#00DFA2><b>Azione</b></color>\r\nPrendi il telefono e <b><color=#00DFA2>chiama
-              subito i Vigili del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.
-              Premi <b><color=#00DFA2>\"115\"</color></b> sul tastierino, alza la
-              cornetta e rispondi alle domande dell\u2019operatore tramite il pannello
-              sulla mano, fornendo le informazioni presenti nel tuo ufficio.\r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nPermette
-              ai <b><color=#00DFA2>Vigili del Fuoco</color></b> di valutare rapidamente
-              la situazione e intervenire in modo adeguato."
-          StepForCompletition:
-          - Seleziona il tasto "115"
-          - completa Domande
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: "Interruzione elettricit\xE0+gas"
-        feedbacks:
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
-              dal quadro elettrico</color></b> utilizzando gli interruttori corretti
-              secondo le informazioni che erano presenti nel tuo ufficio. I pulsanti
-              pi\xF9 piccoli possono essere premuti con il tasto frontale del controller.
-              \r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nDisattivare l\u2019<b><color=#00DFA2>alimentazione
-              elettrica</color></b> riduce il rischio di <b><color=#00DFA2>cortocircuiti</color></b>
-              e di nuovi inneschi che potrebbero aggravare l\u2019incendio."
-          StepForCompletition:
-          - "Disattiva elettricit\xE0 e gas"
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Disattiva il gas
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "<color=#00DFA2><b>Azione</b></color>\r\nInoltre, <b><color=#00DFA2>interrompi
-              il gas</color></b> afferrando la valvola corretta e ruotandola in senso
-              antiorario.\r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nBloccare
-              il <b><color=#00DFA2>flusso di gas</color></b> evita <b><color=#00DFA2>fughe
-              pericolose</color></b> e riduce il rischio di ulteriori inneschi o
-              esplosioni."
-          StepForCompletition:
-          - Attiva feedback gas
-          - Play audio Gas
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Isola Incendio
-        feedbacks:
-        - FeedbackName: Isola l'incendio
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019incendio \xE8 troppo grande, <b><color=#00DFA2>non tentare
-              di spegnerlo</color></b>. Esci subito dalla stanza e <b><color=#00DFA2>chiudi
-              la porta dietro di te</color></b>.\r\n\r\nChiudere la porta limita
-              la diffusione dell\u2019incendio perch\xE9 riduce l\u2019ossigeno disponibile
-              per il fuoco e rallenta la circolazione dell\u2019aria, contribuendo
-              a contenere fiamme e fumo all\u2019interno della stanza."
-          StepForCompletition:
-          - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
-          - Non puoi domarli tutti... chiudi la porta e scappa
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Usa stracci o indumenti per bloccare il fumo
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se il fumo si diffonde, <b><color=#00DFA2>tappa le fessure della
-              porta</color></b> con tessuti disponibili (stracci, asciugamani o indumenti),
-              posizionandoli lungo i bordi inferiori. Afferra una felpa dall'appendiabiti
-              e rilasciala all'interno del volume illuminato.\r\n\r\nSigillare le
-              fessure limita l\u2019ingresso del <b><color=#00DFA2>fumo tossico</color></b>
-              nella stanza e migliora temporaneamente la <b><color=#00DFA2>sicurezza
-              dell\u2019aria respirabile</color></b>."
-          StepForCompletition:
-          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Giro di perlustrazione
-        feedbacks:
-        - FeedbackName: Perlustra la scuola
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Fai il <b><color=#00DFA2>giro delle aule</color></b> per verificare
-              che non ci sia nessuno all\u2019interno. Se trovi qualcuno, <b><color=#00DFA2>accompagnalo
-              subito verso l\u2019uscita pi\xF9 vicina</color></b> e chiudi la porta.
-              Completa tutti i controlli dell\u2019aula prima di passare alla successiva.
-              Troverai istruzioni pi\xF9 accurate nei pannelli delle stanze.\r\n\r\nIn
-              questo modo puoi assicurarti che <b><color=#00DFA2>nessuno resti intrappolato</color></b>
-              e contribuisci a limitare la diffusione di <b><color=#00DFA2>fumo e
-              fiamme in altre stanze</color></b>.\n"
-          StepForCompletition:
-          - Istruzioni Giro Di Perlustrazioni
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
-          applyReflectiveEffects: 1
-      - ChapterName: Aula 2(in fondo a sinistra)
-        feedbacks:
-        - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
-              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
-              per impedire accessi e limitare l' eventuale propagazione del fuoco
-              e del fumo."
-          StepForCompletition:
-          - "No, non c'\xE8 nessuno in Aula 2"
-          - Chiudi Porta Aula 2
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Porta Jackie in salvo
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
-              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>.
-              \n\nSe hai dubbi, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
-              vicino alla porta. I numeri verdi sulla mappa mostrano l'ordine di
-              vicinanza delle uscite: se l'uscita pi\xF9 vicina \xE8 bloccata, utilizza
-              la seconda pi\xF9 vicina.\n\nRicordati sempre di <color=#00DFA2>chiudere
-              la porta</color> dietro di te."
-          StepForCompletition:
-          - "Si c'\xE8 Paolina in Aula2"
-          - Chiudi Porta Aula 2
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
-          applyReflectiveEffects: 1
-      - ChapterName: Aula computer
-        feedbacks:
-        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
-              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
-              per impedire accessi e limitare l' eventuale propagazione del fuoco."
-          StepForCompletition:
-          - "No, non c'\xE8 nessuno in Aula Computer"
-          - Chiudi Porta Aula Computer
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Porta Markus in salvo
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
-              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>.
-              \n\nSe hai dubbi, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
-              vicino alla porta. I numeri verdi sulla mappa mostrano l'ordine di
-              vicinanza delle uscite: se l'uscita pi\xF9 vicina \xE8 bloccata, utilizza
-              la seconda pi\xF9 vicina.\n\nRicordati sempre di <color=#00DFA2>chiudere
-              la porta</color> dietro di te prima di passare alla prossima aula per
-              limitare l' eventuale propagazione del fuoco e del fumo."
-          StepForCompletition:
-          - "Si c'\xE8 Paolina"
-          - Chiudi Porta Aula Computer
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
-          applyReflectiveEffects: 1
-      - ChapterName: Laboratorio di chimica
-        feedbacks:
-        - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
-              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
-              per impedire accessi e limitare l' eventuale propagazione del fuoco
-              e del fumo."
-          StepForCompletition:
-          - "C'\xE8 qualcuno in laboratorio di chimica?"
-          - No, chiudi la porta di chimica
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Biblioteca
-        feedbacks:
-        - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
-              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
-              per impedire accessi e limitare l' eventuale propagazione del fuoco
-              e del fumo."
-          StepForCompletition:
-          - "No, Non c'\xE8 nessuo in Biblioteca "
-          - Chiudi la porta di biblioteca
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: "C'\xE8 TImmy"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Le persone con disabilit\xE0 potrebbero aver bisogno di aiuto
-              aggiuntivo. \nIn questo caso, <b><color=#00DFA2>spingi la sedia a rotelle
-              verso l'uscita pi\xF9 vicina</color></b>.\n\nSe hai dubbi, consulta
-              la <color=#00DFA2>mappa di evacuazione</color></b> vicino alla porta.
-              I numeri verdi sulla mappa mostrano l'ordine di vicinanza delle uscite:
-              se l'uscita pi\xF9 vicina \xE8 bloccata, utilizza la seconda pi\xF9
-              vicina.\r\n"
-          StepForCompletition:
-          - "Si. c'\xE8 Paolina in sedie a rotelle"
-          - Chiudi la porta di biblioteca
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Mensa
-        feedbacks:
-        - FeedbackName: "C'\xE8 michelle che balla..."
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
-              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>.
-              \n\nSe hai dubbi, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
-              vicino alla porta. I numeri verdi sulla mappa mostrano l'ordine di
-              vicinanza delle uscite: se l'uscita pi\xF9 vicina \xE8 bloccata, utilizza
-              la seconda pi\xF9 vicina."
-          StepForCompletition:
-          - "Si c'\xE8 Michelle"
-          - Porta Michelle all'uscita
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
-          applyReflectiveEffects: 1
-        - FeedbackName: "Non c'\xE8 nessuno in mensa"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
-              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
-              per impedire accessi e limitare l' eventuale propagazione del fuoco
-              e del fumo."
-          StepForCompletition:
-          - "No, non c'\xE8 nessuno in mensa"
-          - Chiudi la porta di mensa
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Estintore generico Optional
-        feedbacks:
-        - FeedbackName: "C'\xE8 del fumo!"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Attenzione, In presenza di <b><color=#FFD700>fumo</color></b>,
-              <b><color=#FFD700>abbassati</color></b> e procedi vicino al pavimento.
-              \n\nIl fumo tende a salire e accumularsi in alto; restare bassi riduce
-              l\u2019inalazione di sostanze tossichee migliora la visibilit\xE0."
-          StepForCompletition:
-          - Mostra Feedback fumo
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 1
-          applyReflectiveEffects: 1
-        - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Il fuoco blocca il percorso ma sembra gestibile: <b><color=#FFD700>prendi
-              l\u2019estintore giusto</color></b>. \n \r\nSe stanno bruciando <b><color=#FFD700>materiali
-              solidi</color></b> (come carta, legno o arredi), usa un estintore ad
-              <b><color=#FFD700>acqua</color></b> o a <b><color=#FFD700>schiuma</color></b>. 
-              \r\n\r\nSe invece si tratta di <b><color=#FFD700>materiali elettrici</color></b>,
-              utilizza un estintore a <b><color=#FFD700>CO\u2082</color></b>."
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Gli estintori ad acqua o a schiuma sono efficaci su materiali
-              che compongono gli arredi perch\xE9 agiscono <b><color=#FFD700>raffreddando
-              il materiale e soffocando le fiamme</color></b>, riducendo la temperatura
-              sotto il punto di combustione.\n\nLa CO\u2082 \xE8 preferita  sui componenti
-              elettrici perch\xE9 <b><color=#FFD700>non conduce elettricit\xE0 e
-              non lascia residui</color></b>, evitando danni ai circuiti e riducendo
-              il rischio di cortocircuiti."
-          StepForCompletition:
-          - (solido) Grab extiguisher
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Rimuovi la sicura
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di tutto, <b><color=#FFD700>rimuovi la chiave di sicurezza</color></b>
-              dall\u2019estintore afferrandola con il controller. \n\nSolo dopo averla
-              tolta potrai utilizzarlo."
-          StepForCompletition:
-          - Sfaty catch removal
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 0
-        - FeedbackName: Afferra l'ugello
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prendi l\u2019<b><color=#FFD700>ugello</color></b> e punta il
-              tubo alla base delle fiamme.\n\nLa base \xE8 il punto da cui \xE8 pi\xF9
-              efficace estinguere un fuoco, essendo il suo punto di origine."
-          StepForCompletition:
-          - grab ejector
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 0
-        - FeedbackName: Spegni il fuoco
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Premi la <b><color=#FFD700>leva</color></b> dell'estinore con
-              il tasto frontale del controller per azionare il getto. Mantieni la
-              leva premuta e <b><color=#FFD700>non interrompere il flusso</color></b>
-              finch\xE9 il fuoco non \xE8 completamente estinto."
-          StepForCompletition:
-          - Extinguish fire
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 0
-      - ChapterName: Segnalazione assenti
-        feedbacks:
-        - FeedbackName: Segnala gli assenti
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Ora avvicinati agli <b><color=#00DFA2>insegnanti</color></b> uno
-              ad uno per raccogliere le informazioni e consulta i <b><color=#00DFA2>pannelli
-              informativi</color></b>.  \nSegnala poi eventuali <b><color=#00DFA2>dispersi</color></b>
-              utilizzando i pulsanti scorrevoli sui pannelli, tenendo conto di presenti
-              e assenti.\n\nIn questo capitolo puoi informare i soccorritori sulla
-              situazione."
-          StepForCompletition:
-          - segnala assenti
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-      - ChapterName: Primo soccorso Optional
-        feedbacks:
-        - FeedbackName: Apri il medikit
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Quando qualcuno sta male, la prima azione concreta \xE8 accedere
-              al <b>medikit</b>. La scatola contiene gli strumenti necessari per
-              una <b>prima assistenza</b> e aprirla subito permette di valutare cosa
-              \xE8 disponibile prima ancora di conoscere con precisione il problema. "
-          StepForCompletition:
-          - Apri medkit
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Disinfetta la ferita
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Una persona ha subito una lieve scottatura.\nPer prima cosa apri
-              il <b><color=#FFD700>medkit</color></b>, dove troverai tutti gli strumenti
-              necessari al primo intervento.\n  \nPrendi la <b><color=#FFD700>bottiglia
-              di acqua pulita</color></b>, rimuovi il tappo e versa il contenuto
-              sulla zona interessata per <b><color=#FFD700>raffreddare la scottatura</color></b>.  "
+            text: 'Prendi la <b><color=#FFD700>bottiglia di acqua pulita</color></b>,
+              rimuovi il tappo e versa il contenuto sulla zona interessata per <b><color=#FFD700>raffreddare
+              la scottatura</color></b>.  '
           StepForCompletition:
           - Grab bottle
           - Grab tappo
@@ -1692,11 +1546,9 @@ MonoBehaviour:
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Se una persona tenta di evacuare da un\u2019uscita bloccata, <b><color=#FFD700>aiutala
-              indicando l\u2019uscita pi\xF9 vicina</color></b>. Usa la mappa sul
-              pannello della mano per segnalarla, puntando con il controller l'uscita
-              desiderata e cliccandoci sopra con il tasto frontale.\r\n"
+            video: {fileID: 32900000, guid: 4df8bac5e51bfd047a3f8bdc8151588c, type: 3}
+            text: "Se una persona tenta di evacuare da un\u2019uscita bloccata, <b><color=#00DFA2>aiutala
+              indicando l\u2019uscita pi\xF9 vicina</color></b>.\r\n"
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           PersonalizedPrefab: {fileID: 0}
@@ -1708,9 +1560,9 @@ MonoBehaviour:
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: "<b><color=#FFD700>Chiudi la mappa sul pannello</color></b> con
-              l'apposito pulsante e prosegui con l\u2019evacuazione."
+            video: {fileID: 32900000, guid: 4f7b6196086b90046b569f75ef91a21c, type: 3}
+            text: "<b><color=#00DFA2>Chiudi la mappa sul pannello</color></b> e prosegui
+              con l\u2019evacuazione."
           StepForCompletition:
           - Chiudi la mappa
           PersonalizedPrefab: {fileID: 0}
@@ -1718,25 +1570,17 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: Fuoco su liquido Optional
         feedbacks:
-        - FeedbackName: <b>Fuoco su liquido infiammabile<b> - trova l'estintore
+        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
           pages:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Un <b><color=#FFD700liquido infiammabile</color></b> ha preso
+            video: {fileID: 32900000, guid: 38390480a7d3f124f858da4c960acb2f, type: 3}
+            text: "Un <b><color=#00DFA2>liquido infiammabile</color></b> ha preso
               fuoco. In questo caso serve un estintore specifico e utilizzarlo nella
-              maniera giusta: predni un <b><color=#FFD700>estintore a CO2</color></b>
-              oppure a <b><color=#FFD700>schiuma</color></b>.'
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "La CO2 o la schiuma sono indicati perch\xE9 <b><color=#FFD700>soffocano
-              le fiamme riducendo l\u2019ossigeno disponibile</color></b> e non lasciano
-              residui che potrebbero alimentare ulteriormente la combustione. "
+              maniera giusta: usa un <b><color=#00DFA2>estintore a CO\u2082</color></b>
+              oppure a <b><color=#00DFA2>schiuma</color></b>."
           StepForCompletition:
           - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
@@ -1748,10 +1592,8 @@ MonoBehaviour:
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di tutto, <b><color=#FFD700>rimuovi la chiave di sicurezza</color></b>
-              dall\u2019estintore afferrandola con il controller. Solo dopo averla
-              tolta potrai utilizzarlo."
+            video: {fileID: 32900000, guid: f43d34e624108f84b9beec8fa7448368, type: 3}
+            text: "<b><color=#00DFA2>Rimuovi la chiave di sicurezza</color></b> dall\u2019estintore."
           StepForCompletition:
           - Rimuovi la sicura (CO2)
           PersonalizedPrefab: {fileID: 0}
@@ -1763,9 +1605,9 @@ MonoBehaviour:
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prendi l\u2019<b><color=#FFD700>ugello</color></b> e punta il
-              tubo verso le fiamme, ma fai attenzione a dove spari il getto."
+            video: {fileID: 32900000, guid: cb66f250a918fcc43838526ea3b2d3f7, type: 3}
+            text: "Prendi l\u2019<b><color=#00DFA2>ugello</color></b> e punta il
+              tubo verso le fiamme"
           StepForCompletition:
           - Prendi l'eiettore (CO2)
           PersonalizedPrefab: {fileID: 0}
@@ -1777,17 +1619,1079 @@ MonoBehaviour:
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
+            video: {fileID: 32900000, guid: 280bf06c88dda2747b9ebf5472aa064e, type: 3}
+            text: "Mantieni il getto il pi\xF9 possibile parallelo al pavimento."
+          StepForCompletition:
+          - Estingui il fuoco (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      riflessivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: Chiama il personale scolastico
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
             video: {fileID: 0}
-            text: "Per evitare che il getto schizzi il liquido e allarghi le fiamme,
-              punta l\u2019<b><color=#FFD700>ugello</color></b> mantenendo il getto
-              il pi\xF9 possibile parallelo al pavimento. \n\nSe schizzi il liquidi
-              degli altri fuochi potranno formarsi nelle vicinanze."
+            text: "In caso di incendio, <b><color=#00DFA2>avvisa subito il personale
+              scolastico usando il telefono</color></b>. \n\nPremi \"personale scolastico\"
+              sul tastierino e alza la cornetta.\r\n"
+          StepForCompletition:
+          - Seleziona il tasto "Personale Scolastico"
+          - Eseguire chiamata
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Attiva allarme
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Successivamente, <b><color=#00DFA2>attiva il pulsante di allarme
+              antincendio pi\xF9 vicino</color></b> per avvisare tutte le persone
+              presenti nell'edificio. \n\nSolleva la copertura di sicurezza e premi
+              il pulsante.\r\n"
+          StepForCompletition:
+          - Attiva Allarme
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiama i vigili del fuoco
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prendi il telefono e <b><color=#00DFA2>chiama subito i Vigili
+              del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.\r\n\r\nPremi
+              <b><color=#00DFA2>\"115\"</color></b> sul tastierino, alza la cornetta
+              e rispondi alle domande dell\u2019operatore tramite il pannello sulla
+              mano.\r\n"
+          StepForCompletition:
+          - Seleziona il tasto "115"
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
+              dal quadro elettrico</color></b>utilizzando gli interruttori giusti.
+              Questo riduce il rischio di cortocircuiti e ulteriori inneschi dell\u2019incendio.\r\n"
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b> ruotando
+              la valvola giusta in senso antiorario. Questo blocca il flusso ed evita
+              possibili fughe pericolose.
+
+'
+          StepForCompletition:
+          - Attiva feedback gas
+          - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: Isola l'incendio
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019incendio \xE8 troppo grande, <b><color=#00DFA2>non tentare
+              di spegnerlo</color></b>. \n\nEsci subito dalla stanza e <b><color=#00DFA2>chiudi
+              la porta dietro di te</color></b>."
+          StepForCompletition:
+          - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
+          - Non puoi domarli tutti... chiudi la porta e scappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Usa stracci o indumenti per bloccare il fumo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Se il fumo si diffonde, <b><color=#00DFA2>tappa le fessure della
+              porta</color></b> con tessuti disponibili (stracci, asciugamani o indumenti),
+              posizionandoli lungo i bordi inferiori e laterali per bloccare il fumo.
+          StepForCompletition:
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: Perlustra la scuola
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Fai il <b><color=#00DFA2>giro delle aule</color></b> e verifica
+              che non ci sia nessuno rimasto indietro. \n\nSe trovi qualcuno, <b><color=#00DFA2>accompagnalo
+              subito verso l\u2019uscita pi\xF9 vicina</color></b>.\r\n\nSe hai dubbi
+              sulle uscite, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
+              vicino alla porta."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+      - ChapterName: Aula 2(in fondo a sinistra)
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula 2"
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Porta Jackie in salvo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Paolina in Aula2"
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Aula computer
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula Computer"
+          - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Porta Markus in salvo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Paolina"
+          - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Laboratorio di chimica
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "C'\xE8 qualcuno in laboratorio di chimica?"
+          - No, chiudi la porta di chimica
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Biblioteca
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, Non c'\xE8 nessuo in Biblioteca "
+          - Chiudi la porta di biblioteca
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "C'\xE8 TImmy"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Le persone con disabilit\xE0 potrebbero aver bisogno di aiuto
+              aggiuntivo. \nIn questo caso, <b><color=#00DFA2>spingi la sedia a rotelle</color></b>.Ricordati
+              di<b><color=#00DFA2> chiudere la porta</color></b>.\n\r\n"
+          StepForCompletition:
+          - "Si. c'\xE8 Paolina in sedie a rotelle"
+          - Chiudi la porta di biblioteca
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Mensa
+        feedbacks:
+        - FeedbackName: "C'\xE8 michelle che balla..."
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Michelle"
+          - Porta Michelle all'uscita
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Non c'\xE8 nessuno in mensa"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in mensa"
+          - Chiudi la porta di mensa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: "C'\xE8 del fumo!"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "<color=#00DFA2><b>Azione</b></color>\r\nIn presenza di <b><color=#00DFA2>fumo</color></b>,
+              <b><color=#00DFA2>abbassati</color></b> e procedi vicino al pavimento.\r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nIl
+              fumo tende a salire e accumularsi in alto; restare <b><color=#00DFA2>bassi</color></b>
+              riduce l\u2019inalazione di <b><color=#00DFA2>sostanze tossiche</color></b>
+              e migliora la visibilit\xE0."
+          StepForCompletition:
+          - Mostra Feedback fumo
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+        - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Il fuoco blocca il percorso ma sembra gestibile: <b><color=#FFD700>usa
+              l'estintore giusto</color></b>.\n\r\n<b><color=#FFD700>Estintore ad
+              acqua o schiuma</color></b>  \r\nUtilizzalo per <b><color=#FFD700>materiali
+              solidi</color></b> come carta, legno o arredi, perch\xE9 agisce raffreddando
+              e soffocando le fiamme.\n\r\n<b><color=#FFD700>Estintore a CO\u2082</color></b> 
+              \r\nUtilizzalo per <b><color=#FFD700>materiali elettrici</color></b>,
+              perch\xE9 spegne senza lasciare residui e riduce il rischio di cortocircuiti.\r\nTieni
+              d'occhio il pannello per ulteriori indicazioni."
+          StepForCompletition:
+          - (solido) Grab extiguisher
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Rimuovi la sicura
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Prima di tutto, <b><color=#FFD700>rimuovi la chiave di sicurezza</color></b>
+              posta in cima all'estintore.
+          StepForCompletition:
+          - Sfaty catch removal
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+        - FeedbackName: Afferra l'ugello
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Prendi l'<b><color=#FFD700>ugello</color></b> e orienta il tubo
+              verso la base delle fiamme, dove il fuoco ha origine.
+          StepForCompletition:
+          - grab ejector
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+        - FeedbackName: Spegni il fuoco
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Premi il <b><color=#00DFA2>trigger</color></b> per attivare il
+              getto dell\u2019estintore. Mantieni la leva premuta in modo costante
+              e <b><color=#00DFA2>non interrompere il flusso</color></b> fino a quando
+              il fuoco non \xE8 completamente estinto, per evitare possibili riaccensioni."
+          StepForCompletition:
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: Segnala gli assenti
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Una volta evacuati, <b><color=#00DFA2>parla subito con gli insegnanti</color></b>
+              e chiedi informazioni sul numero di studenti presenti quel giorno.
+              <b><color=#00DFA2>Segnala eventuali dispersi o assenti</color></b>. '
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: Apri il medikit
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Quando qualcuno sta male, la prima azione concreta \xE8 accedere
+              al <b>medikit</b>. La scatola contiene gli strumenti necessari per
+              una <b>prima assistenza</b> e aprirla subito permette di valutare cosa
+              \xE8 disponibile prima ancora di conoscere con precisione il problema. "
+          StepForCompletition:
+          - Apri medkit
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disinfetta la ferita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Prendi la <b><color=#FFD700>bottiglia di acqua pulita</color></b>,
+              rimuovi il tappo e versa il contenuto sulla zona interessata per <b><color=#FFD700>raffreddare
+              la scottatura</color></b>.  '
+          StepForCompletition:
+          - Grab bottle
+          - Grab tappo
+          - Versa acqua
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Asciuga la ferita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Ora Asciuga delicatamente la zona con il <b><color=#FFD700>panno
+              sterile</color></b> presente nel medikit, in modo da poter applicare
+              la garza.
+          StepForCompletition:
+          - Asciuga
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Metti la garza
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: Infine proteggi infine la zona con una <b><color=#FFD700>garza
+              sterile</color></b>; se cade o si sporca, sostituiscila con una nuova
+              per garantire la massima igiene.
+          StepForCompletition:
+          - metti garza
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Vie di fuga Optional
+        feedbacks:
+        - FeedbackName: Seleziona un'uscita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 4df8bac5e51bfd047a3f8bdc8151588c, type: 3}
+            text: "Se una persona tenta di evacuare da un\u2019uscita bloccata, <b><color=#00DFA2>aiutala
+              indicando l\u2019uscita pi\xF9 vicina</color></b>.\r\n"
+          StepForCompletition:
+          - Seleziona una via di fuga alternativa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiudi la mappa
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 4f7b6196086b90046b569f75ef91a21c, type: 3}
+            text: "<b><color=#00DFA2>Chiudi la mappa sul pannello</color></b> e prosegui
+              con l\u2019evacuazione."
+          StepForCompletition:
+          - Chiudi la mappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Fuoco su liquido Optional
+        feedbacks:
+        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 38390480a7d3f124f858da4c960acb2f, type: 3}
+            text: "Un <b><color=#00DFA2>liquido infiammabile</color></b> ha preso
+              fuoco. In questo caso serve un estintore specifico e utilizzarlo nella
+              maniera giusta: usa un <b><color=#00DFA2>estintore a CO\u2082</color></b>
+              oppure a <b><color=#00DFA2>schiuma</color></b>."
+          StepForCompletition:
+          - Trova L'estintore a CO2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Estrai la sicura
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: f43d34e624108f84b9beec8fa7448368, type: 3}
+            text: "<b><color=#00DFA2>Rimuovi la chiave di sicurezza</color></b> dall\u2019estintore."
+          StepForCompletition:
+          - Rimuovi la sicura (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Afferra l'ugello
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: cb66f250a918fcc43838526ea3b2d3f7, type: 3}
+            text: "Prendi l\u2019<b><color=#00DFA2>ugello</color></b> e punta il
+              tubo verso le fiamme"
+          StepForCompletition:
+          - Prendi l'eiettore (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Spegni il fuoco su liquido
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 280bf06c88dda2747b9ebf5472aa064e, type: 3}
+            text: "Mantieni il getto il pi\xF9 possibile parallelo al pavimento."
           StepForCompletition:
           - Estingui il fuoco (CO2)
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
     visualPath:
-      attivo: []
+      attivo:
+      - ChapterName: Segnalazione incendio
+        feedbacks:
+        - FeedbackName: Chiama il personale scolastico
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 9f4dc1b6c62b3e34eb234705dbd85469, type: 3}
+            text: 'In caso di incendio, <b><color=#00DFA2>avvisa subito il personale
+              scolastico usando il telefono</color></b>. '
+          StepForCompletition:
+          - Seleziona il tasto "Personale Scolastico"
+          - Eseguire chiamata
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Attiva allarme
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 33d1e2148820662418083397e790c0f2, type: 3}
+            text: "<b><color=#00DFA2>Attiva il pulsante di allarme antincendio pi\xF9
+              vicino</color></b> per avvisare tutte le persone presenti nell'edificio.
+              \r\n"
+          StepForCompletition:
+          - Attiva Allarme
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiama i vigili del fuoco
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: dae63f85d652ca848965e1088dc81b2f, type: 3}
+            text: 'Prendi il telefono e <b><color=#00DFA2>chiama subito i Vigili
+              del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.
+
+
+
+'
+          StepForCompletition:
+          - Seleziona il tasto "115"
+          - completa Domande
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: "Interruzione elettricit\xE0+gas"
+        feedbacks:
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 54feed38cc9137345b514e723eb6ddcc, type: 3}
+            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
+              dal quadro elettrico</color></b>. Questo riduce il rischio di cortocircuiti
+              e ulteriori inneschi dell\u2019incendio.\r\n"
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 94678765f47f7db45a15b44f10fc9291, type: 3}
+            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b>. Questo
+              blocca il flusso ed evita possibili fughe pericolose.
+
+'
+          StepForCompletition:
+          - Attiva feedback gas
+          - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Isola Incendio
+        feedbacks:
+        - FeedbackName: Isola l'incendio
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 335f0e3b3d812164e8b3a38773a4ae9c, type: 3}
+            text: "Se l\u2019incendio \xE8 troppo grande, <b><color=#00DFA2>non tentare
+              di spegnerlo</color></b>. "
+          StepForCompletition:
+          - Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
+          - Non puoi domarli tutti... chiudi la porta e scappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Usa stracci o indumenti per bloccare il fumo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 39847c80bf1900542bb94f8c1ac2a71d, type: 3}
+            text: Se il fumo si diffonde, <b><color=#00DFA2>tappa le fessure della
+              porta</color></b> con tessuti disponibili (stracci, asciugamani o indumenti).
+          StepForCompletition:
+          - "Non \xE8 bastato... usa la giacca per bloccare il fumo"
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Giro di perlustrazione
+        feedbacks:
+        - FeedbackName: Perlustra la scuola
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: -714197355, guid: 2403225860049f641a09676e4614b5b4, type: 3}
+            video: {fileID: 0}
+            text: "Fai il <b><color=#00DFA2>giro delle aule</color></b> e verifica
+              che non ci sia nessuno rimasto indietro. \n\nSe trovi qualcuno, <b><color=#00DFA2>accompagnalo
+              subito verso l\u2019uscita pi\xF9 vicina</color></b>.\r\n\nSe hai dubbi
+              sulle uscite, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
+              vicino alla porta."
+          StepForCompletition:
+          - Istruzioni Giro Di Perlustrazioni
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+      - ChapterName: Aula 2(in fondo a sinistra)
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula 2"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula 2"
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Porta Jackie in salvo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 190d3a126c4830a49b7a5733dc1de437, type: 3}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Paolina in Aula2"
+          - Chiudi Porta Aula 2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Aula computer
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Aula Computer"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in Aula Computer"
+          - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Porta Markus in salvo
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 190d3a126c4830a49b7a5733dc1de437, type: 3}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Paolina"
+          - Chiudi Porta Aula Computer
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Laboratorio di chimica
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Laboratorio"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "C'\xE8 qualcuno in laboratorio di chimica?"
+          - No, chiudi la porta di chimica
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Biblioteca
+        feedbacks:
+        - FeedbackName: "Non c'\xE8 nessuno in Biblioteca"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, Non c'\xE8 nessuo in Biblioteca "
+          - Chiudi la porta di biblioteca
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "C'\xE8 TImmy"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 190d3a126c4830a49b7a5733dc1de437, type: 3}
+            text: "Le persone con disabilit\xE0 potrebbero aver bisogno di aiuto
+              aggiuntivo. \nIn questo caso, <b><color=#00DFA2>spingi la sedia a rotelle</color></b>.Ricordati
+              di<b><color=#00DFA2> chiudere la porta</color></b>.\n\r\n"
+          StepForCompletition:
+          - "Si. c'\xE8 Paolina in sedie a rotelle"
+          - Chiudi la porta di biblioteca
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Mensa
+        feedbacks:
+        - FeedbackName: "C'\xE8 michelle che balla..."
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 190d3a126c4830a49b7a5733dc1de437, type: 3}
+            text: "Se una persona non ha ancora evacuato, <b><color=#00DFA2>accompagnala
+              subito</color></b> verso l\u2019<b><color=#00DFA2>uscita pi\xF9 vicina</color></b>
+              e <b><color=#00DFA2>chiudi la porta dell'aula</color></b>."
+          StepForCompletition:
+          - "Si c'\xE8 Michelle"
+          - Porta Michelle all'uscita
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Non c'\xE8 nessuno in mensa"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
+              <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
+          StepForCompletition:
+          - "No, non c'\xE8 nessuno in mensa"
+          - Chiudi la porta di mensa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Estintore generico Optional
+        feedbacks:
+        - FeedbackName: "C'\xE8 del fumo!"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "<color=#00DFA2><b>Azione</b></color>\r\nIn presenza di <b><color=#00DFA2>fumo</color></b>,
+              <b><color=#00DFA2>abbassati</color></b> e procedi vicino al pavimento.\r\n\r\n<color=#00DFA2><b>Perch\xE9</b></color>\r\nIl
+              fumo tende a salire e accumularsi in alto; restare <b><color=#00DFA2>bassi</color></b>
+              riduce l\u2019inalazione di <b><color=#00DFA2>sostanze tossiche</color></b>
+              e migliora la visibilit\xE0."
+          StepForCompletition:
+          - Mostra Feedback fumo
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 1
+          applyReflectiveEffects: 1
+        - FeedbackName: <b>Fuoco su solido<b> -  prendi l'estintore
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 152b37892745025408a535fc8f559f1c, type: 3}
+            text: 'Il fuoco blocca il percorso ma sembra gestibile: <b><color=#FFD700>usa
+              l''estintore giusto</color></b>.'
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "<b><color=#FFD700>Estintore ad acqua o schiuma</color></b>  \r\nUtilizzalo
+              per <b><color=#FFD700>materiali solidi</color></b> come carta, legno
+              o arredi, perch\xE9 agisce raffreddando e soffocando le fiamme.\n\r\n<b><color=#FFD700>Estintore
+              a CO\u2082</color></b>  \r\nUtilizzalo per <b><color=#FFD700>materiali
+              elettrici</color></b>, perch\xE9 spegne senza lasciare residui e riduce
+              il rischio di cortocircuiti.\r\nTieni d'occhio il pannello per ulteriori
+              indicazioni."
+          StepForCompletition:
+          - (solido) Grab extiguisher
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Rimuovi la sicura
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: ee0167c2e007e1d42b63b75dc09439f9, type: 3}
+            text: <b><color=#FFD700>Rimuovi la chiave di sicurezza</color></b>
+          StepForCompletition:
+          - Sfaty catch removal
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+        - FeedbackName: Afferra l'ugello
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: b61d15f5c45ab3c4a9444de167115fc0, type: 3}
+            text: Prendi l'<b><color=#FFD700>ugello</color></b> e orienta il tubo
+              verso la base delle fiamme
+          StepForCompletition:
+          - grab ejector
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+        - FeedbackName: Spegni il fuoco
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 548902f43444f9b49bbbe2045c391565, type: 3}
+            text: "Premi il <b><color=#00DFA2>trigger</color></b> per attivare il
+              getto dell\u2019estintore. "
+          StepForCompletition:
+          - Extinguish fire
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 0
+      - ChapterName: Segnalazione assenti
+        feedbacks:
+        - FeedbackName: Segnala gli assenti
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 37c279bb035828e4c8325d6a4f215123, type: 3}
+            text: 'Una volta evacuati, <b><color=#00DFA2>parla subito con gli insegnanti</color></b>
+              e chiedi informazioni sul numero di studenti presenti quel giorno. '
+          StepForCompletition:
+          - segnala assenti
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Primo soccorso Optional
+        feedbacks:
+        - FeedbackName: Disinfetta la ferita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 7b69c0c39171f124b9fcc2fc884a10a0, type: 3}
+            text: Una persona ha subito una lieve scottatura, apri il medikit e utilizza
+              gli strumenti nell'ordine giusto
+          StepForCompletition:
+          - Grab bottle
+          - Grab tappo
+          - Versa acqua
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Asciuga la ferita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: ea62f361dfa6d364295fd20af9f0d57b, type: 3}
+            text: Ora Asciuga delicatamente la zona con il <b><color=#FFD700>panno
+              sterile</color></b>
+          StepForCompletition:
+          - Asciuga
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Metti la garza
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 508cdf26aab0a404d98ef85e88016d76, type: 3}
+            text: Infine proteggi infine la zona con una <b><color=#FFD700>garza
+              sterile</color></b>; se cade o si sporca, sostituiscila con una nuova
+          StepForCompletition:
+          - metti garza
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Vie di fuga Optional
+        feedbacks:
+        - FeedbackName: Seleziona un'uscita
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Se una persona tenta di evacuare da un\u2019uscita bloccata, <b><color=#00DFA2>aiutala
+              indicando l\u2019uscita pi\xF9 vicina</color></b>."
+          StepForCompletition:
+          - Seleziona una via di fuga alternativa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Chiudi la mappa
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "<b><color=#00DFA2>Chiudi la mappa sul pannello</color></b> e prosegui
+              con l\u2019evacuazione."
+          StepForCompletition:
+          - Chiudi la mappa
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+      - ChapterName: Fuoco su liquido Optional
+        feedbacks:
+        - FeedbackName: <b>Fuoco su liquido<b> - trova l'estintore
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Un <b><color=#00DFA2>liquido infiammabile</color></b> ha preso
+              fuoco. In questo caso serve un estintore specifico e utilizzarlo nella
+              maniera giusta: usa un <b><color=#00DFA2>estintore a CO\u2082</color></b>
+              oppure a <b><color=#00DFA2>schiuma</color></b>."
+          StepForCompletition:
+          - Trova L'estintore a CO2
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Estrai la sicura
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di tutto, <b><color=#00DFA2>rimuovi la chiave di sicurezza</color></b>
+              dall\u2019estintore."
+          StepForCompletition:
+          - Rimuovi la sicura (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Afferra l'ugello
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prendi l\u2019<b><color=#00DFA2>ugello</color></b> e punta il
+              tubo verso le fiamme"
+          StepForCompletition:
+          - Prendi l'eiettore (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: Spegni il fuoco su liquido
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Per evitare che il getto schizzi il liquido e allarghi le fiamme,
+              punta l\u2019<b><color=#00DFA2>ugello</color></b> mantenendo il getto
+              il pi\xF9 possibile parallelo al pavimento."
+          StepForCompletition:
+          - Estingui il fuoco (CO2)
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
       riflessivo: []
   exceptionFeedbacks: []
