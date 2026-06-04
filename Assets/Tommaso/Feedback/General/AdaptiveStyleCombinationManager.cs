@@ -1,4 +1,15 @@
 using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public class StyleCombination
+{
+    [Header("Contenuto")]
+    public GameObject content;
+
+    [Header("Nav Panel")]
+    public GameObject navPanel;
+}
 
 public class AdaptiveStyleCombinationManager : MonoBehaviour
 {
@@ -6,32 +17,20 @@ public class AdaptiveStyleCombinationManager : MonoBehaviour
     public LearningProfile learningProfile;
 
     [Header("Combinazioni stili (8)")]
+    public StyleCombination visivoAttivoGlobale;
+    public StyleCombination visivoAttivoSequenziale;
+    public StyleCombination visivoRiflessivoGlobale;
+    public StyleCombination visivoRiflessivoSequenziale;
 
-    [Tooltip("Visivo - Attivo - Globale")]
-    public GameObject visivoAttivoGlobale;
+    public StyleCombination verbaleAttivoGlobale;
+    public StyleCombination verbaleAttivoSequenziale;
+    public StyleCombination verbaleRiflessivoGlobale;
+    public StyleCombination verbaleRiflessivoSequenziale;
 
-    [Tooltip("Visivo - Attivo - Sequenziale")]
-    public GameObject visivoAttivoSequenziale;
+    [Header("Scrollable")]
+    public ScrollRect scrollRect;
 
-    [Tooltip("Visivo - Riflessivo - Globale")]
-    public GameObject visivoRiflessivoGlobale;
-
-    [Tooltip("Visivo - Riflessivo - Sequenziale")]
-    public GameObject visivoRiflessivoSequenziale;
-
-    [Tooltip("Verbale - Attivo - Globale")]
-    public GameObject verbaleAttivoGlobale;
-
-    [Tooltip("Verbale - Attivo - Sequenziale")]
-    public GameObject verbaleAttivoSequenziale;
-
-    [Tooltip("Verbale - Riflessivo - Globale")]
-    public GameObject verbaleRiflessivoGlobale;
-
-    [Tooltip("Verbale - Riflessivo - Sequenziale")]
-    public GameObject verbaleRiflessivoSequenziale;
-
-    private GameObject[] allObjects;
+    private StyleCombination[] allCombinations;
 
     void Start()
     {
@@ -41,8 +40,7 @@ public class AdaptiveStyleCombinationManager : MonoBehaviour
             return;
         }
 
-        // Salva tutti gli oggetti in un array
-        allObjects = new GameObject[]
+        allCombinations = new StyleCombination[]
         {
             visivoAttivoGlobale,
             visivoAttivoSequenziale,
@@ -54,82 +52,69 @@ public class AdaptiveStyleCombinationManager : MonoBehaviour
             verbaleRiflessivoSequenziale
         };
 
-        // Disattiva tutto
         SetAllActive(false);
 
-        // Recupera il profilo
         var profile = learningProfile.GetProfileTuple();
+        StyleCombination target = GetMatchingCombination(profile);
 
-        GameObject targetObject = GetMatchingObject(profile);
+        if (target != null)
+        {
+            if (target.content != null)
+            {
+                target.content.SetActive(true);
 
-        // Attiva solo l'oggetto corretto
-        if (targetObject != null)
-        {
-            targetObject.SetActive(true);
-            Debug.Log($"[AdaptiveStyleCombinationManager] Attivato: {targetObject.name}");
-        }
-        else
-        {
-            Debug.LogWarning("[AdaptiveStyleCombinationManager] Nessuna combinazione trovata.");
+                if (scrollRect != null)
+                {
+                    RectTransform contentRect = target.content.GetComponent<RectTransform>();
+                    if (contentRect != null)
+                    {
+                       scrollRect.content = contentRect;
+                    }
+                }
+            }
+
+            if (target.navPanel != null)
+                target.navPanel.SetActive(true);
+
+            Debug.Log($"[AdaptiveStyleCombinationManager] Attivata combinazione: {target.content?.name}");
         }
     }
 
-    GameObject GetMatchingObject(
+    StyleCombination GetMatchingCombination(
         (LearningEnums.AttivoRiflessivo attivoRiflessivo,
          LearningEnums.SensitivoIntuitivo sensitivoIntuitivo,
          LearningEnums.VisivoVerbale visivoVerbale,
          LearningEnums.SequenzialeGlobale sequenzialeGlobale) profile)
     {
-        bool isVisivo =
-            profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
+        bool isVisivo = profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo;
+        bool isAttivo = profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
+        bool isGlobale = profile.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale;
 
-        bool isAttivo =
-            profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
-
-        bool isGlobale =
-            profile.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Globale;
-
-        // VISIVO
         if (isVisivo)
         {
             if (isAttivo)
-            {
-                return isGlobale
-                    ? visivoAttivoGlobale
-                    : visivoAttivoSequenziale;
-            }
+                return isGlobale ? visivoAttivoGlobale : visivoAttivoSequenziale;
             else
-            {
-                return isGlobale
-                    ? visivoRiflessivoGlobale
-                    : visivoRiflessivoSequenziale;
-            }
+                return isGlobale ? visivoRiflessivoGlobale : visivoRiflessivoSequenziale;
         }
-
-        // VERBALE
         else
         {
             if (isAttivo)
-            {
-                return isGlobale
-                    ? verbaleAttivoGlobale
-                    : verbaleAttivoSequenziale;
-            }
+                return isGlobale ? verbaleAttivoGlobale : verbaleAttivoSequenziale;
             else
-            {
-                return isGlobale
-                    ? verbaleRiflessivoGlobale
-                    : verbaleRiflessivoSequenziale;
-            }
+                return isGlobale ? verbaleRiflessivoGlobale : verbaleRiflessivoSequenziale;
         }
     }
 
     void SetAllActive(bool state)
     {
-        foreach (var obj in allObjects)
+        if (allCombinations == null) return;
+
+        foreach (var combo in allCombinations)
         {
-            if (obj != null)
-                obj.SetActive(state);
+            if (combo == null) continue;
+            if (combo.content != null) combo.content.SetActive(state);
+            if (combo.navPanel != null) combo.navPanel.SetActive(state);
         }
     }
 }
