@@ -233,101 +233,103 @@ public class FeedbackAutoManager : MonoBehaviour
         );
     }
 
-private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
-{
-    string stepName = step.Data.Name;
-    string firstStep = feedback.StepForCompletition.FirstOrDefault();
-
-    // LOG A — ingresso
-    Debug.Log($"[FAM] ── OnStepActivated | step='{stepName}' | chapter='{chapterName}' | feedback='{feedback.FeedbackName}'");
-
-    // LOG B — filtro capitolo
-    if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
+    private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
-        Debug.Log($"[FAM] EXIT① chapterFilter blocca '{chapterName}'");
-        return;
-    }
-
-    // LOG C — check primo step
-    if (stepName != firstStep)
-    {
-        Debug.Log($"[FAM] EXIT② step '{stepName}' non è il primo step '{firstStep}', salto.");
-        return;
-    }
-
-    // LOG D — già mostrato
-    if (shownFeedbacks.Contains(feedback))
-    {
-        Debug.Log($"[FAM] EXIT③ feedback '{feedback.FeedbackName}' già in shownFeedbacks, salto.");
-        return;
-    }
-
-    // LOG E — ricerca target GameObject
-    GameObject target = GetFirstGameObjectFromStep(step);
-    if (target == null)
-    {
-        Debug.LogWarning($"[FAM] EXIT④ GetFirstGameObjectFromStep restituisce null per '{stepName}'.");
-        return;
-    }
-    Debug.Log($"[FAM] target trovato: '{target.name}'");
-
-    // LOG F — ricerca posizioni feedback
-    List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
-    if (feedbackPositions == null)
-    {
-        Debug.LogWarning($"[FAM] EXIT⑤ FindFeedbackPositionChild restituisce null su '{target.name}'.");
-        return;
-    }
-    Debug.Log($"[FAM] posizioni trovate: {feedbackPositions.Count} su '{target.name}'");
-
-    // calcolo delay (invariato) ...
-    float delay = 0f;
-    foreach (var pos in feedbackPositions)
-    {
-        Vector3Int key = PositionKey(pos.position);
-        if (positionCooldowns.TryGetValue(key, out float until))
+        // Stampa tutti gli StepForCompletition
+        if (feedback.StepForCompletition != null && feedback.StepForCompletition.Count > 0)
         {
-            float remaining = until - Time.time;
-            if (remaining > delay) delay = remaining;
+            Debug.Log("[FeedbackAutoManager] StepForCompletition trovati:");
+
+            foreach (string s in feedback.StepForCompletition)
+            {
+                Debug.Log($" - {s}");
+            }
+        }
+        else
+        {
+            Debug.Log("[FeedbackAutoManager] Nessuno StepForCompletition trovato.");
+        }
+
+        Debug.Log($"[FeedbackAutoManager] OnStepActivated per '{step.Data.Name}'.");
+
+        if (chapterFilter != null && !chapterFilter.IsFeedbackAllowed(chapterName))
+        {
+            Debug.Log($"[FeedbackAutoManager] Feedback disabilitato per '{chapterName}'.");
+            return;
+        }
+
+        string stepName = step.Data.Name;
+        string firstStep = feedback.StepForCompletition.FirstOrDefault();
+
+        if (stepName != firstStep)
+        {
+            Debug.Log($"[FeedbackAutoManager] QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.");
+            return;
+        }
+
+        if (shownFeedbacks.Contains(feedback))
+        {
+            return;
+        }
+
+        GameObject target = GetFirstGameObjectFromStep(step);
+        if (target == null) return;
+
+        List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
+        if (feedbackPositions == null) return;
+
+        // Calcola il delay massimo tra tutte le posizioni target
+        float delay = 0f;
+        foreach (var pos in feedbackPositions)
+        {
+            Vector3Int key = PositionKey(pos.position);
+
+            if (positionCooldowns.TryGetValue(key, out float until))
+            {
+                float remaining = until - Time.time;
+
+                if (remaining > delay)
+                    delay = remaining;
+            }
+        }
+
+        // Segna subito come shown per evitare doppi trigger durante l'attesa
+        shownFeedbacks.Add(feedback);
+
+        if (!activeFeedbackSteps.ContainsKey(feedback))
+            activeFeedbackSteps[feedback] =
+                (new HashSet<string>(feedback.StepForCompletition), chapterName);
+
+        StartCoroutine(ShowFeedbackAfterDelay(delay, chapterName, feedback, feedbackPositions));
+
+        Debug.Log($"[FeedbackAutoManager] feedback mostrato");
+    }
+
+    private IEnumerator ShowFeedbackAfterDelay(
+        float delay,
+        string chapterName,
+        FeedbackRepository.FeedbackData feedback,
+        List<Transform> feedbackPositions)
+    {
+        if (delay > 0f)
+        {
+            // Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
+            yield return new WaitForSeconds(delay);
+        }
+
+        // Se nel frattempo il feedback è stato annullato (es. capitolo disabilitato)
+        if (!shownFeedbacks.Contains(feedback)) yield break;
+
+        feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
+
+        GameObject instance = feedbackHolder.activeFeedbackInstance;
+        if (instance != null)
+        {
+            FeedbackPrefabController controller = instance.GetComponent<FeedbackPrefabController>();
+            if (controller != null)
+                controller.isOptionalFeedback = chapterName.Contains("Optional");
         }
     }
-
-    // LOG G — avvio coroutine
-    Debug.Log($"[FAM] Avvio coroutine | delay={delay:F2}s | feedback='{feedback.FeedbackName}'");
-
-    shownFeedbacks.Add(feedback);
-    if (!activeFeedbackSteps.ContainsKey(feedback))
-        activeFeedbackSteps[feedback] = (new HashSet<string>(feedback.StepForCompletition), chapterName);
-
-    StartCoroutine(ShowFeedbackAfterDelay(delay, chapterName, feedback, feedbackPositions));
-}
-
-private IEnumerator ShowFeedbackAfterDelay(
-    float delay,
-    string chapterName,
-    FeedbackRepository.FeedbackData feedback,
-    List<Transform> feedbackPositions)
-{
-    if (delay > 0f)
-        yield return new WaitForSeconds(delay);
-
-    if (!shownFeedbacks.Contains(feedback))
-    {
-        Debug.LogWarning($"[FAM] Coroutine abortita: '{feedback.FeedbackName}' rimosso da shownFeedbacks durante attesa.");
-        yield break;
-    }
-
-    feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
-
-    // LOG H — istanza in scena
-    GameObject instance = feedbackHolder.activeFeedbackInstance;
-    if (instance != null)
-        Debug.Log($"[FAM] ✓ Istanza creata: '{instance.name}'");
-    else
-        Debug.LogWarning($"[FAM] ✗ PrepareAndDisplayFeedback eseguito ma activeFeedbackInstance è null!");
-
-    // ... resto invariato
-}
 
     public Coroutine RunCoroutineSafe(IEnumerator routine)
     {
