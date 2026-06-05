@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 [System.Serializable]
 public class StyleCombination
@@ -74,7 +75,10 @@ public class AdaptiveStyleCombinationManager : MonoBehaviour
             }
 
             if (target.navPanel != null)
+            {
                 target.navPanel.SetActive(true);
+                SetupToggleListeners(target.navPanel);
+            }
 
             Debug.Log($"[AdaptiveStyleCombinationManager] Attivata combinazione: {target.content?.name}");
         }
@@ -104,6 +108,36 @@ public class AdaptiveStyleCombinationManager : MonoBehaviour
             else
                 return isGlobale ? verbaleRiflessivoGlobale : verbaleRiflessivoSequenziale;
         }
+    }
+
+    private void SetupToggleListeners(GameObject navPanel)
+    {
+        Toggle[] toggles = navPanel.GetComponentsInChildren<Toggle>(true);
+
+        foreach (Toggle toggle in toggles)
+        {
+            toggle.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn)
+                {
+                    StartCoroutine(RefreshScrollRect());
+                }
+            });
+        }
+    }
+
+    private IEnumerator RefreshScrollRect()
+    {
+        if (scrollRect == null)
+            yield break;
+
+        scrollRect.enabled = false;
+
+        yield return null; // aspetta un frame
+
+        scrollRect.enabled = true;
+
+        Debug.Log("Chiamato refresh scrioll bar");
     }
 
     void SetAllActive(bool state)
