@@ -271,9 +271,14 @@ public class FeedbackDisplayer : MonoBehaviour
         {
             if (videoContainer != null && videoPlayer != null)
             {
-                videoContainer.gameObject.SetActive(true);
-                videoPlayer.clip = page.video;
-                videoPlayer.Play();
+                if (videoContainer != null && videoPlayer != null)
+                {
+                    videoContainer.gameObject.SetActive(true);
+                    AssignUniqueRenderTexture(videoPlayer, container, container);
+
+                    videoPlayer.clip = page.video;
+                    videoPlayer.Play();
+                }
             }
             else
             {
@@ -455,8 +460,9 @@ public class FeedbackDisplayer : MonoBehaviour
         {
             if (videoContainer != null && player != null)
             {
-                player.clip = pageData.video;
                 videoContainer.gameObject.SetActive(true);
+                AssignUniqueRenderTexture(player, page.gameObject, container);
+                player.clip = pageData.video;
                 player.Play();
             }
             else
@@ -503,6 +509,29 @@ public class FeedbackDisplayer : MonoBehaviour
             if (toggle != null)
                 toggle.isOn = (i == 0);
         }
+    }
+
+    private void AssignUniqueRenderTexture(VideoPlayer player, GameObject scopeObject, GameObject rootContainer)
+    {
+        if (player == null) return;
+
+        RenderTexture rt = new RenderTexture(1920, 1080, 0);
+        rt.name = $"RT_{scopeObject.name}_{System.Guid.NewGuid()}";
+        rt.Create();
+
+        player.renderMode = VideoRenderMode.RenderTexture;
+        player.targetTexture = rt;
+
+        var rawImage = scopeObject.GetComponentInChildren<UnityEngine.UI.RawImage>(true);
+        if (rawImage != null)
+            rawImage.texture = rt;
+
+        // Registra la RT nel controller per la pulizia
+        var ctrl = rootContainer.GetComponent<FeedbackPrefabController>();
+        if (ctrl != null)
+            ctrl.RegisterRuntimeRenderTexture(rt);
+        else
+            Debug.LogWarning("[FeedbackDisplayer] FeedbackPrefabController non trovato sul root.");
     }
 
     private IEnumerator DelayedRefresh(PageToggleLinkerIndexed linker)

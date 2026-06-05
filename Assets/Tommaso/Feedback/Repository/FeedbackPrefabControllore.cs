@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // per il componente Button
+using UnityEngine.UI;
+using UnityEngine.Video; // per il componente Button
 
 
 public class FeedbackPrefabController : MonoBehaviour
@@ -59,6 +61,9 @@ public class FeedbackPrefabController : MonoBehaviour
     public bool applyReflectiveEffects = true;
 
     private bool _hasRegisteredOpen = false;
+
+    private List<RenderTexture> _runtimeRenderTextures = new List<RenderTexture>();
+
 
 
 
@@ -128,6 +133,12 @@ public class FeedbackPrefabController : MonoBehaviour
         transform.localScale = Vector3.zero;
         //styleBehaviour?.resetVariables();
         StartCoroutine(CheckDistanceRoutine());
+    }
+
+    public void RegisterRuntimeRenderTexture(RenderTexture rt)
+    {
+        if (rt != null)
+            _runtimeRenderTextures.Add(rt);
     }
 
     private IEnumerator CheckDistanceRoutine()
@@ -353,6 +364,18 @@ public class FeedbackPrefabController : MonoBehaviour
                 styleBehaviour?.OnFeedbackClosed(this);
                 _hasRegisteredOpen = false;
             }
+
+        // Pulizia solo delle RT create a runtime
+        foreach (var rt in _runtimeRenderTextures)
+        {
+            if (rt != null)
+            {
+                rt.Release();
+                Destroy(rt);
+            }
+        }
+        _runtimeRenderTextures.Clear();
+
         foreach (RectTransform child in content)
         {
             SlideData sd = child.GetComponent<SlideData>();

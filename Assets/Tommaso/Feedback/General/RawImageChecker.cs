@@ -16,9 +16,6 @@ public class RawImageChildChecker : MonoBehaviour
     {
         yield return null; // aspetta un frame
         yield return null; // aspetta un frame
-        yield return null; // aspetta un frame
-        yield return null; // aspetta un frame
-        yield return null; // aspetta un frame
         CheckForActiveRawImageInChildren();
     }
 
