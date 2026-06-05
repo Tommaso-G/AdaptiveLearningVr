@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,16 @@ public class RawImageChildChecker : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(CheckNextFrame());
+    }
+
+    private IEnumerator CheckNextFrame()
+    {
+        yield return null; // aspetta un frame
+        yield return null; // aspetta un frame
+        yield return null; // aspetta un frame
+        yield return null; // aspetta un frame
+        yield return null; // aspetta un frame
         CheckForActiveRawImageInChildren();
     }
 
@@ -17,7 +28,10 @@ public class RawImageChildChecker : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.gameObject.activeSelf && child.GetComponent<RawImage>() != null)
+            bool hasRawImage = child.GetComponent<RawImage>() != null;
+            Debug.Log($"[RawImageChecker] Figlio '{child.name}' — attivo: {child.gameObject.activeSelf}, ha RawImage: {hasRawImage}");
+
+            if (child.gameObject.activeSelf && hasRawImage)
             {
                 found = true;
                 break;
@@ -26,11 +40,12 @@ public class RawImageChildChecker : MonoBehaviour
 
         if (objectToActivate != null)
         {
+            Debug.Log($"[RawImageChecker] '{gameObject.name}' → SetActive({found}) su '{objectToActivate.name}'", objectToActivate);
             objectToActivate.SetActive(found);
         }
         else
         {
-            Debug.LogWarning("[RawImageChildChecker] Nessun oggetto assegnato in 'objectToActivate'.");
+            Debug.LogWarning("[RawImageChecker] Nessun oggetto assegnato in 'objectToActivate'.");
         }
     }
 }
