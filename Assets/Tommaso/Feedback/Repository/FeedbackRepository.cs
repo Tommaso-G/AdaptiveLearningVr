@@ -16,8 +16,11 @@ using Unity.VisualScripting.FullSerializer;
 public class FeedbackRepository : ScriptableObject
 {
     [Header("Prefab (UI)")]
-    [Tooltip("Prefab per feedback con una o più immagini statiche.")]
-    public GameObject SingleContainer;
+    [Tooltip("Prefab per feedback con una o più immagini statiche - Attivo.")]
+    public GameObject SingleContainer_Attivo;
+
+    [Tooltip("Prefab per feedback con una o più immagini statiche - Riflessivo.")]
+    public GameObject SingleContainer_Riflessivo;
 
     [Tooltip("Prefab per feedback con un singolo video.")]
     public GameObject MultipleContainer;
@@ -321,6 +324,13 @@ public class FeedbackRepository : ScriptableObject
             return (attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo)
                 ? branch.verbalPath.attivo
                 : branch.verbalPath.riflessivo;
+    }
+    public GameObject GetSingleContainerPrefab(
+    LearningEnums.AttivoRiflessivo attivoRiflessivo)
+    {
+        return attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo
+            ? SingleContainer_Attivo
+            : SingleContainer_Riflessivo;
     }
 
 
