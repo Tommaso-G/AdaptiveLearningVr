@@ -42,7 +42,7 @@ public class RawImageChildChecker : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[RawImageChecker] Nessun oggetto assegnato in 'objectToActivate'.");
+            
         }
     }
 }
