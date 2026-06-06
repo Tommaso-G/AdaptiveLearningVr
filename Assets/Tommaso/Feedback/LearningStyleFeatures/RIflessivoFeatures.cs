@@ -85,9 +85,9 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         if (_cacheInitialized) return;
 
-        _cachedAnimators     = Object.FindObjectsByType<Animator>(FindObjectsSortMode.None);
-        _cachedParticles     = Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
-        _cachedNavMeshAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
+        _cachedAnimators = Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        _cachedParticles = Object.FindObjectsByType<ParticleSystem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        _cachedNavMeshAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         _cacheInitialized = true;
         Debug.Log("[RiflessivoFeatures] Cache animators/particles/agents inizializzata.");
