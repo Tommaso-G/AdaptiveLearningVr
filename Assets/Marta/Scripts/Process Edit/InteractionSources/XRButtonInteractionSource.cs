@@ -3,12 +3,12 @@ using UnityEngine.XR.Content.Interaction;
 
 public class XRButtonInteractionSource : InteractionSource
 {
-    private XRPushButtonVrBuilder button;
+    private XRPushButton button;
     public override bool CanHandle(GameObject obj)
-        => obj.TryGetComponent<XRPushButtonVrBuilder>(out _);
+        => obj.TryGetComponent<XRPushButton>(out _);
     private void Awake()
     {
-        button = GetComponent<XRPushButtonVrBuilder>();
+        button = GetComponent<XRPushButton>();
     }
 
     private void OnEnable()

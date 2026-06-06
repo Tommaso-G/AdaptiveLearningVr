@@ -5,6 +5,12 @@ public class InteractionSourceAutoAttacher : MonoBehaviour
 {
     public static (bool, GameObject) AttachIfNeeded(GameObject go)
     {
+        if (go.GetComponent<InteractionSource>() != null)
+        {
+            Debug.Log($"[AttachIfNeeded] {go.name} ha già un iteraction source: {go.GetComponent<InteractionSource>().GetType().Name}");
+            return (true, go);
+        }
+
         Component fallbackComp = null;
         Type fallbackSourceType = null;
 
@@ -16,6 +22,7 @@ public class InteractionSourceAutoAttacher : MonoBehaviour
             var directComp = go.GetComponent(componentType);
             if (directComp != null)
             {
+                Debug.Log($"[AttactListener] Per {go.name} trovato match type: {directComp.GetType().Name}.");
                 if (go.GetComponent(sourceType) != null) continue;
                 go.AddComponent(sourceType);
                 return (true, go);
@@ -35,6 +42,7 @@ public class InteractionSourceAutoAttacher : MonoBehaviour
         if (fallbackComp != null)
         {
             var target = fallbackComp.gameObject;
+            Debug.Log($"[AttactListener] Per {go.name} trovato PARENT match type: {fallbackComp.GetType().Name}.");
             if (target.GetComponent(fallbackSourceType) == null)
                 target.AddComponent(fallbackSourceType);
             return (true, target);
