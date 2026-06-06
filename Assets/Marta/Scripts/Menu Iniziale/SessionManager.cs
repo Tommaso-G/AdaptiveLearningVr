@@ -26,6 +26,7 @@ public class SessionManager : MonoBehaviour
     public LearningProfileSelection SelectedLearningProfile { get; private set; }
         = new LearningProfileSelection();
 
+    public string UserPrefix { get; private set; } = "";
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -43,6 +44,13 @@ public class SessionManager : MonoBehaviour
     {
         SelectedLearningProfile = profile ?? new LearningProfileSelection();
     }
+
+    public void SetUserPrefix(string prefix)
+    {
+        UserPrefix = prefix;
+    }
+
+    public void SetActiveSessionId(string id) => _activeSessionId = id;
     // ── Sessioni online ───────────────────────────────────────────────────
 
     public void StartNewSession()

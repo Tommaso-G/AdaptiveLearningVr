@@ -139,7 +139,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private IEnumerator StartOfflineSession()
     {
-        _offlineSessionId = $"OFFLINE_{System.DateTime.Now:yyyyMMdd_HHmmss}";
+        string userPrefix = SessionPersistence.LoadUserPrefix();
+        string prefixPart = string.IsNullOrEmpty(userPrefix) ? "" : $"{userPrefix}_";
+        _offlineSessionId = $"{prefixPart}OFFLINE_{System.DateTime.Now:yyyyMMdd_HHmmss}";
         currentIterationNumber = 1;
         chaptersCompletedThisIteration.Clear();
         chapterData.Clear();
@@ -309,9 +311,9 @@ public class GameManager : MonoBehaviour
                     activeChapters =>
                     {
                         // Salva solo il session_id
-                        SessionPersistence.Save(
-                            AdaptiveSystemClient.Instance.GetSessionId()
-                        );
+                        string rawId = AdaptiveSystemClient.Instance.GetSessionId();
+                        SessionPersistence.Save(rawId);
+                        SessionManager.Instance.SetActiveSessionId(rawId);
 
                         // Resetta i dati dell'iterazione corrente
                         currentIterationNumber = 1;
@@ -356,7 +358,7 @@ public class GameManager : MonoBehaviour
                 if (state == null)
                 {
                     // Server non raggiungibile: non dovrebbe succedere
-                    // se il server ÃÂ¨ sempre attivo, ma gestiamo il caso
+                    // se il server sempre attivo, ma gestiamo il caso
                     Debug.LogError("[GameManager] Server non raggiungibile.");
                     done = true;
                     return;
@@ -422,7 +424,7 @@ public class GameManager : MonoBehaviour
 
                 print(message);
 
-                AddOptionalChapter(chapterToAdd);
+                StartCoroutine(AddOptionalChapter(chapterToAdd));
 
                 AdaptiveSystemClient.Instance.StartSession(
                    allChapters.ToArray(),
@@ -468,7 +470,12 @@ public class GameManager : MonoBehaviour
 
     private void SaveIterationJsonToFile(string json)
     {
-        string dir = Path.Combine(Application.persistentDataPath, "Sessions", AdaptiveSystemClient.Instance.GetSessionId());
+        string rawId = SessionManager.Instance.GetActiveSessionId();
+        string userPrefix = SessionPersistence.LoadUserPrefix();
+        string finalPath = string.IsNullOrEmpty(userPrefix)
+            ? rawId
+            : $"{userPrefix}_{rawId}";
+        string dir = Path.Combine(Application.persistentDataPath, "Sessions", finalPath);
         Directory.CreateDirectory(dir);
 
         string path = Path.Combine(dir, $"iter_{currentIterationNumber}.json");

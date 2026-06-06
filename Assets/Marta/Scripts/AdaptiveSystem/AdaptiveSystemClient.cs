@@ -138,9 +138,6 @@ public class AdaptiveSystemClient : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // Genera un ID sessione unico basato sul timestamp
-        _sessionId = $"session_{DateTime.Now:yyyyMMdd_HHmmss}";
     }
 
     // ── Avvia una nuova sessione ──────────────────────────────────────────
@@ -151,6 +148,9 @@ public class AdaptiveSystemClient : MonoBehaviour
     /// </summary>
     public void StartSession(ChapterConfigData[] chapters, bool resetAll = false, Action<string[]> callback = null)
     {
+        if (resetAll)
+            _sessionId = $"session_{DateTime.Now:yyyyMMdd_HHmmss}";
+
         StartCoroutine(StartSessionCoroutine(chapters, resetAll, callback));
     }
 

@@ -15,6 +15,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sessionInfoText;
     [SerializeField] private TextMeshProUGUI instructionsText;
     [SerializeField] private Button learningStyleButton;
+    [SerializeField] private TMP_InputField userPrefixInput;
 
     // ── Pannello 2: selezione livello ─────────────────────────────────────
     [Header("Pannello livelli")]
@@ -107,6 +108,10 @@ public class MenuUI : MonoBehaviour
         if (SessionManager.Instance != null)
         {
             _profile = SessionManager.Instance.SelectedLearningProfile;
+
+            userPrefixInput.text = SessionManager.Instance.UserPrefix;
+
+            userPrefixInput.onValueChanged.AddListener(OnPrefixChanged);
         }
 
         // Stato iniziale pannelli
@@ -136,6 +141,7 @@ public class MenuUI : MonoBehaviour
 
     private void OnNewSessionClicked()
     {
+        SessionPersistence.SaveUserPrefix(userPrefixInput.text);
         Debug.Log($"[MenuUI] Nuova sessione avviata " +
                   $"| {_profile.attivoRiflessivo} | {_profile.sensitivoIntuitivo} " +
                   $"| {_profile.visivoVerbale} | {_profile.sequenzialeGlobale}");
@@ -261,6 +267,7 @@ public class MenuUI : MonoBehaviour
 
     private void OnLevelSelected(OfflineLevelConfig level)
     {
+        SessionPersistence.SaveUserPrefix(userPrefixInput.text);
         Debug.Log($"[MenuUI] Livello selezionato: {level.levelName}");
         _pendingLevel = level;
 
@@ -274,11 +281,17 @@ public class MenuUI : MonoBehaviour
                   $"| {_profile.attivoRiflessivo} | {_profile.sensitivoIntuitivo} " +
                   $"| {_profile.visivoVerbale} | {_profile.sequenzialeGlobale}");
 
-        SessionManager.Instance.SetLearningProfile( _profile );
+        SessionManager.Instance.SetLearningProfile(_profile);
         SessionManager.Instance.StartOfflineSession(_pendingLevel);
     }
 
+    private void OnPrefixChanged(string value)
+    {
+        SessionManager.Instance.SetUserPrefix(value);
+    }
+
     // ── Input da tastiera (debug) ─────────────────────────────────────────
+
 
     private void Update()
     {
