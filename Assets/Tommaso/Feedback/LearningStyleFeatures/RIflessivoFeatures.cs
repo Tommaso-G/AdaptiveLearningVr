@@ -18,11 +18,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
     [Header("State")]
     [SerializeField] private bool isTimeStopFeatureEnabled = true;
 
-    // Layer mask contenente solo il layer "UI", calcolato a runtime per evitare
-    // chiamate a NameToLayer durante la serializzazione (UnityException)
     private static int? _uiLayerMask;
 
     private int _activeFeedbackCount = 0;
+    private bool _firstFeedbackEverOpened = false;
 
     private bool EffectsActive => _activeFeedbackCount > 0;
     private static int UILayerMask
@@ -35,7 +34,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
         }
     }
 
-    // Backup dei layer mask originali dei caster
     private readonly List<(SphereInteractionCaster caster, LayerMask original)> _sphereOriginalMasks = new();
     private readonly List<(CurveInteractionCaster caster, LayerMask original)> _curveOriginalMasks = new();
 
@@ -65,8 +63,18 @@ public class RiflessivoFeatures : LearningStyleFeatures
     private Coroutine _resetCoroutine;
 
     private FeedbackAutoManager _safeRunner;
-
     private bool _effectsCurrentlyApplied = false;
+
+    private bool _cacheInitializedS
+{
+    get => _cacheInitializedBacking;
+    set
+    {
+        Debug.Log($"[RiflessivoFeatures] _cacheInitialized impostato a {value}\n{new System.Diagnostics.StackTrace()}");
+        _cacheInitializedBacking = value;
+    }
+}
+private bool _cacheInitializedBacking = false;
 
     private FeedbackAutoManager SafeRunner
     {
@@ -78,6 +86,14 @@ public class RiflessivoFeatures : LearningStyleFeatures
         }
     }
 
+    private void OnEnable()
+    {
+        _firstFeedbackEverOpened = false;
+        _cacheInitialized = false;
+        _activeFeedbackCount = 0;
+        Debug.Log("[RiflessivoFeatures] OnEnable — variabili resettate.");
+    }
+
 
     // --- CACHE ---
 
@@ -85,15 +101,40 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         if (_cacheInitialized) return;
 
-        _cachedAnimators = Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        _cachedParticles = Object.FindObjectsByType<ParticleSystem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        _cachedAnimators     = Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        _cachedParticles     = Object.FindObjectsByType<ParticleSystem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         _cachedNavMeshAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         _cacheInitialized = true;
-        Debug.Log("[RiflessivoFeatures] Cache animators/particles/agents inizializzata.");
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine($"[RiflessivoFeatures] Cache inizializzata — {_cachedAnimators.Length} animators, {_cachedParticles.Length} particles, {_cachedNavMeshAgents.Length} navmesh agents.");
+
+        sb.AppendLine("── ANIMATORS ──");
+        foreach (var a in _cachedAnimators)
+            sb.AppendLine($"  [{(a.gameObject.activeInHierarchy ? "ON " : "off")}] {GetFullPath(a.transform)} (layer: {LayerMask.LayerToName(a.gameObject.layer)})");
+
+        sb.AppendLine("── PARTICLES ──");
+        foreach (var p in _cachedParticles)
+            sb.AppendLine($"  [{(p.gameObject.activeInHierarchy ? "ON " : "off")}] {GetFullPath(p.transform)}");
+
+        sb.AppendLine("── NAVMESH AGENTS ──");
+        foreach (var n in _cachedNavMeshAgents)
+            sb.AppendLine($"  [{(n.gameObject.activeInHierarchy ? "ON " : "off")}] {GetFullPath(n.transform)}");
+
+        Debug.Log(sb.ToString());
     }
 
-    public void InitializeCache() => EnsureCache();
+    private string GetFullPath(Transform t)
+    {
+        string path = t.name;
+        while (t.parent != null)
+        {
+            t = t.parent;
+            path = t.name + "/" + path;
+        }
+        return path;
+    }
 
 
     // --- LOGICA DI CONTROLLO STATO ---
@@ -119,18 +160,19 @@ public class RiflessivoFeatures : LearningStyleFeatures
         if (feedback == null || !isTimeStopFeatureEnabled)
             return;
 
+        if (!_firstFeedbackEverOpened)
+        {
+            _firstFeedbackEverOpened = true;
+            EnsureCache();
+        }
+
         _activeFeedbackCount++;
 
-        Debug.Log(
-            $"[RiflessivoFeatures] Feedback aperto. Count = {_activeFeedbackCount}"
-        );
+        Debug.Log($"[RiflessivoFeatures] Feedback aperto. Count = {_activeFeedbackCount}");
 
         if (_activeFeedbackCount == 1)
         {
-            Debug.Log(
-                "[RiflessivoFeatures] Primo feedback aperto -> applicazione effetti."
-            );
-
+            Debug.Log("[RiflessivoFeatures] Primo feedback aperto -> applicazione effetti.");
             ApplyReflectiveEffects(feedback);
         }
     }
@@ -145,22 +187,16 @@ public class RiflessivoFeatures : LearningStyleFeatures
         if (_activeFeedbackCount < 0)
             _activeFeedbackCount = 0;
 
-        Debug.Log(
-            $"[RiflessivoFeatures] Feedback chiuso. Count = {_activeFeedbackCount}"
-        );
+        Debug.Log($"[RiflessivoFeatures] Feedback chiuso. Count = {_activeFeedbackCount}");
 
         if (_activeFeedbackCount == 0)
         {
-            Debug.Log(
-                "[RiflessivoFeatures] Ultimo feedback chiuso -> reset effetti."
-            );
+            Debug.Log("[RiflessivoFeatures] Ultimo feedback chiuso -> reset effetti.");
 
             if (_resetCoroutine != null)
                 SafeRunner?.StopCoroutineSafe(_resetCoroutine);
 
-            _resetCoroutine = SafeRunner?.RunCoroutineSafe(
-                WaitForVolumeAndReset(feedback)
-            );
+            _resetCoroutine = SafeRunner?.RunCoroutineSafe(WaitForVolumeAndReset(feedback));
         }
     }
 
@@ -168,12 +204,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
     {
         isTimeStopFeatureEnabled = true;
         _cacheInitialized = false;
-
+        _firstFeedbackEverOpened = false;
         _activeFeedbackCount = 0;
 
-        Debug.Log(
-            "[RiflessivoFeatures] Variabili resettate."
-        );
+        Debug.Log("[RiflessivoFeatures] Variabili resettate.");
     }
 
 
@@ -181,16 +215,11 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void ApplyReflectiveEffects(FeedbackPrefabController feedback)
     {
-
-        if (EffectsActive == false &&
-            _activeFeedbackCount != 1)
-        {
+        if (EffectsActive == false && _activeFeedbackCount != 1)
             return;
-        }
-        EnsureCache();
+
         EnsureVolumeReference();
 
-        // Cancella tutte le coroutine attive prima di avviarne di nuove
         if (_resetCoroutine != null)
             SafeRunner?.StopCoroutineSafe(_resetCoroutine);
         if (_audioFadeCoroutine != null)
@@ -217,7 +246,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private void ResetReflectiveEffects(FeedbackPrefabController feedback)
     {
-        // Cancella eventuale fade audio in corso prima di avviarne uno nuovo
         if (_audioFadeCoroutine != null)
             SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
 
@@ -237,7 +265,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     private IEnumerator WaitForVolumeAndReset(FeedbackPrefabController feedback)
     {
-        // Cancella eventuali fade audio attivi: il volume lo gestiamo qui
         if (_audioFadeCoroutine != null)
             SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
         _audioFadeCoroutine = null;
@@ -267,9 +294,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
             globalVolume = Object.FindFirstObjectByType<Volume>();
     }
 
-    /// <summary>
-    /// Muta/smuta gli AudioSource che ignorano l'AudioListener (bypassano AudioListener.volume).
-    /// </summary>
     private void MuteIgnoredAudioSources(bool mute)
     {
         foreach (var source in Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
@@ -285,17 +309,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
     // --- GESTIONE LAYER MASK DEI CASTER ---
 
-    /// <summary>
-    /// Salva i layer mask originali di tutti i caster e li sovrascrive con solo "UI",
-    /// impedendo ai controller di interagire con qualsiasi oggetto tranne le UI.
-    /// </summary>
     private void RestrictCastersToUILayer()
     {
-        if (_sphereOriginalMasks.Count > 0 ||
-            _curveOriginalMasks.Count > 0)
-        {
+        if (_sphereOriginalMasks.Count > 0 || _curveOriginalMasks.Count > 0)
             return;
-        }
 
         foreach (var caster in Object.FindObjectsByType<SphereInteractionCaster>(FindObjectsSortMode.None))
         {
@@ -314,9 +331,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
         }
     }
 
-    /// <summary>
-    /// Ripristina i layer mask originali su tutti i caster.
-    /// </summary>
     private void RestoreCasterLayers()
     {
         foreach (var (caster, original) in _sphereOriginalMasks)
@@ -372,7 +386,8 @@ public class RiflessivoFeatures : LearningStyleFeatures
 
         foreach (Animator animator in _cachedAnimators)
         {
-            if (animator != null && animator.gameObject.layer != LayerMask.NameToLayer("UI"))
+            if (animator != null && animator.enabled &&
+                animator.gameObject.layer != LayerMask.NameToLayer("UI"))
             {
                 animator.enabled = false;
                 pausedAnimators.Add(animator);
@@ -397,7 +412,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
             if (ps == null || !ps.gameObject.activeInHierarchy)
                 continue;
 
-            // salva SOLO una volta
             if (!particleStates.ContainsKey(ps))
             {
                 particleStates[ps] = new ParticleSnapshot
@@ -418,13 +432,10 @@ public class RiflessivoFeatures : LearningStyleFeatures
             var ps = kv.Key;
             var state = kv.Value;
 
-            if (ps == null)
-                continue;
+            if (ps == null) continue;
 
             if (state.wasPlaying)
-            {
                 ps.Play(true);
-            }
         }
 
         particleStates.Clear();
@@ -514,5 +525,6 @@ public class RiflessivoFeatures : LearningStyleFeatures
         _cacheInitialized = false;
         isTimeStopFeatureEnabled = true;
     }
+
     public override void OnStepCompleted(IStep step) { }
 }
