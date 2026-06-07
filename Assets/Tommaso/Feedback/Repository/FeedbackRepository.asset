@@ -737,11 +737,7 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 21300000, guid: 35f22f6cec70767439c767fb1ff3364a, type: 3}
             video: {fileID: 0}
-            text: '
-
-
-
-              .'
+            text: "Paolina \xE8 ferita. Intervieni con il primo soccorso."
           StepForCompletition:
           - Grab bottle
           - play audio
@@ -757,11 +753,7 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 21300000, guid: ea086a474fb4fd241a3ea1fec6441487, type: 3}
             video: {fileID: 0}
-            text: '
-
-
-
-'
+            text: "L'uscita \xE8 bloccata. Aiuta Paolina a trovarne un'altra."
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           - Chiudi la mappa
@@ -999,21 +991,13 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 21300000, guid: 35f22f6cec70767439c767fb1ff3364a, type: 3}
             video: {fileID: 0}
-            text: '
-
-
-
-              .'
+            text: "Paolina \xE8 ferita. Intervieni con il primo soccorso."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 32900000, guid: f67e71a673b5ebe438e9a7e76d248f42, type: 3}
-            text: '
-
-
-
-              .'
+            text: 
           StepForCompletition:
           - Grab bottle
           - play audio
@@ -1029,21 +1013,13 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 21300000, guid: ea086a474fb4fd241a3ea1fec6441487, type: 3}
             video: {fileID: 0}
-            text: '
-
-
-
-'
+            text: "L'uscita \xE8 bloccata. Aiuta Paolina a trovarne un'altra."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 32900000, guid: b7d8fdd1cb678e9408e48929add7d6cc, type: 3}
-            text: '
-
-
-
-'
+            text: 
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           - Chiudi la mappa
@@ -2832,13 +2808,9 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'In questo modo i <b><color=#00DFA2>Vigili del Fuoco</color></b>
-              potranno <b><color=#00DFA2>valutare la situazione</color></b> e arrivare
-              preparati  per gestire l''incendio.
-
-
-
-'
+            text: "Disattivare l\u2019<b><color=#00DFA2>alimentazione elettrica</color></b>
+              riduce il rischio di <b><color=#00DFA2>cortocircuiti</color></b> e
+              di nuovi inneschi che potrebbero aggravare l\u2019incendio."
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Attiva feedback gas
