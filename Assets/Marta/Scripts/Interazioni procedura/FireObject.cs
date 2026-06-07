@@ -23,10 +23,11 @@ public class FireObject : MonoBehaviour, IDestructible
     [SerializeField] private float fireDamage;
     [SerializeField] private float extinguishSpeed = 0.3f;
     [SerializeField] private float growSpeed = 0.1f;
-    private Vector3 initialScale;
-    private bool sizeChanging = false;
+    [SerializeField] private Vector3 initialScale = new Vector3(1f, 1f, 1f);
+    private bool sizeChanging = true;
     private bool isExtinguishing = false;
     public bool isHit = false;
+    public bool initialGrowth = true;
     public FireType FireType => fireType;
 
 
@@ -37,16 +38,22 @@ public class FireObject : MonoBehaviour, IDestructible
     void Start()
     {
         Transform parentTR = GetComponent<Transform>();
-        Transform[] tranforms = GetComponentsInChildren<Transform>();
+        Transform[] tranforms = GetComponentsInChildren<Transform>(true);
         fireTran = tranforms.FirstOrDefault(t => t != parentTR);
-        initialScale = fireTran.localScale;
+        //initialScale = fireTran.localScale;
         fireBox = GetComponent<BoxCollider>();
-        damageArea = GetComponentInChildren<SphereCollider>();
-        firePS = GetComponentInChildren<ParticleSystem>();
+        damageArea = GetComponentInChildren<SphereCollider>(true);
+        firePS = GetComponentInChildren<ParticleSystem>(true);
 
     }
     void Update()
     {
+        if (initialGrowth)
+        {
+            initialGrowth = false;
+            StartCoroutine(InitialGrowthCoroutine());
+        }
+
         if (!sizeChanging)
         {
             sizeChanging = true;
@@ -82,13 +89,37 @@ public class FireObject : MonoBehaviour, IDestructible
             if (fireHealt <= 0)
             {
                 OnDestroyed?.Invoke();
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 yield break;
             }
 
             yield return null;
         }
 
+        sizeChanging = false;
+    }
+
+    private IEnumerator InitialGrowthCoroutine()
+    {
+
+        float duration = 2f;
+        float elapsed = 0f;
+
+        Vector3 startScale = fireTran.localScale; // scala attuale
+        Vector3 targetScale = initialScale;       // scala finale desiderata
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = elapsed / duration;
+
+            fireTran.localScale = Vector3.Lerp(startScale, targetScale, t);
+
+            yield return null;
+        }
+
+        fireTran.localScale = targetScale; // assicurazione finale
         sizeChanging = false;
     }
 

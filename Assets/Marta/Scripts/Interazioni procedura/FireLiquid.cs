@@ -11,6 +11,7 @@ public class FireLiquid : MonoBehaviour
     [SerializeField] private VisualEffect fireSplash;
     [SerializeField] private Transform fireParent;
     [SerializeField] private Transform spawnableFire;
+    [SerializeField] private ParticleSystem fireParticles;
     private GameObject fire;
     private float time= 3.0f;
     private int numberOfSpawn = 1;
@@ -59,34 +60,31 @@ public class FireLiquid : MonoBehaviour
             print("[FireLiquid] Errore nella selezione del fire da spawnare (null)");
             return;
         }
-        // Tranform iniziale
-        Vector3 targetScale = selectedFire.transform.localScale;
-        selectedFire.localScale = Vector3.zero;
         // Cambia parent
         selectedFire.SetParent(fireParent, true);
 
-        selectedFire.gameObject.GetComponent<FireObject>().enabled = false;
+        //selectedFire.gameObject.GetComponent<FireObject>().enabled = false;
         selectedFire.gameObject.SetActive(true);
-        StartCoroutine(GrowOverTime(selectedFire, targetScale, 5f));
+        //StartCoroutine(GrowOverTime(selectedFire));
 
 
     }
 
-    private IEnumerator GrowOverTime(Transform target, Vector3 targetScale, float duration)
+    private IEnumerator GrowOverTime(Transform selectedFire)
     {
-        Vector3 startScale = Vector3.zero;
-        Vector3 endScale = targetScale;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
+        Animator anim = selectedFire.GetComponentInChildren<Animator>();
+        if(anim != null)
         {
-            target.localScale = Vector3.Lerp(startScale, endScale, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
+           anim.SetTrigger("grow");
         }
 
-        target.gameObject.GetComponent<FireObject>().enabled = true;
-        target.localScale = endScale; // assicurati che finisca preciso
+        yield return new WaitForSeconds(3f);
+
+        fireParticles?.Play();
+        anim.gameObject.SetActive(false);
+
+
+        selectedFire.gameObject.GetComponent<FireObject>().enabled = true;
     }
 
     private void FireOnLiquidError()

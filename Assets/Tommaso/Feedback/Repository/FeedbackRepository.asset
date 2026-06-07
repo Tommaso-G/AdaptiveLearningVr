@@ -922,39 +922,6 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Se stanno bruciando <b><color=#FFD700>materiali solidi</color></b>
-              (come carta, legno o arredi), usa un estintore ad <b><color=#FFD700>acqua</color></b>
-              o a <b><color=#FFD700>schiuma</color></b>.
-
-
-
-              Se invece
-              si tratta di <b><color=#FFD700>materiali elettrici</color></b>, utilizza
-              un estintore a <b><color=#FFD700>CO2</color></b>.
-
-
-              Attenzione,
-              in caso di <b><color=#FFD700>fumo</color></b>, resta abbassato per
-              evitare di respirarlo'
-          StepForCompletition:
-          - (solido) Grab extiguisher
-          - Extinguish fire
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su solido'
-          pages:
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 0
-            isIntroductory: 0
-            image: {fileID: 21300000, guid: ecbea497c12a6a441be3e754a55f21b5, type: 3}
-            video: {fileID: 0}
-            text: "Se un incendio \xE8 gestibile, puoi spegnerlo utilizzando l'estintore\n"
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 0
-            isIntroductory: 0
-            image: {fileID: 0}
             video: {fileID: 32900000, guid: 219338ba2180c7b4aa03fb0fd3180b24, type: 3}
             text: 
           - Sequenzale_Globale: 1
@@ -1035,15 +1002,7 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 21300000, guid: 97d64c3765b1f3d4d9c9d8a0d44a1be1, type: 3}
             video: {fileID: 0}
-            text: 
-          StepForCompletition:
-          - Trova L'estintore a CO2
-          - Estingui il fuoco (CO2)
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: '<color=#FFD700>Imprevisto</color>: Fuoco su liquido infiammabile'
-          pages:
+            text: Del liquido infiammabile ha preso fuoco. Intervieni per spegnerlo.
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
