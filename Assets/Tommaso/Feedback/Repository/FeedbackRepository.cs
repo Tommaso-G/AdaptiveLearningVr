@@ -22,8 +22,11 @@ public class FeedbackRepository : ScriptableObject
     [Tooltip("Prefab per feedback con una o più immagini statiche - Riflessivo.")]
     public GameObject SingleContainer_Riflessivo;
 
-    [Tooltip("Prefab per feedback con un singolo video.")]
-    public GameObject MultipleContainer;
+    [Tooltip("Prefab per feedback con un singolo video - Attivo.")]
+    public GameObject MultipleContainer_Attivo;
+
+    [Tooltip("Prefab per feedback con un singolo video - Riflessivo.")]
+    public GameObject MultipleContainer_Riflessivo;
 
     [Header("Percorsi principali")]
     public PathGroup globalPath = new PathGroup();
@@ -331,6 +334,14 @@ public class FeedbackRepository : ScriptableObject
         return attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo
             ? SingleContainer_Attivo
             : SingleContainer_Riflessivo;
+    }
+
+    public GameObject GetMultilpleContainerPrefab(
+    LearningEnums.AttivoRiflessivo attivoRiflessivo)
+    {
+        return attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo
+            ? MultipleContainer_Attivo
+            : MultipleContainer_Riflessivo;
     }
 
 

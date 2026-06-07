@@ -151,7 +151,7 @@ public class FeedbackDisplayer : MonoBehaviour
             {
                 var repo = holder.FeedbackRepository;
                 singlePrefab = isActive ? repo.SingleContainer_Attivo : repo.SingleContainer_Riflessivo;
-                multiplePrefab = repo.MultipleContainer;
+                multiplePrefab = isActive ? repo.MultipleContainer_Attivo : repo.MultipleContainer_Riflessivo;
             }
 
             if (singlePrefab == null || multiplePrefab == null)
