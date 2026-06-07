@@ -165,15 +165,9 @@ MonoBehaviour:
               o a <b><color=#FFD700>schiuma</color></b>.
 
 
-
               Se invece
               si tratta di <b><color=#FFD700>materiali elettrici</color></b>, utilizza
-              un estintore a <b><color=#FFD700>CO2</color></b>.
-
-
-              Attenzione,
-              in caso di <b><color=#FFD700>fumo</color></b>, resta abbassato per
-              evitare di respirarlo'
+              un estintore a <b><color=#FFD700>CO2</color></b>.'
           StepForCompletition:
           - (solido) Grab extiguisher
           - Extinguish fire
@@ -233,9 +227,9 @@ MonoBehaviour:
             text: "<color=#FFD700><b>Obbiettivo</b></color>\r\nSpegnere in sicurezza
               un incendio causato da un liquido infiammabile senza propagare le fiamme.\n\r\n<color=#FFD700><b>Procedura</b></color>\r\n<color=#888888>\u2022</color>
               Utilizza un estintore a CO2 oppure a schiuma.  \r\n<color=#888888>\u2022</color>
-              Rimuovi la chiave di sicurezza\r\n<color=#888888>\u2022</color> Mantieni
-              il getto il pi\xF9 possibile parallelo al pavimento per evitare schizzi
-              e propagazione dell'incendio."
+              Rimuovi la chiave di sicurezza e afferra l'ugello.\r\n<color=#888888>\u2022</color>Premi
+              la leva per attivare il getto e mantienilo il pi\xF9 possibile parallelo
+              al pavimento per evitare schizzi e propagazione dell'incendio."
           StepForCompletition:
           - Trova L'estintore a CO2
           - Estingui il fuoco (CO2)
@@ -267,12 +261,12 @@ MonoBehaviour:
             text: "<color=#00DFA2><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               Per avvisare il personale scolastico, usa il <b><color=#00DFA2>telefono</color></b>,
               premi il tasto <b><color=#00DFA2>\"personale scolastico\"</color></b>
-              e alza la cornetta.  \n<color=#888888>\u2022</color> Per attivare l\u2019allarme
-              antincendio, vai al <b><color=#00DFA2>pulsante di allarme</color></b>
+              e alza la cornetta.  \n\n<color=#888888>\u2022</color> Per attivare
+              l\u2019allarme antincendio, vai al <b><color=#00DFA2>pulsante di allarme</color></b>
               nel corridoio, solleva la <b><color=#00DFA2>copertura di sicurezza</color></b>
-              e premi il pulsante.  \n<color=#888888>\u2022</color> Per avvisare
+              e premi il pulsante.  \n\n<color=#888888>\u2022</color> Per avvisare
               i Vigili del Fuoco, utilizza nuovamente il <b><color=#00DFA2>telefono</color></b>,
-              componi il <b><color=#00DFA2>115</color></b> e alza la cornetta. Rispondi
+              premi <b><color=#00DFA2>115</color></b> e alza la cornetta. Rispondi
               alle domande tramite il <b><color=#00DFA2>pannello sulla mano</color></b>
               usando le informazioni presenti nel tuo ufficio."
           StepForCompletition:
@@ -305,7 +299,7 @@ MonoBehaviour:
             text: "<color=#00DFA2><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               Per interrompere l\u2019<b><color=#00DFA2>elettricit\xE0</color></b>,
               solleva o premi gli <b><color=#00DFA2>interruttori elettrici</color></b>
-              corretti secondo le informazioni presenti nel tuo ufficio.  \n<color=#888888>\u2022</color>
+              corretti secondo le informazioni presenti nel tuo ufficio.  \n\n<color=#888888>\u2022</color>
               Per disattivare il <b><color=#00DFA2>gas</color></b>, ruota la <b><color=#00DFA2>valvola</color></b>
               corretta in senso antiorario secondo le informazioni presenti nel tuo
               ufficio."
@@ -337,10 +331,11 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "<color=#00DFA2><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
-              Valuta l\u2019incendio: se \xE8 troppo esteso, <b><color=#00DFA2>esci
-              subito</color></b> senza tentare di spegnerlo.  \n<color=#888888>\u2022</color>
+              Entra nella stanza per valutare l\u2019incendio. Quando un incendio
+              \xE8 troppo esteso, <b><color=#00DFA2>esci subito</color></b> dalla
+              stanza senza tentare di spegnerlo.  \n\n<color=#888888>\u2022</color>
               <b><color=#00DFA2>Chiudi la porta</color></b> per rallentare la propagazione
-              di fuoco e fumo.  \n<color=#888888>\u2022</color> Tappa le fessure
+              di fuoco e fumo.  \n\n<color=#888888>\u2022</color> Tappa le fessure
               inferiori della porta con <b><color=#00DFA2>tessuti disponibili </color></b>
               (ad esempio indumenti o una felpa), posizionandoli lungo il bordo per
               ridurre il passaggio del fumo, che renderebbe l'aria poco respirabile."
@@ -370,12 +365,12 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "<color=#00DFA2><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
-              Fai il giro delle <b><color=#00DFA2>aule principali</color></b> segnalate
-              e controlla che non ci sia nessuno rimasto indietro.  \n<color=#888888>\u2022</color>
+              Fai il giro delle <b><color=#00DFA2>aule principali</color></b> e controlla
+              che non ci sia nessuno rimasto indietro. \n\n<color=#888888>\u2022</color>
               Se trovi qualcuno, <b><color=#00DFA2>accompagnalo all\u2019uscita pi\xF9
               vicina</color></b>, avvicinandoti a lui in modo che possa seguirti. 
-              \n<color=#888888>\u2022</color> Chiudi sempre la <b><color=#00DFA2>porta
-              dell\u2019aula</color></b> una volta perlustrata.  \n<color=#888888>\u2022</color>
+              \n\n<color=#888888>\u2022</color> Chiudi sempre la <b><color=#00DFA2>porta
+              dell\u2019aula</color></b> una volta perlustrata.  \n\n<color=#888888>\u2022</color>
               Completa tutte le operazioni dell\u2019aula prima di passare alla successiva."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
@@ -413,9 +408,9 @@ MonoBehaviour:
             text: "<color=#00DFA2><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               Avvicinati agli <b><color=#00DFA2>insegnanti</color></b> uno ad uno
               per raccogliere le informazioni e consulta i <b><color=#00DFA2>pannelli
-              informativi</color></b>.  \n<color=#888888>\u2022</color> Segnala eventuali
-              <b><color=#00DFA2>dispersi</color></b> utilizzando i pulsanti scorrevoli
-              sui pannelli, tenendo conto di presenti e assenti."
+              informativi</color></b>.  \n\n<color=#888888>\u2022</color> Segnala
+              eventuali <b><color=#00DFA2>dispersi</color></b> utilizzando i pulsanti
+              scorrevoli sui pannelli, tenendo conto di presenti e assenti."
           StepForCompletition:
           - segnala assenti
           PersonalizedPrefab: {fileID: 0}
@@ -434,21 +429,24 @@ MonoBehaviour:
               devi <b><color=#FFD700>spegnere in sicurezza un incendio di dimensioni
               ridotte</color></b> utilizzando l'estintore giusto in base al materiale
               coinvolto. Questo permetter\xE0 di liberare il percorso e proseguire
-              con l\u2019evacuazione.\n"
+              con l\u2019evacuazione.\n\n<color=#FFD700><b>Attenzione</b></color>:
+              In alcuni casi potresti vedere del fumo nella stanza. Se capitasse,
+              prosegui accovacciato con la procedura.Il fumo tende a salire e accumularsi
+              in alto; restare bassi riduce l\u2019inalazione di sostanze tossichee
+              migliora la visibilit\xE0.\n\n"
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "<color=#FFD700><b>Procedura</b></color>\n<color=#888888>\u2022</color>
+            text: "<color=#FFD700><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               Per prima cosa valuta i <b><color=#FFD700>materiali coinvolti</color></b>
-              e prendi l\u2019<b><color=#FFD700>estintore pi\xF9 adatto</color></b>
-              cercandolo nell\u2019ambiente circostante.  \n<color=#888888>\u2022</color>
+              e prendi l\u2019<b><color=#FFD700>estintore pi\xF9 adatto</color></b>.\n\n<color=#888888>\u2022</color>
               Una volta preso, <b><color=#FFD700>rimuovi la chiave di sicurezza</color></b>:
-              senza la rimozione l\u2019estintore non si attiva.  \n<color=#888888>\u2022</color>
+              senza la rimozione l\u2019estintore non si attiva.  \n\n<color=#888888>\u2022</color>
               Afferra l\u2019<b><color=#FFD700>ugello</color></b> e puntalo alla
               <b><color=#FFD700>base delle fiamme</color></b>, cio\xE8 il punto di
-              origine del fuoco da cui \xE8 pi\xF9 efficace estinguerlo.  \n<color=#888888>\u2022</color>
+              origine del fuoco da cui \xE8 pi\xF9 efficace estinguerlo.  \n\n<color=#888888>\u2022</color>
               Premi la <b><color=#FFD700>leva di attivazione</color></b> e mantieni
               il flusso continuo fino allo spegnimento completo del fuoco.\n\nNella
               pagina seguente troverai indicazioni sugli estintori adeguati ai materiali
@@ -464,19 +462,19 @@ MonoBehaviour:
               efficaci perch\xE9 agiscono <b><color=#FFD700>raffreddando il materiale
               e soffocando le fiamme</color></b>, riducendo la temperatura sotto
               il punto di combustione.\r\n\r\nSe invece si tratta di <b><color=#FFD700>materiali
-              elettrici</color></b>, utilizza un estintore a <b><color=#FFD700>CO2</color></b>. 
-              \r\nLa CO\u2082 \xE8 preferita perch\xE9 <b><color=#FFD700>non conduce
-              elettricit\xE0 e non lascia residui</color></b>, evitando danni ai
-              circuiti e riducendo il rischio di cortocircuiti."
+              elettrici</color></b>, utilizza un estintore a <b><color=#FFD700>CO2</color></b>.\n 
+              \r\nLa CO2 \xE8 preferita perch\xE9 <b><color=#FFD700>non conduce elettricit\xE0
+              e non lascia residui</color></b>, evitando danni ai circuiti e riducendo
+              il rischio di cortocircuiti."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: "Attenzione, In presenza di <b><color=#FFD700>fumo</color></b>,
-              <b><color=#FFD700>abbassati</color></b> e procedi vicino al pavimento.
-              \n\nIl fumo tende a salire e accumularsi in alto; restare bassi riduce
-              l\u2019inalazione di sostanze tossichee migliora la visibilit\xE0.\n\n"
+            text: '
+
+
+'
           StepForCompletition:
           - (solido) Grab extiguisher
           - Extinguish fire
@@ -506,12 +504,12 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "<color=#FFD700><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               Per prima cosa apri il <b><color=#FFD700>medkit</color></b>, dove troverai
-              tutti gli strumenti necessari al primo intervento.  \n<color=#888888>\u2022</color>
+              tutti gli strumenti necessari al primo intervento.  \n\n<color=#888888>\u2022</color>
               Prendi la <b><color=#FFD700>bottiglia di acqua pulita</color></b>,
               rimuovi il tappo e versa il contenuto sulla zona interessata per <b><color=#FFD700>raffreddare
-              la scottatura</color></b>.  \n<color=#888888>\u2022</color> Asciuga
+              la scottatura</color></b>.  \n\n<color=#888888>\u2022</color> Asciuga
               delicatamente la zona con il <b><color=#FFD700>panno sterile</color></b>
-              in modo da poter applicare la garza.\n<color=#888888>\u2022</color>
+              in modo da poter applicare la garza.\n\n<color=#888888>\u2022</color>
               Proteggi infine la zona con una <b><color=#FFD700>garza sterile</color></b>;
               se cade o si sporca, sostituiscila con una nuova per garantire la massima
               igiene."
@@ -541,10 +539,9 @@ MonoBehaviour:
             text: "<color=#FFD700><b>Procedura</b></color>\n\n<color=#888888>\u2022</color>
               <b><color=#FFD700>Indica l\u2019uscita pi\xF9 vicina</color></b> alla
               persona utilizzando la <b><color=#FFD700>mappa sul pannello della mano</color></b>:
-              seleziona l\u2019uscita corretta puntandola con il controller e confermando
-              la scelta.  \n<color=#888888>\u2022</color> <b><color=#FFD700>Chiudi
-              la mappa</color></b> utilizzando il pulsante dedicato e prosegui con
-              l\u2019evacuazione."
+              seleziona l\u2019uscita corretta puntandola con il controller.\n\n<color=#888888>\u2022</color>
+              <b><color=#FFD700>Chiudi la mappa</color></b> utilizzando il pulsante
+              dedicato e prosegui con l\u2019evacuazione."
           StepForCompletition:
           - Seleziona una via di fuga alternativa
           - Chiudi la mappa
@@ -561,21 +558,21 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "<color=#FFD700><b>Obbiettivo</b></color>\n\r\nIn questo capitolo
-              dovrai spegnere in sicurezza un incendio causato da un liquido infiammabile
-              senza propagare le fiamme. Incendi di questo tipo si comportano diversamente
-              dagli altri ed \xE8 importante utilizzare l'estintore corretto e in
-              modo adeguato per evitare che il combustibile si disperda, aumentando
-              l\u2019area interessata e la pericolosit\xE0 dell\u2019incendio."
+              dovrai spegnere in sicurezza un incendio causato da un <b><color=#FFD700>liquido
+              infiammabile</b></color> senza propagare le fiamme. Incendi di questo
+              tipo si comportano diversamente dagli altri ed \xE8 importante utilizzare
+              l'estintore corretto e in modo adeguato per evitare che il combustibile
+              si disperda."
           - Sequenzale_Globale: 1
             Visivo_Verbale: 1
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
             text: "<color=#FFD700><b>Procedura</b></color>\n\r\n<color=#888888>\u2022</color>
-              Per prima cosa prendi un <b><color=#FFD700>estintore a CO\u2082</color></b>
-              oppure a <b><color=#FFD700>schiuma</color></b>.\r\n<color=#888888>\u2022</color>
+              Per prima cosa prendi un <b><color=#FFD700>estintore a CO2</color></b>
+              oppure a <b><color=#FFD700>schiuma</color></b>.\n\r\n<color=#888888>\u2022</color>
               Rimuovi la <b><color=#FFD700>chiave di sicurezza</color></b> per sbloccare
-              il dispositivo e renderlo operativo.  \r\n<color=#888888>\u2022</color>
+              il dispositivo e renderlo operativo.  \n\r\n<color=#888888>\u2022</color>
               Afferra il cono e mantieni il getto il pi\xF9 possibile parallelo al
               pavimento, cos\xEC da ridurre il rischio di schizzi e limitare la propagazione
               dell\u2019incendio."
@@ -795,16 +792,16 @@ MonoBehaviour:
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 32900000, guid: f2141a04b13e40d48a140f065de8ee23, type: 3}
-            text: 
-          - Sequenzale_Globale: 1
-            Visivo_Verbale: 0
-            isIntroductory: 0
             image: {fileID: 21300000, guid: 5259f7f02cf1a3e449e5ab0557713133, type: 3}
             video: {fileID: 0}
             text: Segnala l'incendio per avvisare il personale scolastico, gli occupanti
               dell'edificio e i soccorritori.
+          - Sequenzale_Globale: 1
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: f2141a04b13e40d48a140f065de8ee23, type: 3}
+            text: 
           StepForCompletition:
           - Seleziona il tasto "Personale Scolastico"
           - completa Domande
@@ -1140,6 +1137,27 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
+        - FeedbackName: Disattiva il gas
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b> ruotando
+              la valvola giusta .
+
+
+              Questo blocca il flusso ed evita
+              possibili fughe pericolose.
+
+'
+          StepForCompletition:
+          - Attiva feedback gas
+          - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
         - FeedbackName: "Disattiva l'elettricit\xE0"
           pages:
           - Sequenzale_Globale: 0
@@ -1153,24 +1171,6 @@ MonoBehaviour:
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Attiva feedback gas
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
-        - FeedbackName: Disattiva il gas
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b> ruotando
-              la valvola giusta in senso antiorario. Questo blocca il flusso ed evita
-              possibili fughe pericolose.
-
-'
-          StepForCompletition:
-          - Attiva feedback gas
-          - Play audio Gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -1637,15 +1637,11 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 0}
-            text: 'Per prima cosa, <b><color=#00DFA2>avvisa  il personale scolastico
-              usando il telefono</color></b>. Premi "personale scolastico" sul tastierino
-              e alza la cornetta per metterti in contatto con il personale.
-
-
-              La<b><color=#00DFA2>segnalazione
-              </color></b> permette al personale scolastico di <b><color=#00DFA2>attivare
-              le procedure di emergenza</color></b> e coordinare l''evacuazione in
-              modo sicuro.'
+            text: "Per prima cosa, <b><color=#00DFA2>avvisa  il personale scolastico
+              usando il telefono</color></b>. \n\nPremi \"personale scolastico\"
+              sul tastierino e alza la cornetta per metterti in contatto con il personale.\n\nLa
+              <b><color=#00DFA2>segnalazione </color></b> permette al personale scolastico
+              di <b><color=#00DFA2>attivare le procedure di emergenza</color></b>."
           StepForCompletition:
           - Seleziona il tasto "Personale Scolastico"
           - Eseguire chiamata
@@ -1661,10 +1657,10 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "Successivamente, <b><color=#00DFA2>attiva il pulsante di allarme
               antincendio pi\xF9 vicino</color></b> per avvisare tutte le persone
-              presenti nell'edificio. Lo puoi trovare in corridoio.\n \nSolleva la
-              copertura di sicurezza e <b><color=#00DFA2>premi il pulsante avvicinando
-              il controller</color></b> per attivare il segnale di emergenza.\n\nGli
-              allarmi sono disposti in modo da essere sentiti in ogni luogo dell'edificio.\r\n"
+              presenti nell'edificio.\n \nSolleva la copertura di sicurezza e <b><color=#00DFA2>premi
+              il pulsante avvicinando il controller</color></b> per attivare il segnale
+              di emergenza.\n\nGli altoparlanti sono disposti in modo da essere sentiti
+              in ogni luogo dell'edificio.\r\n"
           StepForCompletition:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
@@ -1692,25 +1688,6 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 1
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
-              dal quadro elettrico</color></b> utilizzando gli interruttori corretti
-              secondo le informazioni che erano presenti nel tuo ufficio.\r\n\r\nDisattivare
-              l\u2019<b><color=#00DFA2>alimentazione elettrica</color></b> riduce
-              il rischio di <b><color=#00DFA2>cortocircuiti</color></b> e di nuovi
-              inneschi che potrebbero aggravare l\u2019incendio."
-          StepForCompletition:
-          - "Disattiva elettricit\xE0 e gas"
-          - Attiva feedback gas
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
         - FeedbackName: Disattiva il gas
           pages:
           - Sequenzale_Globale: 0
@@ -1729,6 +1706,25 @@ MonoBehaviour:
           StepForCompletition:
           - Attiva feedback gas
           - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 1
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
+              dal quadro elettrico</color></b> utilizzando gli interruttori corretti
+              secondo le informazioni che erano presenti nel tuo ufficio.\r\n\r\nDisattivare
+              l\u2019<b><color=#00DFA2>alimentazione elettrica</color></b> riduce
+              il rischio di <b><color=#00DFA2>cortocircuiti</color></b> e di nuovi
+              inneschi che potrebbero aggravare l\u2019incendio."
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Attiva feedback gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -2051,7 +2047,7 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "Una volta evacuati, <b><color=#00DFA2>parla subito con gli insegnanti</color></b>
               e chiedi informazioni sul numero di studenti presenti quel giorno.
-              <b><color=#00DFA2>Avvicinati </color></b> ad un insgnate per parlare
+              \n\n<b><color=#00DFA2>Avvicinati </color></b> ad un insgnate per parlare
               con lui. \n\nUna volta recepite le informazioni sugli studenti, segnala
               eventuali disperi usando i bottoni scorrevoli."
           StepForCompletition:
@@ -2253,8 +2249,7 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 32900000, guid: 33d1e2148820662418083397e790c0f2, type: 3}
             text: "<b><color=#00DFA2>Attiva il pulsante di allarme antincendio pi\xF9
-              vicino</color></b> per avvisare tutte le persone presenti nell'edificio.
-              \r\n"
+              vicino</color></b> per avvisare tutte le persone nell'edificio. \r\n"
           StepForCompletition:
           - Attiva Allarme
           PersonalizedPrefab: {fileID: 0}
@@ -2267,12 +2262,8 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 32900000, guid: dae63f85d652ca848965e1088dc81b2f, type: 3}
-            text: 'Prendi il telefono e <b><color=#00DFA2>chiama subito i Vigili
-              del Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.
-
-
-
-'
+            text: Prendi il telefono e <b><color=#00DFA2>chiama subito i Vigili del
+              Fuoco</color></b> al numero <b><color=#00DFA2>115</color></b>.
           StepForCompletition:
           - Seleziona il tasto "115"
           - completa Domande
@@ -2281,22 +2272,6 @@ MonoBehaviour:
           applyReflectiveEffects: 1
       - ChapterName: "Interruzione elettricit\xE0+gas"
         feedbacks:
-        - FeedbackName: "Disattiva l'elettricit\xE0"
-          pages:
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 0
-            isIntroductory: 0
-            image: {fileID: 0}
-            video: {fileID: 32900000, guid: 54feed38cc9137345b514e723eb6ddcc, type: 3}
-            text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
-              dal quadro elettrico</color></b>. Questo riduce il rischio di cortocircuiti
-              e ulteriori inneschi dell\u2019incendio.\r\n"
-          StepForCompletition:
-          - "Disattiva elettricit\xE0 e gas"
-          - Attiva feedback gas
-          PersonalizedPrefab: {fileID: 0}
-          needsButtonToBeCompleted: 0
-          applyReflectiveEffects: 1
         - FeedbackName: Disattiva il gas
           pages:
           - Sequenzale_Globale: 0
@@ -2311,6 +2286,21 @@ MonoBehaviour:
           StepForCompletition:
           - Attiva feedback gas
           - Play audio Gas
+          PersonalizedPrefab: {fileID: 0}
+          needsButtonToBeCompleted: 0
+          applyReflectiveEffects: 1
+        - FeedbackName: "Disattiva l'elettricit\xE0"
+          pages:
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 32900000, guid: 54feed38cc9137345b514e723eb6ddcc, type: 3}
+            text: "Ora, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0 dal quadro
+              elettrico</color></b> per ridurre il rischio di cortocircuiti."
+          StepForCompletition:
+          - "Disattiva elettricit\xE0 e gas"
+          - Attiva feedback gas
           PersonalizedPrefab: {fileID: 0}
           needsButtonToBeCompleted: 0
           applyReflectiveEffects: 1
@@ -2372,7 +2362,7 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
+            video: {fileID: 32900000, guid: a799015671b45fd4e82f6377b7bc99be, type: 3}
             text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
               <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
           StepForCompletition:
@@ -2405,7 +2395,7 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
+            video: {fileID: 32900000, guid: a799015671b45fd4e82f6377b7bc99be, type: 3}
             text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
               <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula
               per limitare l'eventuale diffusione del fuoco."
@@ -2439,7 +2429,7 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
+            video: {fileID: 32900000, guid: a799015671b45fd4e82f6377b7bc99be, type: 3}
             text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
               <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
           StepForCompletition:
@@ -2456,7 +2446,7 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
+            video: {fileID: 32900000, guid: a799015671b45fd4e82f6377b7bc99be, type: 3}
             text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
               <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
           StepForCompletition:
@@ -2505,7 +2495,7 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
+            video: {fileID: 32900000, guid: a799015671b45fd4e82f6377b7bc99be, type: 3}
             text: "Se l\u2019aula \xE8 vuota, <b><color=#00DFA2>esci rapidamente</color></b>.
               <b><color=#00DFA2>Una volta fuori, chiudi la porta</color></b> dell\u2019aula."
           StepForCompletition:
@@ -2622,8 +2612,8 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 32900000, guid: 7b69c0c39171f124b9fcc2fc884a10a0, type: 3}
-            text: Una persona ha subito una lieve scottatura, apri il medikit e utilizza
-              gli strumenti nell'ordine giusto
+            text: Una persona ha subito una lieve scottatura, apri il <b><color=#FFD700>medikit
+              e utilizza gli strumenti nell'ordine giusto</color></b>
           StepForCompletition:
           - Grab bottle
           - Grab tappo
@@ -2697,16 +2687,9 @@ MonoBehaviour:
             Visivo_Verbale: 0
             isIntroductory: 0
             image: {fileID: 0}
-            video: {fileID: 0}
-            text: "Usa un <b><color=#FFD700>estintore a CO\u2082</color></b> oppure
-              a <b><color=#FFD700>schiuma</color></b>."
-          - Sequenzale_Globale: 0
-            Visivo_Verbale: 0
-            isIntroductory: 0
-            image: {fileID: 0}
             video: {fileID: 32900000, guid: 38390480a7d3f124f858da4c960acb2f, type: 3}
-            text: "Usa un <b><color=#FFD700>estintore a CO\u2082</color></b> oppure
-              a <b><color=#FFD700>schiuma</color></b>."
+            text: Per questo tipo di fuochi, usa un <b><color=#FFD700>estintore a
+              CO2</color></b> oppure a <b><color=#FFD700>schiuma</color></b>.
           StepForCompletition:
           - Trova L'estintore a CO2
           PersonalizedPrefab: {fileID: 0}
