@@ -387,7 +387,7 @@ private bool _cacheInitializedBacking = false;
         foreach (Animator animator in _cachedAnimators)
         {
             if (animator != null && animator.enabled &&
-                animator.gameObject.layer != LayerMask.NameToLayer("UI"))
+                animator.gameObject.layer != LayerMask.NameToLayer("No Post Process"))
             {
                 animator.enabled = false;
                 pausedAnimators.Add(animator);
