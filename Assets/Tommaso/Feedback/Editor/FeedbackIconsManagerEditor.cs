@@ -16,6 +16,10 @@ public class FeedbackIconsManagerEditor : Editor
 
         EditorGUILayout.Space(4);
 
+        if (GUILayout.Button("Carica step", GUILayout.Height(28)))
+            LoadSteps(manager);
+
+
         // ← aggiungi questo
         EditorGUI.BeginChangeCheck();
         bool newValue = EditorGUILayout.Toggle("Force Disable Sequential Icons", manager.forceDisableSequentialIcons);

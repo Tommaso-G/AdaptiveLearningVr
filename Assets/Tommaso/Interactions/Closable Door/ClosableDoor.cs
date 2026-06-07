@@ -52,6 +52,11 @@ namespace UnityEngine.XR.Content.Interaction
             }
         }
 
+        public void CloseFromCode(bool toOpen)
+        {
+            m_Closed = toOpen;
+        }
+
         void Awake()
         {
             m_DoorJoint.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
