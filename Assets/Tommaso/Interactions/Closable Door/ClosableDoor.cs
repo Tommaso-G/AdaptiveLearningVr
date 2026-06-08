@@ -54,6 +54,7 @@ namespace UnityEngine.XR.Content.Interaction
 
         public void CloseFromCode(bool toOpen)
         {
+            if (m_Closed != toOpen)
             m_Closed = toOpen;
         }
 
