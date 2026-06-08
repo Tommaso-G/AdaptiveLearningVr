@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PositionSwitcher : MonoBehaviour, ICompletableStep
 {
@@ -12,6 +13,10 @@ public class PositionSwitcher : MonoBehaviour, ICompletableStep
 
     [Header("Impostazioni dissolvenza")]
     public float durataDissolvenza = 1.5f;
+
+    [Header("Eventi")]
+    public UnityEvent onScompareStart;
+    public UnityEvent onScompareEnd;
 
     private bool inCorso = false;
 
@@ -45,7 +50,7 @@ public class PositionSwitcher : MonoBehaviour, ICompletableStep
         ImpostaAlpha(oggettoCheScompare, 1f);
         ImpostaAlpha(oggettoCheCompare, 0f);
         oggettoCheCompare.SetActive(true);
-
+        onScompareStart?.Invoke();
         float tempo = 0f;
         while (tempo < durataDissolvenza)
         {
@@ -62,7 +67,7 @@ public class PositionSwitcher : MonoBehaviour, ICompletableStep
         ImpostaAlpha(oggettoCheCompare, 1f);
 
         oggettoCheScompare.SetActive(false);
-
+        onScompareEnd?.Invoke();
         IsCompleted = true;
         inCorso = false;
     }

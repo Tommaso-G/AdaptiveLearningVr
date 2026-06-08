@@ -15,6 +15,13 @@ public class TimedResetTransform : MonoBehaviour
     [Header("Physics")]
     public bool resetRigidbodyVelocity = true;
 
+    [Header("Colliders")]
+    [SerializeField] private Transform transformWithColliders;
+
+    [Header("Visual Reset")]
+    [SerializeField] private Transform transformWithMeshes;
+    [SerializeField] private float meshEnableDelay = 0.2f;
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     private Rigidbody rb;
@@ -51,7 +58,7 @@ public class TimedResetTransform : MonoBehaviour
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
 
-        timerCoroutine = StartCoroutine(ResetAfterDelay());
+        timerCoroutine = StartCoroutine(ResetRoutine());
     }
 
     public void StopTimer()
@@ -61,40 +68,63 @@ public class TimedResetTransform : MonoBehaviour
             StopCoroutine(timerCoroutine);
     }
 
-    private IEnumerator ResetAfterDelay()
+    private void SetCollidersEnabled(bool enabled)
     {
-        yield return new WaitForSeconds(resetDelay);
-        ResetTransform();
+        if (transformWithColliders == null)
+            return;
+
+        Collider[] colliders =
+            transformWithColliders.GetComponentsInChildren<Collider>(true);
+
+        foreach (Collider col in colliders)
+        {
+            col.enabled = enabled;
+        }
     }
 
-    public void ResetTransform()
+    private void SetMeshesEnabled(bool enabled)
     {
-        print("[TimedResetTransform] ResetTransform inizio");
+        if (transformWithMeshes == null)
+            return;
+
+        foreach (var mr in transformWithMeshes.GetComponentsInChildren<MeshRenderer>(true))
+            mr.enabled = enabled;
+
+        foreach (var smr in transformWithMeshes.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            smr.enabled = enabled;
+    }
+    private IEnumerator ResetRoutine()
+    {
+        yield return new WaitForSeconds(resetDelay);
+        // Nasconde le mesh
+        SetMeshesEnabled(false);
+
+        // Disabilita collider
+        SetCollidersEnabled(false);
+
+        // Blocca fisica
         if (rb != null)
         {
+            rb.isKinematic = true;
+
             if (resetRigidbodyVelocity)
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
-
-            rb.isKinematic = true;
         }
 
-        if (targetPosition != null && targetRotation != null)
-        {
-            print("[TimedResetTransform] TargetTransform reset");
-            transform.position = targetPosition;
-            transform.rotation = targetRotation;
-        }
-        else
-        {
-            print("[TimedResetTransform] TargetTransform initial");
-            transform.position = initialPosition;
-            transform.rotation = initialRotation;
-        }
+        // Ripristina posizione e rotazione globali
+        transform.position = targetPosition;
+        transform.rotation = targetRotation;
 
-        if (rb != null)
-            rb.isKinematic = true;
+        // Riabilita collider
+        SetCollidersEnabled(true);
+
+        // Attende un tempo configurabile
+        yield return new WaitForSeconds(meshEnableDelay);
+
+        // Riabilita mesh
+        SetMeshesEnabled(true);
     }
 }
