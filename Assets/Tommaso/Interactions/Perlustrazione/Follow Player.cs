@@ -27,6 +27,12 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
     public ErrorReporter ErrorReporter;
 
+    [Header("Timer")]
+    public float timeLimit = 30f;
+    private float _elapsedTime = 0f;
+    private bool _timerActive = false;
+    private bool _timerExpired = false;
+
     private Collider _bestCollider;
     private Transform _currentDestination = null;
     private bool _reachedExit = false;
@@ -71,6 +77,9 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
         playerTransform = player.transform;
         isFollowing = true;
+        _timerActive = true;
+        _elapsedTime = 0f;
+        _timerExpired = false;
 
         if (_hasAgent)
         {
@@ -81,6 +90,17 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     void Update()
     {
         if (!_hasAgent) return;
+
+        if (_timerActive && !IsCompleted && !_timerExpired)
+        {
+            _elapsedTime += Time.deltaTime;
+
+            if (_elapsedTime >= timeLimit)
+            {
+                HandleTimerExpired();
+                return;
+            }
+        }
 
         if (_reachedExit && _currentDestination != null)
         {
@@ -97,6 +117,26 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         {
             agent.SetDestination(playerTransform.position);
         }
+    }
+
+    private void HandleTimerExpired()
+    {
+        if (IsCompleted) return;
+
+        if (ErrorReporter != null)
+        {
+            ErrorReporter.RegisterError(gameObject.name + "_tempoScaduto");
+        }
+        else
+        {
+            Debug.LogError(
+                "[FollowerAgentWithCheck] ErrorReporter non assegnato (timer scaduto)."
+            );
+        }
+
+        _timerExpired = true;
+        _timerActive = false;
+        // Niente altro: l'NPC continua a seguire il player e lo step si completa normalmente
     }
 
     private void ComputeBestCollider()
@@ -151,11 +191,12 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         if (exitDoor != null && exitDoor.blocked)
             return;
 
+        _timerActive = false;
+
         bool isError = other != _bestCollider;
 
         if (!_hasAgent)
         {
-            // Nessun NavMeshAgent: completa subito senza logica di destination
             CompleteStep(isError);
             return;
         }
@@ -178,6 +219,7 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     private void CompleteStep(bool registerError)
     {
         IsCompleted = true;
+        _timerActive = false;
 
         if (registerError)
         {
