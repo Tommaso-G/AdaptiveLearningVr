@@ -41,6 +41,11 @@ public class ExecutionOrderController : MonoBehaviour
 
     public FeedbackIconsManager feedbackIconsManager;
 
+    [Header("Cooldown oggetti validi")]
+    [Tooltip("Secondi in cui un oggetto correttamente interagito non può generare errori per interazioni ripetute.")]
+    public float validInteractionCooldownSeconds = 15f;
+
+    private Dictionary<string, float> lastValidInteractionTime = new Dictionary<string, float>();
 
     private IChapter previousChapter = null;
 
@@ -355,14 +360,28 @@ public class ExecutionOrderController : MonoBehaviour
     public void checkForObjInStep(GameObject go, string chapter_name, GameObject proxy = null, string errorString = "")
     {
         Debug.Log($"[EOC] Oggetto interagito {go.name}");
+        // ── Cooldown interazione valida ───────────────────────────────────
+        if (validInteractionCooldownSeconds > 0f)
+        {
+            string cooldownKey = go.name.ToLowerInvariant();
+            if (lastValidInteractionTime.TryGetValue(cooldownKey, out float lastTime))
+            {
+                if (Time.time - lastTime < validInteractionCooldownSeconds)
+                {
+                    Debug.Log($"[EOC] Interazione con '{go.name}' ignorata (cooldown: {validInteractionCooldownSeconds - (Time.time - lastTime):F1}s rimanenti).");
+                    return;
+                }
+            }
+        }
+        // ─────────────────────────────────────────────────────────────────
+
         if (parallelStepObjs.Count == 1)
         {
             if (parallelStepObjs[0].steps.Contains(go))
             {
-                //Debug.Log("Oggetto " + go.gameObject.name + " nello step.");
+                RegisterValidInteraction(go); // <-- registra il timestamp
                 return;
             }
-
         }
         else if (parallelStepObjs.Count > 0)
         {
@@ -390,24 +409,18 @@ public class ExecutionOrderController : MonoBehaviour
             // Se avevo un sottocapitolo iniziato -> controllo se contiene l'oggetto
             if (ParallelStepIndex != -1 && parallelStepObjs[ParallelStepIndex].steps.Contains(go))
             {
-                //Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step.");
+                RegisterValidInteraction(go); // <-- aggiunta
                 return;
             }
 
-            //Debug.Log($"[EOC] ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
-
-            // Se non ho trovato l'oggetto nel sottocapitolo corrente -> lo cerco nei sottocapitoli aggiunti
             if (subChapterObjesToMainChapter.TryGetValue(chapter_name, out var chapterOptionalObjecs))
             {
                 if (chapterOptionalObjecs.Contains(go))
                 {
-                    //Debug.Log("[EOC] Oggetto " + go.gameObject.name + " nello step(subChAdded).");
+                    RegisterValidInteraction(go); // <-- aggiunta
                     return;
                 }
             }
-
-            // Non ho trovato l'oggetto -> segno errore
-            Debug.Log($"[EOC] OGGETTO SBAGLIATO: ParallelStepIndex corrente: {ParallelStepIndex} | Sottocapitolo: {(ParallelStepIndex != -1 ? subch[ParallelStepIndex].Data.Name : "Nessuno")} | Oggetto interagito: {go.name}");
         }
 
         if (proxy != null)
@@ -440,6 +453,13 @@ public class ExecutionOrderController : MonoBehaviour
                     : "";
             errorTracker.RegisterError(chapterName, resolvedStepName, errorString, subName);  // stepName → resolvedStepName
         }
+    }
+
+
+    private void RegisterValidInteraction(GameObject go)
+    {
+        if (validInteractionCooldownSeconds > 0f)
+            lastValidInteractionTime[go.name.ToLowerInvariant()] = Time.time;
     }
 
 
