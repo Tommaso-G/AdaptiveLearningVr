@@ -32,6 +32,7 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     private float _elapsedTime = 0f;
     private bool _timerActive = false;
     private bool _timerExpired = false;
+    public bool TimerActive => _timerActive;
 
     private Collider _bestCollider;
     private Transform _currentDestination = null;
@@ -77,14 +78,19 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
         playerTransform = player.transform;
         isFollowing = true;
-        _timerActive = true;
-        _elapsedTime = 0f;
-        _timerExpired = false;
+    
 
         if (_hasAgent)
         {
             MyAnimator.SetBool("GoToRun", true);
         }
+    }
+
+    public void StartTimer()
+    {
+        _timerActive = true;
+        _elapsedTime = 0f;
+        _timerExpired = false;
     }
 
     void Update()

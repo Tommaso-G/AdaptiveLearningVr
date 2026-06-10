@@ -12,15 +12,15 @@ public class ColliderPropertyInteractionSource : InteractionSource
     public override bool CanHandle(GameObject obj)
         => obj.TryGetComponent<ColliderWithTriggerProperty>(out _);
 
-    //public List<FollowerAgentWithCheck> followAgents = new List<FollowerAgentWithCheck>();
+    public List<FollowerAgentWithCheck> followAgents = new List<FollowerAgentWithCheck>();
 
     private void Awake()
     {
         errorString = "Aula";
-        //followAgents = FindObjectsByType<FollowerAgentWithCheck>(
-        //    FindObjectsInactive.Include,
-        //    FindObjectsSortMode.None
-        //).ToList();
+        followAgents = FindObjectsByType<FollowerAgentWithCheck>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        ).ToList();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -40,5 +40,19 @@ public class ColliderPropertyInteractionSource : InteractionSource
             gameObject,
             interactor: other.gameObject
         );
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag(requiredTag))
+            return;
+
+        foreach (var agent in followAgents)
+        {
+            if (!agent.TimerActive && agent.IsFollowing)
+            {
+                agent.StartTimer();
+            }
+        }
     }
 }
