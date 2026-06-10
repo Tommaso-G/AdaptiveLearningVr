@@ -125,7 +125,7 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
         if (ErrorReporter != null)
         {
-            ErrorReporter.RegisterError(gameObject.name + "_tempoScaduto");
+            ErrorReporter.RegisterError("Bambino_tempoScaduto");
         }
         else
         {
