@@ -49,6 +49,8 @@ public class ChapterErrorData
     }
 }
 
+
+
 public class StepErrorTracker : MonoBehaviour
 {
     private Dictionary<string, ChapterErrorData> chapterErrors = new Dictionary<string, ChapterErrorData>();
@@ -58,6 +60,12 @@ public class StepErrorTracker : MonoBehaviour
     public TMP_Text textPanelOnHand;
     public HandMenuRequester handMenuRequester;
     public PersistentErrorLog errorLog;
+
+    [Header("Cooldown errori per oggetto")]
+    [Tooltip("Secondi minimi tra due errori consecutivi sullo stesso oggetto. 0 = nessun cooldown.")]
+    public float errorCooldownSeconds = 3f;
+
+    private Dictionary<string, float> lastErrorTimeByObject = new Dictionary<string, float>();
 
     [System.Serializable]
     public class CustomErrorMessage
@@ -145,6 +153,20 @@ public class StepErrorTracker : MonoBehaviour
 
     public void RegisterError(string chapterName, string missedStepName, string interactedObjectName, string customRuntime = "")
     {
+        if (errorCooldownSeconds > 0f)
+        {
+            string cooldownKey = interactedObjectName.ToLowerInvariant();
+            if (lastErrorTimeByObject.TryGetValue(cooldownKey, out float lastTime))
+            {
+                if (Time.time - lastTime < errorCooldownSeconds)
+                {
+                    Debug.Log($"[StepErrorTracker] Errore su '{interactedObjectName}' ignorato (cooldown: {errorCooldownSeconds - (Time.time - lastTime):F1}s rimanenti).");
+                    return;
+                }
+            }
+            lastErrorTimeByObject[cooldownKey] = Time.time;
+        }
+
         if (!chapterErrors.ContainsKey(chapterName))
         {
             chapterErrors[chapterName] = new ChapterErrorData(chapterName);
@@ -357,6 +379,7 @@ public class StepErrorTracker : MonoBehaviour
     {
         chapterErrors.Clear();
         TotalErrors = 0;
+        lastErrorTimeByObject.Clear();
         Debug.Log("[StepErrorTracker] Error tracker cleared.");
     }
 
