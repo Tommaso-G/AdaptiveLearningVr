@@ -313,12 +313,16 @@ public class FeedbackAutoManager : MonoBehaviour
     {
         if (delay > 0f)
         {
-            // Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
+            Debug.Log($"[FeedbackAutoManager] Attendo {delay:F2}s per '{feedback.FeedbackName}' (posizione in cooldown).");
             yield return new WaitForSeconds(delay);
         }
 
         // Se nel frattempo il feedback è stato annullato (es. capitolo disabilitato)
-        if (!shownFeedbacks.Contains(feedback)) yield break;
+        if (!shownFeedbacks.Contains(feedback)) {
+           Debug.Log($"[FeedbackAutoManager] booooooooooooooooooooooooooooooooo");
+            yield break; } 
+
+        Debug.Log($"[FeedbackAutoManager] {feedback} {feedbackPositions} {feedbackHolder}");
 
         feedbackDisplayer.PrepareAndDisplayFeedback(feedback, feedbackPositions, feedbackHolder);
 

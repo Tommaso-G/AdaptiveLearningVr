@@ -81,7 +81,7 @@ public class FeedbackDisplayer : MonoBehaviour
             Debug.LogWarning("[FeedbackRepository] Parametri non validi in PrepareAndDisplayFeedback.");
             return null;
         }
-
+        Debug.LogWarning("[FeedbackRepository] b oooooooooooooooooooooooooooooo.");
         ChooseFeedback(feedback, feedbackPositions, holder);
         return holder.activeFeedbackInstance;
     }
@@ -99,6 +99,8 @@ public class FeedbackDisplayer : MonoBehaviour
             Debug.LogError("[FeedbackDisplayer] Holder nullo passato a ChooseFeedback.");
             return;
         }
+
+        Debug.LogWarning("[FeedbackRepository] bloooooooooooooooooooooooooooooooood");
 
         var profile = FindFirstObjectByType<LearningProfile>();
 

@@ -661,16 +661,10 @@ MonoBehaviour:
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
-            image: {fileID: 0}
+            image: {fileID: 21300000, guid: 0a1c3d98f892f444aa36336f3f7af206, type: 3}
             video: {fileID: 0}
-            text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
-              di evacuazione</color></b>: i <b><color=#00DFA2>numeri verdi</color></b>
-              indicano l\u2019ordine di vicinanza delle uscite. Se l\u2019uscita
-              pi\xF9 vicina \xE8 bloccata, utilizza la successiva disponibile.\r\n\r\nLe
-              persone con <b><color=#00DFA2>disabilit\xE0</color></b> potrebbero
-              aver bisogno di supporto aggiuntivo, come la <b><color=#00DFA2>spinta
-              della sedia a rotelle</color></b> per raggiungere l\u2019uscita in
-              sicurezza."
+            text: 'Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
+              di evacuazione</color></b> nella stanza: '
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           - Perlustra tutta la scuola e chiudi le porte
@@ -870,16 +864,13 @@ MonoBehaviour:
           - Sequenzale_Globale: 1
             Visivo_Verbale: 0
             isIntroductory: 0
-            image: {fileID: 0}
+            image: {fileID: 21300000, guid: 0a1c3d98f892f444aa36336f3f7af206, type: 3}
             video: {fileID: 0}
             text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
-              di evacuazione</color></b>: i <b><color=#00DFA2>numeri verdi</color></b>
-              indicano l\u2019ordine di vicinanza delle uscite. Se l\u2019uscita
-              pi\xF9 vicina \xE8 bloccata, utilizza la successiva disponibile.\r\n\r\nLe
-              persone con <b><color=#00DFA2>disabilit\xE0</color></b> potrebbero
-              aver bisogno di supporto aggiuntivo, come la <b><color=#00DFA2>spinta
-              della sedia a rotelle</color></b> per raggiungere l\u2019uscita in
-              sicurezza."
+              di evacuazione</color></b> nella stanza: i <b><color=#00DFA2>numeri
+              verdi</color></b> indicano l\u2019ordine di vicinanza delle uscite.
+              Se l\u2019uscita pi\xF9 vicina \xE8 bloccata, utilizza la successiva
+              disponibile."
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           - Perlustra tutta la scuola e chiudi le porte
@@ -2289,12 +2280,10 @@ MonoBehaviour:
           - Sequenzale_Globale: 0
             Visivo_Verbale: 0
             isIntroductory: 0
-            image: {fileID: 0}
+            image: {fileID: 21300000, guid: 0a1c3d98f892f444aa36336f3f7af206, type: 3}
             video: {fileID: 0}
-            text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
-              di evacuazione</color></b>: i <b><color=#00DFA2>numeri verdi</color></b>
-              indicano l\u2019ordine di vicinanza delle uscite. Se l\u2019uscita
-              pi\xF9 vicina \xE8 bloccata, utilizza la successiva disponibile."
+            text: 'Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
+              di evacuazione</color></b> della stanza:'
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           PersonalizedPrefab: {fileID: 0}
@@ -2839,9 +2828,17 @@ MonoBehaviour:
             video: {fileID: 0}
             text: "Fai il <b><color=#00DFA2>giro delle aule</color></b> e verifica
               che non ci sia nessuno rimasto indietro. \n\nSe trovi qualcuno, <b><color=#00DFA2>accompagnalo
-              subito verso l\u2019uscita pi\xF9 vicina</color></b>.\r\n\nSe hai dubbi
-              sulle uscite, consulta la <color=#00DFA2>mappa di evacuazione</color></b>
-              vicino alla porta."
+              subito verso l\u2019uscita pi\xF9 vicina</color></b>."
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 21300000, guid: 0a1c3d98f892f444aa36336f3f7af206, type: 3}
+            video: {fileID: 0}
+            text: "Se hai dubbi sulle uscite, consulta la <b><color=#00DFA2>mappa
+              di evacuazione</color></b> nella stanza: i <b><color=#00DFA2>numeri
+              verdi</color></b> indicano l\u2019ordine di vicinanza delle uscite.
+              Se l\u2019uscita pi\xF9 vicina \xE8 bloccata, utilizza la successiva
+              disponibile."
           StepForCompletition:
           - Istruzioni Giro Di Perlustrazioni
           PersonalizedPrefab: {fileID: 0}
