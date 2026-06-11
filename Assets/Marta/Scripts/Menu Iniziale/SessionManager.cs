@@ -6,8 +6,16 @@ public class SessionManager : MonoBehaviour
 {
     public static SessionManager Instance { get; private set; }
 
-    [SerializeField] private string gameSceneName = "ScenaUfficiale";
+    [SerializeField]
+    private string[] gameSceneNames = {
+    "ScenaUfficiale",
+    "ScenaUfficiale_v2",
+    "ScenaUfficiale_v3"
+};
     [SerializeField] private string menuSceneName = "MenuScene";
+
+    private int _currentSceneIndex = 0;
+
 
     private string _activeSessionId;
     private bool _isNewSession;
@@ -113,29 +121,27 @@ public class SessionManager : MonoBehaviour
 
     private void LoadGameScene()
     {
-        if (_gameSceneLoaded && _gameScene.isLoaded)
-        {
-            Debug.Log("[SessionManager] ScenaUfficiale già caricata");
-            SceneManager.SetActiveScene(_gameScene);
-            return;
-        }
+        string targetScene = gameSceneNames[_currentSceneIndex % gameSceneNames.Length];
 
-        Debug.Log($"[SessionManager] Caricamento {gameSceneName}");
-        StartCoroutine(LoadGameSceneAsync());
+        // Avanza l'indice per la prossima chiamata
+        _currentSceneIndex++;
+
+        Debug.Log($"[SessionManager] Caricamento {targetScene}");
+        StartCoroutine(LoadGameSceneAsync(targetScene));
     }
 
-    private IEnumerator LoadGameSceneAsync()
+    private IEnumerator LoadGameSceneAsync(string sceneName)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(
-            gameSceneName, LoadSceneMode.Single);
+            sceneName, LoadSceneMode.Single);
 
         yield return new WaitUntil(() => asyncLoad.isDone);
 
-        _gameScene = SceneManager.GetSceneByName(gameSceneName);
+        _gameScene = SceneManager.GetSceneByName(sceneName);
         _gameSceneLoaded = true;
         SceneManager.SetActiveScene(_gameScene);
 
-        Debug.Log($"[SessionManager] {gameSceneName} caricata e attivata");
+        Debug.Log($"[SessionManager] {sceneName} caricata e attivata");
     }
 }
 
