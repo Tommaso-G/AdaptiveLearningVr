@@ -141,7 +141,6 @@ public class FeedbackDisplayer : MonoBehaviour
             GameObject singlePrefab = null;
             GameObject multiplePrefab = null;
 
-            bool isActive = profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
 
             if (holder.ProfilingFeedbackRepository != null)
             {
@@ -149,8 +148,9 @@ public class FeedbackDisplayer : MonoBehaviour
                 singlePrefab = repo.SingleContainer;
                 multiplePrefab = repo.MultipleContainer;
             }
-            else
+                else
             {
+                bool isActive = profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo;
                 var repo = holder.FeedbackRepository;
                 singlePrefab = isActive ? repo.SingleContainer_Attivo : repo.SingleContainer_Riflessivo;
                 multiplePrefab = isActive ? repo.MultipleContainer_Attivo : repo.MultipleContainer_Riflessivo;

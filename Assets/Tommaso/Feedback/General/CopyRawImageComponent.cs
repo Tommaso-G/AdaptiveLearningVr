@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class CopyRawImageComponent : MonoBehaviour
 {
     [SerializeField] private Transform sourceParent;
-
+    [SerializeField] private RawImage target;
     // TRUE = cerca nel primo figlio attivo e nei suoi figli
     // FALSE = cerca solo tra i figli diretti
     [SerializeField] private bool searchDeep = true;
@@ -61,7 +61,6 @@ public class CopyRawImageComponent : MonoBehaviour
             return;
         }
 
-        RawImage target = GetComponentInChildren<RawImage>(true);
 
         if (target == null)
         {
