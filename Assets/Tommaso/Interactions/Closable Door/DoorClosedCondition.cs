@@ -139,7 +139,7 @@ public class DoorClosed : Condition<DoorClosed.DoorClosedData>
             bool doorClosed = doorScript != null ? doorScript.IsClosed : exitDoorScript.isDoorClosed;
             bool cameraInsideCorridor = corridorCollider.bounds.Contains(mainCamera.transform.position);
 
-            Debug.Log($"[DoorCondition] doorClosed={doorClosed} | cameraInsideCorridor={cameraInsideCorridor}");
+            //Debug.Log($"[DoorCondition] doorClosed={doorClosed} | cameraInsideCorridor={cameraInsideCorridor}");
 
             return doorClosed && cameraInsideCorridor;
         }
