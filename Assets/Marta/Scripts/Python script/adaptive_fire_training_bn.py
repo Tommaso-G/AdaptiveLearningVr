@@ -50,21 +50,34 @@ PRIOR_SKILL = [0.05, 0.15, 0.80]  # [Expert, Intermediate, Novice]
 # P(Errori | Skill) - righe = livelli di Errori, colonne = livelli di Skill
 # Costruita con modello Poisson, λ={2, 3, 5} per {Expert, Intermediate, Novice}
 # MODIFICA questi valori dopo aver riscalato i bin al tuo dominio
+# CPT_ERRORS_GIVEN_SKILL = [
+#     # Expert  Intermediate  Novice
+#     [0.677,   0.423,        0.125],  # P(Errori=Basso | Skill)
+#     [0.268,   0.433,        0.375],  # P(Errori=Medio | Skill)
+#     [0.055,   0.144,        0.500],  # P(Errori=Alto  | Skill)
+# ]
+
+# # P(Tempo | Skill) - righe = livelli di Tempo, colonne = livelli di Skill
+# # Costruita con modello Gaussiano, μ={5.6, 7.5, 10} min, σ={0.8, 1.05, 1.4}
+# # MODIFICA questi valori dopo aver riscalato i bin al tuo dominio
+# CPT_TIME_GIVEN_SKILL = [
+#     # Expert  Intermediate  Novice
+#     [0.750,   0.280,        0.060],  # P(Tempo=Breve  | Skill)
+#     [0.220,   0.430,        0.200],  # P(Tempo=Medio  | Skill)
+#     [0.030,   0.290,        0.740],  # P(Tempo=Lungo  | Skill)
+# ]
+
+# ----- Versione 3 con errori/tempo più bilanciati ------
 CPT_ERRORS_GIVEN_SKILL = [
-    # Expert  Intermediate  Novice
-    [0.677,   0.423,        0.125],  # P(Errori=Basso | Skill)
-    [0.268,   0.433,        0.375],  # P(Errori=Medio | Skill)
-    [0.055,   0.144,        0.500],  # P(Errori=Alto  | Skill)
+    [0.780, 0.400, 0.080],  # Low
+    [0.180, 0.420, 0.280],  # Medium
+    [0.040, 0.180, 0.640],  # High
 ]
 
-# P(Tempo | Skill) - righe = livelli di Tempo, colonne = livelli di Skill
-# Costruita con modello Gaussiano, μ={5.6, 7.5, 10} min, σ={0.8, 1.05, 1.4}
-# MODIFICA questi valori dopo aver riscalato i bin al tuo dominio
 CPT_TIME_GIVEN_SKILL = [
-    # Expert  Intermediate  Novice
-    [0.750,   0.280,        0.060],  # P(Tempo=Breve  | Skill)
-    [0.220,   0.430,        0.200],  # P(Tempo=Medio  | Skill)
-    [0.030,   0.290,        0.740],  # P(Tempo=Lungo  | Skill)
+    [0.580, 0.300, 0.100],  # Short
+    [0.300, 0.420, 0.250],  # Medium
+    [0.120, 0.280, 0.650],  # Long
 ]
 
 
@@ -364,7 +377,7 @@ class AdaptiveDecision:
 
 class AdaptiveTrainingManager:
     # parametri per early remove dei capitoli opzionali:
-    EARLY_REMOVE_MIN_FRACTION_COMPLETED = 0.5  # almeno 40% completati (ho abbastanza dati da analizzare)
+    EARLY_REMOVE_MIN_FRACTION_COMPLETED = 0.2 # almeno 40% completati (ho abbastanza dati da analizzare)
     EARLY_REMOVE_STRUGGLE_FRACTION      = 0.5 # più del 50% in difficoltà
 
     # Configurazioni delle fasi
@@ -402,13 +415,13 @@ class AdaptiveTrainingManager:
     ),
     InitialActivationPolicy.INTERMEDIATE: InitialProfileConfig(
         name=InitialActivationPolicy.INTERMEDIATE,
-        optional_to_activate=3,
+        optional_to_activate=1,
         starting_phase=TrainingPhase.AUTOMATION,
         description="Alcuni opzionali attivi, ma fase ancora guidata"
     ),
     InitialActivationPolicy.ADVANCED: InitialProfileConfig(
         name=InitialActivationPolicy.ADVANCED,
-        optional_to_activate=4,
+        optional_to_activate=3,
         starting_phase=TrainingPhase.CONSOLIDATION,
         description="Più opzionali e fase meno guidata"
     ),

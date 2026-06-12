@@ -419,24 +419,54 @@ class AdaptiveSessionManager:
         
         return json_str
     
-    def print_debug_info(self):
-        """Stampa info di debug della sessione."""
-        print(f"\n=== [SESSION DEBUG] {self.session_id} ===")
-        print(f"Current iteration: {self.current_iteration_number}")
-        print(f"Last complete iteration: {self.last_complete_iteration}")
-        print(f"\nIterations:")
+@classmethod
+def import_from_json(cls, filename: str) -> "AdaptiveSessionManager":
+    """
+    Ripristina una sessione da un file JSON salvato da export_to_json.
+    Ricostruisce iterations e i posterior dei capitoli,
+    ma NON ricrea il training_manager (serve una StartSession da Unity).
+    """
+    with open(filename, 'r') as f:
+        data = json.load(f)
+
+    session_id = data["session_id"]
+    mgr = cls(session_id)
+    mgr.current_iteration_number = data["current_iteration"]
+    mgr.last_complete_iteration = data["last_complete_iteration"]
+
+    for iter_num_str, iter_dict in data.get("iterations", {}).items():
+        iter_num = int(iter_num_str)
+        iter_data = IterationData(
+            iteration_number=iter_num,
+            state=IterationState(iter_dict["state"]),
+            chapters_completed=iter_dict.get("chapters_completed", []),
+            chapter_decisions=iter_dict.get("chapter_decisions", {}),
+        )
+        if iter_dict.get("completed_at"):
+            iter_data.completed_at = datetime.fromisoformat(iter_dict["completed_at"])
+        mgr.iterations[iter_num] = iter_data
+
+    print(f"[SESSION] Ripristinata da disco: {session_id}, "
+          f"iter={mgr.current_iteration_number}, "
+          f"last_complete={mgr.last_complete_iteration}")
+    return mgr
+
+def print_debug_info(self):
+    """Stampa info di debug della sessione."""
+    print(f"\n=== [SESSION DEBUG] {self.session_id} ===")
+    print(f"Current iteration: {self.current_iteration_number}")
+    print(f"Last complete iteration: {self.last_complete_iteration}")
+    print(f"\nIterations:")
+    
+    for iter_num, iter_data in self.iterations.items():
+        state_emoji = {
+            IterationState.STARTED: "🔄",
+            IterationState.IN_PROGRESS: "⏳",
+            IterationState.COMPLETE: "✓",
+            IterationState.INTERRUPTED: "❌",
+        }.get(iter_data.state, "?")
         
-        for iter_num, iter_data in self.iterations.items():
-            state_emoji = {
-                IterationState.STARTED: "🔄",
-                IterationState.IN_PROGRESS: "⏳",
-                IterationState.COMPLETE: "✓",
-                IterationState.INTERRUPTED: "❌",
-            }.get(iter_data.state, "?")
-            
-            print(
-                f"  Iteration {iter_num}: {state_emoji} {iter_data.state.value} "
-                f"({len(iter_data.chapters_completed)} capitoli)"
-            )
-
-
+        print(
+            f"  Iteration {iter_num}: {state_emoji} {iter_data.state.value} "
+            f"({len(iter_data.chapters_completed)} capitoli)"
+        )
