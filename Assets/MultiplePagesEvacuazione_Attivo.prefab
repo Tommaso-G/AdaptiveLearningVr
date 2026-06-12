@@ -371,7 +371,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &781630661673262141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1489,7 +1489,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4298046036347282925}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9999948
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4764,6 +4764,7 @@ GameObject:
   - component: {fileID: 2019480118031800012}
   - component: {fileID: 5771766161530637083}
   - component: {fileID: 4727452919200644651}
+  - component: {fileID: 16587102765667414}
   m_Layer: 13
   m_Name: Full Video Page
   m_TagString: Untagged
@@ -4852,6 +4853,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToActivate: {fileID: 0}
+--- !u!114 &16587102765667414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8825191557244568464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6530d47c87da9df46a55c6713ef67458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceParent: {fileID: 9052980156441803332}
+  searchDeep: 1
 --- !u!1 &8965484409747515449
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
+using UnityEngine.XR.Management;
 public class SessionManager : MonoBehaviour
 {
     public static SessionManager Instance { get; private set; }
@@ -46,6 +46,7 @@ public class SessionManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         Debug.Log("[SessionManager] Inizializzato");
+        DisableXR();
     }
 
     public void SetLearningProfile(LearningProfileSelection profile)
@@ -59,6 +60,34 @@ public class SessionManager : MonoBehaviour
     }
 
     public void SetActiveSessionId(string id) => _activeSessionId = id;
+
+    // ── XR Management ─────────────────────────────────────────────────────
+
+    private void DisableXR()
+    {
+        if (XRGeneralSettings.Instance != null && XRGeneralSettings.Instance.Manager != null
+            && XRGeneralSettings.Instance.Manager.isInitializationComplete)
+        {
+            Debug.Log("[SessionManager] Disattivo XR per il menu");
+            XRGeneralSettings.Instance.Manager.StopSubsystems();
+            XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+        }
+    }
+
+    private IEnumerator EnableXR()
+    {
+        if (XRGeneralSettings.Instance != null && XRGeneralSettings.Instance.Manager != null
+            && !XRGeneralSettings.Instance.Manager.isInitializationComplete)
+        {
+            Debug.Log("[SessionManager] Riattivo XR per la scena di gioco");
+            yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
+
+            if (XRGeneralSettings.Instance.Manager.activeLoader != null)
+                XRGeneralSettings.Instance.Manager.StartSubsystems();
+            else
+                Debug.LogWarning("[SessionManager] Inizializzazione XR loader fallita");
+        }
+    }
     // ── Sessioni online ───────────────────────────────────────────────────
 
     public void StartNewSession()
@@ -113,6 +142,7 @@ public class SessionManager : MonoBehaviour
         Debug.Log("[SessionManager] Ritorno al menu");
         SelectedOfflineLevel = null;
         Time.timeScale = 1f;
+        DisableXR();
         SceneManager.LoadScene(menuSceneName, LoadSceneMode.Single);
     }
 
@@ -132,6 +162,8 @@ public class SessionManager : MonoBehaviour
 
     private IEnumerator LoadGameSceneAsync(string sceneName)
     {
+        yield return EnableXR();
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(
             sceneName, LoadSceneMode.Single);
 

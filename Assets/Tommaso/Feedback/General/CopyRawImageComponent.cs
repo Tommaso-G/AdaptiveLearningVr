@@ -61,7 +61,7 @@ public class CopyRawImageComponent : MonoBehaviour
             return;
         }
 
-        RawImage target = GetComponent<RawImage>();
+        RawImage target = GetComponentInChildren<RawImage>(true);
 
         if (target == null)
         {
