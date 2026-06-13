@@ -123,6 +123,13 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         {
             agent.SetDestination(playerTransform.position);
         }
+
+        if (_hasAgent && MyAnimator != null)
+        {
+            bool isMoving = agent.desiredVelocity.sqrMagnitude >= 0.01f;
+            MyAnimator.SetBool("GoToRun", isMoving);
+            MyAnimator.SetBool("GoToIdle", !isMoving);
+        }
     }
 
     private void HandleTimerExpired()
