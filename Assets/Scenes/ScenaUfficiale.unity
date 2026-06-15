@@ -1137,6 +1137,93 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9292062}
   m_Mesh: {fileID: -3396871743075520582, guid: 7984b7ae7a79b1d4d9d3741cc9f6f012, type: 3}
+--- !u!1 &10822306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 10822307}
+  - component: {fileID: 10822308}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &10822307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10822306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.43, y: -4.36, z: 0}
+  m_LocalScale: {x: 0.4167768, y: 0.41677675, z: 0.41677666}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 179011084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &10822308
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10822306}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &11103043
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,6 +3004,8 @@ Transform:
   m_Children:
   - {fileID: 1038990173}
   - {fileID: 1868695573}
+  - {fileID: 436023646}
+  - {fileID: 437624956}
   - {fileID: 1953174721}
   - {fileID: 1933650574}
   - {fileID: 1317031496}
@@ -4140,7 +4229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &43680351
 MonoBehaviour:
@@ -5879,7 +5967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &75540785
 GameObject:
@@ -10229,7 +10316,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &139745205
 GameObject:
@@ -13000,6 +13086,8 @@ Transform:
   m_Children:
   - {fileID: 1627200484}
   - {fileID: 2019245303}
+  - {fileID: 10822307}
+  - {fileID: 2047498490}
   - {fileID: 2082821287}
   - {fileID: 1687279027}
   m_Father: {fileID: 1551731613}
@@ -13163,7 +13251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &179439244
 PrefabInstance:
@@ -28212,7 +28299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &349283279
 Transform:
   m_ObjectHideFlags: 0
@@ -28222,7 +28309,7 @@ Transform:
   m_GameObject: {fileID: 349283278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89, y: -4.73, z: 0.14}
+  m_LocalPosition: {x: 3.79, y: -2.03, z: 0.14}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -28817,6 +28904,8 @@ Transform:
   m_Children:
   - {fileID: 2046634242}
   - {fileID: 1679325291}
+  - {fileID: 1041976185}
+  - {fileID: 386059017}
   - {fileID: 353170616}
   - {fileID: 778584333}
   m_Father: {fileID: 1739231303}
@@ -29096,9 +29185,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359822623}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &359822621 stripped
 Transform:
@@ -29123,7 +29209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &360337665
 GameObject:
@@ -29362,7 +29447,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 501973743}
 --- !u!114 &360424771
 MonoBehaviour:
@@ -30296,7 +30380,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 779037646}
 --- !u!114 &368602927
 MonoBehaviour:
@@ -31836,6 +31919,93 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &386059016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 386059017}
+  - component: {fileID: 386059018}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &386059017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386059016}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.05, y: -7.97, z: 0}
+  m_LocalScale: {x: 0.36798224, y: 0.3679823, z: 0.36798206}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 359753492}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &386059018
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386059016}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &386707526
 GameObject:
   m_ObjectHideFlags: 0
@@ -36671,6 +36841,180 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 434966240}
   m_CullTransparentMesh: 0
+--- !u!1 &436023645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 436023646}
+  - component: {fileID: 436023647}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &436023646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436023645}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3, y: -4.29, z: 0.14}
+  m_LocalScale: {x: 0.367917, y: 0.367917, z: 0.367917}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 32769360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &436023647
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436023645}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &437624955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 437624956}
+  - component: {fileID: 437624957}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &437624956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437624955}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.12, y: -8.13, z: 0.14}
+  m_LocalScale: {x: 0.367917, y: 0.367917, z: 0.367917}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 32769360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &437624957
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437624955}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &438159830
 GameObject:
   m_ObjectHideFlags: 0
@@ -37216,7 +37560,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1933397826}
 --- !u!114 &448006668
 MonoBehaviour:
@@ -39719,7 +40062,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 416806388}
 --- !u!114 &473122080
 MonoBehaviour:
@@ -42475,7 +42817,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 648209870}
 --- !u!114 &499419532
 MonoBehaviour:
@@ -52869,9 +53210,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 610957586}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &610957584 stripped
 Transform:
@@ -52896,7 +53234,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!4 &611843336 stripped
 Transform:
@@ -53448,7 +53785,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!65 &619888400
 BoxCollider:
@@ -55534,9 +55870,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 647811511}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &647811509 stripped
 Transform:
@@ -55561,7 +55894,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &647940299
 PrefabInstance:
@@ -55853,6 +56185,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 811927864}
+  - {fileID: 1263561909}
+  - {fileID: 1009351741}
   - {fileID: 1533718373}
   - {fileID: 983486747}
   - {fileID: 1846482208}
@@ -67282,7 +67616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &715209435
 MonoBehaviour:
@@ -71403,7 +71736,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 607764081}
 --- !u!114 &767125239
 MonoBehaviour:
@@ -74646,7 +74978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &811927864
 Transform:
   m_ObjectHideFlags: 0
@@ -74656,7 +74988,7 @@ Transform:
   m_GameObject: {fileID: 811927863}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89, y: -4.73, z: 0.14}
+  m_LocalPosition: {x: -4.98, y: -1.37, z: 0.14}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -82333,7 +82665,6 @@ MonoBehaviour:
   handMenuRequester: {fileID: 923911995}
   errorLog: {fileID: 1957653098}
   errorCooldownSeconds: 3
-  aliasMap: {fileID: 0}
   customErrorMessages:
   - interactedObjectName: Fuoco
     customMessage: Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.
@@ -85019,12 +85350,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970136688}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6984782, y: -0.11012822, z: -0.11012812, w: 0.6984782}
-  m_LocalPosition: {x: 8.799999, y: 20.399921, z: -15.199989}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.17224139, y: -0.002436936, z: -0.95237017, w: -0.25163102}
+  m_LocalPosition: {x: -6.716643, y: 53.05903, z: -35.39152}
+  m_LocalScale: {x: 0.83970064, y: 0.8397008, z: 0.83970106}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4381411261662071867}
   m_LocalEulerAnglesHint: {x: 72.08, y: -90, z: -90}
 --- !u!1 &972479183 stripped
 GameObject:
@@ -86194,7 +86525,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 992193366}
 --- !u!114 &992153470
 MonoBehaviour:
@@ -87990,6 +88320,93 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   grabPoints: []
+--- !u!1 &1009351740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1009351741}
+  - component: {fileID: 1009351742}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1009351741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009351740}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.06, y: -7.68, z: 0}
+  m_LocalScale: {x: 0.36798236, y: 0.3679823, z: 0.36798224}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 651449802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1009351742
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009351740}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1010484617
 GameObject:
   m_ObjectHideFlags: 0
@@ -88068,7 +88485,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1228205861}
 --- !u!114 &1010484621
 MonoBehaviour:
@@ -91143,6 +91559,93 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041949215}
   m_CullTransparentMesh: 1
+--- !u!1 &1041976184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1041976185}
+  - component: {fileID: 1041976186}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1041976185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041976184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.49, y: -4.21, z: 0}
+  m_LocalScale: {x: 0.36798224, y: 0.3679823, z: 0.36798206}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 359753492}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1041976186
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041976184}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1043742594 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aebf7860b34c5dd4ca3a6dc8b5777bec, type: 3}
@@ -93439,6 +93942,93 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1058901098}
   m_Mesh: {fileID: -5495902117074765545, guid: 9825355cebf799446ae2ca24d11250f1, type: 3}
+--- !u!1 &1063747981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1063747982}
+  - component: {fileID: 1063747983}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1063747982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063747981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.22, y: -4.11, z: 0}
+  m_LocalScale: {x: 0.36798227, y: 0.3679823, z: 0.36798212}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1825192662}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1063747983
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063747981}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1065481976
 GameObject:
   m_ObjectHideFlags: 0
@@ -95257,7 +95847,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1081373332
 MonoBehaviour:
@@ -96595,7 +97184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1112787017
 MonoBehaviour:
@@ -100780,7 +101368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1301018871}
 --- !u!114 &1189387947
 MonoBehaviour:
@@ -101463,9 +102050,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1192523233}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1192523231 stripped
 Transform:
@@ -101490,7 +102074,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1192616145
 GameObject:
@@ -103557,9 +104140,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1205808063}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1205808061 stripped
 Transform:
@@ -103584,7 +104164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1206081766
 GameObject:
@@ -104617,12 +105196,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212118053}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.86288136, y: -0.036940068, z: 0.26120558, w: 0.43109506}
-  m_LocalPosition: {x: 8.8, y: 20.4, z: -15.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.35177565, y: -0.42359453, z: -0.8253397, w: -0.12504388}
+  m_LocalPosition: {x: -6.716601, y: 53.05902, z: -35.39158}
+  m_LocalScale: {x: 0.8397009, y: 0.8397012, z: 0.83970106}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4381411261662071867}
   m_LocalEulerAnglesHint: {x: 49.753, y: 139.578, z: 165.528}
 --- !u!114 &1212118056
 MonoBehaviour:
@@ -107756,6 +108335,93 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261219226}
   m_Mesh: {fileID: -8377505768338025944, guid: 7984b7ae7a79b1d4d9d3741cc9f6f012, type: 3}
+--- !u!1 &1263561908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1263561909}
+  - component: {fileID: 1263561910}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1263561909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263561908}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.36, y: -4.25, z: 0}
+  m_LocalScale: {x: 0.36798236, y: 0.3679823, z: 0.36798224}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 651449802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1263561910
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263561908}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!4 &1263742906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7228708210466302312, guid: d8e176cadc0d263409f7bf2e9261a98e, type: 3}
@@ -108783,7 +109449,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione assenti
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1279638770
 MonoBehaviour:
@@ -109455,428 +110120,297 @@ MonoBehaviour:
     steps:
     - stepName: Esci e inizia
       displayName: 
-      weight: 1
   - chapterName: Segnalazione incendio
     steps:
     - stepName: Attiva Allarme
       displayName: Attiva l'allarme
-      weight: 1
     - stepName: inizia COlloquio Ui
       displayName: Parla con i Vigili del fuoco
-      weight: 1
     - stepName: completa Domande
       displayName: Parla con i Vigili del fuoco
-      weight: 1
     - stepName: Eseguire chiamata1
       displayName: Chiama il personale scolastico
-      weight: 1
     - stepName: Eseguire chiamata 2
       displayName: Chiama i vigili del fuoco
-      weight: 1
     - stepName: Enable Telefono
       displayName: 
-      weight: 1
     - stepName: RImetti Telefono Neutro
       displayName: 
-      weight: 1
     - stepName: Chiudi menu
       displayName: 
-      weight: 1
   - chapterName: "Interruzione elettricit\xE0+gas"
     steps:
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 1"
       displayName: "Disattiva l'elettricit\xE0"
-      weight: 1
     - stepName: "Disattiva elettricit\xE0 e gas"
       displayName: 
-      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 2"
       displayName: "Disattiva l'elettricit\xE0"
-      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 3"
       displayName: "Disattiva l'elettricit\xE0"
-      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 4"
       displayName: "Disattiva l'elettricit\xE0"
-      weight: 1
     - stepName: Disattiva il gas - combinazion 2
       displayName: Disattiva il Gas
-      weight: 1
     - stepName: Disattiva il gas - combinazion 1
       displayName: Disattiva il Gas
-      weight: 1
     - stepName: Disattiva il gas - combinazion 3
       displayName: Disattiva il Gas
-      weight: 1
     - stepName: Disattiva il gas - combinazion 4
       displayName: Disattiva il Gas
-      weight: 1
     - stepName: Play audio Gas
       displayName: 
-      weight: 1
     - stepName: Attiva feedback gas
       displayName: 
-      weight: 1
   - chapterName: Isola Incendio
     steps:
     - stepName: Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
       displayName: Valuta l0incendio
-      weight: 1
     - stepName: Non puoi domarli tutti... chiudi la porta e scappa
       displayName: Chiudi la porta di Aula 1
-      weight: 1
     - stepName: "Non \xE8 bastato... usa la giacca per bloccare il fumo"
       displayName: Blocca il fumo con la felpa
-      weight: 1
     - stepName: Attiva Fumo
       displayName: Guarda il fumo
-      weight: 1
     - stepName: Disattiva Fumo
       displayName: Blocca il fumo con la felpa
-      weight: 1
     - stepName: compare collider visivo
       displayName: Blocca il fumo con la felpa
-      weight: 1
     - stepName: disativa collider visivo
       displayName: Blocca il fumo con la felpa
-      weight: 1
     - stepName: Question to Check
       displayName: 
-      weight: 1
     - stepName: apri menu
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Istruzioni isola Incendio
       displayName: 
-      weight: 1
     - stepName: Wait
       displayName: 
-      weight: 1
   - chapterName: Giro di perlustrazione
     steps: []
   - chapterName: Aula 2(in fondo a sinistra)
     steps:
     - stepName: "No, non c'\xE8 nessuno in Aula 2"
       displayName: 
-      weight: 1
     - stepName: Question to Check aula2
       displayName: 
-      weight: 1
     - stepName: "C'\xE8 qualcuno in aula 2?"
       displayName: 
-      weight: 1
     - stepName: "Si c'\xE8 Paolina in Aula2"
       displayName: 
-      weight: 1
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
-      weight: 1
     - stepName: Paolina Aula 2 si fida di te e ti segue
       displayName: 
-      weight: 1
     - stepName: Porta Paolina Aula 2 all'uscita
       displayName: Accompagna lo studente all'uscita
-      weight: 1
     - stepName: Disable Paolina Aula2
       displayName: 
-      weight: 1
     - stepName: Chiudi Porta Aula 2
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
-      weight: 1
   - chapterName: Aula computer
     steps:
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
-      weight: 1
     - stepName: Porta Paolina all'uscita
       displayName: Accompagna lo studente all'uscita
-      weight: 1
     - stepName: Disable Paolina
       displayName: 
-      weight: 1
     - stepName: Question to Check
       displayName: 
-      weight: 1
     - stepName: "C'\xE8 qualcuno in aula Computer?"
       displayName: 
-      weight: 1
     - stepName: Chiudi Porta Aula Computer
       displayName: 
-      weight: 1
     - stepName: "No, non c'\xE8 nessuno in Aula Computer"
       displayName: 
-      weight: 1
     - stepName: "Si c'\xE8 Paolina"
       displayName: 
-      weight: 1
     - stepName: Paolina aula pc ti segue
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
-      weight: 1
   - chapterName: Laboratorio di chimica
     steps:
     - stepName: "C'\xE8 qualcuno in laboratorio di chimica?"
       displayName: 
-      weight: 1
     - stepName: No, chiudi la porta di chimica
       displayName: 
-      weight: 1
     - stepName: Question to Check
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
-      weight: 1
   - chapterName: Biblioteca
     steps:
     - stepName: "Si. c'\xE8 Paolina in sedie a rotelle"
       displayName: 
-      weight: 1
     - stepName: Question to Check
       displayName: 
-      weight: 1
     - stepName: "C'\xE8 qualcuno in Biblioteca?"
       displayName: 
-      weight: 1
     - stepName: Portala fuori
       displayName: Accompagna lo studente all'uscita
-      weight: 1
     - stepName: "No, Non c'\xE8 nessuo in Biblioteca"
       displayName: 
-      weight: 1
     - stepName: Disable paolina
       displayName: 
-      weight: 1
     - stepName: Grab sedia a rotelle
       displayName: 
-      weight: 1
     - stepName: Chiudi la porta di biblioteca
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
-      weight: 1
   - chapterName: Mensa
     steps:
     - stepName: "Si c'\xE8 Michelle"
       displayName: 
-      weight: 1
     - stepName: Porta Michelle all'uscita
       displayName: Accompagna lo studente all'uscita
-      weight: 1
     - stepName: Michelle stava facendo dei balletti per tiktok con le cuffie e non
         ha sentito l'allarme, fatti notare
       displayName: Avvicinati allo studente
-      weight: 1
     - stepName: "Michelle \xE8 scocciata ma ti segue"
       displayName: 
-      weight: 1
     - stepName: Disable Michelle
       displayName: 
-      weight: 1
     - stepName: Question to Check
       displayName: 
-      weight: 1
     - stepName: "C'\xE8 qualcuno in Mensa"
       displayName: 
-      weight: 1
     - stepName: "No, non c'\xE8 nessuno in mensa"
       displayName: 
-      weight: 1
     - stepName: Chiudi la porta di mensa
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
-      weight: 1
     - stepName: Perlustra tutta la scuola e chiudi le porte
       displayName: 
-      weight: 1
     - stepName: Istruzioni Giro Di Perlustrazioni
       displayName: 
-      weight: 1
     - stepName: Attiva bambini
       displayName: 
-      weight: 1
     - stepName: Disattiva flag
       displayName: 
-      weight: 1
     - stepName: verifica porte condition
       displayName: 
-      weight: 1
     - stepName: Apri Porte per sicurezza
       displayName: 
-      weight: 1
     - stepName: verifica porte behaviour
       displayName: 
-      weight: 1
   - chapterName: Segnalazione assenti
     steps:
     - stepName: segnala assenti
       displayName: Segnala gli assenti
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Crea dialoghi
       displayName: 
-      weight: 1
     - stepName: play audio
       displayName: 
-      weight: 1
   - chapterName: Fine processo
     steps:
     - stepName: Fine iterazione
       displayName: 
-      weight: 1
   - chapterName: Primo soccorso Optional
     steps:
     - stepName: Apri medkit
       displayName: 
-      weight: 1
     - stepName: Grab bottle
       displayName: Prendi la bottiglia
-      weight: 1
     - stepName: Grab tappo
       displayName: Togli il tappo
-      weight: 1
     - stepName: Versa acqua
       displayName: Versa l'acqua sulla scottatura
-      weight: 1
     - stepName: Asciuga
       displayName: Asciuga con il panno
-      weight: 1
     - stepName: metti garza
       displayName: Metti la Garza
-      weight: 1
     - stepName: Enable Primo Soccorso
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: play audio
       displayName: 
-      weight: 1
   - chapterName: Estintore generico Optional
     steps:
     - stepName: (solido) Grab extiguisher
       displayName: Prendi l'estintore
-      weight: 1
     - stepName: Sfaty catch removal
       displayName: Rimuovi la sicura
-      weight: 1
     - stepName: Extinguish fire
       displayName: Spegni il fuoco
-      weight: 1
     - stepName: grab ejector
       displayName: Prendi l'ugello
-      weight: 1
     - stepName: Istanzia i fuochi
       displayName: 
-      weight: 1
     - stepName: Step back
       displayName: 
-      weight: 1
     - stepName: Mostra Feedback fumo
       displayName: 
-      weight: 1
     - stepName: "C'\xE8 del fumo?"
       displayName: 
-      weight: 1
     - stepName: play audio
       displayName: 
-      weight: 1
   - chapterName: Vie di fuga Optional
     steps:
     - stepName: Seleziona una via di fuga alternativa
       displayName: 
-      weight: 1
     - stepName: Guarda la mappa
       displayName: 
-      weight: 1
     - stepName: Chiudi la mappa
       displayName: 
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: Attiva mappa
       displayName: 
-      weight: 1
   - chapterName: Fuoco su liquido Optional
     steps:
     - stepName: Trova L'estintore a CO2
       displayName: Prendi l'estintore
-      weight: 1
     - stepName: Rimuovi la sicura (CO2)
       displayName: Rimuovi la sicura
-      weight: 1
     - stepName: Prendi l'eiettore (CO2)
       displayName: Spegni il fuoco
-      weight: 1
     - stepName: Estingui il fuoco (CO2)
       displayName: Prendi l'ugello
-      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
-      weight: 1
     - stepName: Timer scaduto
       displayName: 
-      weight: 1
     - stepName: play audio
       displayName: 
-      weight: 1
 --- !u!1 &1288696060
 GameObject:
   m_ObjectHideFlags: 0
@@ -110974,7 +111508,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1303512499
 GameObject:
@@ -111054,7 +111587,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1165055361}
 --- !u!114 &1303512503
 MonoBehaviour:
@@ -113034,12 +113566,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320921793}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.84083587, y: 0.12576585, z: 0.07788023, w: 0.5206849}
-  m_LocalPosition: {x: 8.799999, y: 20.399921, z: -15.199989}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.38342986, y: -0.27189684, z: -0.8161914, w: -0.33598423}
+  m_LocalPosition: {x: -6.716643, y: 53.05903, z: -35.39152}
+  m_LocalScale: {x: 0.8397008, y: 0.8397012, z: 0.83970094}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4381411261662071867}
   m_LocalEulerAnglesHint: {x: 121.12601, y: -30.445984, z: -34.474}
 --- !u!1 &1322399370
 GameObject:
@@ -114309,12 +114841,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335555581}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.69932747, y: 0.10460009, z: 0.10460023, w: 0.69932735}
-  m_LocalPosition: {x: 8.799999, y: 20.399921, z: -15.199989}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.4501564, y: -0.07785252, z: -0.8567585, w: -0.23929715}
+  m_LocalPosition: {x: -6.716643, y: 53.05903, z: -35.39152}
+  m_LocalScale: {x: 0.8397009, y: 0.83970106, z: 0.839701}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4381411261662071867}
   m_LocalEulerAnglesHint: {x: 107.01401, y: -90, z: -90}
 --- !u!1001 &1335793390
 PrefabInstance:
@@ -121843,7 +122375,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1426472688
 GameObject:
@@ -127106,6 +127637,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511961156}
   m_CullTransparentMesh: 1
+--- !u!1 &1513562410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1513562411}
+  - component: {fileID: 1513562413}
+  - component: {fileID: 1513562412}
+  m_Layer: 0
+  m_Name: CentralStatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1513562411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513562410}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837779938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1513562412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513562410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22346f16c0d5484b8891eced8d8b35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1513562413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513562410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ceba12fa91c4d94fb7ef3084d0c685f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slidesDataRecorder: {fileID: 1513562412}
+  sessionTimer: {fileID: 0}
+  feedbackDaEscludere: []
 --- !u!1 &1514284426
 GameObject:
   m_ObjectHideFlags: 0
@@ -127877,7 +128468,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1527159743
 MonoBehaviour:
@@ -129324,9 +129914,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1540270786}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1540270784 stripped
 Transform:
@@ -129351,7 +129938,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1542076190
 GameObject:
@@ -131557,7 +132143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1572630423 stripped
 GameObject:
@@ -131716,7 +132301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 1572630423}
 --- !u!114 &1572630433
 MonoBehaviour:
@@ -133766,6 +134350,8 @@ Transform:
   m_Children:
   - {fileID: 1780993097}
   - {fileID: 197010570}
+  - {fileID: 2110841003}
+  - {fileID: 1930972770}
   - {fileID: 1643478253}
   - {fileID: 1127145821}
   m_Father: {fileID: 342880632}
@@ -136695,7 +137281,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1627200484
 Transform:
   m_ObjectHideFlags: 0
@@ -136705,7 +137291,7 @@ Transform:
   m_GameObject: {fileID: 1627200483}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89, y: -4.73, z: 0.14}
+  m_LocalPosition: {x: -4.64, y: 2.83, z: 0.14}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -139458,7 +140044,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 757717253}
 --- !u!114 &1687441093
 MonoBehaviour:
@@ -142403,12 +142988,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722149009}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5640756, y: 0.08437009, z: 0.121507496, w: 0.81236476}
-  m_LocalPosition: {x: 8.799999, y: 20.399921, z: -15.199989}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.4854867, y: 0.07547578, z: -0.8569712, w: -0.15558466}
+  m_LocalPosition: {x: -6.716643, y: 53.05903, z: -35.39152}
+  m_LocalScale: {x: 0.8397009, y: 0.83970076, z: 0.839701}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4381411261662071867}
   m_LocalEulerAnglesHint: {x: 116.367004, y: -141.881, z: -138.789}
 --- !u!1 &1723522256 stripped
 GameObject:
@@ -142759,7 +143344,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1803351941}
 --- !u!114 &1730967514
 MonoBehaviour:
@@ -147043,7 +147627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1780993097
 Transform:
   m_ObjectHideFlags: 0
@@ -147053,7 +147637,7 @@ Transform:
   m_GameObject: {fileID: 1780993096}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89, y: -4.73, z: 0.14}
+  m_LocalPosition: {x: -4.52, y: 6.7, z: 0.14}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -150234,6 +150818,8 @@ Transform:
   - {fileID: 349283279}
   - {fileID: 616627618}
   - {fileID: 1967820326}
+  - {fileID: 1063747982}
+  - {fileID: 1998218775}
   - {fileID: 2103484522}
   m_Father: {fileID: 1305524944}
   m_LocalEulerAnglesHint: {x: 0, y: 90.045, z: 0}
@@ -151216,6 +151802,7 @@ Transform:
   - {fileID: 1056763964}
   - {fileID: 1728988655}
   - {fileID: 432170837}
+  - {fileID: 1513562411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1837779939
@@ -151750,7 +152337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1845418304
 MonoBehaviour:
@@ -151997,127 +152583,6 @@ Transform:
   - {fileID: 314360466}
   m_Father: {fileID: 1295447734}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1848652583
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1848652586}
-  - component: {fileID: 1848652585}
-  - component: {fileID: 1848652584}
-  m_Layer: 0
-  m_Name: Ambient light2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1848652584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848652583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
---- !u!108 &1848652585
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848652583}
-  m_Enabled: 1
-  serializedVersion: 11
-  m_Type: 1
-  m_Color: {r: 0.96981126, g: 0.96981126, b: 0.96981126, a: 1}
-  m_Intensity: 0.3
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 1
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.27
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
---- !u!4 &1848652586
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848652583}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7047794, y: 0.05732426, z: 0.05732426, w: 0.7047794}
-  m_LocalPosition: {x: 8.8, y: 20.4, z: -15.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 99.3, y: -90, z: -90}
 --- !u!1 &1851027475
 GameObject:
   m_ObjectHideFlags: 0
@@ -154258,7 +154723,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1879570082
 GameObject:
@@ -157304,9 +157768,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 619416564}
-    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1919186527 stripped
 Transform:
@@ -158118,6 +158579,93 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930913679}
   m_Mesh: {fileID: 2591870389818531808, guid: 7984b7ae7a79b1d4d9d3741cc9f6f012, type: 3}
+--- !u!1 &1930972769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930972770}
+  - component: {fileID: 1930972771}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930972770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930972769}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.02, y: -7.86, z: 0}
+  m_LocalScale: {x: 0.36798236, y: 0.3679823, z: 0.36798224}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1589113938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1930972771
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930972769}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!43 &1931453907
 Mesh:
   m_ObjectHideFlags: 0
@@ -161533,7 +162081,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione incendio
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!1 &1987365063
 GameObject:
@@ -162461,6 +163008,93 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!1 &1998218774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1998218775}
+  - component: {fileID: 1998218776}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1998218775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998218774}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.05, y: -8.02, z: -0}
+  m_LocalScale: {x: 0.36798227, y: 0.3679823, z: 0.36798212}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1825192662}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1998218776
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998218774}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2000816041
 GameObject:
   m_ObjectHideFlags: 0
@@ -170262,7 +170896,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2046634242
 Transform:
   m_ObjectHideFlags: 0
@@ -170272,7 +170906,7 @@ Transform:
   m_GameObject: {fileID: 2046634241}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.89, y: -4.73, z: 0.14}
+  m_LocalPosition: {x: 3.62, y: 2.81, z: 0.14}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -170338,6 +170972,93 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3a5099fd3972e4d41a9cf7c3544f73cc, type: 3}
   m_PrefabInstance: {fileID: 746042917}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2047498489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2047498490}
+  - component: {fileID: 2047498491}
+  m_Layer: 0
+  m_Name: "elettrcit\xE0"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2047498490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047498489}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.96, y: -7.95, z: -0}
+  m_LocalScale: {x: 0.36798236, y: 0.3679823, z: 0.36798224}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 179011084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2047498491
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047498489}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e198d65b8d8373e4291a7ccfcc7fe7da, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2048670053
 GameObject:
   m_ObjectHideFlags: 0
@@ -170935,7 +171656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &2054847804
 PrefabInstance:
@@ -172413,7 +173133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!114 &2068904889
 MonoBehaviour:
@@ -172631,7 +173350,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &2071195498
 MonoBehaviour:
@@ -175482,6 +176200,93 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 94e7740674b87f4d9a954ca895e4b85b
   guids: []
+--- !u!1 &2110841002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2110841003}
+  - component: {fileID: 2110841004}
+  m_Layer: 0
+  m_Name: telefono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2110841003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110841002}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.47, y: -4.25, z: 0}
+  m_LocalScale: {x: 0.36798236, y: 0.3679823, z: 0.36798224}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1589113938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2110841004
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110841002}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a1e1172af894a524abf59ee3336df1f6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.92, y: 1.92}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2111692749 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6807335810523684446, guid: d8e176cadc0d263409f7bf2e9261a98e, type: 3}
@@ -288517,7 +289322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 4700129484297600425}
 --- !u!114 &3986820281977319714
 MonoBehaviour:
@@ -299105,6 +299909,11 @@ Transform:
   m_LocalScale: {x: 1.1909001, y: 1.1909001, z: 1.1909002}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1212118055}
+  - {fileID: 970136691}
+  - {fileID: 1335555584}
+  - {fileID: 1320921796}
+  - {fileID: 1722149012}
   - {fileID: 440129150}
   - {fileID: 1514284427}
   m_Father: {fileID: 0}
@@ -388910,7 +389719,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Vie di fuga Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!64 &7874508932736402845
 MeshCollider:
@@ -424282,7 +425090,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 852330740223035189}
 --- !u!136 &9076029600123160440
 CapsuleCollider:
@@ -429090,15 +429897,9 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1212118055}
-  - {fileID: 1848652586}
   - {fileID: 577606161}
   - {fileID: 980627649}
   - {fileID: 5151981248130303675}
-  - {fileID: 970136691}
-  - {fileID: 1335555584}
-  - {fileID: 1320921796}
-  - {fileID: 1722149012}
   - {fileID: 521304486}
   - {fileID: 4381411261662071867}
   - {fileID: 1992995424}

@@ -14,8 +14,6 @@ public class FeedbackDataContainer
     public float tempoOsservazionePreStep = 0f;
     public List<int> visitHistory = new List<int>();
     public float tempoTotaleOsservazione = 0f;
-
-
 }
 
 public class SlidesDataRecorder : MonoBehaviour
