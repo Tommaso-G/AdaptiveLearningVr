@@ -130,7 +130,7 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         return data;
     }
 
-    public ProfilingSessionData CalcolaStatisticheFinali()
+    public void CalcolaStatisticheFinali()
     {
         var result = new ProfilingSessionData();
 
@@ -150,7 +150,7 @@ public class ProcedureCentralStatsManager : MonoBehaviour
 
         SalvaJson(result);
         Debug.Log($"[ProcedureCentralStatsManager] Sessione chiusa. Tempo: {result.genericData.sessionTimeSeconds:F2}s");
-        return result;
+        //return result;
     }
 
     public void SalvaJson(ProfilingSessionData data)

@@ -120893,7 +120893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -120910,7 +120910,7 @@ PrefabInstance:
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1070815173}
+      objectReference: {fileID: 1513562413}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -120921,7 +120921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnEndIterationButtonPressedUI
+      value: CalcolaStatisticheFinali
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -120929,7 +120929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
+      value: ProcedureCentralStatsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4238002141646657037, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -127648,6 +127652,7 @@ GameObject:
   - component: {fileID: 1513562411}
   - component: {fileID: 1513562413}
   - component: {fileID: 1513562412}
+  - component: {fileID: 1513562414}
   m_Layer: 0
   m_Name: CentralStatsManager
   m_TagString: Untagged
@@ -127695,8 +127700,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slidesDataRecorder: {fileID: 1513562412}
-  sessionTimer: {fileID: 0}
+  sessionTimer: {fileID: 1513562414}
   feedbackDaEscludere: []
+--- !u!114 &1513562414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513562410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1ff89662a613d4a850ffdd2593e4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1514284426
 GameObject:
   m_ObjectHideFlags: 0
