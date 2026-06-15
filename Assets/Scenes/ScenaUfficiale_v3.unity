@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 238562507}
 --- !u!114 &3805128
 MonoBehaviour:
@@ -1847,9 +1848,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 18812119}
-  - component: {fileID: 18812122}
   - component: {fileID: 18812121}
   - component: {fileID: 18812120}
+  - component: {fileID: 18812122}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -1899,8 +1900,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 3132086e3ae3d440b962da6f6e6045ae
   guids: []
---- !u!135 &18812122
-SphereCollider:
+--- !u!65 &18812122
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1918,8 +1919,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: -2.04, y: 0, z: 0}
+  m_Size: {x: 5.693613, y: 1, z: 9.102645}
+  m_Center: {x: 1.9294195, y: 0, z: -0.9455595}
 --- !u!1 &20623829
 GameObject:
   m_ObjectHideFlags: 0
@@ -4831,6 +4832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &43680351
 MonoBehaviour:
@@ -6506,6 +6508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &76519370
 PrefabInstance:
@@ -11925,6 +11928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &139745205
 GameObject:
@@ -15112,6 +15116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &179439244
 PrefabInstance:
@@ -17189,9 +17194,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 212101347}
-  - component: {fileID: 212101350}
   - component: {fileID: 212101349}
   - component: {fileID: 212101348}
+  - component: {fileID: 212101350}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -17241,8 +17246,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 318d3c5d88965045b40009987697b2f3
   guids: []
---- !u!135 &212101350
-SphereCollider:
+--- !u!65 &212101350
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -17260,8 +17265,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: 3.15, y: 0, z: 0.91}
+  m_Size: {x: 7.1547394, y: 1, z: 5.9539223}
+  m_Center: {x: 2.517784, y: 0, z: 1.6825752}
 --- !u!1001 &212483088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28754,9 +28759,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 354683224}
-  - component: {fileID: 354683227}
   - component: {fileID: 354683226}
   - component: {fileID: 354683225}
+  - component: {fileID: 354683227}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -28806,8 +28811,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: f97d4451c1832243b1b7851f0d7eef54
   guids: []
---- !u!135 &354683227
-SphereCollider:
+--- !u!65 &354683227
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -28825,8 +28830,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: 3.15, y: 0, z: 0.91}
+  m_Size: {x: 9.3202095, y: 1, z: 6.4998207}
+  m_Center: {x: 0.017808914, y: 0, z: 0.69491386}
 --- !u!1 &358225699
 GameObject:
   m_ObjectHideFlags: 0
@@ -29024,7 +29029,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.29
+      value: 4.77
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -29184,7 +29189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -29238,6 +29243,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359822623}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &359822621 stripped
 Transform:
@@ -29262,6 +29270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &360337665
 GameObject:
@@ -37114,6 +37123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1462505286}
 --- !u!114 &449941996
 MonoBehaviour:
@@ -51262,9 +51272,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 595481730}
-  - component: {fileID: 595481733}
   - component: {fileID: 595481732}
   - component: {fileID: 595481731}
+  - component: {fileID: 595481733}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -51314,8 +51324,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 74c6bbbe5a889743881fec11fe7b640c
   guids: []
---- !u!135 &595481733
-SphereCollider:
+--- !u!65 &595481733
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -51333,8 +51343,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: 0, y: 0, z: -2.97}
+  m_Size: {x: 8.650242, y: 1, z: 7.1644955}
+  m_Center: {x: -0.018346786, y: 0, z: 0.02790451}
 --- !u!1 &596478412
 GameObject:
   m_ObjectHideFlags: 0
@@ -52089,6 +52099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1042056825}
 --- !u!114 &600088791
 MonoBehaviour:
@@ -53286,7 +53297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -53309,6 +53320,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 610957586}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &610957584 stripped
 Transform:
@@ -53333,6 +53347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &612597816
 GameObject:
@@ -53878,6 +53893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!65 &619888400
 BoxCollider:
@@ -55922,19 +55938,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99856746
+      value: 0.99999934
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0000000642243
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.053507976
+      value: 0.001169398
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000002769663
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -55942,7 +55958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 6.134
+      value: 0.134
       objectReference: {fileID: 0}
     - target: {fileID: 3305537341795558521, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -56062,7 +56078,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -56097,6 +56113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 647811511}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &647811509 stripped
 Transform:
@@ -56121,6 +56140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &647940299
 PrefabInstance:
@@ -67488,6 +67508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &715209435
 MonoBehaviour:
@@ -68882,6 +68903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1631360403}
 --- !u!114 &733652555
 MonoBehaviour:
@@ -80891,6 +80913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1362875440}
 --- !u!114 &888038972
 MonoBehaviour:
@@ -81396,6 +81419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1701497770}
 --- !u!114 &890925839
 MonoBehaviour:
@@ -83816,6 +83840,7 @@ MonoBehaviour:
   handMenuRequester: {fileID: 923911995}
   errorLog: {fileID: 1957653098}
   errorCooldownSeconds: 3
+  aliasMap: {fileID: 0}
   customErrorMessages:
   - interactedObjectName: Fuoco
     customMessage: Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.
@@ -96971,6 +96996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1081373332
 MonoBehaviour:
@@ -99234,6 +99260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1112787017
 MonoBehaviour:
@@ -102357,6 +102384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 143713584}
 --- !u!114 &1175735142
 MonoBehaviour:
@@ -104030,7 +104058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -104072,6 +104100,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1192523233}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1192523231 stripped
 Transform:
@@ -104096,6 +104127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1192616145
 GameObject:
@@ -106027,7 +106059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -106077,6 +106109,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1205808063}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1205808061 stripped
 Transform:
@@ -106101,6 +106136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1206081766
 GameObject:
@@ -111128,6 +111164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione assenti
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1279638770
 MonoBehaviour:
@@ -111961,297 +111998,428 @@ MonoBehaviour:
     steps:
     - stepName: Esci e inizia
       displayName: 
+      weight: 1
   - chapterName: Segnalazione incendio
     steps:
     - stepName: Attiva Allarme
       displayName: Attiva l'allarme
+      weight: 1
     - stepName: inizia COlloquio Ui
       displayName: Parla con i Vigili del fuoco
+      weight: 1
     - stepName: completa Domande
       displayName: Parla con i Vigili del fuoco
+      weight: 1
     - stepName: Eseguire chiamata1
       displayName: Chiama il personale scolastico
+      weight: 1
     - stepName: Eseguire chiamata 2
       displayName: Chiama i vigili del fuoco
+      weight: 1
     - stepName: Enable Telefono
       displayName: 
+      weight: 1
     - stepName: RImetti Telefono Neutro
       displayName: 
+      weight: 1
     - stepName: Chiudi menu
       displayName: 
+      weight: 1
   - chapterName: "Interruzione elettricit\xE0+gas"
     steps:
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 1"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva elettricit\xE0 e gas"
       displayName: 
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 2"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 3"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 4"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: Disattiva il gas - combinazion 2
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 1
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 3
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 4
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Play audio Gas
       displayName: 
+      weight: 1
     - stepName: Attiva feedback gas
       displayName: 
+      weight: 1
   - chapterName: Isola Incendio
     steps:
     - stepName: Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
       displayName: Valuta l0incendio
+      weight: 1
     - stepName: Non puoi domarli tutti... chiudi la porta e scappa
       displayName: Chiudi la porta di Aula 1
+      weight: 1
     - stepName: "Non \xE8 bastato... usa la giacca per bloccare il fumo"
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: Attiva Fumo
       displayName: Guarda il fumo
+      weight: 1
     - stepName: Disattiva Fumo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: compare collider visivo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: disativa collider visivo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: apri menu
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Istruzioni isola Incendio
       displayName: 
+      weight: 1
     - stepName: Wait
       displayName: 
+      weight: 1
   - chapterName: Giro di perlustrazione
     steps: []
   - chapterName: Aula 2(in fondo a sinistra)
     steps:
     - stepName: "No, non c'\xE8 nessuno in Aula 2"
       displayName: 
+      weight: 1
     - stepName: Question to Check aula2
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in aula 2?"
       displayName: 
+      weight: 1
     - stepName: "Si c'\xE8 Paolina in Aula2"
       displayName: 
+      weight: 1
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: Paolina Aula 2 si fida di te e ti segue
       displayName: 
+      weight: 1
     - stepName: Porta Paolina Aula 2 all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Disable Paolina Aula2
       displayName: 
+      weight: 1
     - stepName: Chiudi Porta Aula 2
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Aula computer
     steps:
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: Porta Paolina all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Disable Paolina
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in aula Computer?"
       displayName: 
+      weight: 1
     - stepName: Chiudi Porta Aula Computer
       displayName: 
+      weight: 1
     - stepName: "No, non c'\xE8 nessuno in Aula Computer"
       displayName: 
+      weight: 1
     - stepName: "Si c'\xE8 Paolina"
       displayName: 
+      weight: 1
     - stepName: Paolina aula pc ti segue
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Laboratorio di chimica
     steps:
     - stepName: "C'\xE8 qualcuno in laboratorio di chimica?"
       displayName: 
+      weight: 1
     - stepName: No, chiudi la porta di chimica
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Biblioteca
     steps:
     - stepName: "Si. c'\xE8 Paolina in sedie a rotelle"
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in Biblioteca?"
       displayName: 
+      weight: 1
     - stepName: Portala fuori
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: "No, Non c'\xE8 nessuo in Biblioteca"
       displayName: 
+      weight: 1
     - stepName: Disable paolina
       displayName: 
+      weight: 1
     - stepName: Grab sedia a rotelle
       displayName: 
+      weight: 1
     - stepName: Chiudi la porta di biblioteca
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Mensa
     steps:
     - stepName: "Si c'\xE8 Michelle"
       displayName: 
+      weight: 1
     - stepName: Porta Michelle all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Michelle stava facendo dei balletti per tiktok con le cuffie e non
         ha sentito l'allarme, fatti notare
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: "Michelle \xE8 scocciata ma ti segue"
       displayName: 
+      weight: 1
     - stepName: Disable Michelle
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in Mensa"
       displayName: 
+      weight: 1
     - stepName: "No, non c'\xE8 nessuno in mensa"
       displayName: 
+      weight: 1
     - stepName: Chiudi la porta di mensa
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
     - stepName: Perlustra tutta la scuola e chiudi le porte
       displayName: 
+      weight: 1
     - stepName: Istruzioni Giro Di Perlustrazioni
       displayName: 
+      weight: 1
     - stepName: Attiva bambini
       displayName: 
+      weight: 1
     - stepName: Disattiva flag
       displayName: 
+      weight: 1
     - stepName: verifica porte condition
       displayName: 
+      weight: 1
     - stepName: Apri Porte per sicurezza
       displayName: 
+      weight: 1
     - stepName: verifica porte behaviour
       displayName: 
+      weight: 1
   - chapterName: Segnalazione assenti
     steps:
     - stepName: segnala assenti
       displayName: Segnala gli assenti
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Crea dialoghi
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Fine processo
     steps:
     - stepName: Fine iterazione
       displayName: 
+      weight: 1
   - chapterName: Primo soccorso Optional
     steps:
     - stepName: Apri medkit
       displayName: 
+      weight: 1
     - stepName: Grab bottle
       displayName: Prendi la bottiglia
+      weight: 1
     - stepName: Grab tappo
       displayName: Togli il tappo
+      weight: 1
     - stepName: Versa acqua
       displayName: Versa l'acqua sulla scottatura
+      weight: 1
     - stepName: Asciuga
       displayName: Asciuga con il panno
+      weight: 1
     - stepName: metti garza
       displayName: Metti la Garza
+      weight: 1
     - stepName: Enable Primo Soccorso
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Estintore generico Optional
     steps:
     - stepName: (solido) Grab extiguisher
       displayName: Prendi l'estintore
+      weight: 1
     - stepName: Sfaty catch removal
       displayName: Rimuovi la sicura
+      weight: 1
     - stepName: Extinguish fire
       displayName: Spegni il fuoco
+      weight: 1
     - stepName: grab ejector
       displayName: Prendi l'ugello
+      weight: 1
     - stepName: Istanzia i fuochi
       displayName: 
+      weight: 1
     - stepName: Step back
       displayName: 
+      weight: 1
     - stepName: Mostra Feedback fumo
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 del fumo?"
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Vie di fuga Optional
     steps:
     - stepName: Seleziona una via di fuga alternativa
       displayName: 
+      weight: 1
     - stepName: Guarda la mappa
       displayName: 
+      weight: 1
     - stepName: Chiudi la mappa
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Attiva mappa
       displayName: 
+      weight: 1
   - chapterName: Fuoco su liquido Optional
     steps:
     - stepName: Trova L'estintore a CO2
       displayName: Prendi l'estintore
+      weight: 1
     - stepName: Rimuovi la sicura (CO2)
       displayName: Rimuovi la sicura
+      weight: 1
     - stepName: Prendi l'eiettore (CO2)
       displayName: Spegni il fuoco
+      weight: 1
     - stepName: Estingui il fuoco (CO2)
       displayName: Prendi l'ugello
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
 --- !u!1 &1288696060
 GameObject:
   m_ObjectHideFlags: 0
@@ -113157,6 +113325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &1305026083
 PrefabInstance:
@@ -113842,9 +114011,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1313321470}
-  - component: {fileID: 1313321473}
   - component: {fileID: 1313321472}
   - component: {fileID: 1313321471}
+  - component: {fileID: 1313321473}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -113894,8 +114063,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 3c74daa8bdf380409d67bea8c66e9618
   guids: []
---- !u!135 &1313321473
-SphereCollider:
+--- !u!65 &1313321473
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -113913,8 +114082,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: 2.25, y: 0, z: 0}
+  m_Size: {x: 10.343933, y: 1, z: 7.441353}
+  m_Center: {x: 1.2922478, y: 0, z: 1.0735588}
 --- !u!114 &1313955771 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5501027999490753738, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
@@ -122940,6 +123109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 437976129}
 --- !u!114 &1413083536
 MonoBehaviour:
@@ -125026,6 +125196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1426472688
 GameObject:
@@ -130121,9 +130292,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1499349260}
-  - component: {fileID: 1499349263}
   - component: {fileID: 1499349262}
   - component: {fileID: 1499349261}
+  - component: {fileID: 1499349263}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -130173,8 +130344,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: c10e0d647794cb449635157ba7c1c8ee
   guids: []
---- !u!135 &1499349263
-SphereCollider:
+--- !u!65 &1499349263
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130192,8 +130363,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: 2.25, y: 0, z: 0}
+  m_Size: {x: 6.384716, y: 1, z: 6.409893}
+  m_Center: {x: 2.692358, y: 0, z: 1.6524296}
 --- !u!1001 &1499423496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130542,9 +130713,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1505716067}
-  - component: {fileID: 1505716070}
   - component: {fileID: 1505716069}
   - component: {fileID: 1505716068}
+  - component: {fileID: 1505716070}
   m_Layer: 2
   m_Name: DynamicCollider
   m_TagString: Untagged
@@ -130594,8 +130765,8 @@ MonoBehaviour:
   serializedGuid:
     serializedGuid: 530bbff9350f244997b3fd691040314c
   guids: []
---- !u!135 &1505716070
-SphereCollider:
+--- !u!65 &1505716070
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130613,8 +130784,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
-  m_Center: {x: -0.65, y: 0, z: 0.57}
+  m_Size: {x: 10.464359, y: 1, z: 7.4335675}
+  m_Center: {x: 0.5580733, y: 0, z: 2.1099498}
 --- !u!1 &1508760376
 GameObject:
   m_ObjectHideFlags: 0
@@ -131888,6 +132059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1527159743
 MonoBehaviour:
@@ -132553,7 +132725,7 @@ Transform:
   m_GameObject: {fileID: 1534612957}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49277878, y: 0.5071184, z: 0.5071184, w: 0.4927789}
-  m_LocalPosition: {x: -15.49, y: 1.5, z: 15.13}
+  m_LocalPosition: {x: -15.48, y: 1.5, z: 15.35}
   m_LocalScale: {x: 2.18, y: 2.18, z: 2.18}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -132605,6 +132777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 215017814}
 --- !u!114 &1534612961
 MonoBehaviour:
@@ -133536,6 +133709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1137699999}
 --- !u!114 &1538502502
 MonoBehaviour:
@@ -134316,7 +134490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -134355,6 +134529,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1540270786}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1540270784 stripped
 Transform:
@@ -134379,6 +134556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1541757239
 GameObject:
@@ -136874,6 +137052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1569464775
 GameObject:
@@ -137063,6 +137242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
+  errorWeight: 1
   objectToFlash: {fileID: 1572630423}
 --- !u!114 &1572630433
 MonoBehaviour:
@@ -139790,6 +139970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1952709830}
 --- !u!114 &1605543446
 MonoBehaviour:
@@ -142449,6 +142630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 712349806}
 --- !u!114 &1634760343
 MonoBehaviour:
@@ -149473,6 +149655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1160402165}
 --- !u!114 &1725877318
 MonoBehaviour:
@@ -159048,6 +159231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1806830667}
 --- !u!114 &1832752261
 MonoBehaviour:
@@ -160409,6 +160593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1845418304
 MonoBehaviour:
@@ -162924,6 +163109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1879570082
 GameObject:
@@ -165963,7 +166149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468412902575742373, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8469320567646882160, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -166017,6 +166203,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8469320567646882167, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 619416564}
+    - targetCorrespondingSourceObject: {fileID: 3804684702972820025, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d0e34d3ee5ea1834db50be3102c25f9b, type: 3}
 --- !u!4 &1919186527 stripped
 Transform:
@@ -170608,6 +170797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione incendio
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!1 &1983718727
 GameObject:
@@ -180369,6 +180559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &2054847804
 PrefabInstance:
@@ -182171,6 +182362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
+  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!114 &2068904889
 MonoBehaviour:
@@ -182370,6 +182562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &2071195498
 MonoBehaviour:
@@ -243085,7 +243278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &2040552547296586074
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -384982,6 +385175,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 1918410141760966468}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 0}
+  <alternativeDoor>k__BackingField: {fileID: 6303743721354336690}
 --- !u!4 &7508736381403009971
 Transform:
   m_ObjectHideFlags: 0
@@ -394509,6 +394703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Vie di fuga Optional
+  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!64 &7874508932736402845
 MeshCollider:
@@ -394696,6 +394891,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 5329693133429533181}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 0}
+  <alternativeDoor>k__BackingField: {fileID: 6303743721354336690}
 --- !u!1 &7877024921123912242
 GameObject:
   m_ObjectHideFlags: 0
@@ -407884,7 +408080,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8303172000594823319
 GameObject:
   m_ObjectHideFlags: 0
@@ -408227,6 +408423,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 6303743721354336690}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 306262873}
+  <alternativeDoor>k__BackingField: {fileID: 1918410141760966468}
 --- !u!4 &8314298136431476537
 Transform:
   m_ObjectHideFlags: 0
@@ -411148,7 +411345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8412341791377025162
 GameObject:
   m_ObjectHideFlags: 0

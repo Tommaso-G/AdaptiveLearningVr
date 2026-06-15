@@ -129,7 +129,22 @@ public class CorrectDoorButton : MonoBehaviour
         resultImage.gameObject.SetActive(false);
         clicked = false;
         currentUITrigger = door.triggerUICollider;
-        CalculateCorrectButton(door.transform);
+        MapButton currentBlockedButton = mapButtons.FirstOrDefault(b => b.ExitDoor == door);
+        if (currentBlockedButton != null)
+        {
+            Image[] images = currentBlockedButton.GetComponentsInChildren<Image>(true);
+            images[0].sprite = lockedImage;
+            images[1].sprite = youImage;
+            images[1].gameObject.SetActive(true);
+
+            correctButton = mapButtons.FirstOrDefault(b => b.ExitDoor == currentBlockedButton.alternativeDoor);
+            if (correctButton == null) Debug.Log("[CorrectButton] Bottone associato alla porta alternativa non trovato.");
+        }
+        else
+        {
+            Debug.Log("[CorrectButton] Bottone associato alla porta bloccata non trovato.");
+        }
+        //CalculateCorrectButton(door.transform);
     }
 
     private void CalculateCorrectButton(Transform currentDoorTransform)

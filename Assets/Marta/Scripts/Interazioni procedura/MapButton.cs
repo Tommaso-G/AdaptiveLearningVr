@@ -11,5 +11,6 @@ public class MapButton : MonoBehaviour
     [field: SerializeField]
     public Transform obstacleSpawnArea { get; private set; }
 
-
+    [field: SerializeField]
+    public ExitDoor alternativeDoor { get; private set; }
 }
