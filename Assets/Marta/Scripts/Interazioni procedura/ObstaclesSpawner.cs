@@ -136,6 +136,7 @@ public class ObstaclesSpawner : MonoBehaviour, DynamicObjectInColliderCondition.
         SpawnableObj target = candidates[randomIndex];
 
         _activeCollider = target.GetComponentInChildren<ColliderWithTriggerProperty>(true);
+        Debug.Log($"[ObstacleSpawner] collider dinamico asseganto: {(_activeCollider != null ? _activeCollider.GetComponents<Collider>() : "null")}");
         target.SpawnableObjDestroyed += OnSpawnedObjDestroyed;
         target.Activate();
 

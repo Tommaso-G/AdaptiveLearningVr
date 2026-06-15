@@ -130,6 +130,7 @@ namespace VRBuilder.Core.Conditions
 
             public override void Start()
             {
+                Debug.LogWarning("[DynamicObjectInColliderCondition] Start chiamato");
                 _targetProvider = null;
                 _colliderProvider = null;
                 _timeInside = 0f;
@@ -145,6 +146,7 @@ namespace VRBuilder.Core.Conditions
                 // Collider provider (solo se modalità dinamica)
                 if (Data.UseDynamicCollider)
                 {
+                    Debug.LogWarning("[DynamicObjectInColliderCondition] dentro Data.UseDynamicCollider");
                     GameObject colliderGO = Data.ColliderProvider?.Value?.GameObject;
                     if (colliderGO != null)
                         _colliderProvider = colliderGO.GetComponent<IDynamicColliderProvider>();
@@ -185,16 +187,25 @@ namespace VRBuilder.Core.Conditions
             private bool IsInside()
             {
                 if (_targetProvider == null)
+                {
+                    Debug.LogWarning("[DynamicObjectInColliderCondition] _targetProvider == Null");
                     return false;
+                }
 
                 GameObject currentTarget = _targetProvider.CurrentTarget;
                 if (currentTarget == null)
+                {
+                    Debug.LogWarning("[DynamicObjectInColliderCondition] currentTarget == null");
                     return false;
+                }
 
                 // Risolve il collider in base alla modalità
                 Collider[] colliders = ResolveColliders();
                 if (colliders == null || colliders.Length == 0)
+                {
+                    Debug.LogWarning("[DynamicObjectInColliderCondition] colliders == null || colliders.Length == 0");
                     return false;
+                }
 
                 foreach (Collider collider in colliders)
                 {
@@ -213,6 +224,7 @@ namespace VRBuilder.Core.Conditions
                 if (Data.UseDynamicCollider)
                 {
                     ColliderWithTriggerProperty currentCollider = _colliderProvider?.CurrentCollider;
+                    //Debug.Log($"[DynamicObjectInColliderCondition] collider dinamico asseganto: {(currentCollider != null ? currentCollider.GetComponents<Collider>() : "null")}");
                     return currentCollider != null
                         ? currentCollider.GetComponents<Collider>()
                         : null;
