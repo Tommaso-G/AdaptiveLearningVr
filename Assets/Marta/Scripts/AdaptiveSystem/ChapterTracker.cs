@@ -451,7 +451,7 @@ public class ChapterTracker : MonoBehaviour
 
         if (stepErrorTracker.ChapterErrors.TryGetValue(chapter_name, out var error))
         {
-            errors = error.TotalErrors;
+            errors = error.TotalWeightedErrors;
         }
         else
         {

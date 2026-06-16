@@ -4586,7 +4586,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &43680351
 MonoBehaviour:
@@ -6757,7 +6756,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &75540785
 GameObject:
@@ -11984,7 +11982,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &139745205
 GameObject:
@@ -15431,7 +15428,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &179439244
 PrefabInstance:
@@ -31987,7 +31983,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &360337665
 GameObject:
@@ -32226,7 +32221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 501973743}
 --- !u!114 &360424771
 MonoBehaviour:
@@ -32449,7 +32443,7 @@ MonoBehaviour:
         m_MethodName: releaseProxyWithoutGrab
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 505123246}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -33192,7 +33186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 779037646}
 --- !u!114 &368602927
 MonoBehaviour:
@@ -40859,7 +40852,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1933397826}
 --- !u!114 &448006668
 MonoBehaviour:
@@ -43736,7 +43728,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 416806388}
 --- !u!114 &473122080
 MonoBehaviour:
@@ -43959,7 +43950,7 @@ MonoBehaviour:
         m_MethodName: releaseProxyWithoutGrab
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 2010208957}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -46788,7 +46779,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 648209870}
 --- !u!114 &499419532
 MonoBehaviour:
@@ -57880,7 +57870,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!4 &611843336 stripped
 Transform:
@@ -58712,7 +58701,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!65 &619888400
 BoxCollider:
@@ -61088,7 +61076,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &647940299
 PrefabInstance:
@@ -72957,7 +72944,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &715209435
 MonoBehaviour:
@@ -77401,7 +77387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 607764081}
 --- !u!114 &767125239
 MonoBehaviour:
@@ -88714,77 +88699,105 @@ MonoBehaviour:
   customErrorMessages:
   - interactedObjectName: Fuoco
     customMessage: Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.
+    weight: 1
   - interactedObjectName: QuizManager
     customMessage: "La risposta selezionata era sbagliata. \nPensavo che almeno sapessi
       leggere."
+    weight: 1
   - interactedObjectName: Mappa Vie Di Fuga
     customMessage: "L'uscita selezionata non era la pi\xF9 vicina. Parlerai tu con
       i genitori della bambina."
+    weight: 1
   - interactedObjectName: liquid_collider
     customMessage: Hai fatto schizzare il liquido diffondendo le fiamme. Sai solo
       peggiorare le cose.
+    weight: 1
   - interactedObjectName: SpawnArea
     customMessage: "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso."
+    weight: 1
   - interactedObjectName: ReportManager
     customMessage: "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare,
       ma figlio mio, tu te ne approfitti."
+    weight: 1
   - interactedObjectName: Extinguisher_Water
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
+    weight: 2
   - interactedObjectName: Extinguisher_CO2
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
+    weight: 2
+  - interactedObjectName: Extinguisher_Foam
+    customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
+      a premere a caso, grazie.
+    weight: 2
   - interactedObjectName: ChapterTimer
     customMessage: '<b>TEMPO SCADUTO<b>: non abbiamo tutto il giorno. <b>Passa allo
       step successivo<b>.'
+    weight: 1
   - interactedObjectName: Michelle_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Timmy_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Jackie_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, controlla megio
       la mappa la prossima volta"
+    weight: 1
   - interactedObjectName: markus_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Wrong extinguisher
     customMessage: "Per questo tipo di fuoco serve un altro estintore. Questo non
       \xE8 adatto, come te."
+    weight: 3
   - interactedObjectName: Garza_Sporca
     customMessage: Vuoi pure sputarci sopra? Non puoi usare una garza caduta per
       terra, infetterai la ferita.
+    weight: 1
   - interactedObjectName: VerificaPorte
     customMessage: Hai lasciato qualche porta aperta, che disdetta.
+    weight: 1
   - interactedObjectName: Bambino_tempoScaduto
     customMessage: Non siamo in gita scolastica. Porta fuori quel bambino.
+    weight: 1
   customErrorMessagesRuntime:
   - interactedObjectName: Aula
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   - interactedObjectName: Bambino
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   - interactedObjectName: Porta
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   customErrorMessagesToChapters:
   - chapterName: "Interruzione elettricit\xE0+gas"
     customErrorMessages:
     - interactedObjectName: LeverEmpty
       customMessage: Tira la leva Kronk! L'ALTRA LEVAAAA!
+      weight: 1
     - interactedObjectName: Button Visuals
       customMessage: Complimenti, premendo questo bottone hai fatto saltare in aira
         Busto Arsizio. Spero tu sia soddisfatto.
+      weight: 1
     - interactedObjectName: Dial Visuals
       customMessage: "C'\xE8 un tempo e un luogo per ogni cosa, ma non ora. Lascia
         stare questa manopola."
+      weight: 1
     - interactedObjectName: Wheel
       customMessage: Non stai giocando a Mario Kart, gira la mapola giusta.
+      weight: 1
 --- !u!114 &923911997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92922,7 +92935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 992193366}
 --- !u!114 &992153470
 MonoBehaviour:
@@ -95072,7 +95084,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1228205861}
 --- !u!114 &1010484621
 MonoBehaviour:
@@ -102687,7 +102698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1081373332
 MonoBehaviour:
@@ -104134,7 +104144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1112787017
 MonoBehaviour:
@@ -108621,7 +108630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1301018871}
 --- !u!114 &1189387947
 MonoBehaviour:
@@ -109360,7 +109368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1192616145
 GameObject:
@@ -111452,7 +111459,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1206081766
 GameObject:
@@ -116170,7 +116176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione assenti
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1279638770
 MonoBehaviour:
@@ -118638,7 +118643,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1303512499
 GameObject:
@@ -118718,7 +118722,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1165055361}
 --- !u!114 &1303512503
 MonoBehaviour:
@@ -130108,7 +130111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1426472688
 GameObject:
@@ -138524,7 +138526,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1527159743
 MonoBehaviour:
@@ -140102,7 +140103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1542076190
 GameObject:
@@ -142648,7 +142648,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1572630423 stripped
 GameObject:
@@ -142807,7 +142806,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 1572630423}
 --- !u!114 &1572630433
 MonoBehaviour:
@@ -148259,7 +148257,7 @@ GameObject:
   - component: {fileID: 1632041232}
   - component: {fileID: 1632041231}
   m_Layer: 14
-  m_Name: Extinguisher_Foam (1)
+  m_Name: Extinguisher_Foam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148320,7 +148318,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 522765424}
 --- !u!114 &1632041231
 MonoBehaviour:
@@ -151413,7 +151410,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 757717253}
 --- !u!114 &1687441093
 MonoBehaviour:
@@ -154820,7 +154816,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1803351941}
 --- !u!114 &1730967514
 MonoBehaviour:
@@ -165227,7 +165222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &1845418304
 MonoBehaviour:
@@ -167844,7 +167838,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1 &1879570082
 GameObject:
@@ -175292,7 +175285,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Segnalazione incendio
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!1 &1982304764
 GameObject:
@@ -185247,7 +185239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!1001 &2054847804
 PrefabInstance:
@@ -186957,7 +186948,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Giro di perlustrazione
-  errorWeight: 1
   objectToFlash: {fileID: 1246110649}
 --- !u!114 &2068904889
 MonoBehaviour:
@@ -187175,7 +187165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Fuoco su liquido Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!114 &2071195498
 MonoBehaviour:
@@ -301713,7 +301702,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 4700129484297600425}
 --- !u!114 &3986820281977319714
 MonoBehaviour:
@@ -400365,7 +400353,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Vie di fuga Optional
-  errorWeight: 1
   objectToFlash: {fileID: 0}
 --- !u!64 &7874508932736402845
 MeshCollider:
@@ -434657,7 +434644,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chapterErrorName: Estintore generico Optional
-  errorWeight: 1
   objectToFlash: {fileID: 852330740223035189}
 --- !u!136 &9076029600123160440
 CapsuleCollider:

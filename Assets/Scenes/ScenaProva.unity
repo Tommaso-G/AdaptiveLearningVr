@@ -50698,6 +50698,7 @@ MonoBehaviour:
   errorTracker: {fileID: 923911996}
   stepAliasMap: {fileID: 1288262152}
   feedbackIconsManager: {fileID: 1056763965}
+  validInteractionCooldownSeconds: 15
 --- !u!4 &591878736
 Transform:
   m_ObjectHideFlags: 0
@@ -80915,78 +80916,103 @@ MonoBehaviour:
   textPanelOnHand: {fileID: 2033570219}
   handMenuRequester: {fileID: 923911995}
   errorLog: {fileID: 1957653098}
+  errorCooldownSeconds: 3
+  aliasMap: {fileID: 0}
   customErrorMessages:
   - interactedObjectName: Fuoco
     customMessage: Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.
+    weight: 1
   - interactedObjectName: QuizManager
     customMessage: "La risposta selezionata era sbagliata. \nPensavo che almeno sapessi
       leggere."
+    weight: 1
   - interactedObjectName: Mappa Vie Di Fuga
     customMessage: "L'uscita selezionata non era la pi\xF9 vicina. Parlerai tu con
       i genitori della bambina."
+    weight: 1
   - interactedObjectName: liquid_collider
     customMessage: Hai fatto schizzare il liquido diffondendo le fiamme. Sai solo
       peggiorare le cose.
+    weight: 1
   - interactedObjectName: SpawnArea
     customMessage: "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso."
+    weight: 1
   - interactedObjectName: ReportManager
     customMessage: "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare,
       ma figlio mio, tu te ne approfitti."
+    weight: 1
   - interactedObjectName: Extinguisher_Water
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
+    weight: 1
   - interactedObjectName: Extinguisher_CO2
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
+    weight: 1
   - interactedObjectName: ChapterTimer
     customMessage: '<b>TEMPO SCADUTO<b>: non abbiamo tutto il giorno. <b>Passa allo
       step successivo<b>.'
+    weight: 1
   - interactedObjectName: Michelle_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Timmy_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Jackie_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, controlla megio
       la mappa la prossima volta"
+    weight: 1
   - interactedObjectName: markus_uscita
     customMessage: "L'uscita che hai scelto non era la pi\xF9 vicina, avresti potuto
       rispariarmiare 1,4 secondi."
+    weight: 1
   - interactedObjectName: Wrong extinguisher
     customMessage: "Per questo tipo di fuoco serve un altro estintore. Questo non
       \xE8 adatto, come te."
+    weight: 1
   - interactedObjectName: Garza_Sporca
     customMessage: Vuoi pure sputarci sopra? Non puoi usare una garza caduta per
       terra, infetterai la ferita.
+    weight: 1
   - interactedObjectName: VerificaPorte
     customMessage: Hai lasciato qualche porta aperta, che disdetta.
+    weight: 1
   customErrorMessagesRuntime:
   - interactedObjectName: Aula
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   - interactedObjectName: Bambino
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   - interactedObjectName: Porta
     customMessage: Finisci di perlustrare un aula prima di passare alla successiva.
       Porta fuori i bambini e chiudi la porta. Torna a _ e finisci quello che hai
       iniziato.
+    weight: 1
   customErrorMessagesToChapters:
   - chapterName: "Interruzione elettricit\xE0+gas"
     customErrorMessages:
     - interactedObjectName: LeverEmpty
       customMessage: Tira la leva Kronk! L'ALTRA LEVAAAA!
+      weight: 1
     - interactedObjectName: Button Visuals
       customMessage: Complimenti, premendo questo bottone hai fatto saltare in aira
         Busto Arsizio. Spero tu sia soddisfatto.
+      weight: 1
     - interactedObjectName: Dial Visuals
       customMessage: "C'\xE8 un tempo e un luogo per ogni cosa, ma non ora. Lascia
         stare questa manopola."
+      weight: 1
     - interactedObjectName: wheel_empty
       customMessage: Non stai giocando a Mario Kart, gira la mapola giusta.
+      weight: 1
 --- !u!114 &923911997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107589,297 +107615,428 @@ MonoBehaviour:
     steps:
     - stepName: Esci e inizia
       displayName: 
+      weight: 1
   - chapterName: Segnalazione incendio
     steps:
     - stepName: Attiva Allarme
       displayName: Attiva l'allarme
+      weight: 1
     - stepName: inizia COlloquio Ui
       displayName: Parla con i Vigili del fuoco
+      weight: 1
     - stepName: completa Domande
       displayName: Parla con i Vigili del fuoco
+      weight: 1
     - stepName: Eseguire chiamata1
       displayName: Chiama il personale scolastico
+      weight: 1
     - stepName: Eseguire chiamata 2
       displayName: Chiama i vigili del fuoco
+      weight: 1
     - stepName: Enable Telefono
       displayName: 
+      weight: 1
     - stepName: RImetti Telefono Neutro
       displayName: 
+      weight: 1
     - stepName: Chiudi menu
       displayName: 
+      weight: 1
   - chapterName: "Interruzione elettricit\xE0+gas"
     steps:
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 1"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva elettricit\xE0 e gas"
       displayName: 
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 2"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 3"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: "Disattiva l'elettricit\xE0 - combinazione 4"
       displayName: "Disattiva l'elettricit\xE0"
+      weight: 1
     - stepName: Disattiva il gas - combinazion 2
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 1
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 3
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Disattiva il gas - combinazion 4
       displayName: Disattiva il Gas
+      weight: 1
     - stepName: Play audio Gas
       displayName: 
+      weight: 1
     - stepName: Attiva feedback gas
       displayName: 
+      weight: 1
   - chapterName: Isola Incendio
     steps:
     - stepName: Raggiungi Incendio (nella stanza in fondo al corridoio a destra)
       displayName: Valuta l0incendio
+      weight: 1
     - stepName: Non puoi domarli tutti... chiudi la porta e scappa
       displayName: Chiudi la porta di Aula 1
+      weight: 1
     - stepName: "Non \xE8 bastato... usa la giacca per bloccare il fumo"
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: Attiva Fumo
       displayName: Guarda il fumo
+      weight: 1
     - stepName: Disattiva Fumo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: compare collider visivo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: disativa collider visivo
       displayName: Blocca il fumo con la felpa
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: apri menu
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Istruzioni isola Incendio
       displayName: 
+      weight: 1
     - stepName: Wait
       displayName: 
+      weight: 1
   - chapterName: Giro di perlustrazione
     steps: []
   - chapterName: Aula 2(in fondo a sinistra)
     steps:
     - stepName: "No, non c'\xE8 nessuno in Aula 2"
       displayName: 
+      weight: 1
     - stepName: Question to Check aula2
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in aula 2?"
       displayName: 
+      weight: 1
     - stepName: "Si c'\xE8 Paolina in Aula2"
       displayName: 
+      weight: 1
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: Paolina Aula 2 si fida di te e ti segue
       displayName: 
+      weight: 1
     - stepName: Porta Paolina Aula 2 all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Disable Paolina Aula2
       displayName: 
+      weight: 1
     - stepName: Chiudi Porta Aula 2
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Aula computer
     steps:
     - stepName: Avvicinati
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: Porta Paolina all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Disable Paolina
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in aula Computer?"
       displayName: 
+      weight: 1
     - stepName: Chiudi Porta Aula Computer
       displayName: 
+      weight: 1
     - stepName: "No, non c'\xE8 nessuno in Aula Computer"
       displayName: 
+      weight: 1
     - stepName: "Si c'\xE8 Paolina"
       displayName: 
+      weight: 1
     - stepName: Paolina aula pc ti segue
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Laboratorio di chimica
     steps:
     - stepName: "C'\xE8 qualcuno in laboratorio di chimica?"
       displayName: 
+      weight: 1
     - stepName: No, chiudi la porta di chimica
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Biblioteca
     steps:
     - stepName: "Si. c'\xE8 Paolina in sedie a rotelle"
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in Biblioteca?"
       displayName: 
+      weight: 1
     - stepName: Portala fuori
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: "No, Non c'\xE8 nessuo in Biblioteca"
       displayName: 
+      weight: 1
     - stepName: Disable paolina
       displayName: 
+      weight: 1
     - stepName: Grab sedia a rotelle
       displayName: 
+      weight: 1
     - stepName: Chiudi la porta di biblioteca
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
   - chapterName: Mensa
     steps:
     - stepName: "Si c'\xE8 Michelle"
       displayName: 
+      weight: 1
     - stepName: Porta Michelle all'uscita
       displayName: Accompagna lo studente all'uscita
+      weight: 1
     - stepName: Michelle stava facendo dei balletti per tiktok con le cuffie e non
         ha sentito l'allarme, fatti notare
       displayName: Avvicinati allo studente
+      weight: 1
     - stepName: "Michelle \xE8 scocciata ma ti segue"
       displayName: 
+      weight: 1
     - stepName: Disable Michelle
       displayName: 
+      weight: 1
     - stepName: Question to Check
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 qualcuno in Mensa"
       displayName: 
+      weight: 1
     - stepName: "No, non c'\xE8 nessuno in mensa"
       displayName: 
+      weight: 1
     - stepName: Chiudi la porta di mensa
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Disabilita listener per la porta
       displayName: 
+      weight: 1
     - stepName: Perlustra tutta la scuola e chiudi le porte
       displayName: 
+      weight: 1
     - stepName: Istruzioni Giro Di Perlustrazioni
       displayName: 
+      weight: 1
     - stepName: Attiva bambini
       displayName: 
+      weight: 1
     - stepName: Disattiva flag
       displayName: 
+      weight: 1
     - stepName: verifica porte condition
       displayName: 
+      weight: 1
     - stepName: Apri Porte per sicurezza
       displayName: 
+      weight: 1
     - stepName: verifica porte behaviour
       displayName: 
+      weight: 1
   - chapterName: Segnalazione assenti
     steps:
     - stepName: segnala assenti
       displayName: Segnala gli assenti
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Crea dialoghi
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Fine processo
     steps:
     - stepName: Fine iterazione
       displayName: 
+      weight: 1
   - chapterName: Primo soccorso Optional
     steps:
     - stepName: Apri medkit
       displayName: 
+      weight: 1
     - stepName: Grab bottle
       displayName: Prendi la bottiglia
+      weight: 1
     - stepName: Grab tappo
       displayName: Togli il tappo
+      weight: 1
     - stepName: Versa acqua
       displayName: Versa l'acqua sulla scottatura
+      weight: 1
     - stepName: Asciuga
       displayName: Asciuga con il panno
+      weight: 1
     - stepName: metti garza
       displayName: Metti la Garza
+      weight: 1
     - stepName: Enable Primo Soccorso
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Estintore generico Optional
     steps:
     - stepName: (solido) Grab extiguisher
       displayName: Prendi l'estintore
+      weight: 1
     - stepName: Sfaty catch removal
       displayName: Rimuovi la sicura
+      weight: 1
     - stepName: Extinguish fire
       displayName: Spegni il fuoco
+      weight: 1
     - stepName: grab ejector
       displayName: Prendi l'ugello
+      weight: 1
     - stepName: Istanzia i fuochi
       displayName: 
+      weight: 1
     - stepName: Step back
       displayName: 
+      weight: 1
     - stepName: Mostra Feedback fumo
       displayName: 
+      weight: 1
     - stepName: "C'\xE8 del fumo?"
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
   - chapterName: Vie di fuga Optional
     steps:
     - stepName: Seleziona una via di fuga alternativa
       displayName: 
+      weight: 1
     - stepName: Guarda la mappa
       displayName: 
+      weight: 1
     - stepName: Chiudi la mappa
       displayName: 
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: Attiva mappa
       displayName: 
+      weight: 1
   - chapterName: Fuoco su liquido Optional
     steps:
     - stepName: Trova L'estintore a CO2
       displayName: Prendi l'estintore
+      weight: 1
     - stepName: Rimuovi la sicura (CO2)
       displayName: Rimuovi la sicura
+      weight: 1
     - stepName: Prendi l'eiettore (CO2)
       displayName: Spegni il fuoco
+      weight: 1
     - stepName: Estingui il fuoco (CO2)
       displayName: Prendi l'ugello
+      weight: 1
     - stepName: Lancia il timer del capitolo
       displayName: 
+      weight: 1
     - stepName: Timer scaduto
       displayName: 
+      weight: 1
     - stepName: play audio
       displayName: 
+      weight: 1
 --- !u!1 &1288696060
 GameObject:
   m_ObjectHideFlags: 0
@@ -377944,6 +378101,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 1918410141760966468}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 0}
+  <alternativeDoor>k__BackingField: {fileID: 0}
 --- !u!4 &7508736381403009971
 Transform:
   m_ObjectHideFlags: 0
@@ -387791,6 +387949,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 5329693133429533181}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 0}
+  <alternativeDoor>k__BackingField: {fileID: 0}
 --- !u!1 &7877024921123912242
 GameObject:
   m_ObjectHideFlags: 0
@@ -401650,6 +401809,7 @@ MonoBehaviour:
   <ExitDoor>k__BackingField: {fileID: 6303743721354336690}
   <selectableDoor>k__BackingField: 1
   <obstacleSpawnArea>k__BackingField: {fileID: 306262873}
+  <alternativeDoor>k__BackingField: {fileID: 0}
 --- !u!4 &8314298136431476537
 Transform:
   m_ObjectHideFlags: 0

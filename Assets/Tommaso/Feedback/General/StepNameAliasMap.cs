@@ -10,12 +10,14 @@ public class StepNameAliasMap : MonoBehaviour
     [System.Serializable]
     public class StepAlias
     {
-        // Serializzato per lookup e preservazione, ma nascosto: si mostra come label read-only nell'editor custom.
         [HideInInspector]
         public string stepName;
 
         [Tooltip("Nome da mostrare nel log degli errori. Se vuoto, viene usato stepName.")]
         public string displayName;
+
+        [Tooltip("Peso dell'errore associato a questo step mancato.")]
+        public int weight = 1;
     }
 
     [System.Serializable]
@@ -57,5 +59,24 @@ public class StepNameAliasMap : MonoBehaviour
 
         // Capitolo non trovato → restituisce stepName
         return stepName;
+    }
+
+    public int ResolveWeight(string chapterName, string stepName, int defaultWeight = 1)
+    {
+        foreach (var chapter in chapterStepAliases)
+        {
+            if (!string.Equals(chapter.chapterName, chapterName, System.StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            foreach (var alias in chapter.steps)
+            {
+                if (string.Equals(alias.stepName, stepName, System.StringComparison.OrdinalIgnoreCase))
+                    return alias.weight;
+            }
+
+            return defaultWeight;
+        }
+
+        return defaultWeight;
     }
 }

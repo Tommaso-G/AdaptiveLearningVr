@@ -34,7 +34,8 @@ public class StepNameAliasMapEditor : Editor
             // Header colonne
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Step", EditorStyles.miniBoldLabel, GUILayout.Width(220));
-            EditorGUILayout.LabelField("Display Name", EditorStyles.miniBoldLabel);
+            EditorGUILayout.LabelField("Display Name", EditorStyles.miniBoldLabel, GUILayout.Width(220));
+            EditorGUILayout.LabelField("Peso", EditorStyles.miniBoldLabel, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
 
             foreach (var alias in chapter.steps)
@@ -46,11 +47,21 @@ public class StepNameAliasMapEditor : Editor
 
                 // displayName: campo editabile
                 EditorGUI.BeginChangeCheck();
-                string newDisplay = EditorGUILayout.TextField(alias.displayName);
+                string newDisplay = EditorGUILayout.TextField(alias.displayName, GUILayout.Width(220));
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(aliasMap, "Modifica Display Name");
                     alias.displayName = newDisplay;
+                    EditorUtility.SetDirty(aliasMap);
+                }
+
+                // weight: campo editabile
+                EditorGUI.BeginChangeCheck();
+                int newWeight = EditorGUILayout.IntField(alias.weight, GUILayout.Width(50));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(aliasMap, "Modifica Peso");
+                    alias.weight = Mathf.Max(0, newWeight); // evita pesi negativi
                     EditorUtility.SetDirty(aliasMap);
                 }
 
@@ -98,10 +109,10 @@ public class StepNameAliasMapEditor : Editor
         }
 
         // Preserva i displayName già inseriti — chiave: "chapterName::stepName"
-        var existing = new Dictionary<string, string>();
+        var existing = new Dictionary<string, (string displayName, int weight)>();
         foreach (var ch in aliasMap.chapterStepAliases)
             foreach (var s in ch.steps)
-                existing[$"{ch.chapterName}::{s.stepName}"] = s.displayName;
+                existing[$"{ch.chapterName}::{s.stepName}"] = (s.displayName, s.weight);
 
         aliasMap.chapterStepAliases.Clear();
 
@@ -134,12 +145,13 @@ public class StepNameAliasMapEditor : Editor
             }
 
             string key = $"{currentChapter.chapterName}::{trimmed}";
-            existing.TryGetValue(key, out string savedDisplay);
+            bool found = existing.TryGetValue(key, out var savedData);
 
             currentChapter.steps.Add(new StepNameAliasMap.StepAlias
             {
-                stepName    = trimmed,
-                displayName = savedDisplay ?? string.Empty
+                stepName = trimmed,
+                displayName = found ? savedData.displayName : string.Empty,
+                weight = found ? savedData.weight : 1
             });
         }
 

@@ -6,11 +6,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRBuilder.Core;
 
+public enum ErrorType
+{
+    MissedStep,
+    Execution
+}
 public static class ErrorEvent
 {
     public static IProcess process { get; private set; }
 
-    public static System.Action<string, string, string, string> OnError;
+    public static System.Action<string, string, string, string, int?> OnError;
 
     public static void SetProcess(IProcess p)
     {
@@ -21,13 +26,19 @@ public static class ErrorEvent
 [System.Serializable]
 public class StepError
 {
+    public ErrorType type;
     public string missedStepName;
     public string interactedObjectName;
+    public string message;
+    public int weight = 1;
 
-    public StepError(string missedStepName, string interactedObjectName)
+    public StepError(ErrorType type, string missedStepName, string interactedObjectName, string message, int weight = 1)
     {
+        this.type = type;
         this.missedStepName = missedStepName;
         this.interactedObjectName = interactedObjectName;
+        this.weight = weight;
+        this.message = message;
     }
 
     public override string ToString()
@@ -42,6 +53,7 @@ public class ChapterErrorData
     public string chapterName;
     public List<StepError> errors = new List<StepError>();
     public int TotalErrors => errors.Count;
+    public int TotalWeightedErrors => errors.Sum(e => e.weight);
 
     public ChapterErrorData(string chapterName)
     {
@@ -66,6 +78,7 @@ public class StepErrorTracker : MonoBehaviour
     public float errorCooldownSeconds = 3f;
 
     private Dictionary<string, float> lastErrorTimeByObject = new Dictionary<string, float>();
+    [SerializeField] StepNameAliasMap aliasMap;
 
     [System.Serializable]
     public class CustomErrorMessage
@@ -75,6 +88,8 @@ public class StepErrorTracker : MonoBehaviour
         [Tooltip("Messaggio personalizzato da mostrare su textPanelOnHand.")]
         [TextArea(2, 4)]
         public string customMessage;
+        [Tooltip("Peso di questo errore custom.")]
+        public int weight = 1;
     }
 
     [System.Serializable]
@@ -151,7 +166,7 @@ public class StepErrorTracker : MonoBehaviour
     // REGISTRAZIONE ERRORE
     // ─────────────────────────────────────────────────────────────────
 
-    public void RegisterError(string chapterName, string missedStepName, string interactedObjectName, string customRuntime = "")
+    public void RegisterError(string chapterName, string missedStepName, string interactedObjectName, string customRuntime = "", int? explicitWeight = null)
     {
         if (errorCooldownSeconds > 0f)
         {
@@ -173,9 +188,45 @@ public class StepErrorTracker : MonoBehaviour
             Debug.LogWarning($"[StepErrorTracker] Chapter '{chapterName}' was not initialized. Created on the fly.");
         }
 
-        StepError error = new StepError(missedStepName, interactedObjectName);
+
+        CustomErrorMessage custom = customErrorMessages.Find(c =>
+                            string.Equals(c.interactedObjectName, interactedObjectName, System.StringComparison.OrdinalIgnoreCase));
+
+        int weight;
+
+        if (explicitWeight.HasValue)
+        {
+            weight = explicitWeight.Value;
+            Debug.Log($"[StepErrorTracker] Peso scelto: explicitWeight = {weight}");
+        }
+        else if (custom != null)
+        {
+            weight = custom.weight;
+            Debug.Log($"[StepErrorTracker] Peso scelto: custom.weight = {weight}");
+        }
+        else if (aliasMap != null)
+        {
+            weight = aliasMap.ResolveWeight(chapterName, missedStepName);
+            Debug.Log($"[StepErrorTracker] Peso scelto: aliasMap.ResolveWeight() = {weight}");
+        }
+        else
+        {
+            weight = 1;
+            Debug.Log("[StepErrorTracker] Peso scelto: default = 1");
+        }
+
+        StepError error = new StepError(
+            custom != null ? ErrorType.Execution : ErrorType.MissedStep,
+            missedStepName,
+            interactedObjectName,
+            custom != null
+                ? custom.customMessage
+                : $"Interazione con {interactedObjectName}",
+            weight = weight
+            );
         chapterErrors[chapterName].errors.Add(error);
         TotalErrors++;
+
         Debug.Log($"[StepErrorTracker] Chapter: '{chapterName}' | {error} | Total errors: {TotalErrors}");
 
         // Il pannello a mano si aggiorna sempre, indipendentemente dal profilo
