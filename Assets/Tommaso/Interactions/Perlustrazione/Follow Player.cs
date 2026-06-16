@@ -28,7 +28,7 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
     public ErrorReporter ErrorReporter;
 
     [Header("Timer")]
-    public float timeLimit = 30f;
+    public float timeLimit = 100f;
     private float _elapsedTime = 0f;
     private bool _timerActive = false;
     private bool _timerExpired = false;
