@@ -100,7 +100,7 @@ public class ExitDoor : MonoBehaviour
         }
         else if (selected)
         {
-            renderColor = Color.green;
+            //renderColor = Color.green;
         }
         else
         {
