@@ -52,7 +52,7 @@ public class DecisionResponse
     public bool feedback_changed;
     public bool difficulty_changed;
     public bool add_optional;
-    public string added_chapter_id; // null se nessun capitolo è aggiunto
+    public string[] added_chapter_ids; // null se nessun capitolo è aggiunto
     public string removed_chapter_id;  // null se nessun capitolo rimosso
     public bool remove_optional;
     public bool chapter_mastered;

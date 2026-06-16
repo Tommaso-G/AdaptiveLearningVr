@@ -13,16 +13,12 @@ public class ReportManager : MonoBehaviour
 
     [Header("Riferimenti")]
     public IterationDataGenerator dataGenerator;
-    public AttivaBambini attivaBambini;
 
     [Header("Dialoghi per insegnanti (ordine fisso 1-2-3)")]
     public List<DialogueLine> teacherDialogues = new List<DialogueLine>(); // size 3
 
     public ErrorReporter ErrorReporter;
 
-    private int missing_children = 0;
-    [SerializeField]
-    private bool childrenCondition = false;
 
     void Start()
     {
@@ -39,22 +35,6 @@ public class ReportManager : MonoBehaviour
     public void GenerateTeacherDialogues()
     {
         print("[ReportManager] chiamato generate Teacher Dialogue");
-
-        missing_children = 0;
-        if (attivaBambini != null && childrenCondition)
-        {
-            print("[ReportManager] attiviBambini ok");
-            foreach (GameObject o in attivaBambini.oggetti)
-            {
-                print($"[ReportManager] {o.name} trovato");
-                FollowerAgentWithCheck fp = o.GetComponent<FollowerAgentWithCheck>();
-                if (fp != null && !fp.IsCompleted)
-                {
-                    print($"[ReportManager] {o.name} is completed {fp.IsCompleted}");
-                    missing_children++;
-                }
-            }
-        }
 
         for (int i = 0; i < teachers.Length; i++)
         {
@@ -74,19 +54,7 @@ public class ReportManager : MonoBehaviour
         int absentStudents = UnityEngine.Random.Range(0, 2);
 
         // Missing tra 0 e 2
-        int missing = 0;
-        if (missing_children > 0)
-        {
-            if (last)
-            {
-                missing = missing_children;
-            }
-            else
-            {
-                missing = UnityEngine.Random.Range(1, missing_children);
-            }
-            missing_children -= missing;
-        }
+        int missing = UnityEngine.Random.Range(0, 1);
 
         // Evacuated = presenti dopo malattie
         int evacuated = totalStudents - absentStudents - missing;
@@ -99,10 +67,10 @@ public class ReportManager : MonoBehaviour
             : $"Di solito siamo {totalStudents} in classe, ma oggi {absentStudents} studente non era a scuola. ";
 
         lineText += missing == 0
-            ? $" Sono stati evacuati tutti."
+            ? $"Sono stati evacuati tutti."
             : missing > 1
-            ? $" {missing} persone non risultano evacuate."
-            : $" {missing} persona non è stata evacuata.";
+            ? $"{missing} persone non risultano evacuate."
+            : $"{missing} persona non è stata evacuata.";
 
         DialogueLine newLine = new DialogueLine
         {
@@ -142,11 +110,6 @@ public class ReportManager : MonoBehaviour
                 Debug.Log("information not found");
             }
         }
-    }
-
-    public void SetChildrenCondition(bool condition)
-    {
-        childrenCondition = condition;
     }
 
     private void Update()
