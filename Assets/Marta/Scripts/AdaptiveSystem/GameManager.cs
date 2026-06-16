@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     // obbligatori e opzionali, nell'ordine in cui vuoi aggiungerli.
     public List<ChapterConfigData> excludedChapters;
 
+    public ProcedureCentralStatsManager procedureCentralSM;
+
     [Header("Scene")]
     [SerializeField] private string gameSceneName = "ScenaUfficiale";
     [SerializeField] private ChaptersOrderManager chaptersOrderMgr = null;
@@ -253,6 +255,13 @@ public class GameManager : MonoBehaviour
 
         string json = BuildIterationJsonOffline();
         SaveIterationJsonToFileOffline(json);
+
+        // ← aggiunto
+        if (procedureCentralSM != null)
+        {
+            string userPrefix = SessionPersistence.LoadUserPrefix();
+            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
+        }
 
         Debug.Log($"[GameManager][OFFLINE] Fine iterazione {currentIterationNumber} salvata localmente.");
         currentIterationNumber++;
@@ -523,6 +532,7 @@ public class GameManager : MonoBehaviour
     {
         string json = BuildIterationJson();
         SaveIterationJsonToFile(json);
+
         yield return StartCoroutine(
             AdaptiveSystemClient.Instance.EndIteration(
                 activeChapters.ToArray(),
@@ -531,22 +541,29 @@ public class GameManager : MonoBehaviour
                     _endIterationPending = false;
                     if (result.status == "iteration_complete")
                     {
-                        Debug.Log(
-                            $"[GameManager] Ã¢ÂÂ Iterazione {result.iteration_number} COMPLETA! " +
-                            $"Prossima: {result.next_iteration}"
-                        );
+                        Debug.Log($"[GameManager] Iterazione {result.iteration_number} COMPLETA!");
+
+                        // ← aggiunto
+                        if (procedureCentralSM != null)
+                        {
+                            string userPrefix = SessionPersistence.LoadUserPrefix();
+                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
+                        }
+
                         currentIterationNumber = result.next_iteration;
-                        // ===== NUOVO: Torna al menu dopo iterazione completa =====
                         SessionManager.Instance.BackToMenu();
                     }
                     else if (result.status == "iteration_incomplete")
                     {
-                        Debug.LogWarning(
-                            $"[GameManager] Ã¢ÂÂ Ã¯Â¸Â Iterazione INCOMPLETA! " +
-                            $"Mancanti: {string.Join(", ", result.incomplete_chapters)}"
+                        Debug.LogWarning($"[GameManager] Iterazione INCOMPLETA!");
 
-                        );
-                        // Torna al menu dopo iterazione incompleta
+                        // ← aggiunto (opzionale, salva anche in caso incompleto)
+                        if (procedureCentralSM != null)
+                        {
+                            string userPrefix = SessionPersistence.LoadUserPrefix();
+                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
+                        }
+
                         SessionManager.Instance.BackToMenu();
                     }
                 }

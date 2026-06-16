@@ -101,7 +101,7 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         Debug.Log($"[GetFeedbacksData] Feedback nel recorder: {slidesDataRecorder.GetAllFeedbacks().Count()}");
         foreach (var f in slidesDataRecorder.GetAllFeedbacks())
         Debug.Log($"[GetFeedbacksData] Feedback: '{f.feedbackName}' | slides: {f.slidesData?.Count} | escluso: {feedbackDaEscludere.Contains(f.feedbackName)}");
-        
+
         var data = new FeedbacksSessionData();
 
         foreach (var feedback in slidesDataRecorder.GetAllFeedbacks())
@@ -134,10 +134,9 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         return data;
     }
 
-    public void CalcolaStatisticheFinali()
+    public void CalcolaStatisticheFinali(int iterationNumber, string userPrefix)
     {
         var result = new ProfilingSessionData();
-
         result.genericData = new GenericSessionData();
 
         if (sessionTimer != null)
@@ -148,16 +147,14 @@ public class ProcedureCentralStatsManager : MonoBehaviour
 
         result.slidesData = CalcolaMediaSlidesData();
         result.feedbacksData = GetFeedbacksData();
-
         result.genericData.feedbackTimeSeconds = slidesDataRecorder.GetAllFeedbacks()
             .Sum(f => f.tempoTotaleOsservazione);
 
-        SalvaJson(result);
+        SalvaJson(result, iterationNumber, userPrefix);
         Debug.Log($"[ProcedureCentralStatsManager] Sessione chiusa. Tempo: {result.genericData.sessionTimeSeconds:F2}s");
-        //return result;
     }
 
-    public void SalvaJson(ProfilingSessionData data)
+    public void SalvaJson(ProfilingSessionData data, int iterationNumber, string userPrefix)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
         string folderPath = GetFolderPath();
@@ -165,14 +162,16 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         if (!System.IO.Directory.Exists(folderPath))
             System.IO.Directory.CreateDirectory(folderPath);
 
-        string filePath = System.IO.Path.Combine(folderPath, $"{profilingSessionName}ProcedureSessionData.json");
+        string prefix = string.IsNullOrEmpty(userPrefix) ? "" : $"{userPrefix}_";
+        string filePath = System.IO.Path.Combine(folderPath, $"{prefix}FeedbackSessionData_iter{iterationNumber}.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[ProcedureCentralStatsManager] File salvato in: {filePath}");
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-            CalcolaStatisticheFinali();
-    }
+// Chiamata da Update (tasto J) - fallback
+void Update()
+{
+    if (Input.GetKeyDown(KeyCode.J))
+        CalcolaStatisticheFinali(0, profilingSessionName);
+}
 }
