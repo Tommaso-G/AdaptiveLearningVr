@@ -1,0 +1,124 @@
+{
+    "session_id": "AlessandroRomaP2_OFFLINE_20260616_182944",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 3.013416290283203,
+            "errors": []
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 270.3070983886719,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 132.42678833007813,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Blocca il fumo con la felpa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 299.7460021972656,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 120.97293090820313,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}
