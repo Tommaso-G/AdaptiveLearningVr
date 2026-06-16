@@ -442,16 +442,26 @@ public class ExecutionOrderController : MonoBehaviour
 
         if (string.IsNullOrEmpty(errorString) && parallelStepObjs.Count == 1)
         {
-            errorTracker.RegisterError(chapterName, resolvedStepName, go.name);  // stepName → resolvedStepName
+            errorTracker.RegisterError(chapterName, resolvedStepName, go.name);
         }
         else
         {
-            Debug.Log($"[EOC] L'oggetto sbagliato aveva una custom errorString");
+            Debug.Log("[EOC] L'oggetto sbagliato aveva una custom errorString");
+
             string subName =
                 ParallelStepIndex >= 0 && ParallelStepIndex < subch.Count
                     ? subch[ParallelStepIndex]?.Data?.Name ?? ""
                     : "";
-            errorTracker.RegisterError(chapterName, resolvedStepName, errorString, subName);  // stepName → resolvedStepName
+
+            string interactedObject = string.IsNullOrEmpty(errorString)
+                ? go.name
+                : errorString;
+
+            errorTracker.RegisterError(
+                chapterName,
+                resolvedStepName,
+                interactedObject,
+                subName);
         }
     }
 
