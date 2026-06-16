@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Content.Interaction;
 
 public class AngleTransitioner : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class AngleTransitioner : MonoBehaviour
     [Header("Transition")]
     public float duration = 0.5f;
     public AnimationCurve curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+
 
     private bool _isAtA = true;
     private Coroutine _current;
@@ -69,4 +72,5 @@ public class AngleTransitioner : MonoBehaviour
         };
         return raw > 180f ? raw - 360f : raw;
     }
+
 }

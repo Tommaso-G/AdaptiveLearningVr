@@ -63,6 +63,8 @@ public class SlidesDataRecorder : MonoBehaviour
             return;
         }
 
+        Debug.Log("eccoci");
+
         foreach (var feedbackdata in FeedbacksDataList)
         {
             StringBuilder sb = new StringBuilder();

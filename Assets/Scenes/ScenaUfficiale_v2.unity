@@ -57283,6 +57283,8 @@ MonoBehaviour:
   opened_angle: 90
   initialSpring: 100
   initalDamper: 35
+  door1: {fileID: 0}
+  door2: {fileID: 0}
 --- !u!114 &602072428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107037,6 +107039,79 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1167672852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1167672853}
+  - component: {fileID: 1167672856}
+  - component: {fileID: 1167672855}
+  - component: {fileID: 1167672854}
+  m_Layer: 0
+  m_Name: CentralStatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1167672853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167672852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1837779938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1167672854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167672852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22346f16c0d5484b8891eced8d8b35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1167672855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167672852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1ff89662a613d4a850ffdd2593e4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1167672856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167672852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ceba12fa91c4d94fb7ef3084d0c685f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slidesDataRecorder: {fileID: 1167672854}
+  sessionTimer: {fileID: 1167672855}
+  feedbackDaEscludere: []
 --- !u!1 &1169535788 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1141555845852198424, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
@@ -123257,50 +123332,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345673546}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1345985972
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1345985974}
-  - component: {fileID: 1345985973}
-  m_Layer: 0
-  m_Name: SlidesDataRecorder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1345985973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345985972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22346f16c0d5484b8891eced8d8b35a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1345985974
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345985972}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.376258, y: -1.3337879, z: -5.606674}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346003123
 GameObject:
   m_ObjectHideFlags: 0
@@ -125731,7 +125762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.size
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -125824,7 +125855,7 @@ PrefabInstance:
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_Target
       value: 
-      objectReference: {fileID: 2104140456}
+      objectReference: {fileID: 602072427}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_Target
       value: 
@@ -125923,7 +125954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_MethodName
-      value: Toggle
+      value: DoubleDoorOpenOnly
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_MethodName
@@ -125971,7 +126002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_TargetAssemblyTypeName
-      value: AngleTransitioner, Assembly-CSharp
+      value: UnityEngine.XR.Content.Interaction.ClosableDoor, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_TargetAssemblyTypeName
@@ -164579,6 +164610,7 @@ Transform:
   - {fileID: 1728988655}
   - {fileID: 432170837}
   - {fileID: 4826852871178486456}
+  - {fileID: 1167672853}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1837779939
@@ -439251,7 +439283,6 @@ SceneRoots:
   - {fileID: 714870731}
   - {fileID: 1465597273}
   - {fileID: 923911994}
-  - {fileID: 1345985974}
   - {fileID: 1484859980}
   - {fileID: 1179542426}
   - {fileID: 1070815174}

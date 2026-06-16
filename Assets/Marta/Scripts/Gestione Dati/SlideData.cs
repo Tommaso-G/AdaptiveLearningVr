@@ -12,7 +12,7 @@ public class SlideData: MonoBehaviour
     [SerializeField] SlidesDataSender sender;
 
     //dati della slide
-    public string pageName;
+    public string pageName ;
     private float focusTime;
     public int opening;
     public LearningEnums.SequenzialeGlobale seqGlob;
@@ -122,7 +122,7 @@ public class SlideData: MonoBehaviour
             pageName = gameObject.name;
             nameSet = true;
         }
-
+        Debug.Log("OnDisable chiamato");
         if (activeCoroutine != null)
         {
             stopTimer = true;
@@ -186,7 +186,7 @@ public class SlideData: MonoBehaviour
 
     public void SendData()
     {
-        OnSlideDataUpdated?.Invoke(new SlideDataContainer
+        var container = new SlideDataContainer
         {
             pageName = pageName,
             focusTime = focusTime,
@@ -195,7 +195,17 @@ public class SlideData: MonoBehaviour
             seqGlob = seqGlob,
             visVerb = visVerb,
             isIntroductory = isIntroductory
-        });
+        };
+
+        if (OnSlideDataUpdated == null)
+        {
+            Debug.LogWarning($"[SlideData] Nessun listener iscritto a {pageName}");
+            return;
+        }
+
+        Debug.Log($"[SlideData] Invoco OnSlideDataUpdated per {pageName}");
+
+        OnSlideDataUpdated.Invoke(container);
     }
 }
 

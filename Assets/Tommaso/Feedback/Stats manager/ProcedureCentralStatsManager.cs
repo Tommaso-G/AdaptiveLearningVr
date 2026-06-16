@@ -98,6 +98,10 @@ public class ProcedureCentralStatsManager : MonoBehaviour
 
     public FeedbacksSessionData GetFeedbacksData()
     {
+        Debug.Log($"[GetFeedbacksData] Feedback nel recorder: {slidesDataRecorder.GetAllFeedbacks().Count()}");
+        foreach (var f in slidesDataRecorder.GetAllFeedbacks())
+        Debug.Log($"[GetFeedbacksData] Feedback: '{f.feedbackName}' | slides: {f.slidesData?.Count} | escluso: {feedbackDaEscludere.Contains(f.feedbackName)}");
+        
         var data = new FeedbacksSessionData();
 
         foreach (var feedback in slidesDataRecorder.GetAllFeedbacks())

@@ -29,6 +29,9 @@ namespace UnityEngine.XR.Content.Interaction
         private Rigidbody m_Rigidbody;
         private Quaternion initialRotation;
 
+        public AngleTransitioner door1;
+        public AngleTransitioner door2;
+
         public override void Start()
         {
             m_OpenDoorLimits = m_DoorJoint.limits;
@@ -52,11 +55,6 @@ namespace UnityEngine.XR.Content.Interaction
             }
         }
 
-        public void CloseFromCode(bool toOpen)
-        {
-            if (m_Closed != toOpen)
-            m_Closed = toOpen;
-        }
 
         void Awake()
         {
@@ -131,6 +129,14 @@ namespace UnityEngine.XR.Content.Interaction
                 spring.targetPosition = 0f;
                 m_DoorJoint.spring = spring;
             }
+        }
+
+        public void DoubleDoorOpenOnly()
+        {
+            if(m_Closed == false) return;
+            door1.Toggle();
+            door2.Toggle();
+            m_Closed = false;
         }
 
         public void OpenWithSpring()

@@ -89,16 +89,45 @@ public class SlidesDataSender : MonoBehaviour
 
     public void SaveSlidesData(SlideDataContainer container)
     {
+        Debug.Log(
+            $"[SaveSlidesData] Ricevuta slide={container.pageName} " +
+            $"focus={container.focusTime} " +
+            $"normalized={container.normalizedFocusTime} " +
+            $"opening={container.opening} " +
+            $"intro={container.isIntroductory}"
+        );
+
         SlideDataContainer data;
 
         if (string.IsNullOrEmpty(container.pageName))
+        {
+            Debug.LogWarning("[SaveSlidesData] pageName nullo o vuoto");
             return;
+        }
 
-        if (_slideIndexMap.TryGetValue(container.pageName, out int slideIndex) && !container.isIntroductory)
-            visitHistory.Add(slideIndex);
+        if (_slideIndexMap.TryGetValue(container.pageName, out int slideIndex))
+        {
+            if (!container.isIntroductory)
+            {
+                visitHistory.Add(slideIndex);
+
+                Debug.Log(
+                    $"[SaveSlidesData] Aggiunta visita slide {container.pageName} " +
+                    $"indice={slideIndex}. Storico={visitHistory.Count}"
+                );
+            }
+        }
+        else
+        {
+            Debug.LogError(
+                $"[SaveSlidesData] Slide {container.pageName} non trovata in _slideIndexMap"
+            );
+        }
 
         if (slidesData.TryGetValue(container.pageName, out data))
         {
+            Debug.Log($"[SaveSlidesData] Aggiornamento dati slide {container.pageName}");
+
             data.focusTime = container.focusTime;
             data.normalizedFocusTime = container.normalizedFocusTime;
             data.opening = container.opening;
@@ -108,7 +137,11 @@ public class SlidesDataSender : MonoBehaviour
         else
         {
             slidesData.Add(container.pageName, container);
-            Debug.Log($"Slide: {container.pageName} (index {slideIndex}) salvata nel sender");
+
+            Debug.Log(
+                $"[SaveSlidesData] Nuova slide salvata: {container.pageName}. " +
+                $"Totale slide salvate={slidesData.Count}"
+            );
         }
     }
 
@@ -179,6 +212,7 @@ public class SlidesDataSender : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log($"DESTROY Sender {name}");
         foreach (Transform child in content)
         {
             SlideData slide = child.GetComponent<SlideData>();

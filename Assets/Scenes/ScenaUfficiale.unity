@@ -53279,6 +53279,8 @@ MonoBehaviour:
   opened_angle: 90
   initialSpring: 100
   initalDamper: 35
+  door1: {fileID: 0}
+  door2: {fileID: 0}
 --- !u!114 &602072428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118175,7 +118177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.size
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -118268,7 +118270,7 @@ PrefabInstance:
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_Target
       value: 
-      objectReference: {fileID: 2104140456}
+      objectReference: {fileID: 602072427}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_Target
       value: 
@@ -118367,7 +118369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_MethodName
-      value: Toggle
+      value: DoubleDoorOpenOnly
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_MethodName
@@ -118415,7 +118417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[10].m_TargetAssemblyTypeName
-      value: AngleTransitioner, Assembly-CSharp
+      value: UnityEngine.XR.Content.Interaction.ClosableDoor, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5697381694746818804, guid: 1fc8cf4132d6f4348ba1a758f94a230e, type: 3}
       propertyPath: m_OnPress.m_PersistentCalls.m_Calls.Array.data[11].m_TargetAssemblyTypeName

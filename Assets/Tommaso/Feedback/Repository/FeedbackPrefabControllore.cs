@@ -375,13 +375,19 @@ public class FeedbackPrefabController : MonoBehaviour
             }
         }
         _runtimeRenderTextures.Clear();
-
+        
         foreach (RectTransform child in content)
         {
             SlideData sd = child.GetComponent<SlideData>();
             if (sd != null)
             {
                 sd.SendData();
+                Debug.Log("eccoci anche qui");
+            }
+
+            if (sd == null)
+            {
+                Debug.Log("slideData nullo");
             }
         }
 
