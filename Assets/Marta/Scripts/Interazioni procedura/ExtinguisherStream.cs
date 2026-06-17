@@ -14,7 +14,7 @@ public class ExtinguisherStream : MonoBehaviour
 
     [SerializeField] private GameObject safetyCatchEmpty;
     [SerializeField] private GameObject safetyCatch;
-    [SerializeField] private float raycastDistance = 10f;
+    [SerializeField] private float raycastDistance = 4.5f;
     //private bool safetyCatch = false;
     private FireObject fire;
     private FireObject lastHit;
@@ -37,9 +37,9 @@ public class ExtinguisherStream : MonoBehaviour
         RaycastHit hit;
         int layerMask = ~LayerMask.GetMask("Ignore Raycast", "Fire Liquid"); // ~ = simbolo per invertire => sto esculdendo il layer
                                                                              // Mostra sempre il raggio completo in grigio
-        //Debug.DrawRay(ShootingPoint.position,
-        //              ShootingPoint.transform.TransformDirection(Vector3.forward) * raycastDistance,
-        //              Color.gray);
+        Debug.DrawRay(ShootingPoint.position,
+                      ShootingPoint.transform.TransformDirection(Vector3.forward) * raycastDistance,
+                      Color.gray);
         if (Physics.Raycast(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward), out hit, raycastDistance, layerMask))
         {
             Debug.DrawRay(ShootingPoint.position, ShootingPoint.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);

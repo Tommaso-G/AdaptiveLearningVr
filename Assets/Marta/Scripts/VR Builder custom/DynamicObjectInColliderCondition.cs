@@ -186,45 +186,49 @@ namespace VRBuilder.Core.Conditions
 
             private bool IsInside()
             {
-                if (_targetProvider == null)
-                {
-                    Debug.LogWarning("[DynamicObjectInColliderCondition] _targetProvider == Null");
-                    return false;
-                }
+                if (_targetProvider == null) return false;
 
                 GameObject currentTarget = _targetProvider.CurrentTarget;
-                if (currentTarget == null)
-                {
-                    Debug.LogWarning("[DynamicObjectInColliderCondition] currentTarget == null");
-                    return false;
-                }
+                if (currentTarget == null) return false;
 
-                // Risolve il collider in base alla modalità
                 Collider[] colliders = ResolveColliders();
-                if (colliders == null || colliders.Length == 0)
-                {
-                    Debug.LogWarning("[DynamicObjectInColliderCondition] colliders == null || colliders.Length == 0");
-                    return false;
-                }
+                if (colliders == null || colliders.Length == 0) return false;
 
                 foreach (Collider collider in colliders)
                 {
-                    if (collider.enabled && collider.isTrigger)
+                    if (!collider.enabled || !collider.isTrigger) continue;
+
+                    SphereCollider sphere = collider as SphereCollider;
+                    if (sphere == null)
                     {
+                        // Fallback per sicurezza se non è una sfera
                         Vector3 closest = collider.ClosestPoint(currentTarget.transform.position);
-                        if (closest == currentTarget.transform.position)
+                        if (Vector3.Distance(closest, currentTarget.transform.position) < 0.001f)
+                        {
+                            Debug.LogWarning($"[DynamicObjectInColliderCondition] current target {currentTarget.name}.");
                             return true;
+                        }
+                    }
+                    else
+                    {
+                        Vector3 worldCenter = sphere.transform.TransformPoint(sphere.center);
+                        float worldRadius = sphere.radius * sphere.transform.lossyScale.x;
+                        if (Vector3.Distance(worldCenter, currentTarget.transform.position) <= worldRadius)
+                        {
+                            Debug.LogWarning($"[DynamicObjectInColliderCondition] current target {currentTarget.name}.");
+                            return true;
+                        }
                     }
                 }
+
                 return false;
             }
-
             private Collider[] ResolveColliders()
             {
                 if (Data.UseDynamicCollider)
                 {
                     ColliderWithTriggerProperty currentCollider = _colliderProvider?.CurrentCollider;
-                    //Debug.Log($"[DynamicObjectInColliderCondition] collider dinamico asseganto: {(currentCollider != null ? currentCollider.GetComponents<Collider>() : "null")}");
+                    Debug.Log($"[DynamicObjectInColliderCondition] collider dinamico asseganto: {(currentCollider != null ? currentCollider.gameObject.name : "null")}");
                     return currentCollider != null
                         ? currentCollider.GetComponents<Collider>()
                         : null;
