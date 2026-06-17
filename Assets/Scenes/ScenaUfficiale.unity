@@ -30223,6 +30223,7 @@ MonoBehaviour:
   supportedTypes: 0100000000000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 505123246}
+  raycastDistance: 10
 --- !u!114 &360424770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31156,6 +31157,7 @@ MonoBehaviour:
   supportedTypes: 0100000000000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 1149589924}
+  raycastDistance: 10
 --- !u!114 &368602926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38414,6 +38416,7 @@ MonoBehaviour:
   supportedTypes: 0100000002000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 2048670053}
+  raycastDistance: 10
 --- !u!114 &448006667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40916,6 +40919,7 @@ MonoBehaviour:
   supportedTypes: 0100000000000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 2010208957}
+  raycastDistance: 10
 --- !u!114 &473122079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42093,7 +42097,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -43671,6 +43675,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 504299175}
+  raycastDistance: 10
 --- !u!114 &499419531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59001,7 +59006,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -72513,6 +72518,7 @@ MonoBehaviour:
   supportedTypes: 0100000002000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 544018}
+  raycastDistance: 10
 --- !u!114 &767125238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86436,6 +86442,7 @@ MonoBehaviour:
   supportedTypes: 
   safetyCatchEmpty: {fileID: 0}
   safetyCatch: {fileID: 0}
+  raycastDistance: 10
 --- !u!1 &983486746
 GameObject:
   m_ObjectHideFlags: 0
@@ -86726,6 +86733,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 44993108}
+  raycastDistance: 10
 --- !u!114 &992153469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88686,6 +88694,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 860699624}
+  raycastDistance: 10
 --- !u!114 &1010484620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94675,7 +94684,8 @@ MonoBehaviour:
     max_errors: 10
     min_time_sec: 60
     max_time_sec: 300
-  procedureCentralSM: {fileID: 0}
+  procedureCentralSM: {fileID: 1513562413}
+  playerPathSampler: {fileID: 1344891113}
   gameSceneName: ScenaUfficiale
   chaptersOrderMgr: {fileID: 0}
   chapterTracker: {fileID: 0}
@@ -101645,6 +101655,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 854363314}
+  raycastDistance: 10
 --- !u!114 &1189387946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111993,6 +112004,7 @@ MonoBehaviour:
   supportedTypes: 0100000000000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 1438416504}
+  raycastDistance: 10
 --- !u!114 &1303512502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116078,6 +116090,54 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1153791383}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1344891112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1344891114}
+  - component: {fileID: 1344891113}
+  m_Layer: 0
+  m_Name: Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1344891113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344891112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b688ada10c0d1b74aacd6a5026ffb31f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1576633778}
+  origin: {fileID: 1344891114}
+  sampleInterval: 5
+  fileName: player_path.json
+--- !u!4 &1344891114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344891112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.8, y: 0, z: 13.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1345673546
 GameObject:
@@ -140436,6 +140496,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 278635849}
+  raycastDistance: 10
 --- !u!114 &1687441092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143736,6 +143797,7 @@ MonoBehaviour:
   supportedTypes: 0100000002000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 1001524547}
+  raycastDistance: 10
 --- !u!114 &1730967513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290031,6 +290093,7 @@ MonoBehaviour:
   supportedTypes: 0100000002000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 7585248901515108032}
+  raycastDistance: 10
 --- !u!114 &3986820281977319715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425767,6 +425830,7 @@ MonoBehaviour:
   supportedTypes: 00000000
   safetyCatchEmpty: {fileID: 6684219172884918417}
   safetyCatch: {fileID: 6895089076994606333}
+  raycastDistance: 10
 --- !u!114 &9076029600123160439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430622,3 +430686,4 @@ SceneRoots:
   - {fileID: 1412708083}
   - {fileID: 511286151}
   - {fileID: 201686317}
+  - {fileID: 1344891114}

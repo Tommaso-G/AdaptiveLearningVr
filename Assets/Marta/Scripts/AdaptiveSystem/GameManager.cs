@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 
     public ProcedureCentralStatsManager procedureCentralSM;
 
+    [SerializeField] private PlayerPathSampler playerPathSampler;
+
     [Header("Scene")]
     [SerializeField] private string gameSceneName = "ScenaUfficiale";
     [SerializeField] private ChaptersOrderManager chaptersOrderMgr = null;
@@ -256,12 +258,19 @@ public class GameManager : MonoBehaviour
         string json = BuildIterationJsonOffline();
         SaveIterationJsonToFileOffline(json);
 
-        // ← aggiunto
         if (procedureCentralSM != null)
         {
             string userPrefix = SessionPersistence.LoadUserPrefix();
-            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
+            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix, _offlineSessionId);
         }
+
+        if (playerPathSampler != null)
+            {
+                string userPrefix = SessionPersistence.LoadUserPrefix();
+                string prefix = string.IsNullOrEmpty(userPrefix) ? "" : $"{userPrefix}_";
+                string dir = Path.Combine(Application.persistentDataPath, "Sessions", $"{prefix}{_offlineSessionId}");
+                playerPathSampler.SalvaDati(dir, $"{prefix}PlayerPath_iter{currentIterationNumber}.json");
+            }
 
         Debug.Log($"[GameManager][OFFLINE] Fine iterazione {currentIterationNumber} salvata localmente.");
         currentIterationNumber++;
@@ -533,6 +542,11 @@ public class GameManager : MonoBehaviour
         string json = BuildIterationJson();
         SaveIterationJsonToFile(json);
 
+        string userPrefix = SessionPersistence.LoadUserPrefix();
+        string sessionId = SessionManager.Instance.GetActiveSessionId();
+        string prefix = string.IsNullOrEmpty(userPrefix) ? "" : $"{userPrefix}_";
+        string sessionDir = Path.Combine(Application.persistentDataPath, "Sessions", $"{prefix}{sessionId}");
+
         yield return StartCoroutine(
             AdaptiveSystemClient.Instance.EndIteration(
                 activeChapters.ToArray(),
@@ -543,12 +557,11 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.Log($"[GameManager] Iterazione {result.iteration_number} COMPLETA!");
 
-                        // ← aggiunto
                         if (procedureCentralSM != null)
-                        {
-                            string userPrefix = SessionPersistence.LoadUserPrefix();
-                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
-                        }
+                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix, sessionId);
+
+                        if (playerPathSampler != null)
+                            playerPathSampler.SalvaDati(sessionDir, $"{prefix}PlayerPath_iter{currentIterationNumber}.json");
 
                         currentIterationNumber = result.next_iteration;
                         SessionManager.Instance.BackToMenu();
@@ -557,12 +570,11 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.LogWarning($"[GameManager] Iterazione INCOMPLETA!");
 
-                        // ← aggiunto (opzionale, salva anche in caso incompleto)
                         if (procedureCentralSM != null)
-                        {
-                            string userPrefix = SessionPersistence.LoadUserPrefix();
-                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix);
-                        }
+                            procedureCentralSM.CalcolaStatisticheFinali(currentIterationNumber, userPrefix, sessionId);
+
+                        if (playerPathSampler != null)
+                            playerPathSampler.SalvaDati(sessionDir, $"{prefix}PlayerPath_iter{currentIterationNumber}.json");
 
                         SessionManager.Instance.BackToMenu();
                     }

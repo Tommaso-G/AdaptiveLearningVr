@@ -134,10 +134,12 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         return data;
     }
 
-    public void CalcolaStatisticheFinali(int iterationNumber, string userPrefix)
+    public void CalcolaStatisticheFinali(int iterationNumber, string userPrefix, string sessionId)
     {
         var result = new ProfilingSessionData();
         result.genericData = new GenericSessionData();
+
+        Debug.Log("chiamato CalcolaSF");
 
         if (sessionTimer != null)
         {
@@ -150,28 +152,32 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         result.genericData.feedbackTimeSeconds = slidesDataRecorder.GetAllFeedbacks()
             .Sum(f => f.tempoTotaleOsservazione);
 
-        SalvaJson(result, iterationNumber, userPrefix);
+        SalvaJson(result, iterationNumber, userPrefix, sessionId);
         Debug.Log($"[ProcedureCentralStatsManager] Sessione chiusa. Tempo: {result.genericData.sessionTimeSeconds:F2}s");
     }
 
-    public void SalvaJson(ProfilingSessionData data, int iterationNumber, string userPrefix)
+    public void SalvaJson(ProfilingSessionData data, int iterationNumber, string userPrefix, string sessionId)
     {
         string json = JsonUtility.ToJson(data, prettyPrint: true);
-        string folderPath = GetFolderPath();
-
-        if (!System.IO.Directory.Exists(folderPath))
-            System.IO.Directory.CreateDirectory(folderPath);
 
         string prefix = string.IsNullOrEmpty(userPrefix) ? "" : $"{userPrefix}_";
-        string filePath = System.IO.Path.Combine(folderPath, $"{prefix}FeedbackSessionData_iter{iterationNumber}.json");
+        string dir = System.IO.Path.Combine(
+            Application.persistentDataPath, "Sessions", $"{prefix}{sessionId}"
+        );
+
+        if (!System.IO.Directory.Exists(dir))
+            System.IO.Directory.CreateDirectory(dir);
+
+        string filePath = System.IO.Path.Combine(dir, $"{prefix}FeedbackSessionData_iter{iterationNumber}.json");
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log($"[ProcedureCentralStatsManager] File salvato in: {filePath}");
     }
 
 // Chiamata da Update (tasto J) - fallback
-void Update()
-{
-    if (Input.GetKeyDown(KeyCode.J))
-        CalcolaStatisticheFinali(0, profilingSessionName);
-}
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.J))
+            CalcolaStatisticheFinali(0, profilingSessionName, "debug");
+    }
+
 }
