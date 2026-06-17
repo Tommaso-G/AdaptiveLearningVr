@@ -136,6 +136,7 @@ public class CorrectDoorButton : MonoBehaviour
             images[0].sprite = lockedImage;
             images[1].sprite = youImage;
             images[1].gameObject.SetActive(true);
+            currentBlockedButton.GetComponent<Button>().interactable = false;
 
             correctButton = mapButtons.FirstOrDefault(b => b.ExitDoor == currentBlockedButton.alternativeDoor);
             if (correctButton == null) Debug.Log("[CorrectButton] Bottone associato alla porta alternativa non trovato.");
