@@ -47,12 +47,6 @@ public class ColliderPropertyInteractionSource : InteractionSource
         if (!other.CompareTag(requiredTag))
             return;
 
-        foreach (var agent in followAgents)
-        {
-            if (!agent.TimerActive && agent.IsFollowing)
-            {
-                agent.StartTimer();
-            }
-        }
+
     }
 }

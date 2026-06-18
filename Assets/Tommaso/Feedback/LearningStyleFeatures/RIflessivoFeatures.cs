@@ -453,11 +453,11 @@ private bool _cacheInitializedBacking = false;
 
         foreach (var nma in _cachedNavMeshAgents)
         {
-            if (nma != null && nma.gameObject.activeInHierarchy && !nma.isStopped)
+            if (nma != null && nma.gameObject.activeInHierarchy && nma.isOnNavMesh && !nma.isStopped)
             {
                 pausedNavMeshAgents.Add(new AgentState
                 {
-                    agent       = nma,
+                    agent = nma,
                     destination = nma.hasPath ? nma.destination : nma.transform.position
                 });
                 nma.isStopped = true;
@@ -524,6 +524,31 @@ private bool _cacheInitializedBacking = false;
         _activeFeedbackCount = 0;
         _cacheInitialized = false;
         isTimeStopFeatureEnabled = true;
+    }
+
+    public void EmergencyReset()
+    {
+        // Ferma tutte le coroutine in corso
+        if (_resetCoroutine != null) SafeRunner?.StopCoroutineSafe(_resetCoroutine);
+        if (_audioFadeCoroutine != null) SafeRunner?.StopCoroutineSafe(_audioFadeCoroutine);
+        if (_volumeFadeCoroutine != null) SafeRunner?.StopCoroutineSafe(_volumeFadeCoroutine);
+
+        // Ripristina audio e volume
+        AudioListener.volume = 1f;
+        if (globalVolume != null) globalVolume.weight = 0f;
+
+        MuteIgnoredAudioSources(false);
+        RestoreCasterLayers();
+        ResumeAnimators();
+        ResumeParticles();
+        ResumeNavMeshAgents();
+        ResumeChpaterTimers();
+        ResumeChpaterTracker();
+
+        SetPaused(false);
+        _activeFeedbackCount = 0;
+
+        Debug.LogWarning("[RiflessivoFeatures] EmergencyReset completato.");
     }
 
     public override void OnStepCompleted(IStep step) { }

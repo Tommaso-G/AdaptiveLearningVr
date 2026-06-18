@@ -12,6 +12,9 @@ public class LearningProfile : MonoBehaviour
     public LearningStyleFeatures riflessivoFeatures;
     public LearningStyleFeatures attivoFeatures;
 
+    [Header("Emergency Reset")]
+    [SerializeField] private KeyCode emergencyResetKey = KeyCode.F12;
+
     [Header("Controllo globale")]
     [Tooltip("Se disattivato, i Learning Style Features vengono ignorati.")]
     public bool enableLearningFeatures = true;
@@ -57,5 +60,17 @@ public class LearningProfile : MonoBehaviour
         return attivoRiflessivo == LearningEnums.AttivoRiflessivo.Riflessivo
             ? riflessivoFeatures
             : attivoFeatures;
+    }
+
+    private void Update()
+    {
+        if (!Input.GetKeyDown(emergencyResetKey)) return;
+
+        var behaviour = GetCurrentBehaviour();
+        if (behaviour is RiflessivoFeatures rf)
+        {
+            Debug.LogWarning("[LearningProfile] Emergency reset attivato da tastiera.");
+            rf.EmergencyReset();
+        }
     }
 }

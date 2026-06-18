@@ -164943,6 +164943,7 @@ MonoBehaviour:
   sequenzialeGlobale: 1
   riflessivoFeatures: {fileID: 11400000, guid: 53e914d1749811045b73e05c8720ffbb, type: 2}
   attivoFeatures: {fileID: 0}
+  emergencyResetKey: 293
   enableLearningFeatures: 1
 --- !u!114 &1837779942
 MonoBehaviour:
@@ -426466,7 +426467,7 @@ MonoBehaviour:
   controllerRend: []
   baseMats: []
   intensity: 0.7
-  duration: 0.3
+  duration: 1
   rotationUI: {fileID: 1521205471}
   menus:
   - id: Mappa Vie Di Fuga
@@ -426488,14 +426489,14 @@ MonoBehaviour:
     priority: 0
     allowMultipleRequests: 1
     automaticallyClose: 1
-    autoCloseDelay: 10
+    autoCloseDelay: 20
     flashColor: {r: 1, g: 1, b: 1, a: 1}
   - id: Directions
     panel: {fileID: 3269019341614166748}
     priority: 0
     allowMultipleRequests: 1
-    automaticallyClose: 0
-    autoCloseDelay: 10
+    automaticallyClose: 1
+    autoCloseDelay: 20
     flashColor: {r: 0.11695097, g: 0.79622644, b: 0.082627185, a: 1}
 --- !u!114 &8705676733577645277
 MonoBehaviour:
