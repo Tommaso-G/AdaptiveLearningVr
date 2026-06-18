@@ -16,10 +16,8 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
 
     private NavMeshAgent agent;
     private bool _hasAgent = false;
-
     private Transform playerTransform;
     private bool isFollowing = false;
-
     public Animator MyAnimator;
 
     [Header("Collider uscite")]
@@ -86,27 +84,9 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         }
     }
 
-    public void StartTimer()
-    {
-        _timerActive = true;
-        _elapsedTime = 0f;
-        _timerExpired = false;
-    }
 
     void Update()
     {
-        if (!_hasAgent) return;
-
-        if (_timerActive && !IsCompleted && !_timerExpired)
-        {
-            _elapsedTime += Time.deltaTime;
-
-            if (_elapsedTime >= timeLimit)
-            {
-                HandleTimerExpired();
-                return;
-            }
-        }
 
         if (_reachedExit && _currentDestination != null)
         {
@@ -132,25 +112,6 @@ public class FollowerAgentWithCheck : MonoBehaviour, ICompletableStep
         }
     }
 
-    private void HandleTimerExpired()
-    {
-        if (IsCompleted) return;
-
-        if (ErrorReporter != null)
-        {
-            ErrorReporter.RegisterError("Bambino_tempoScaduto");
-        }
-        else
-        {
-            Debug.LogError(
-                "[FollowerAgentWithCheck] ErrorReporter non assegnato (timer scaduto)."
-            );
-        }
-
-        _timerExpired = true;
-        _timerActive = false;
-        // Niente altro: l'NPC continua a seguire il player e lo step si completa normalmente
-    }
 
     private void ComputeBestCollider()
     {
