@@ -1,0 +1,138 @@
+{
+    "session_id": "SimoneFainP2_OFFLINE_20260617_115823",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 154.58946228027345,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Attiva l'allarme",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "5953081b-1751-4e2b-80d4-f585a500e8e5",
+            "chapter_name": "Vie di fuga Optional",
+            "time_seconds": 89.04451751708985,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Seleziona una via di fuga alternativa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Seleziona una via di fuga alternativa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Seleziona una via di fuga alternativa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 87.2633056640625,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Mensa",
+                    "message": "Interazione con Mensa",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 65.37644958496094,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Valuta l0incendio",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Non puoi domarli tutti... chiudi la porta e scappa",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+            "chapter_name": "Estintore generico Optional",
+            "time_seconds": 134.8332061767578,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Extinguisher_Foam",
+                    "message": "Per iniziare l'erogazione devi prima togliere la sicura. Non continuare a premere a caso, grazie.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Extinguisher_Foam",
+                    "message": "Per iniziare l'erogazione devi prima togliere la sicura. Non continuare a premere a caso, grazie.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Extinguisher_Foam",
+                    "message": "Per iniziare l'erogazione devi prima togliere la sicura. Non continuare a premere a caso, grazie.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 382.72161865234377,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Bambino_tempoScaduto",
+                    "message": "Non siamo in gita scolastica. Porta fuori quel bambino.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 55.11508560180664,
+            "errors": []
+        }
+    ]
+}

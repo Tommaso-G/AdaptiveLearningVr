@@ -1915,7 +1915,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -5248,8 +5248,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 18.68, y: 5.03, z: 13.42}
-  m_Center: {x: 4.79, y: 1.58, z: -1.67}
+  m_Size: {x: 18.68, y: 5.03, z: 10.52}
+  m_Center: {x: 5.4, y: 1.55, z: -1.67}
 --- !u!114 &51440381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17308,7 +17308,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -28979,7 +28979,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -40100,7 +40100,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 14.36, y: 9.22, z: 9.68}
-  m_Center: {x: 2.7, y: 0.36, z: 1.25}
+  m_Center: {x: 3.14, y: 0.36, z: 1.25}
 --- !u!1 &479059440
 GameObject:
   m_ObjectHideFlags: 0
@@ -47234,7 +47234,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 20.01, y: 8.8, z: 12.4}
-  m_Center: {x: 0.17, y: 0, z: 3.04}
+  m_Center: {x: -0.8, y: 0, z: 3.04}
 --- !u!1 &558954463
 GameObject:
   m_ObjectHideFlags: 0
@@ -52297,7 +52297,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -59279,7 +59279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -84895,7 +84895,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &923712574
 MeshRenderer:
@@ -85044,15 +85044,15 @@ MonoBehaviour:
   - interactedObjectName: Extinguisher_Water
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
-    weight: 2
+    weight: 1
   - interactedObjectName: Extinguisher_CO2
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
-    weight: 2
+    weight: 1
   - interactedObjectName: Extinguisher_Foam
     customMessage: Per iniziare l'erogazione devi prima togliere la sicura. Non continuare
       a premere a caso, grazie.
-    weight: 2
+    weight: 1
   - interactedObjectName: ChapterTimer
     customMessage: '<b>TEMPO SCADUTO<b>: non abbiamo tutto il giorno. <b>Passa allo
       step successivo<b>.'
@@ -85076,7 +85076,7 @@ MonoBehaviour:
   - interactedObjectName: Wrong extinguisher
     customMessage: "Per questo tipo di fuoco serve un altro estintore. Questo non
       \xE8 adatto, come te."
-    weight: 3
+    weight: 1
   - interactedObjectName: Garza_Sporca
     customMessage: Vuoi pure sputarci sopra? Non puoi usare una garza caduta per
       terra, infetterai la ferita.
@@ -89605,7 +89605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edf8293e224fa04fb62e03381c0f78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 758958715}
+  targetObject: {fileID: 1246801183}
 --- !u!1 &998689600
 GameObject:
   m_ObjectHideFlags: 0
@@ -98844,7 +98844,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1091345922
 MeshRenderer:
@@ -111231,7 +111231,7 @@ Transform:
   m_GameObject: {fileID: 1246801183}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.6399994, y: 0.29200006, z: -7.83}
+  m_LocalPosition: {x: 5.6399994, y: 0.29200006, z: -7.913}
   m_LocalScale: {x: 0.59695, y: 0.59695, z: 0.59695}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -115667,7 +115667,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -120938,7 +120938,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1374985111
 MeshRenderer:
@@ -127368,7 +127368,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1438080567
 MeshRenderer:
@@ -131902,7 +131902,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -132323,7 +132323,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -136468,7 +136468,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1544539809
 MeshRenderer:
@@ -141134,7 +141134,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1604336609
 MeshRenderer:
@@ -146098,7 +146098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edf8293e224fa04fb62e03381c0f78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1246801183}
+  targetObject: {fileID: 758958715}
 --- !u!1 &1665823320
 GameObject:
   m_ObjectHideFlags: 0
@@ -146925,7 +146925,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 16.58, y: 9.33, z: 10.7}
-  m_Center: {x: 2.22, y: 0, z: 3.04}
+  m_Center: {x: 4.47, y: 0, z: 3.04}
 --- !u!1 &1679325290
 GameObject:
   m_ObjectHideFlags: 0
@@ -159013,7 +159013,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.08, y: 4.12, z: 1}
+  m_Size: {x: 1.08, y: 5.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1820641117
 MeshRenderer:
@@ -264179,7 +264179,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.89, y: 2.49, z: 2.69}
-  m_Center: {x: -0.66, y: 1.04, z: -2.63}
+  m_Center: {x: -0.66, y: 1.04, z: 1.9}
 --- !u!54 &3183780532510337012
 Rigidbody:
   m_ObjectHideFlags: 0
