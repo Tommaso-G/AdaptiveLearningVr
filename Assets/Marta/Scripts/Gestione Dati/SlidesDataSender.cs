@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +15,27 @@ public class SlideDataContainer
     public int VideobuttonClicks;
 }
 
+public class ExtendedSlideDataContainer : SlideDataContainer
+{
+    /// <summary>Numero di volte che l'utente ha distolto e riportato lo sguardo (esclusa la prima).</summary>
+    public int reGazeCount;
+ 
+    /// <summary>Durata in secondi di ogni singola sessione di gaze.</summary>
+    public List<float> gazeSessions;
+ 
+    /// <summary>Media della durata delle sessioni di gaze.</summary>
+    public float avgGazeSession;
+ 
+    /// <summary>Durata massima di una singola sessione di gaze.</summary>
+    public float maxGazeSession;
+ 
+    /// <summary>
+    /// Tempo in secondi dal primo gaze dell'utente sul pannello alla chiusura dell'ultimo step.
+    /// -1 se l'utente non ha mai guardato il pannello.
+    /// </summary>
+    public float tempoDalPrimoSguardo;
+}
+
 public class SlidesDataSender : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
@@ -28,11 +48,9 @@ public class SlidesDataSender : MonoBehaviour
     [SerializeField] private List<Button> visualButtons;
 
     private string feedbackName;
-
     public string FeedbackName => feedbackName;
 
     public int FinalDataCount = 0;
-
     private bool allFinalDataSend = false;
 
     public float tempoOsservazionePreStep = 0f;
@@ -44,11 +62,15 @@ public class SlidesDataSender : MonoBehaviour
 
     private int _totalButtonClicks = 0;
 
+    /// <summary>
+    /// Time.time del primo GazeSelection su qualsiasi slide ExtendedSlideData del pannello.
+    /// Rimane -1f se nessuna slide è Extended oppure l'utente non ha mai guardato.
+    /// </summary>
+    public float firstGazeTimestamp = -1f;
 
     void Start()
     {
         slidesDataRecorder = FindFirstObjectByType<SlidesDataRecorder>();
-
         feedbackName = transform.parent.name;
 
         if (content == null)
@@ -65,6 +87,11 @@ public class SlidesDataSender : MonoBehaviour
             {
                 _slideIndexMap[child.name] = index;
                 slide.OnSlideDataUpdated += SaveSlidesData;
+
+                // Sottoscrivi OnFirstGazeOnPanel solo se la slide è ExtendedSlideData
+                if (slide is ExtendedSlideData extSlide)
+                    extSlide.OnFirstGazeOnPanel += RegisterFirstGaze;
+
                 index++;
             }
         }
@@ -72,13 +99,22 @@ public class SlidesDataSender : MonoBehaviour
         RegisterVisualButtonListeners();
     }
 
+    /// <summary>
+    /// Registra il timestamp del primo gaze sul pannello.
+    /// Chiamato da qualsiasi ExtendedSlideData figlia al suo primo GazeSelection.
+    /// Il controllo garantisce che solo il primissimo gaze tra tutte le slide conti.
+    /// </summary>
+    private void RegisterFirstGaze()
+    {
+        if (firstGazeTimestamp >= 0f) return;
+        firstGazeTimestamp = Time.time;
+        Debug.Log($"[SlidesDataSender] Primo gaze registrato per '{feedbackName}' a t={firstGazeTimestamp:F2}s");
+    }
+
     private void RegisterVisualButtonListeners()
     {
         foreach (var btn in visualButtons)
-        {
-            if (btn != null)
-                btn.onClick.AddListener(OnVisualButtonClicked);
-        }
+            if (btn != null) btn.onClick.AddListener(OnVisualButtonClicked);
     }
 
     private void OnVisualButtonClicked()
@@ -91,13 +127,9 @@ public class SlidesDataSender : MonoBehaviour
     {
         Debug.Log(
             $"[SaveSlidesData] Ricevuta slide={container.pageName} " +
-            $"focus={container.focusTime} " +
-            $"normalized={container.normalizedFocusTime} " +
-            $"opening={container.opening} " +
-            $"intro={container.isIntroductory}"
+            $"focus={container.focusTime} normalized={container.normalizedFocusTime} " +
+            $"opening={container.opening} intro={container.isIntroductory}"
         );
-
-        SlideDataContainer data;
 
         if (string.IsNullOrEmpty(container.pageName))
         {
@@ -110,50 +142,54 @@ public class SlidesDataSender : MonoBehaviour
             if (!container.isIntroductory)
             {
                 visitHistory.Add(slideIndex);
-
-                Debug.Log(
-                    $"[SaveSlidesData] Aggiunta visita slide {container.pageName} " +
-                    $"indice={slideIndex}. Storico={visitHistory.Count}"
-                );
+                Debug.Log($"[SaveSlidesData] Aggiunta visita slide {container.pageName} indice={slideIndex}. Storico={visitHistory.Count}");
             }
         }
         else
         {
-            Debug.LogError(
-                $"[SaveSlidesData] Slide {container.pageName} non trovata in _slideIndexMap"
-            );
+            Debug.LogError($"[SaveSlidesData] Slide {container.pageName} non trovata in _slideIndexMap");
         }
 
-        if (slidesData.TryGetValue(container.pageName, out data))
+        if (slidesData.TryGetValue(container.pageName, out SlideDataContainer data))
         {
             Debug.Log($"[SaveSlidesData] Aggiornamento dati slide {container.pageName}");
-
             data.focusTime = container.focusTime;
             data.normalizedFocusTime = container.normalizedFocusTime;
             data.opening = container.opening;
             data.seqGlob = container.seqGlob;
             data.visVerb = container.visVerb;
+
+            // Aggiorna campi estesi se applicabile (no-op per SlideDataContainer normali)
+            if (data is ExtendedSlideDataContainer extData &&
+                container is ExtendedSlideDataContainer extContainer)
+            {
+                extData.reGazeCount    = extContainer.reGazeCount;
+                extData.gazeSessions   = extContainer.gazeSessions;
+                extData.avgGazeSession = extContainer.avgGazeSession;
+                extData.maxGazeSession = extContainer.maxGazeSession;
+            }
         }
         else
         {
             slidesData.Add(container.pageName, container);
-
-            Debug.Log(
-                $"[SaveSlidesData] Nuova slide salvata: {container.pageName}. " +
-                $"Totale slide salvate={slidesData.Count}"
-            );
+            Debug.Log($"[SaveSlidesData] Nuova slide salvata: {container.pageName}. Totale={slidesData.Count}");
         }
     }
 
-    public void SendData()
+    /// <summary>
+    /// Invia i dati al recorder. tempoChiusura è Time.time al momento della chiusura del pannello,
+    /// usato per calcolare tempoDalPrimoSguardo nei container Extended.
+    /// Se firstGazeTimestamp è -1 (slide non Extended o utente non ha guardato) passa -1 al recorder.
+    /// </summary>
+    public void SendData(float tempoChiusura)
     {
-        if (slidesDataRecorder == null)
-            return;
+        if (slidesDataRecorder == null) return;
 
         if (!string.IsNullOrEmpty(feedbackName) && feedbackName.Contains("Introduzione"))
         {
             slidesData.Clear();
             visitHistory.Clear();
+            firstGazeTimestamp = -1f;
             return;
         }
 
@@ -168,14 +204,8 @@ public class SlidesDataSender : MonoBehaviour
             .ToList();
 
         int nonIntroCount = _slideIndexMap.Count - introIndexes.Count;
-
         if (filteredHistory.Count > nonIntroCount)
-        {
-            filteredHistory.RemoveRange(
-                filteredHistory.Count - nonIntroCount,
-                nonIntroCount
-            );
-        }
+            filteredHistory.RemoveRange(filteredHistory.Count - nonIntroCount, nonIntroCount);
 
         float tempoTotale = slidesData.Values
             .Where(s => !s.isIntroductory)
@@ -185,7 +215,6 @@ public class SlidesDataSender : MonoBehaviour
             .Where(kvp => !kvp.Value.isIntroductory)
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-        // Distribuisci click sulle slide visive, -1 sulle verbali
         foreach (var s in filteredSlidesData.Values)
         {
             if (s.visVerb == LearningEnums.VisivoVerbale.Visivo)
@@ -196,6 +225,23 @@ public class SlidesDataSender : MonoBehaviour
 
         _totalButtonClicks = 0;
 
+        // Calcola tempoDalPrimoSguardo solo se firstGazeTimestamp è stato registrato (slide Extended)
+        float tempoDalPrimoSguardo = (firstGazeTimestamp >= 0f)
+            ? tempoChiusura - firstGazeTimestamp
+            : -1f;
+
+        if (tempoDalPrimoSguardo >= 0f)
+            Debug.Log($"[SlidesDataSender] tempoDalPrimoSguardo={tempoDalPrimoSguardo:F2}s per '{feedbackName}'");
+        else
+            Debug.Log($"[SlidesDataSender] tempoDalPrimoSguardo non disponibile per '{feedbackName}' (slide non Extended o utente non ha guardato)");
+
+        // Propaga tempoDalPrimoSguardo nei container Extended
+        foreach (var s in filteredSlidesData.Values)
+        {
+            if (s is ExtendedSlideDataContainer ext)
+                ext.tempoDalPrimoSguardo = tempoDalPrimoSguardo;
+        }
+
         var copy = new Dictionary<string, SlideDataContainer>(filteredSlidesData);
 
         slidesDataRecorder.RecordData(
@@ -203,12 +249,17 @@ public class SlidesDataSender : MonoBehaviour
             copy,
             tempoOsservazionePreStep,
             filteredHistory,
-            tempoTotale
+            tempoTotale,
+            tempoDalPrimoSguardo
         );
 
         slidesData.Clear();
         visitHistory.Clear();
+        firstGazeTimestamp = -1f;
     }
+
+    // Overload senza tempoChiusura per compatibilità con chiamate esistenti
+    public void SendData() => SendData(Time.time);
 
     private void OnDestroy()
     {
@@ -217,20 +268,18 @@ public class SlidesDataSender : MonoBehaviour
         {
             SlideData slide = child.GetComponent<SlideData>();
             if (slide != null)
+            {
                 slide.OnSlideDataUpdated -= SaveSlidesData;
+                if (slide is ExtendedSlideData extSlide)
+                    extSlide.OnFirstGazeOnPanel -= RegisterFirstGaze;
+            }
         }
 
         foreach (var btn in visualButtons)
-        {
-            if (btn != null)
-                btn.onClick.RemoveListener(OnVisualButtonClicked);
-        }
+            if (btn != null) btn.onClick.RemoveListener(OnVisualButtonClicked);
     }
 
-    public void SetTempoPreStep(float tempo)
-    {
-        tempoOsservazionePreStep = tempo;
-    }
+    public void SetTempoPreStep(float tempo) { tempoOsservazionePreStep = tempo; }
 
     public float GetCurrentTotalFocusTime()
     {
@@ -248,8 +297,5 @@ public class SlidesDataSender : MonoBehaviour
         return total;
     }
 
-    public float GetTotalFocusTime()
-    {
-        return slidesData.Values.Sum(s => s.focusTime);
-    }
+    public float GetTotalFocusTime() => slidesData.Values.Sum(s => s.focusTime);
 }

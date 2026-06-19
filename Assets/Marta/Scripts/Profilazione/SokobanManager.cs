@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SokobanManager : MonoBehaviour, ICompletableStep
 {
-    public bool IsCompleted { get; private set; } = true;
+    public bool IsCompleted { get; private set; } = false;
 
     [SerializeField]
     private List<SokobanBox> boxes = new();

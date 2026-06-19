@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2469855416125728763
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2086,9 +2086,9 @@ GameObject:
   - component: {fileID: 9088784922178284893}
   - component: {fileID: 8506133035851089477}
   - component: {fileID: 6465140871084509145}
-  - component: {fileID: 2852562691416022437}
   - component: {fileID: 270838848569109204}
   - component: {fileID: 5393314621371185580}
+  - component: {fileID: 7516085644681301260}
   m_Layer: 13
   m_Name: Scrollable
   m_TagString: Untagged
@@ -2258,30 +2258,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2852562691416022437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4947142089488580553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6f791088843674eb23dc1d1b5c3f1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sender: {fileID: 7397790369783881398}
-  pageName: Page1
-  opening: 0
-  seqGlob: 0
-  visVerb: 0
-  isIntroductory: 0
-  wordCount: 0
-  slideText: {fileID: 4054075968104988527}
-  videoPlayer: {fileID: 5862508423324924950}
-  videoDuration: 0
-  stopTimer: 0
-  focusTimeTxt: {fileID: 7342876339354910744}
 --- !u!65 &270838848569109204
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2339,8 +2315,8 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2852562691416022437}
-        m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
+      - m_Target: {fileID: 7516085644681301260}
+        m_TargetAssemblyTypeName: ExtendedSlideData, Assembly-CSharp
         m_MethodName: GazeSelection
         m_Mode: 1
         m_Arguments:
@@ -2354,8 +2330,8 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2852562691416022437}
-        m_TargetAssemblyTypeName: SlideData, Assembly-CSharp
+      - m_Target: {fileID: 7516085644681301260}
+        m_TargetAssemblyTypeName: ExtendedSlideData, Assembly-CSharp
         m_MethodName: GazeDeselection
         m_Mode: 1
         m_Arguments:
@@ -2399,6 +2375,30 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
+--- !u!114 &7516085644681301260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4947142089488580553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90348d702a6b47848bf49f743c36d1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sender: {fileID: 7397790369783881398}
+  pageName: Page1
+  opening: 0
+  seqGlob: 0
+  visVerb: 0
+  isIntroductory: 0
+  wordCount: 0
+  slideText: {fileID: 4054075968104988527}
+  videoPlayer: {fileID: 5862508423324924950}
+  videoDuration: 0
+  stopTimer: 0
+  focusTimeTxt: {fileID: 7342876339354910744}
 --- !u!1 &5759862217937392894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2973,7 +2973,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3292046231320405482}
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
-  m_Value: 0.49997914
+  m_Value: 0.4999756
   m_Size: 0.89786196
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3108,6 +3108,7 @@ MonoBehaviour:
   FinalDataCount: 0
   tempoOsservazionePreStep: 0
   visitHistory: 
+  firstGazeTimestamp: -1
 --- !u!1 &7274302098674028556
 GameObject:
   m_ObjectHideFlags: 0

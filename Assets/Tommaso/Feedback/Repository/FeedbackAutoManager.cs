@@ -35,11 +35,9 @@ public class FeedbackAutoManager : MonoBehaviour
     [Tooltip("Secondi di attesa tra chiusura e apertura di un feedback sulla stessa posizione")]
     public float feedbackPositionDelay = 3f;
 
-    // Struttura aggiornata: tiene traccia anche del capitolo di appartenenza
     private Dictionary<FeedbackRepository.FeedbackData, (HashSet<string> steps, string chapterName)> activeFeedbackSteps = new();
     private HashSet<FeedbackRepository.FeedbackData> shownFeedbacks = new();
 
-    // Chiave: posizione world arrotondata, Valore: timestamp di fine cooldown
     private Dictionary<Vector3Int, float> positionCooldowns = new();
 
     private IProcess process;
@@ -223,7 +221,6 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
-    // Arrotonda a 10cm per tollerare piccole variazioni di posizione
     private Vector3Int PositionKey(Vector3 worldPos)
     {
         return new Vector3Int(
@@ -235,15 +232,11 @@ public class FeedbackAutoManager : MonoBehaviour
 
     private void OnStepActivated(IStep step, string chapterName, FeedbackRepository.FeedbackData feedback)
     {
-        // Stampa tutti gli StepForCompletition
         if (feedback.StepForCompletition != null && feedback.StepForCompletition.Count > 0)
         {
             Debug.Log("[FeedbackAutoManager] StepForCompletition trovati:");
-
             foreach (string s in feedback.StepForCompletition)
-            {
                 Debug.Log($" - {s}");
-            }
         }
         else
         {
@@ -268,9 +261,7 @@ public class FeedbackAutoManager : MonoBehaviour
         }
 
         if (shownFeedbacks.Contains(feedback))
-        {
             return;
-        }
 
         GameObject target = GetFirstGameObjectFromStep(step);
         if (target == null) return;
@@ -278,22 +269,18 @@ public class FeedbackAutoManager : MonoBehaviour
         List<Transform> feedbackPositions = feedbackDisplayer.FindFeedbackPositionChild(target);
         if (feedbackPositions == null) return;
 
-        // Calcola il delay massimo tra tutte le posizioni target
         float delay = 0f;
         foreach (var pos in feedbackPositions)
         {
             Vector3Int key = PositionKey(pos.position);
-
             if (positionCooldowns.TryGetValue(key, out float until))
             {
                 float remaining = until - Time.time;
-
                 if (remaining > delay)
                     delay = remaining;
             }
         }
 
-        // Segna subito come shown per evitare doppi trigger durante l'attesa
         shownFeedbacks.Add(feedback);
 
         if (!activeFeedbackSteps.ContainsKey(feedback))
@@ -317,10 +304,11 @@ public class FeedbackAutoManager : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        // Se nel frattempo il feedback è stato annullato (es. capitolo disabilitato)
-        if (!shownFeedbacks.Contains(feedback)) {
-           Debug.Log($"[FeedbackAutoManager] booooooooooooooooooooooooooooooooo");
-            yield break; } 
+        if (!shownFeedbacks.Contains(feedback))
+        {
+            Debug.Log($"[FeedbackAutoManager] booooooooooooooooooooooooooooooooo");
+            yield break;
+        }
 
         Debug.Log($"[FeedbackAutoManager] {feedback} {feedbackPositions} {feedbackHolder}");
 
@@ -361,19 +349,21 @@ public class FeedbackAutoManager : MonoBehaviour
 
             if (remainingSteps.Count == 0)
             {
+                // Registra Time.time prima di chiudere i prefab:
+                // è il momento di chiusura del pannello, usato per calcolare tempoDalPrimoSguardo
+                float tempoChiusura = Time.time;
+
                 List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
                 if (prefabs != null)
                 {
                     for (int i = prefabs.Count - 1; i >= 0; i--)
                     {
-                        // Registra cooldown sulla posizione world prima di chiudere
                         Vector3Int key = PositionKey(prefabs[i].transform.position);
                         positionCooldowns[key] = Time.time + feedbackPositionDelay;
-                        // Debug.Log($"[FeedbackAutoManager] Cooldown {feedbackPositionDelay}s su posizione {prefabs[i].transform.position}.");
-
                         prefabs[i].CloseFeedback();
                     }
                 }
+
 
                 feedbacksToRemove.Add(feedback);
             }
@@ -386,29 +376,19 @@ public class FeedbackAutoManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Disabilita tutti i feedback per il capitolo indicato (anche sottocapitoli)
-    /// e chiude quelli già mostrati in scena.
-    /// </summary>
     public void DisableAllFeedbackForChapter(string chapterName)
     {
-        // 1. Disabilita i feedback futuri tramite chapterFilter
         if (chapterFilter != null)
             chapterFilter.SetFeedbackLevel(chapterName, 2);
 
-        // 2. Trova tutti i feedback attivi che appartengono al capitolo
         var feedbacksToClose = activeFeedbackSteps
             .Where(kvp => kvp.Value.chapterName == chapterName)
             .Select(kvp => kvp.Key)
             .ToList();
 
         if (feedbacksToClose.Count == 0)
-        {
-            // Debug.Log($"[FeedbackAutoManager] Nessun feedback attivo trovato per '{chapterName}'.");
             return;
-        }
 
-        // 3. Chiudi i prefab in scena e pulisci lo stato interno
         foreach (var feedback in feedbacksToClose)
         {
             List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
@@ -421,8 +401,6 @@ public class FeedbackAutoManager : MonoBehaviour
             activeFeedbackSteps.Remove(feedback);
             shownFeedbacks.Remove(feedback);
         }
-
-        //Debug.Log($"[FeedbackAutoManager] Disabilitati e chiusi {feedbacksToClose.Count} feedback per il capitolo '{chapterName}'.");
     }
 
     private List<FeedbackPrefabController> FindFeedbackInstance(string feedbackName)
@@ -454,22 +432,12 @@ public class FeedbackAutoManager : MonoBehaviour
         if (sender != null)
         {
             float tempo = sender.GetCurrentTotalFocusTime();
-            //Debug.Log($"[RegisterTempoPreStep] Sender trovato per '{feedback.FeedbackName}', tempo: {tempo}");
             sender.SetTempoPreStep(tempo);
         }
         else
             Debug.LogWarning($"[FeedbackAutoManager] Nessun sender trovato per '{feedback.FeedbackName}'");
     }
 
-    // ─────────────────────────────────────────────────────────────────
-    // HARD ASSIST —
-    // ─────────────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Chiamato da ChapterTimer.OnMidEventTriggered quando il mid-event abbassa
-    /// il feedbackLevel a -1. Attiva outline "Outline All" e sposta i waypoint
-    /// sul layer Default.
-    /// </summary>
     private void OnChapterMidEvent(string chapterName)
     {
         if (chapterFilter == null || !chapterFilter.IsHardAssistActive(chapterName))
@@ -481,9 +449,6 @@ public class FeedbackAutoManager : MonoBehaviour
         SetWaypointLayer(hardAssistWaypointLayer);
     }
 
-    /// <summary>
-    /// Imposta OutlineMode = OutlineAll su tutti gli oggetti gestiti dall'OutlineManager.
-    /// </summary>
     private void ApplyOutlineAll()
     {
         if (outlineManager == null)
@@ -496,10 +461,6 @@ public class FeedbackAutoManager : MonoBehaviour
         Debug.Log("[FeedbackAutoManager] OutlineManager: modalità 'Outline All' applicata.");
     }
 
-    /// <summary>
-    /// Cambia il layer di tutti i waypoint istanziati da FeedbackPrefabController
-    /// e di tutti i GameObject taggati WayPointSmall nella scena.
-    /// </summary>
     private void SetWaypointLayer(string layerName)
     {
         int layer = LayerMask.NameToLayer(layerName);
@@ -509,12 +470,10 @@ public class FeedbackAutoManager : MonoBehaviour
             return;
         }
 
-        // Waypoint nei FeedbackPrefabController attivi
         GameObject[] Waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
         foreach (GameObject wp in Waypoints)
             wp.layer = layer;
 
-        // Waypoint liberi nella scena (tag WayPointSmall)
         GameObject[] sceneWaypoints = GameObject.FindGameObjectsWithTag("WayPointSmall");
         foreach (GameObject wp in sceneWaypoints)
         {
@@ -529,5 +488,4 @@ public class FeedbackAutoManager : MonoBehaviour
 
         Debug.Log($"[FeedbackAutoManager] Layer waypoint impostato a '{layerName}'.");
     }
-
 }

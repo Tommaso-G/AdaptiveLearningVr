@@ -33,6 +33,12 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         public float normalizedFocusTime;
         public int opening;
         public int videoButtonClicks;
+
+        // Campi Extended: -1 se la slide non è Extended
+        public int reGazeCount = -1;
+        public float avgGazeSession = -1f;
+        public float maxGazeSession = -1f;
+        public List<float> gazeSessions = new List<float>();
     }
 
     [System.Serializable]
@@ -43,6 +49,12 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         public float tempoTotaleOsservazione;
         public List<int> visitHistory;
         public List<SlideEntry> slides = new List<SlideEntry>();
+
+        /// <summary>
+        /// Tempo in secondi dal primo gaze al completamento dell'ultimo step.
+        /// -1 se il pannello usa SlideData base o l'utente non ha mai guardato.
+        /// </summary>
+        public float tempoDalPrimoSguardo = -1f;
     }
 
     [System.Serializable]
@@ -100,7 +112,7 @@ public class ProcedureCentralStatsManager : MonoBehaviour
     {
         Debug.Log($"[GetFeedbacksData] Feedback nel recorder: {slidesDataRecorder.GetAllFeedbacks().Count()}");
         foreach (var f in slidesDataRecorder.GetAllFeedbacks())
-        Debug.Log($"[GetFeedbacksData] Feedback: '{f.feedbackName}' | slides: {f.slidesData?.Count} | escluso: {feedbackDaEscludere.Contains(f.feedbackName)}");
+            Debug.Log($"[GetFeedbacksData] Feedback: '{f.feedbackName}' | slides: {f.slidesData?.Count} | escluso: {feedbackDaEscludere.Contains(f.feedbackName)}");
 
         var data = new FeedbacksSessionData();
 
@@ -110,22 +122,36 @@ public class ProcedureCentralStatsManager : MonoBehaviour
 
             var entry = new FeedbackEntry
             {
-                feedbackName = feedback.feedbackName,
+                feedbackName             = feedback.feedbackName,
                 tempoOsservazionePreStep = feedback.tempoOsservazionePreStep,
-                tempoTotaleOsservazione = feedback.tempoTotaleOsservazione,
-                visitHistory = feedback.visitHistory
+                tempoTotaleOsservazione  = feedback.tempoTotaleOsservazione,
+                visitHistory             = feedback.visitHistory,
+                tempoDalPrimoSguardo     = feedback.tempoDalPrimoSguardo
             };
 
             foreach (var slide in feedback.slidesData.Values)
             {
-                entry.slides.Add(new SlideEntry
+                var slideEntry = new SlideEntry
                 {
-                    pageName = slide.pageName,
-                    focusTime = slide.focusTime,
+                    pageName            = slide.pageName,
+                    focusTime           = slide.focusTime,
                     normalizedFocusTime = slide.normalizedFocusTime,
-                    opening = slide.opening,
-                    videoButtonClicks = slide.VideobuttonClicks
-                });
+                    opening             = slide.opening,
+                    videoButtonClicks   = slide.VideobuttonClicks
+                };
+
+                // Popola i campi Extended solo se il container è Extended
+                if (slide is ExtendedSlideDataContainer ext)
+                {
+                    slideEntry.reGazeCount    = ext.reGazeCount;
+                    slideEntry.avgGazeSession = ext.avgGazeSession;
+                    slideEntry.maxGazeSession = ext.maxGazeSession;
+                    slideEntry.gazeSessions   = ext.gazeSessions != null
+                        ? new List<float>(ext.gazeSessions)
+                        : new List<float>();
+                }
+
+                entry.slides.Add(slideEntry);
             }
 
             data.feedbacks.Add(entry);
@@ -173,11 +199,9 @@ public class ProcedureCentralStatsManager : MonoBehaviour
         Debug.Log($"[ProcedureCentralStatsManager] File salvato in: {filePath}");
     }
 
-// Chiamata da Update (tasto J) - fallback
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
             CalcolaStatisticheFinali(0, profilingSessionName, "debug");
     }
-
 }
