@@ -1,0 +1,80 @@
+{
+    "session_id": "LucaPotenza_OFFLINE_20260618_100201",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 170.9329376220703,
+            "errors": []
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 189.14309692382813,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "LeverEmpty",
+                    "message": "Interazione con LeverEmpty",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "LeverEmpty",
+                    "message": "Interazione con LeverEmpty",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "LeverEmpty",
+                    "message": "Interazione con LeverEmpty",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 136.47537231445313,
+            "errors": []
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 123.34904479980469,
+            "errors": []
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 103.15874481201172,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}
