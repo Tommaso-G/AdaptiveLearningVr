@@ -1,0 +1,105 @@
+{
+    "session_id": "session_20260622_183324",
+    "iteration": 5,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 70.62547302246094,
+            "errors": []
+        },
+        {
+            "chapter_id": "5953081b-1751-4e2b-80d4-f585a500e8e5",
+            "chapter_name": "Vie di fuga Optional",
+            "time_seconds": 34.454891204833987,
+            "errors": []
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 21.68987464904785,
+            "errors": []
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 49.423770904541019,
+            "errors": []
+        },
+        {
+            "chapter_id": "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+            "chapter_name": "Estintore generico Optional",
+            "time_seconds": 11.12375545501709,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Wrong extinguisher",
+                    "message": "Per questo tipo di fuoco serve un altro estintore. Questo non è adatto, come te.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "0adf93f1-d9af-4c7c-9533-27a931fa4fec",
+            "chapter_name": "Fuoco su liquido Optional",
+            "time_seconds": 44.614383697509769,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "liquid_collider",
+                    "message": "Hai fatto schizzare il liquido diffondendo le fiamme. Sai solo peggiorare le cose.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "liquid_collider",
+                    "message": "Hai fatto schizzare il liquido diffondendo le fiamme. Sai solo peggiorare le cose.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "liquid_collider",
+                    "message": "Hai fatto schizzare il liquido diffondendo le fiamme. Sai solo peggiorare le cose.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 224.17970275878907,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "markus_uscita",
+                    "message": "L'uscita che hai scelto non era la più vicina, avresti potuto rispariarmiare 1,4 secondi.",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "8338266c-b1c9-4d63-87c8-25f1a5baeb48",
+            "chapter_name": "Primo soccorso Optional",
+            "time_seconds": 27.704021453857423,
+            "errors": []
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 28.917564392089845,
+            "errors": []
+        }
+    ]
+}

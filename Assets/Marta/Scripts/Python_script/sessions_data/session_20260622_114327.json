@@ -1,0 +1,547 @@
+{
+  "session_id": "session_20260622_114327",
+  "created_at": "2026-06-22T13:22:51.213424",
+  "current_iteration": 6,
+  "last_complete_iteration": 5,
+  "iterations": {
+    "1": {
+      "iteration_number": 1,
+      "state": "complete",
+      "started_at": "2026-06-22T11:43:27.791302",
+      "completed_at": "2026-06-22T12:00:27.014092",
+      "chapters_completed": [
+        "1c54247c-096c-4388-a1cb-ae0142b56a98",
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+        "339e78de-8453-4fbd-986f-3c6ff3105f27",
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5"
+      ],
+      "chapter_decisions": {
+        "1c54247c-096c-4388-a1cb-ae0142b56a98": {
+          "posterior": [
+            0.06576340512558315,
+            0.06576340512558315,
+            0.8684731897488337
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione incendio: skill stimata = Novice (87%)"
+        },
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c": {
+          "posterior": [
+            0.027697078795872167,
+            0.03696508457055269,
+            0.9353378366335752
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Interruzione elettricit\u00e0+gas: skill stimata = Novice (94%)"
+        },
+        "339e78de-8453-4fbd-986f-3c6ff3105f27": {
+          "posterior": [
+            0.05174839072286276,
+            0.1331329435254736,
+            0.8151186657516636
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Isola Incendio: skill stimata = Novice (82%)"
+        },
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752": {
+          "posterior": [
+            0.6305982598875857,
+            0.2678695172342992,
+            0.10153222287811514
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Giro di perlustrazione: skill stimata = Expert (63%) | Feedback: nessun aiuto \u2192 solo highlight"
+        },
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5": {
+          "posterior": [
+            0.11494513981963153,
+            0.6059835078712433,
+            0.27907135230912516
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione assenti: skill stimata = Intermediate (61%) | Feedback: nessun aiuto \u2192 solo highlight | [iter completa | buoni_glob=0 diff_glob=0] | + Aggiunti opzionali: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, 5953081b-1751-4e2b-80d4-f585a500e8e5"
+        },
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        },
+        "5953081b-1751-4e2b-80d4-f585a500e8e5": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        },
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        },
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        }
+      }
+    },
+    "2": {
+      "iteration_number": 2,
+      "state": "complete",
+      "started_at": "2026-06-22T12:06:29.434991",
+      "completed_at": "2026-06-22T12:23:04.470050",
+      "chapters_completed": [
+        "1c54247c-096c-4388-a1cb-ae0142b56a98",
+        "5953081b-1751-4e2b-80d4-f585a500e8e5",
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+        "339e78de-8453-4fbd-986f-3c6ff3105f27",
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5"
+      ],
+      "chapter_decisions": {
+        "1c54247c-096c-4388-a1cb-ae0142b56a98": {
+          "posterior": [
+            0.5756761905840913,
+            0.3929218443669195,
+            0.03140196504898908
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione incendio: skill stimata = Expert (58%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c": {
+          "posterior": [
+            0.5507560390254354,
+            0.41186553456862124,
+            0.037378426405943264
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Interruzione elettricit\u00e0+gas: skill stimata = Expert (55%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "339e78de-8453-4fbd-986f-3c6ff3105f27": {
+          "posterior": [
+            0.5872017882138433,
+            0.381479535343497,
+            0.031318676442659725
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Isola Incendio: skill stimata = Expert (59%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752": {
+          "posterior": [
+            0.21302789705120517,
+            0.3408039878956617,
+            0.44616811505313314
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Giro di perlustrazione: skill stimata = Novice (45%)"
+        },
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5": {
+          "posterior": [
+            0.09291617437583966,
+            0.6559310741483978,
+            0.25115275147576255
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione assenti: skill stimata = Intermediate (66%) | [iter completa | buoni_glob=0 diff_glob=0] | + Aggiunti opzionali: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, 8338266c-b1c9-4d63-87c8-25f1a5baeb48"
+        },
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a": {
+          "posterior": [
+            0.10932184168745748,
+            0.6593331821274665,
+            0.23134497618507596
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Estintore generico Optional: skill stimata = Intermediate (66%) | Feedback: nessun aiuto \u2192 solo highlight"
+        },
+        "5953081b-1751-4e2b-80d4-f585a500e8e5": {
+          "posterior": [
+            0.0486918106109457,
+            0.2533922372988324,
+            0.6979159520902218
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Vie di fuga Optional: skill stimata = Novice (70%)"
+        },
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        },
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48": {
+          "posterior": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "prima inizializzazione"
+        }
+      }
+    },
+    "3": {
+      "iteration_number": 3,
+      "state": "complete",
+      "started_at": "2026-06-22T12:34:23.309637",
+      "completed_at": "2026-06-22T12:53:46.235094",
+      "chapters_completed": [
+        "1c54247c-096c-4388-a1cb-ae0142b56a98",
+        "5953081b-1751-4e2b-80d4-f585a500e8e5",
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+        "339e78de-8453-4fbd-986f-3c6ff3105f27",
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec",
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48",
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5"
+      ],
+      "chapter_decisions": {
+        "1c54247c-096c-4388-a1cb-ae0142b56a98": {
+          "posterior": [
+            0.6413445317779646,
+            0.34973581630874534,
+            0.008919651913290071
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione incendio: skill stimata = Expert (64%) | \u2713 Capitolo padroneggiato"
+        },
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c": {
+          "posterior": [
+            0.6085888699826775,
+            0.38102097033047067,
+            0.010390159686851723
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Interruzione elettricit\u00e0+gas: skill stimata = Expert (61%) | \u2713 Capitolo padroneggiato"
+        },
+        "339e78de-8453-4fbd-986f-3c6ff3105f27": {
+          "posterior": [
+            0.013573782460235587,
+            0.2076899060850977,
+            0.7787363114546667
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Isola Incendio: skill stimata = Novice (78%) | Feedback: highlight + istruzioni \u2192 nessun aiuto"
+        },
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752": {
+          "posterior": [
+            0.16096187885961397,
+            0.3897083571791043,
+            0.4493297639612816
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Giro di perlustrazione: skill stimata = Novice (45%)"
+        },
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5": {
+          "posterior": [
+            0.1653943391960255,
+            0.8090791006558733,
+            0.025526560148101212
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione assenti: skill stimata = Intermediate (81%) | Feedback: solo highlight \u2192 highlight + istruzioni | [iter completa | buoni_glob=0 diff_glob=0] | \u2191 Versione avanzata attivata: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a"
+        },
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a": {
+          "posterior": [
+            0.2520996327100391,
+            0.2735954984230596,
+            0.47430486886690126
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Estintore generico Optional: skill stimata = Novice (47%)"
+        },
+        "5953081b-1751-4e2b-80d4-f585a500e8e5": {
+          "posterior": [
+            0.0261013902911068,
+            0.16827865206671708,
+            0.8056199576421762
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Vie di fuga Optional: skill stimata = Novice (81%)"
+        },
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec": {
+          "posterior": [
+            0.010692671515028224,
+            0.3100620454661039,
+            0.6792452830188678
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Fuoco su liquido Optional: skill stimata = Novice (68%)"
+        },
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48": {
+          "posterior": [
+            0.022088389621161584,
+            0.37584521899060575,
+            0.6020663913882327
+          ],
+          "feedback_level": 0,
+          "difficulty_level": 0,
+          "message": "Capitolo Primo soccorso Optional: skill stimata = Novice (60%)"
+        }
+      }
+    },
+    "4": {
+      "iteration_number": 4,
+      "state": "complete",
+      "started_at": "2026-06-22T12:59:38.999367",
+      "completed_at": "2026-06-22T13:09:07.532032",
+      "chapters_completed": [
+        "1c54247c-096c-4388-a1cb-ae0142b56a98",
+        "5953081b-1751-4e2b-80d4-f585a500e8e5",
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+        "339e78de-8453-4fbd-986f-3c6ff3105f27",
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec",
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48",
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5"
+      ],
+      "chapter_decisions": {
+        "1c54247c-096c-4388-a1cb-ae0142b56a98": {
+          "posterior": [
+            0.7284697137711067,
+            0.2711365845628497,
+            0.00039370166604363804
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione incendio: skill stimata = Expert (73%) | \u2713 Capitolo padroneggiato"
+        },
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c": {
+          "posterior": [
+            0.6822597772925376,
+            0.31726597416097213,
+            0.0004742485464903976
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Interruzione elettricit\u00e0+gas: skill stimata = Expert (68%) | \u2713 Capitolo padroneggiato"
+        },
+        "339e78de-8453-4fbd-986f-3c6ff3105f27": {
+          "posterior": [
+            0.08089768844375025,
+            0.7595175467980301,
+            0.15958476475821978
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Isola Incendio: skill stimata = Intermediate (76%) | Feedback: nessun aiuto \u2192 solo highlight"
+        },
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752": {
+          "posterior": [
+            0.40356397722728765,
+            0.41504922462402805,
+            0.18138679814868422
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Giro di perlustrazione: skill stimata = Intermediate (42%) | Feedback: solo highlight \u2192 highlight + istruzioni"
+        },
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5": {
+          "posterior": [
+            0.40791595329912833,
+            0.5900044474645787,
+            0.0020795992362929666
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione assenti: skill stimata = Intermediate (59%) | [iter completa | buoni_glob=0 diff_glob=0] | \u2191 Versione avanzata attivata: e97f0831-2e19-4aef-a4a8-ebb2a2257752"
+        },
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a": {
+          "posterior": [
+            0.6536975697691197,
+            0.26132192508233193,
+            0.08498050514854832
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 1,
+          "message": "Capitolo Estintore generico Optional: skill stimata = Expert (65%) | Feedback: nessun aiuto \u2192 highlight + istruzioni | \u2713 Capitolo padroneggiato"
+        },
+        "5953081b-1751-4e2b-80d4-f585a500e8e5": {
+          "posterior": [
+            0.7940760889091906,
+            0.12414212076449013,
+            0.08178179032631924
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Vie di fuga Optional: skill stimata = Expert (79%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec": {
+          "posterior": [
+            0.8390403303797876,
+            0.1556623249301855,
+            0.005297344690026998
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Fuoco su liquido Optional: skill stimata = Expert (84%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48": {
+          "posterior": [
+            0.7460907666026302,
+            0.2016701681685142,
+            0.05223906522885547
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Primo soccorso Optional: skill stimata = Expert (75%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        }
+      }
+    },
+    "5": {
+      "iteration_number": 5,
+      "state": "complete",
+      "started_at": "2026-06-22T13:11:55.645957",
+      "completed_at": "2026-06-22T13:22:51.213348",
+      "chapters_completed": [
+        "1c54247c-096c-4388-a1cb-ae0142b56a98",
+        "5953081b-1751-4e2b-80d4-f585a500e8e5",
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+        "339e78de-8453-4fbd-986f-3c6ff3105f27",
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec",
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48",
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5"
+      ],
+      "chapter_decisions": {
+        "1c54247c-096c-4388-a1cb-ae0142b56a98": {
+          "posterior": [
+            0.7971193831639248,
+            0.20250133764385608,
+            0.00037927919221912934
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione incendio: skill stimata = Expert (80%) | \u2713 Capitolo padroneggiato"
+        },
+        "34a2a547-200c-409c-8f2e-4ea7f6f55d3c": {
+          "posterior": [
+            0.7429437213422092,
+            0.25661291083385696,
+            0.00044336782393395076
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Interruzione elettricit\u00e0+gas: skill stimata = Expert (74%) | \u2713 Capitolo padroneggiato"
+        },
+        "339e78de-8453-4fbd-986f-3c6ff3105f27": {
+          "posterior": [
+            0.15265321104304214,
+            0.8365908913362842,
+            0.010755897620673693
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Isola Incendio: skill stimata = Intermediate (84%) | Feedback: solo highlight \u2192 highlight + istruzioni"
+        },
+        "e97f0831-2e19-4aef-a4a8-ebb2a2257752": {
+          "posterior": [
+            0.11216005814772319,
+            0.8183065363039972,
+            0.06953340554827976
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 1,
+          "message": "Capitolo Giro di perlustrazione: skill stimata = Intermediate (82%) | Feedback: nessun aiuto \u2192 highlight + istruzioni"
+        },
+        "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5": {
+          "posterior": [
+            0.7000497074234863,
+            0.2993834068883698,
+            0.0005668856881439578
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Segnalazione assenti: skill stimata = Expert (70%) | [iter completa | buoni_glob=0 diff_glob=0]"
+        },
+        "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a": {
+          "posterior": [
+            0.8573402403632508,
+            0.13215712143589997,
+            0.01050263820084921
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 1,
+          "message": "Capitolo Estintore generico Optional: skill stimata = Expert (86%) | \u2713 Capitolo padroneggiato"
+        },
+        "5953081b-1751-4e2b-80d4-f585a500e8e5": {
+          "posterior": [
+            0.9795656785271424,
+            0.017155357337931228,
+            0.0032789641349263675
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Vie di fuga Optional: skill stimata = Expert (98%) | \u2713 Capitolo padroneggiato"
+        },
+        "0adf93f1-d9af-4c7c-9533-27a931fa4fec": {
+          "posterior": [
+            0.9394050936431813,
+            0.059450860662941,
+            0.0011440456938778087
+          ],
+          "feedback_level": 2,
+          "difficulty_level": 0,
+          "message": "Capitolo Fuoco su liquido Optional: skill stimata = Expert (94%) | \u2713 Capitolo padroneggiato"
+        },
+        "8338266c-b1c9-4d63-87c8-25f1a5baeb48": {
+          "posterior": [
+            0.24240377478073297,
+            0.45789882656993586,
+            0.29969739864933126
+          ],
+          "feedback_level": 1,
+          "difficulty_level": 0,
+          "message": "Capitolo Primo soccorso Optional: skill stimata = Intermediate (46%) | Feedback: highlight + istruzioni \u2192 solo highlight"
+        }
+      }
+    }
+  }
+}

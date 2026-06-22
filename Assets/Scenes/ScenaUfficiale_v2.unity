@@ -89027,18 +89027,29 @@ MonoBehaviour:
   - chapterName: "Interruzione elettricit\xE0+gas"
     customErrorMessages:
     - interactedObjectName: LeverEmpty
-      customMessage: Tira la leva Kronk! L'ALTRA LEVAAAA!
+      customMessage: 'Tira la leva Kronk! L''ALTRA LEVAAAA!
+
+
+        Usa solo gli
+        inetrruttori che hai visto nell''ufficio.'
       weight: 1
     - interactedObjectName: Button Visuals
-      customMessage: Complimenti, premendo questo bottone hai fatto saltare in aira
-        Busto Arsizio. Spero tu sia soddisfatto.
+      customMessage: 'Complimenti, premendo questo bottone hai fatto saltare in aira
+        Busto Arsizio.
+
+
+        Usa solo gli inetrruttori che hai visto nell''ufficio.'
       weight: 1
     - interactedObjectName: Dial Visuals
-      customMessage: "C'\xE8 un tempo e un luogo per ogni cosa, ma non ora. Lascia
-        stare questa manopola."
+      customMessage: "C'\xE8 un tempo e un luogo per ogni cosa, ma non ora. \n\nUsa
+        solo gli inetrruttori che hai visto nell'ufficio."
       weight: 1
     - interactedObjectName: Wheel
-      customMessage: Non stai giocando a Mario Kart, gira la mapola giusta.
+      customMessage: 'Non stai giocando a Mario Kart, gira la mapola giusta.
+
+
+        Usa
+        solo gli inetrruttori che hai visto nell''ufficio.'
       weight: 1
 --- !u!114 &923911997
 MonoBehaviour:
@@ -101308,81 +101319,54 @@ MonoBehaviour:
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 30
-    max_time_sec: 100
   - name: "Interruzione elettricit\xE0+gas"
     chapter_id: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 30
-    max_time_sec: 100
   - name: Isola Incendio
     chapter_id: 339e78de-8453-4fbd-986f-3c6ff3105f27
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 30
-    max_time_sec: 100
   - name: Giro di perlustrazione
     chapter_id: e97f0831-2e19-4aef-a4a8-ebb2a2257752
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 1
-    max_errors: 5
-    min_time_sec: 100
-    max_time_sec: 300
   - name: Segnalazione assenti
     chapter_id: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 200
   - name: Estintore generico Optional
     chapter_id: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 1
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   - name: Vie di fuga Optional
     chapter_id: 5953081b-1751-4e2b-80d4-f585a500e8e5
     is_mandatory: 0
     weight: 1
     max_iterations: 3
     has_difficulty_level: 0
-    max_errors: 1
-    min_time_sec: 10
-    max_time_sec: 60
   - name: Fuoco su liquido Optional
     chapter_id: 0adf93f1-d9af-4c7c-9533-27a931fa4fec
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   - name: Primo soccorso Optional
     chapter_id: 8338266c-b1c9-4d63-87c8-25f1a5baeb48
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   excludedChapters:
   - name: Starting Point
     chapter_id: e42dd234-fae8-4d51-ab94-be0ae4b24163
@@ -101390,18 +101374,12 @@ MonoBehaviour:
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 60
-    max_time_sec: 300
   - name: Fine processo
     chapter_id: e42dd234-fae8-4d51-ab94-be0ae4b24163
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 60
-    max_time_sec: 300
   procedureCentralSM: {fileID: 1167672856}
   playerPathSampler: {fileID: 695017923}
   gameSceneName: ScenaUfficiale
@@ -187722,7 +187700,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068904884}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22584d081e4a5ea4e8ada8c8f61a1452, type: 3}
   m_Name: 
