@@ -97004,81 +97004,54 @@ MonoBehaviour:
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 30
-    max_time_sec: 100
   - name: "Interruzione elettricit\xE0+gas"
     chapter_id: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 30
-    max_time_sec: 100
   - name: Isola Incendio
     chapter_id: 339e78de-8453-4fbd-986f-3c6ff3105f27
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 30
-    max_time_sec: 100
   - name: Giro di perlustrazione
     chapter_id: e97f0831-2e19-4aef-a4a8-ebb2a2257752
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 1
-    max_errors: 5
-    min_time_sec: 100
-    max_time_sec: 300
   - name: Segnalazione assenti
     chapter_id: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 200
   - name: Estintore generico Optional
     chapter_id: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 1
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   - name: Vie di fuga Optional
     chapter_id: 5953081b-1751-4e2b-80d4-f585a500e8e5
     is_mandatory: 0
     weight: 1
     max_iterations: 3
     has_difficulty_level: 0
-    max_errors: 1
-    min_time_sec: 10
-    max_time_sec: 60
   - name: Fuoco su liquido Optional
     chapter_id: 0adf93f1-d9af-4c7c-9533-27a931fa4fec
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   - name: Primo soccorso Optional
     chapter_id: 8338266c-b1c9-4d63-87c8-25f1a5baeb48
     is_mandatory: 0
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 3
-    min_time_sec: 60
-    max_time_sec: 150
   excludedChapters:
   - name: Starting Point
     chapter_id: e42dd234-fae8-4d51-ab94-be0ae4b24163
@@ -97086,18 +97059,12 @@ MonoBehaviour:
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 60
-    max_time_sec: 300
   - name: Fine processo
     chapter_id: e42dd234-fae8-4d51-ab94-be0ae4b24163
     is_mandatory: 1
     weight: 1
     max_iterations: 5
     has_difficulty_level: 0
-    max_errors: 10
-    min_time_sec: 60
-    max_time_sec: 300
   procedureCentralSM: {fileID: 749883515}
   playerPathSampler: {fileID: 49849491}
   gameSceneName: ScenaUfficiale

@@ -41,9 +41,6 @@ public class GameManagerEditor : Editor
                 chapter_id = chapter.guid,
                 name = chapter.name,
                 is_mandatory = chapter.name.Contains("Optional")? false : true, // default, poi lo cambi tu
-                max_errors = 10,
-                min_time_sec = 60f,
-                max_time_sec = 300f
             });
         }
 

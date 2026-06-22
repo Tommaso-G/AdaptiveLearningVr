@@ -24,9 +24,6 @@ public class ChapterConfigData
     public float weight = 1.0f;
     public int max_iterations = 5;
     public bool has_difficulty_level = false;
-    public int max_errors = 0;
-    public float min_time_sec = 0.0f;
-    public float max_time_sec = 0.0f;
 }
 
 [Serializable]

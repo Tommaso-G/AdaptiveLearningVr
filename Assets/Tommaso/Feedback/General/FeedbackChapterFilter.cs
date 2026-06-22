@@ -27,6 +27,7 @@ public class FeedbackChapterFilter : MonoBehaviour
 
     public void SetFeedbackLevel(string chapterName, int level)
     {
+        Debug.LogWarning($"[FeedbackChapterFilter] Capitolo '{chapterName}' livello feedback {level}");
         ChapterFeedbackSetting chapter = chapterSettings.FirstOrDefault(cf => cf.chapterName == chapterName);
         if (chapter == null)
         {

@@ -56,7 +56,7 @@ class DecisionResponse(BaseModel):
     feedback_changed: bool
     difficulty_changed: bool
     add_optional: bool
-    added_chapter_id: Optional[str] = None
+    added_chapter_ids: List[str] = []
     removed_chapter_id: Optional[str] = None  
     remove_optional: bool
     chapter_mastered: bool
@@ -282,7 +282,7 @@ def observe(request: ObserveRequest):
         feedback_changed=decision.feedback_changed,
         difficulty_changed=decision.difficulty_changed,
         add_optional=decision.add_optional,
-        added_chapter_id = decision.added_chapter_id,
+        added_chapter_ids = decision.added_chapter_ids,
         removed_chapter_id = decision.removed_chapter_id,
         remove_optional=decision.remove_optional,
         chapter_mastered=decision.chapter_mastered,

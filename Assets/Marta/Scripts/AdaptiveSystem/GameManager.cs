@@ -8,6 +8,7 @@ using VRBuilder.Core.Behaviors;
 using UnityEngine.UI;
 using static UnityEngine.XR.OpenXR.Features.Interactions.HandInteractionProfile;
 using System.IO;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -214,7 +215,10 @@ public class GameManager : MonoBehaviour
             if (level != null && level.feedbackOverrides != null)
             {
                 foreach (var ovr in level.feedbackOverrides)
+                {
+                    Debug.Log($"[GameManager] settato feedback level {ovr.feedbackLevel} per il capitolo {ovr.chapterName}");
                     feedbackChapterFilter.SetFeedbackLevel(ovr.chapterName, ovr.feedbackLevel);
+                }
             }
         }
 
@@ -416,6 +420,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (chaptersIdToName.TryGetValue(chapterData.chapter_id, out string name))
                     {
+                        Debug.Log($"[GameManager] settato feedback level {name} per il capitolo {chapterData.feedback_level}");
                         feedbackChapterFilter.SetFeedbackLevel(name, chapterData.feedback_level);
                     }
 
