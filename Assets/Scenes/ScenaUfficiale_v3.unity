@@ -5173,7 +5173,6 @@ GameObject:
   - component: {fileID: 51440378}
   - component: {fileID: 51440379}
   - component: {fileID: 51440380}
-  - component: {fileID: 51440381}
   m_Layer: 2
   m_Name: BIBLIOTECA
   m_TagString: Untagged
@@ -5250,20 +5249,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 18.68, y: 5.03, z: 10.52}
   m_Center: {x: 5.4, y: 1.55, z: -1.67}
---- !u!114 &51440381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51440375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60d9be065ecc4f2438d51055ac146b56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visivoSprite: {fileID: 0}
-  verbaleText: Aula
 --- !u!1 &53699077
 GameObject:
   m_ObjectHideFlags: 0
@@ -33885,7 +33870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b4bbe467ba13524aaaa71f459dc01b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.2881165
+      value: 7.311
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b4bbe467ba13524aaaa71f459dc01b5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34666,6 +34651,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2b4bbe467ba13524aaaa71f459dc01b5, type: 3}
       propertyPath: m_Name
       value: Paolina scottata
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2b4bbe467ba13524aaaa71f459dc01b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1092408308860062549, guid: 2b4bbe467ba13524aaaa71f459dc01b5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -124305,27 +124294,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 51.152054
+      value: 47.13
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9315784
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.36354053
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13.3615465
+      value: -25.79
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -124337,7 +124326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 42.636
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 781630661673262082, guid: 45c500a3433090b41bfe6ad005d270cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -133583,7 +133572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visivoSprite: {fileID: 21300000, guid: 97c28f464305e104384ec80d720aa86e, type: 3}
-  verbaleText: Paolina presa male
+  verbaleText: Jackie
 --- !u!1 &1527162448
 GameObject:
   m_ObjectHideFlags: 0
@@ -152510,7 +152499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 998371667127148410, guid: f57d27304930ed24baf2815c93ea43dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.2881165
+      value: 7.368
       objectReference: {fileID: 0}
     - target: {fileID: 998371667127148410, guid: f57d27304930ed24baf2815c93ea43dd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -216258,7 +216247,7 @@ Transform:
   m_GameObject: {fileID: 4784926840778002041}
   serializedVersion: 2
   m_LocalRotation: {x: -0.40821788, y: 0.23456968, z: -0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: -49.071655, y: 29.0065, z: 50.81316}
+  m_LocalPosition: {x: -49.071655, y: 28.88, z: 50.81316}
   m_LocalScale: {x: 1.1909, y: 1.1908998, z: 1.1909001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -256023,6 +256012,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ambient
       objectReference: {fileID: 0}
+    - target: {fileID: 3146201989898515242, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.14000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153265015195942059, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469454812334868427, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274574094683033664, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.09
+      objectReference: {fileID: 0}
     - target: {fileID: 4536691507893040312, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -26.2
@@ -256062,6 +256067,14 @@ PrefabInstance:
     - target: {fileID: 4536691507893040312, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4678399217418737054, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.14000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6460314276036041115, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 7307377942708679463, guid: 9d59b66d317cf914db44696d88b149b7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -326354,7 +326367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d9be065ecc4f2438d51055ac146b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visivoSprite: {fileID: 21300000, guid: 6bc24a0c302d4974c93c0098002e9788, type: 3}
+  visivoSprite: {fileID: 701780525, guid: 61c1acf0d345f18488f419f494fa9f08, type: 3}
   verbaleText: Uscita
 --- !u!65 &5972082462079133503
 BoxCollider:
