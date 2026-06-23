@@ -135,7 +135,7 @@ class AdaptiveSessionManager:
         Args:
             chapter_configs: Lista di configurazioni capitoli
         """
-        self.training_manager = AdaptiveTrainingManager(chapter_configs, initial_policy=InitialActivationPolicy.INTERMEDIATE)
+        self.training_manager = AdaptiveTrainingManager(chapter_configs, initial_policy=InitialActivationPolicy.BASE)
         print(f"[SESSION] Inizializzato with {len(chapter_configs)} capitoli")
     
     def start_new_iteration(self) -> Dict:

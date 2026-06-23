@@ -1,0 +1,933 @@
+PS D:\lab2a\Documents\cosenostre\AdaptiveLearningVr\Assets\Marta\Scripts\Python_script> venv\Scripts\activate
+(venv) PS D:\lab2a\Documents\cosenostre\AdaptiveLearningVr\Assets\Marta\Scripts\Python_script> uvicorn server:app --reload
+INFO:     Will watch for changes in these directories: ['D:\\lab2a\\Documents\\cosenostre\\AdaptiveLearningVr\\Assets\\Marta\\Scripts\\Python_script']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [40340] using StatReload
+D:\lab2a\Documents\cosenostre\AdaptiveLearningVr\Assets\Marta\Scripts\Python_script\venv\Lib\site-packages\pgmpy\estimators\__init__.py:4: FutureWarning: `pgmpy.estimators.StructureScore` is deprecated and will be removed in a future release. Use `pgmpy.structure_score` instead.
+  from .StructureScore import (
+INFO:     Started server process [22904]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'session_manager.py'. Reloading...
+ INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [22904]
+D:\lab2a\Documents\cosenostre\AdaptiveLearningVr\Assets\Marta\Scripts\Python_script\venv\Lib\site-packages\pgmpy\estimators\__init__.py:4: FutureWarning: `pgmpy.estimators.StructureScore` is deprecated and will be removed in a future release. Use `pgmpy.structure_score` instead.
+  from .StructureScore import (
+INFO:     Started server process [45820]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+[SESSION] Creata nuova sessione: session_20260623_171608
+
+=== 1c54247c-096c-4388-a1cb-ae0142b56a98 ===
+Errors CPT: [[0.9130434782608695, 0.9130434782608695, 0.6645962732919256], [0.043478260869565216, 0.043478260869565216, 0.16770186335403725], [0.043478260869565216, 0.043478260869565216, 0.16770186335403725]]
+Time CPT: [[0.9130434782608695, 0.6231884057971016, 0.04347826086956522], [0.043478260869565216, 0.3333333333333333, 0.16770186335403725], [0.043478260869565216, 0.04347826086956522, 0.7888198757763976]]
+Max possible errors: 9
+Min expected time sec: 78.09
+Max expected time sec: 226.195
+Mastery threshold: 0.6
+
+=== 34a2a547-200c-409c-8f2e-4ea7f6f55d3c ===
+Errors CPT: [[0.8618925831202046, 0.8302277432712215, 0.6956521739130436], [0.09462915601023017, 0.12629399585921322, 0.15217391304347827], [0.043478260869565216, 0.043478260869565216, 0.15217391304347827]]
+Time CPT: [[0.8618925831202046, 0.6645962732919254, 0.043478260869565216], [0.09462915601023017, 0.29192546583850926, 0.043478260869565216], [0.043478260869565216, 0.043478260869565216, 0.9130434782608695]]
+Max possible errors: 15
+Min expected time sec: 28.1897456741333
+Max expected time sec: 203.29814178466796
+Mastery threshold: 0.58
+
+=== 339e78de-8453-4fbd-986f-3c6ff3105f27 ===
+Errors CPT: [[0.6232, 0.4957, 0.45], [0.3333, 0.2522, 0.25], [0.0435, 0.2521, 0.3]]
+Time CPT: [[0.9130434782608695, 0.7043478260869567, 0.043478260869565216], [0.043478260869565216, 0.14782608695652175, 0.043478260869565216], [0.043478260869565216, 0.14782608695652175, 0.9130434782608695]]
+Max possible errors: 3
+Min expected time sec: 37.135000000000005
+Max expected time sec: 109.08
+Mastery threshold: 0.61
+
+=== e97f0831-2e19-4aef-a4a8-ebb2a2257752 ===
+Errors CPT: [[0.9130434782608695, 0.9130434782608695, 0.6231884057971016], [0.043478260869565216, 0.043478260869565216, 0.04347826086956522], [0.043478260869565216, 0.043478260869565216, 0.3333333333333333]]
+Time CPT: [[0.5652173913043479, 0.2400966183574879, 0.1333333333333333], [0.2173913043478261, 0.3333333333333333, 0.24347826086956523], [0.2173913043478261, 0.4265700483091789, 0.6231884057971016]]
+Max possible errors: 8
+Min expected time sec: 134.834
+Max expected time sec: 310.89847631835937
+Mastery threshold: 0.65
+Errors CPT advanced: [[0.8261, 0.1677, 0.25], [0.1304, 0.6025, 0.45], [0.0435, 0.2298, 0.3]]
+Time CPT advanced: [[0.7391304347826086, 0.2298136645962733, 0.043478260869565216], [0.21739130434782605, 0.2919254658385093, 0.043478260869565216], [0.043478260869565216, 0.47826086956521746, 0.9130434782608695]]
+Max possible errors advanced: 7
+Min expected time sec advanced: 214.04999999999998
+Max expected time sec advanced: 399.95
+
+=== 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 ===
+Errors CPT: [[0.8461538461538461, 0.49565217391304345, 0.5869565217391305], [0.11036789297658861, 0.46086956521739125, 0.2608695652173913], [0.043478260869565216, 0.043478260869565216, 0.15217391304347827]]
+Time CPT: [[0.9130434782608695, 0.46086956521739136, 0.043478260869565216], [0.043478260869565216, 0.391304347826087, 0.15217391304347824], [0.043478260869565216, 0.14782608695652175, 0.8043478260869564]]
+Max possible errors: 2
+Min expected time sec: 39.629999999999995
+Max expected time sec: 111.545
+Mastery threshold: 0.8
+
+=== 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a ===
+Errors CPT: [[0.5492753623188406, 0.4043478260869564, 0.21739130434782605], [0.3492753623188406, 0.4434782608695652, 0.043478260869565216], [0.10144927536231883, 0.15217391304347824, 0.7391304347826086]]
+Time CPT: [[0.9130434782608695, 0.47826086956521746, 0.21739130434782605], [0.043478260869565216, 0.31521739130434784, 0.043478260869565216], [0.043478260869565216, 0.20652173913043478, 0.7391304347826086]]
+Max possible errors: 6
+Min expected time sec: 7.3100000000000005
+Max expected time sec: 59.533736343383794
+Mastery threshold: 0.49
+Errors CPT advanced: None
+Time CPT advanced: None
+Max possible errors advanced: None
+Min expected time sec advanced: None
+Max expected time sec advanced: None
+
+=== 5953081b-1751-4e2b-80d4-f585a500e8e5 ===
+Errors CPT: [[0.9130434782608695, 0.8461538461538461, 0.6231884057971016], [0.043478260869565216, 0.043478260869565216, 0.04347826086956522], [0.043478260869565216, 0.11036789297658861, 0.3333333333333333]]
+Time CPT: [[0.9130434782608695, 0.11036789297658862, 0.043478260869565216], [0.043478260869565216, 0.645484949832776, 0.043478260869565216], [0.043478260869565216, 0.24414715719063548, 0.9130434782608695]]
+Max possible errors: 5
+Min expected time sec: 17.66524287414551
+Max expected time sec: 89.29661331176759
+Mastery threshold: 0.89
+
+=== 0adf93f1-d9af-4c7c-9533-27a931fa4fec ===
+Errors CPT: [[0.6231884057971016, 0.2608695652173913, 0.043478260869565216], [0.23671497584541062, 0.2608695652173913, 0.26086956521739124], [0.1400966183574879, 0.47826086956521746, 0.6956521739130435]]
+Time CPT: [[0.7198, 0.2609, 0.0435], [0.2367, 0.3696, 0.4], [0.0435, 0.3695, 0.5565]]
+Max possible errors: 4
+Min expected time sec: 12.05715200805664
+Max expected time sec: 111.96676782226561
+Mastery threshold: 0.87
+
+=== 8338266c-b1c9-4d63-87c8-25f1a5baeb48 ===
+Errors CPT: [[0.9130434782608695, 0.7888198757763976, 0.6956521739130435], [0.043478260869565216, 0.04347826086956522, 0.043478260869565216], [0.043478260869565216, 0.16770186335403725, 0.26086956521739124]]
+Time CPT: [[0.6759, 0.1677, 0.0435], [0.2016, 0.2919, 0.4], [0.1225, 0.5404, 0.5565]]
+Max possible errors: 1
+Min expected time sec: 32.542
+Max expected time sec: 118.89338708496092
+Mastery threshold: 0.84
+=== INIT SESSION ===
+=== INITIAL ACTIVATION POLICY: InitialActivationPolicy.BASE ===
+=== TRAINING PHASE: TrainingPhase.FAMILIARIZATION ===
+1c54247c-096c-4388-a1cb-ae0142b56a98 mandatory: True active: True
+34a2a547-200c-409c-8f2e-4ea7f6f55d3c mandatory: True active: True
+339e78de-8453-4fbd-986f-3c6ff3105f27 mandatory: True active: True
+e97f0831-2e19-4aef-a4a8-ebb2a2257752 mandatory: True active: True
+4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 mandatory: True active: True
+7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a mandatory: False active: False
+5953081b-1751-4e2b-80d4-f585a500e8e5 mandatory: False active: False
+0adf93f1-d9af-4c7c-9533-27a931fa4fec mandatory: False active: False
+8338266c-b1c9-4d63-87c8-25f1a5baeb48 mandatory: False active: False
+OPTIONAL IDS: ['7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', '5953081b-1751-4e2b-80d4-f585a500e8e5', '0adf93f1-d9af-4c7c-9533-27a931fa4fec', '8338266c-b1c9-4d63-87c8-25f1a5baeb48']
+[SESSION] Inizializzato with 9 capitoli
+(Capitolo: 1c54247c-096c-4388-a1cb-ae0142b56a98, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 339e78de-8453-4fbd-986f-3c6ff3105f27, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: e97f0831-2e19-4aef-a4a8-ebb2a2257752, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 5953081b-1751-4e2b-80d4-f585a500e8e5, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 8338266c-b1c9-4d63-87c8-25f1a5baeb48, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+[SESSION] Nuova iterazione 1 avviata
+[SESSION] Nuova sessione creata: session_20260623_171608
+INFO:     127.0.0.1:65442 - "POST /session/start HTTP/1.1" 200 OK
+1
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[1c54247c-096c-4388-a1cb-ae0142b56a98] Segnalazione incendio
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.066, 0.066, 0.868]
+SKILL SCORE:
+0.0986
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 1: 1c54247c-096c-4388-a1cb-ae0142b56a98 completato (1 capitoli)
+INFO:     127.0.0.1:63704 - "POST /observe HTTP/1.1" 200 OK
+1
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[34a2a547-200c-409c-8f2e-4ea7f6f55d3c] Interruzione elettricità+gas
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.053, 0.051, 0.896]
+SKILL SCORE:
+0.0783
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 1: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c completato (2 capitoli)
+INFO:     127.0.0.1:63715 - "POST /observe HTTP/1.1" 200 OK
+1
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[339e78de-8453-4fbd-986f-3c6ff3105f27] Isola Incendio
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.053, 0.143, 0.804]
+SKILL SCORE:
+0.1247
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 1: 339e78de-8453-4fbd-986f-3c6ff3105f27 completato (3 capitoli)
+INFO:     127.0.0.1:55843 - "POST /observe HTTP/1.1" 200 OK
+1
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[e97f0831-2e19-4aef-a4a8-ebb2a2257752] Giro di perlustrazione
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.631, 0.268, 0.102]
+SKILL SCORE:
+0.7645
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 1: e97f0831-2e19-4aef-a4a8-ebb2a2257752 completato (4 capitoli)
+INFO:     127.0.0.1:55863 - "POST /observe HTTP/1.1" 200 OK
+1
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5] Segnalazione assenti
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.063, 0.126, 0.811]
+SKILL SCORE:
+0.1261
+FEEBACKLEVEL:  0
+AVVISO: selezionato l'opzionale non visto : 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a
+
+========== ITERATION QUALITY DEBUG ==========
+GOOD chapters: ['e97f0831-2e19-4aef-a4a8-ebb2a2257752']
+STRUGGLING chapters: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5']
+ADD MOMENTUM:  0
+AVG_SKILL:  0.2384608535463129
+
+=============================================
+[PHASE] Transition: TrainingPhase.FAMILIARIZATION → TrainingPhase.AUTOMATION
+[SESSION] Iterazione 1: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 completato (5 capitoli)
+INFO:     127.0.0.1:64920 - "POST /observe HTTP/1.1" 200 OK
+[SESSION] end_iteration chiamato. current_iter=1, iterations_keys=[1], active_chapters=['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5']
+[SESSION] ✓ Iterazione 1 COMPLETA! (durata: 1322.2s)(capitoli completati: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5'])
+[SESSION] Sessione esportata in ./sessions_data\session_20260623_171608.json
+[SAVE] Sessione salvata in ./sessions_data\session_20260623_171608.json
+INFO:     127.0.0.1:64924 - "POST /session/session_20260623_171608/end_iteration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57772 - "GET /session/session_20260623_171608/state HTTP/1.1" 200 OK
+previuous iter state: [IterationState.COMPLETE] and number: [1]
+(Capitolo: 1c54247c-096c-4388-a1cb-ae0142b56a98, current prior -> [0.06576340512558315, 0.06576340512558315, 0.8684731897488337])
+(Capitolo: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c, current prior -> [0.05287419870597551, 0.05093166773754911, 0.8961941335564754])
+(Capitolo: 339e78de-8453-4fbd-986f-3c6ff3105f27, current prior -> [0.052999596890100684, 0.14333193293748056, 0.8036684701724188])
+(Capitolo: e97f0831-2e19-4aef-a4a8-ebb2a2257752, current prior -> [0.6305982598875857, 0.2678695172342992, 0.10153222287811514])
+(Capitolo: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5, current prior -> [0.06319265266770406, 0.1258557858743191, 0.8109515614579769])
+(Capitolo: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 5953081b-1751-4e2b-80d4-f585a500e8e5, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 8338266c-b1c9-4d63-87c8-25f1a5baeb48, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+[SESSION] Nuova iterazione 2 avviata
+[SESSION] Sessione ripresa: session_20260623_171608, iterazione 2
+INFO:     127.0.0.1:57772 - "POST /session/start HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.06576340512558315, 0.06576340512558315, 0.8684731897488337]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.2798193476917833, 0.2798193476917833, 0.4403613046164334]
+
+========== CHAPTER DEBUG ==========
+[1c54247c-096c-4388-a1cb-ae0142b56a98] Segnalazione incendio
+PRIOR USED:
+[0.28, 0.28, 0.44]
+POSTERIOR:
+[0.044, 0.044, 0.912]
+SKILL SCORE:
+0.0658
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 2: 1c54247c-096c-4388-a1cb-ae0142b56a98 completato (1 capitoli)
+INFO:     127.0.0.1:54927 - "POST /observe HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.05287419870597551, 0.05093166773754911, 0.8961941335564754]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.27724150640786177, 0.27685300021417647, 0.44590549337796176]
+
+========== CHAPTER DEBUG ==========
+[34a2a547-200c-409c-8f2e-4ea7f6f55d3c] Interruzione elettricità+gas
+PRIOR USED:
+[0.277, 0.277, 0.446]
+POSTERIOR:
+[0.159, 0.653, 0.189]
+SKILL SCORE:
+0.4851
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 2: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c completato (2 capitoli)
+INFO:     127.0.0.1:49158 - "POST /observe HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.052999596890100684, 0.14333193293748056, 0.8036684701724188]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.2772665860446868, 0.29533305325416276, 0.42740036070115045]
+
+========== CHAPTER DEBUG ==========
+[339e78de-8453-4fbd-986f-3c6ff3105f27] Isola Incendio
+PRIOR USED:
+[0.277, 0.295, 0.427]
+POSTERIOR:
+[0.2, 0.577, 0.223]
+SKILL SCORE:
+0.4887
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 2: 339e78de-8453-4fbd-986f-3c6ff3105f27 completato (3 capitoli)
+INFO:     127.0.0.1:49164 - "POST /observe HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a] Estintore generico Optional
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.109, 0.659, 0.231]
+SKILL SCORE:
+0.439
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 2: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a completato (4 capitoli)
+INFO:     127.0.0.1:49178 - "POST /observe HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.6305982598875857, 0.2678695172342992, 0.10153222287811514]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3927863186441838, 0.3202405701135265, 0.2869731112422897]
+
+========== CHAPTER DEBUG ==========
+[e97f0831-2e19-4aef-a4a8-ebb2a2257752] Giro di perlustrazione
+PRIOR USED:
+[0.393, 0.32, 0.287]
+POSTERIOR:
+[0.248, 0.397, 0.355]
+SKILL SCORE:
+0.4467
+FEEBACKLEVEL:  1
+[SESSION] Iterazione 2: e97f0831-2e19-4aef-a4a8-ebb2a2257752 completato (5 capitoli)
+INFO:     127.0.0.1:49187 - "POST /observe HTTP/1.1" 200 OK
+2
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.06319265266770406, 0.1258557858743191, 0.8109515614579769]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.27930519720020747, 0.29183782384153045, 0.428856978958262]
+
+========== CHAPTER DEBUG ==========
+[4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5] Segnalazione assenti
+PRIOR USED:
+[0.279, 0.292, 0.429]
+POSTERIOR:
+[0.019, 0.741, 0.24]
+SKILL SCORE:
+0.3895
+FEEBACKLEVEL:  0
+MOMENTUM CHANGE: - 1
+AVVISO: selezionato l'opzionale non visto : 5953081b-1751-4e2b-80d4-f585a500e8e5
+
+========== ITERATION QUALITY DEBUG ==========
+GOOD chapters: []
+STRUGGLING chapters: ['1c54247c-096c-4388-a1cb-ae0142b56a98']
+ADD MOMENTUM:  0
+AVG_SKILL:  0.3857995365042026
+
+=============================================
+[SESSION] Iterazione 2: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 completato (6 capitoli)
+INFO:     127.0.0.1:49192 - "POST /observe HTTP/1.1" 200 OK
+[SESSION] end_iteration chiamato. current_iter=2, iterations_keys=[1, 2], active_chapters=['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a']
+[SESSION] ✓ Iterazione 2 COMPLETA! (durata: 966.5s)(capitoli completati: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5'])
+[SESSION] Sessione esportata in ./sessions_data\session_20260623_171608.json
+[SAVE] Sessione salvata in ./sessions_data\session_20260623_171608.json
+INFO:     127.0.0.1:49195 - "POST /session/session_20260623_171608/end_iteration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58500 - "GET /session/session_20260623_171608/state HTTP/1.1" 200 OK
+previuous iter state: [IterationState.COMPLETE] and number: [2]
+(Capitolo: 1c54247c-096c-4388-a1cb-ae0142b56a98, current prior -> [0.04389280956468134, 0.04389280956468135, 0.9122143808706372])
+(Capitolo: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c, current prior -> [0.15873484313315625, 0.6526314588266283, 0.18863369804021526])
+(Capitolo: 339e78de-8453-4fbd-986f-3c6ff3105f27, current prior -> [0.20025300698049467, 0.5768514089044987, 0.22289558411500668])
+(Capitolo: e97f0831-2e19-4aef-a4a8-ebb2a2257752, current prior -> [0.24818032491117065, 0.39704116511386967, 0.3547785099749598])
+(Capitolo: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5, current prior -> [0.018878455164005714, 0.741321850631355, 0.23979969420463937])
+(Capitolo: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, current prior -> [0.10932184168745748, 0.6593331821274665, 0.23134497618507596])
+(Capitolo: 5953081b-1751-4e2b-80d4-f585a500e8e5, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 8338266c-b1c9-4d63-87c8-25f1a5baeb48, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+[SESSION] Nuova iterazione 3 avviata
+[SESSION] Sessione ripresa: session_20260623_171608, iterazione 3
+INFO:     127.0.0.1:58500 - "POST /session/start HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.04389280956468134, 0.04389280956468135, 0.9122143808706372]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.18861307144900732, 0.18861307144900732, 0.6227738571019853]
+
+========== CHAPTER DEBUG ==========
+[1c54247c-096c-4388-a1cb-ae0142b56a98] Segnalazione incendio
+PRIOR USED:
+[0.189, 0.189, 0.623]
+POSTERIOR:
+[0.556, 0.38, 0.064]
+SKILL SCORE:
+0.7464
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 3: 1c54247c-096c-4388-a1cb-ae0142b56a98 completato (1 capitoli)
+INFO:     127.0.0.1:51831 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[5953081b-1751-4e2b-80d4-f585a500e8e5] Vie di fuga Optional
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.049, 0.253, 0.698]
+SKILL SCORE:
+0.1754
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 3: 5953081b-1751-4e2b-80d4-f585a500e8e5 completato (2 capitoli)
+INFO:     127.0.0.1:59294 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.15873484313315625, 0.6526314588266283, 0.18863369804021526]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.2460340882332448, 0.49298239607998084, 0.2609835156867743]
+
+========== CHAPTER DEBUG ==========
+[34a2a547-200c-409c-8f2e-4ea7f6f55d3c] Interruzione elettricità+gas
+PRIOR USED:
+[0.246, 0.493, 0.261]
+POSTERIOR:
+[0.395, 0.588, 0.017]
+SKILL SCORE:
+0.689
+FEEBACKLEVEL:  1
+[SESSION] Iterazione 3: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c completato (3 capitoli)
+INFO:     127.0.0.1:53230 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.20025300698049467, 0.5768514089044987, 0.22289558411500668]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.266793170156914, 0.455092371118916, 0.27811445872417]
+
+========== CHAPTER DEBUG ==========
+[339e78de-8453-4fbd-986f-3c6ff3105f27] Isola Incendio
+PRIOR USED:
+[0.267, 0.455, 0.278]
+POSTERIOR:
+[0.157, 0.725, 0.118]
+SKILL SCORE:
+0.5194
+FEEBACKLEVEL:  1
+[SESSION] Iterazione 3: 339e78de-8453-4fbd-986f-3c6ff3105f27 completato (4 capitoli)
+INFO:     127.0.0.1:53232 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.10932184168745748, 0.6593331821274665, 0.23134497618507596]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.28853103500415817, 0.39853330309215995, 0.3129356619036818]
+
+========== CHAPTER DEBUG ==========
+[7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a] Estintore generico Optional
+PRIOR USED:
+[0.289, 0.399, 0.313]
+POSTERIOR:
+[0.076, 0.368, 0.556]
+SKILL SCORE:
+0.2601
+FEEBACKLEVEL:  1
+[SESSION] Iterazione 3: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a completato (5 capitoli)
+INFO:     127.0.0.1:63219 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.24818032491117065, 0.39704116511386967, 0.3547785099749598]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.290756829122252, 0.36518724922360146, 0.34405592165414656]
+
+========== CHAPTER DEBUG ==========
+[e97f0831-2e19-4aef-a4a8-ebb2a2257752] Giro di perlustrazione
+PRIOR USED:
+[0.291, 0.365, 0.344]
+POSTERIOR:
+[0.552, 0.294, 0.154]
+SKILL SCORE:
+0.6988
+FEEBACKLEVEL:  1
+[SESSION] Iterazione 3: e97f0831-2e19-4aef-a4a8-ebb2a2257752 completato (6 capitoli)
+INFO:     127.0.0.1:52664 - "POST /observe HTTP/1.1" 200 OK
+3
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.018878455164005714, 0.741321850631355, 0.23979969420463937]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.17610589424866951, 0.5373275919823441, 0.28656651376898634]
+
+========== CHAPTER DEBUG ==========
+[4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5] Segnalazione assenti
+PRIOR USED:
+[0.176, 0.537, 0.287]
+POSTERIOR:
+[0.511, 0.461, 0.027]
+SKILL SCORE:
+0.7419
+FEEBACKLEVEL:  1
+MOMENTUM CHANGE: + 1/2
+AVVISO: selezionato l'opzionale non visto : 0adf93f1-d9af-4c7c-9533-27a931fa4fec
+
+========== ITERATION QUALITY DEBUG ==========
+GOOD chapters: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5']
+STRUGGLING chapters: ['5953081b-1751-4e2b-80d4-f585a500e8e5', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a']
+ADD MOMENTUM:  0
+AVG_SKILL:  0.5472955812883473
+
+=============================================
+[SESSION] Iterazione 3: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 completato (7 capitoli)
+INFO:     127.0.0.1:52669 - "POST /observe HTTP/1.1" 200 OK
+[SESSION] end_iteration chiamato. current_iter=3, iterations_keys=[1, 2, 3], active_chapters=['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', '5953081b-1751-4e2b-80d4-f585a500e8e5']
+[SESSION] ✓ Iterazione 3 COMPLETA! (durata: 678.4s)(capitoli completati: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '5953081b-1751-4e2b-80d4-f585a500e8e5', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5'])
+[SESSION] Sessione esportata in ./sessions_data\session_20260623_171608.json
+[SAVE] Sessione salvata in ./sessions_data\session_20260623_171608.json
+INFO:     127.0.0.1:52671 - "POST /session/session_20260623_171608/end_iteration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63016 - "GET /session/session_20260623_171608/state HTTP/1.1" 200 OK
+previuous iter state: [IterationState.COMPLETE] and number: [3]
+(Capitolo: 1c54247c-096c-4388-a1cb-ae0142b56a98, current prior -> [0.5564870435362671, 0.3798244900326903, 0.06368846643104249])
+(Capitolo: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c, current prior -> [0.3950273284139687, 0.5879117314414694, 0.017060940144561942])
+(Capitolo: 339e78de-8453-4fbd-986f-3c6ff3105f27, current prior -> [0.15708831171038182, 0.7246680453099648, 0.11824364297965342])
+(Capitolo: e97f0831-2e19-4aef-a4a8-ebb2a2257752, current prior -> [0.5516733297413952, 0.2943324850815098, 0.15399418517709512])
+(Capitolo: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5, current prior -> [0.5112728393504414, 0.46124558841897534, 0.027481572230583135])
+(Capitolo: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, current prior -> [0.0761780620770724, 0.3679261095724758, 0.5558958283504517])
+(Capitolo: 5953081b-1751-4e2b-80d4-f585a500e8e5, current prior -> [0.0486918106109457, 0.2533922372988324, 0.6979159520902218])
+(Capitolo: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+(Capitolo: 8338266c-b1c9-4d63-87c8-25f1a5baeb48, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+[SESSION] Nuova iterazione 4 avviata
+[SESSION] Sessione ripresa: session_20260623_171608, iterazione 4
+INFO:     127.0.0.1:63016 - "POST /session/start HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.5564870435362671, 0.3798244900326903, 0.06368846643104249]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.5564870435362672, 0.37982449003269037, 0.0636884664310425]
+
+========== CHAPTER DEBUG ==========
+[1c54247c-096c-4388-a1cb-ae0142b56a98] Segnalazione incendio
+PRIOR USED:
+[0.556, 0.38, 0.064]
+POSTERIOR:
+[0.68, 0.317, 0.003]
+SKILL SCORE:
+0.8388
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 4: 1c54247c-096c-4388-a1cb-ae0142b56a98 completato (1 capitoli)
+INFO:     127.0.0.1:55643 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.0486918106109457, 0.2533922372988324, 0.6979159520902218]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.2764050287888558, 0.3173451141264332, 0.40624985708471106]
+
+========== CHAPTER DEBUG ==========
+[5953081b-1751-4e2b-80d4-f585a500e8e5] Vie di fuga Optional
+PRIOR USED:
+[0.276, 0.317, 0.406]
+POSTERIOR:
+[0.85, 0.109, 0.041]
+SKILL SCORE:
+0.9047
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 4: 5953081b-1751-4e2b-80d4-f585a500e8e5 completato (2 capitoli)
+INFO:     127.0.0.1:55649 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3950273284139687, 0.5879117314414694, 0.017060940144561942]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3950273284139687, 0.5879117314414694, 0.017060940144561942]
+
+========== CHAPTER DEBUG ==========
+[34a2a547-200c-409c-8f2e-4ea7f6f55d3c] Interruzione elettricità+gas
+PRIOR USED:
+[0.395, 0.588, 0.017]
+POSTERIOR:
+[0.475, 0.525, 0.001]
+SKILL SCORE:
+0.7369
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 4: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c completato (3 capitoli)
+INFO:     127.0.0.1:55652 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.15708831171038182, 0.7246680453099648, 0.11824364297965342]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.15708831171038182, 0.7246680453099648, 0.11824364297965342]
+
+========== CHAPTER DEBUG ==========
+[339e78de-8453-4fbd-986f-3c6ff3105f27] Isola Incendio
+PRIOR USED:
+[0.157, 0.725, 0.118]
+POSTERIOR:
+[0.071, 0.89, 0.039]
+SKILL SCORE:
+0.5163
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 4: 339e78de-8453-4fbd-986f-3c6ff3105f27 completato (4 capitoli)
+INFO:     127.0.0.1:55656 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[0adf93f1-d9af-4c7c-9533-27a931fa4fec] Fuoco su liquido Optional
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.682, 0.272, 0.045]
+SKILL SCORE:
+0.8183
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 4: 0adf93f1-d9af-4c7c-9533-27a931fa4fec completato (5 capitoli)
+INFO:     127.0.0.1:63686 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.0761780620770724, 0.3679261095724758, 0.5558958283504517]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.20475569770520285, 0.35062972145290455, 0.44461458084189254]
+
+========== CHAPTER DEBUG ==========
+[7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a] Estintore generico Optional
+PRIOR USED:
+[0.205, 0.351, 0.445]
+POSTERIOR:
+[0.536, 0.354, 0.11]
+SKILL SCORE:
+0.7132
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 4: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a completato (6 capitoli)
+INFO:     127.0.0.1:59069 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.5516733297413952, 0.2943324850815098, 0.15399418517709512]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.5516733297413952, 0.2943324850815098, 0.15399418517709512]
+
+========== CHAPTER DEBUG ==========
+[e97f0831-2e19-4aef-a4a8-ebb2a2257752] Giro di perlustrazione
+PRIOR USED:
+[0.552, 0.294, 0.154]
+POSTERIOR:
+[0.386, 0.404, 0.211]
+SKILL SCORE:
+0.5875
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 4: e97f0831-2e19-4aef-a4a8-ebb2a2257752 completato (7 capitoli)
+INFO:     127.0.0.1:56156 - "POST /observe HTTP/1.1" 200 OK
+4
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.5112728393504414, 0.46124558841897534, 0.027481572230583135]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.5112728393504415, 0.4612455884189754, 0.02748157223058314]
+
+========== CHAPTER DEBUG ==========
+[4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5] Segnalazione assenti
+PRIOR USED:
+[0.511, 0.461, 0.027]
+POSTERIOR:
+[0.788, 0.21, 0.001]
+SKILL SCORE:
+0.8935
+FEEBACKLEVEL:  2
+MOMENTUM CHANGE: + 3/2
+AVVISO: selezionato l'opzionale non visto : 8338266c-b1c9-4d63-87c8-25f1a5baeb48
+AVVISO: non ci sono opzionali non visti
+[BN] e97f0831-2e19-4aef-a4a8-ebb2a2257752 → CPT versione avanzata caricate
+[DIFFICULTY UP] e97f0831-2e19-4aef-a4a8-ebb2a2257752 → versione avanzata
+
+========== ITERATION QUALITY DEBUG ==========
+GOOD chapters: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '5953081b-1751-4e2b-80d4-f585a500e8e5', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '0adf93f1-d9af-4c7c-9533-27a931fa4fec', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5']
+STRUGGLING chapters: []
+ADD MOMENTUM:  1
+AVG_SKILL:  0.751156517820899
+
+=============================================
+[SESSION] Iterazione 4: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 completato (8 capitoli)
+INFO:     127.0.0.1:56161 - "POST /observe HTTP/1.1" 200 OK
+[SESSION] end_iteration chiamato. current_iter=4, iterations_keys=[1, 2, 3, 4], active_chapters=['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', '5953081b-1751-4e2b-80d4-f585a500e8e5', '0adf93f1-d9af-4c7c-9533-27a931fa4fec']
+[SESSION] ✓ Iterazione 4 COMPLETA! (durata: 723.2s)(capitoli completati: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '5953081b-1751-4e2b-80d4-f585a500e8e5', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '0adf93f1-d9af-4c7c-9533-27a931fa4fec', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5'])
+[SESSION] Sessione esportata in ./sessions_data\session_20260623_171608.json
+[SAVE] Sessione salvata in ./sessions_data\session_20260623_171608.json
+INFO:     127.0.0.1:56163 - "POST /session/session_20260623_171608/end_iteration HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49256 - "GET /session/session_20260623_171608/state HTTP/1.1" 200 OK
+previuous iter state: [IterationState.COMPLETE] and number: [4]
+(Capitolo: 1c54247c-096c-4388-a1cb-ae0142b56a98, current prior -> [0.6803520233031258, 0.316949078127357, 0.002698898569517196])
+(Capitolo: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c, current prior -> [0.47456451198539945, 0.5246009827134583, 0.0008345053011422251])
+(Capitolo: 339e78de-8453-4fbd-986f-3c6ff3105f27, current prior -> [0.07133051914494432, 0.8898996074213279, 0.03876987343372784])
+(Capitolo: e97f0831-2e19-4aef-a4a8-ebb2a2257752, current prior -> [0.38564363546901476, 0.40372957682193206, 0.2106267877090531])
+(Capitolo: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5, current prior -> [0.7883208887205153, 0.21027942987562273, 0.0013996814038618852])
+(Capitolo: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a, current prior -> [0.5362114160018031, 0.35406840183661475, 0.10972018216158222])
+(Capitolo: 5953081b-1751-4e2b-80d4-f585a500e8e5, current prior -> [0.8500610581462149, 0.10933146421926374, 0.040607477634521535])
+(Capitolo: 0adf93f1-d9af-4c7c-9533-27a931fa4fec, current prior -> [0.6821059878780377, 0.27246566282069634, 0.04542834930126594])
+(Capitolo: 8338266c-b1c9-4d63-87c8-25f1a5baeb48, current prior -> [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])
+[SESSION] Nuova iterazione 5 avviata
+[SESSION] Sessione ripresa: session_20260623_171608, iterazione 5
+INFO:     127.0.0.1:49256 - "POST /session/start HTTP/1.1" 200 OK
+5
+[NORMALIZER] Capitolo 1c54247c-096c-4388-a1cb-ae0142b56a98: soglie adattive attivate
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.6803520233031258, 0.316949078127357, 0.002698898569517196]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.6754207082042778, 0.3146517736129277, 0.009927518182794455]
+
+========== CHAPTER DEBUG ==========
+[1c54247c-096c-4388-a1cb-ae0142b56a98] Segnalazione incendio
+PRIOR USED:
+[0.675, 0.315, 0.01]
+POSTERIOR:
+[0.758, 0.241, 0.0]
+SKILL SCORE:
+0.879
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 5: 1c54247c-096c-4388-a1cb-ae0142b56a98 completato (1 capitoli)
+INFO:     127.0.0.1:49282 - "POST /observe HTTP/1.1" 200 OK
+5
+
+========== SMOOTHING DEBUG ==========
+beta: 0.5
+prev: [0.8500610581462149, 0.10933146421926374, 0.040607477634521535]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.5916971957397741, 0.2213323987762985, 0.18697040548392743]
+
+========== CHAPTER DEBUG ==========
+[5953081b-1751-4e2b-80d4-f585a500e8e5] Vie di fuga Optional
+PRIOR USED:
+[0.592, 0.221, 0.187]
+POSTERIOR:
+[0.134, 0.26, 0.606]
+SKILL SCORE:
+0.264
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 5: 5953081b-1751-4e2b-80d4-f585a500e8e5 completato (2 capitoli)
+INFO:     127.0.0.1:49289 - "POST /observe HTTP/1.1" 200 OK
+5
+[NORMALIZER] Capitolo 34a2a547-200c-409c-8f2e-4ea7f6f55d3c: soglie adattive attivate
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.47456451198539945, 0.5246009827134583, 0.0008345053011422251]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.47025439779529216, 0.5198364247184284, 0.009909177486279465]
+
+========== CHAPTER DEBUG ==========
+[34a2a547-200c-409c-8f2e-4ea7f6f55d3c] Interruzione elettricità+gas
+PRIOR USED:
+[0.47, 0.52, 0.01]
+POSTERIOR:
+[0.549, 0.451, 0.0]
+SKILL SCORE:
+0.7742
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 5: 34a2a547-200c-409c-8f2e-4ea7f6f55d3c completato (3 capitoli)
+INFO:     127.0.0.1:49293 - "POST /observe HTTP/1.1" 200 OK
+5
+[NORMALIZER] Capitolo 339e78de-8453-4fbd-986f-3c6ff3105f27: soglie adattive attivate
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.07133051914494432, 0.8898996074213279, 0.03876987343372784]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.07133051914494432, 0.8898996074213279, 0.03876987343372784]
+
+========== CHAPTER DEBUG ==========
+[339e78de-8453-4fbd-986f-3c6ff3105f27] Isola Incendio
+PRIOR USED:
+[0.071, 0.89, 0.039]
+POSTERIOR:
+[0.115, 0.883, 0.002]
+SKILL SCORE:
+0.5566
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 5: 339e78de-8453-4fbd-986f-3c6ff3105f27 completato (4 capitoli)
+INFO:     127.0.0.1:49298 - "POST /observe HTTP/1.1" 200 OK
+5
+
+========== SMOOTHING DEBUG ==========
+beta: 0.2
+prev: [0.6821059878780377, 0.27246566282069634, 0.04542834930126594]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.40308786424227416, 0.32115979923080595, 0.27575233652691983]
+
+========== CHAPTER DEBUG ==========
+[0adf93f1-d9af-4c7c-9533-27a931fa4fec] Fuoco su liquido Optional
+PRIOR USED:
+[0.403, 0.321, 0.276]
+POSTERIOR:
+[0.274, 0.376, 0.35]
+SKILL SCORE:
+0.4624
+FEEBACKLEVEL:  2
+[SESSION] Iterazione 5: 0adf93f1-d9af-4c7c-9533-27a931fa4fec completato (5 capitoli)
+INFO:     127.0.0.1:51532 - "POST /observe HTTP/1.1" 200 OK
+5
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.5362114160018031, 0.35406840183661475, 0.10972018216158222]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.5362114160018031, 0.35406840183661475, 0.10972018216158222]
+
+========== CHAPTER DEBUG ==========
+[7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a] Estintore generico Optional
+PRIOR USED:
+[0.536, 0.354, 0.11]
+POSTERIOR:
+[0.785, 0.2, 0.015]
+SKILL SCORE:
+0.8849
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 5: 7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a completato (6 capitoli)
+INFO:     127.0.0.1:51539 - "POST /observe HTTP/1.1" 200 OK
+5
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.38564363546901476, 0.40372957682193206, 0.2106267877090531]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3856436354690148, 0.4037295768219321, 0.21062678770905313]
+
+========== CHAPTER DEBUG ==========
+[e97f0831-2e19-4aef-a4a8-ebb2a2257752] Giro di perlustrazione
+PRIOR USED:
+[0.386, 0.404, 0.211]
+POSTERIOR:
+[0.147, 0.343, 0.51]
+SKILL SCORE:
+0.3185
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 5: e97f0831-2e19-4aef-a4a8-ebb2a2257752 completato (7 capitoli)
+INFO:     127.0.0.1:62895 - "POST /observe HTTP/1.1" 200 OK
+5
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+
+========== CHAPTER DEBUG ==========
+[8338266c-b1c9-4d63-87c8-25f1a5baeb48] Primo soccorso Optional
+PRIOR USED:
+[0.333, 0.333, 0.333]
+POSTERIOR:
+[0.121, 0.461, 0.418]
+SKILL SCORE:
+0.3512
+FEEBACKLEVEL:  0
+[SESSION] Iterazione 5: 8338266c-b1c9-4d63-87c8-25f1a5baeb48 completato (8 capitoli)
+INFO:     127.0.0.1:62907 - "POST /observe HTTP/1.1" 200 OK
+5
+[NORMALIZER] Capitolo 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5: soglie adattive attivate
+
+========== SMOOTHING DEBUG ==========
+beta: 1.0
+prev: [0.7883208887205153, 0.21027942987562273, 0.0013996814038618852]
+original_prior: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+smoothed_prior: [0.7815988892585045, 0.20848638057968177, 0.009914730161813663]
+
+========== CHAPTER DEBUG ==========
+[4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5] Segnalazione assenti
+PRIOR USED:
+[0.782, 0.208, 0.01]
+POSTERIOR:
+[0.927, 0.073, 0.0]
+SKILL SCORE:
+0.9631
+FEEBACKLEVEL:  2
+MOMENTUM CHANGE: + 2/2
+AVVISO: non ci sono opzionali non visti
+AVVISO: non ci sono opzionali non visti
+
+========== ITERATION QUALITY DEBUG ==========
+GOOD chapters: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5']
+STRUGGLING chapters: ['5953081b-1751-4e2b-80d4-f585a500e8e5', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752']
+ADD MOMENTUM:  2
+AVG_SKILL:  0.6059947013727847
+
+=============================================
+[SESSION] Iterazione 5: 4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5 completato (9 capitoli)
+INFO:     127.0.0.1:55360 - "POST /observe HTTP/1.1" 200 OK
+[SESSION] end_iteration chiamato. current_iter=5, iterations_keys=[1, 2, 3, 4, 5], active_chapters=['1c54247c-096c-4388-a1cb-ae0142b56a98', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', '5953081b-1751-4e2b-80d4-f585a500e8e5', '0adf93f1-d9af-4c7c-9533-27a931fa4fec', '8338266c-b1c9-4d63-87c8-25f1a5baeb48']
+[SESSION] ✓ Iterazione 5 COMPLETA! (durata: 990.0s)(capitoli completati: ['1c54247c-096c-4388-a1cb-ae0142b56a98', '5953081b-1751-4e2b-80d4-f585a500e8e5', '34a2a547-200c-409c-8f2e-4ea7f6f55d3c', '339e78de-8453-4fbd-986f-3c6ff3105f27', '0adf93f1-d9af-4c7c-9533-27a931fa4fec', '7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a', 'e97f0831-2e19-4aef-a4a8-ebb2a2257752', '8338266c-b1c9-4d63-87c8-25f1a5baeb48', '4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5'])
+[SESSION] Sessione esportata in ./sessions_data\session_20260623_171608.json
+[SAVE] Sessione salvata in ./sessions_data\session_20260623_171608.json
+INFO:     127.0.0.1:55362 - "POST /session/session_20260623_171608/end_iteration HTTP/1.1" 200 OK

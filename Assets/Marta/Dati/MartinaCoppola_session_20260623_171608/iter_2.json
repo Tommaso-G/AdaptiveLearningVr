@@ -1,0 +1,116 @@
+{
+    "session_id": "session_20260623_171608",
+    "iteration": 2,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 307.77020263671877,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Chiama i vigili del fuoco",
+                    "interactedObjectName": "Dial Visuals",
+                    "message": "Interazione con Dial Visuals",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 145.84848022460938,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Dial Visuals",
+                    "message": "Interazione con Dial Visuals",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "PushButton",
+                    "message": "Interazione con PushButton",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Dial Visuals",
+                    "message": "Interazione con Dial Visuals",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 84.9603500366211,
+            "errors": []
+        },
+        {
+            "chapter_id": "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+            "chapter_name": "Estintore generico Optional",
+            "time_seconds": 96.10202026367188,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 306.3520202636719,
+            "errors": []
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 79.88385009765625,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}
