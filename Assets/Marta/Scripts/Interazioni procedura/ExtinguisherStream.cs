@@ -46,6 +46,8 @@ public class ExtinguisherStream : MonoBehaviour
 
             fire = hit.transform.GetComponentInParent<FireObject>();
 
+            Debug.Log($"[ExtinguisherStream] object hit: {hit.transform.gameObject.name}");
+
             if (fire != lastHit)
             {
                 if (lastHit != null)

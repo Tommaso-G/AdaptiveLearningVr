@@ -195,7 +195,11 @@ public class QuizManager : MonoBehaviour
 
         questions[currentquestion].SetActive(false);
         currentquestion++;
-        questions[currentquestion].SetActive(true);
+        if (currentquestion < questions.Length)
+        {
+            questions[currentquestion].SetActive(true);
+
+        }
     }
 
     public void WrongAnswer(Button selectedButton = null)
