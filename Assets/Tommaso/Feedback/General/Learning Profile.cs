@@ -21,21 +21,21 @@ public class LearningProfile : MonoBehaviour
 
     private void Awake()
     {
-        // Se SessionManager porta un profilo scelto nel menu, sovrascrive i valori
-        // dell'Inspector esattamente come se li avessi impostati prima di premere Play.
         if (SessionManager.Instance != null)
         {
             var sel = SessionManager.Instance.SelectedLearningProfile;
             if (sel != null)
             {
-                attivoRiflessivo = sel.attivoRiflessivo;
-                sensitivoIntuitivo = sel.sensitivoIntuitivo;
-                visivoVerbale = sel.visivoVerbale;
-                sequenzialeGlobale = sel.sequenzialeGlobale;
-
+                attivoRiflessivo       = sel.attivoRiflessivo;
+                sensitivoIntuitivo     = sel.sensitivoIntuitivo;
+                visivoVerbale          = sel.visivoVerbale;
+                sequenzialeGlobale     = sel.sequenzialeGlobale;
+                enableLearningFeatures = sel.enableLearningFeatures; // ← NUOVO
+    
                 Debug.Log($"[LearningProfile] Profilo applicato dal menu: " +
-                          $"{attivoRiflessivo} | {sensitivoIntuitivo} | " +
-                          $"{visivoVerbale} | {sequenzialeGlobale}");
+                        $"{attivoRiflessivo} | {sensitivoIntuitivo} | " +
+                        $"{visivoVerbale} | {sequenzialeGlobale} | " +
+                        $"enableLearningFeatures={enableLearningFeatures}");
             }
         }
     }

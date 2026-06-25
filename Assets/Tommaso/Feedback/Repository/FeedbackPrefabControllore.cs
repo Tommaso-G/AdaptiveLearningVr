@@ -64,6 +64,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private List<RenderTexture> _runtimeRenderTextures = new List<RenderTexture>();
 
+    public event System.Action<SlidesDataSender> OnReflectiveButtonPressedEvent;
+
 
 
 
@@ -91,6 +93,8 @@ public class FeedbackPrefabController : MonoBehaviour
 
             if (styleBehaviour is RiflessivoFeatures)
             {
+                OnReflectiveButtonPressedEvent += (s) =>
+                OfflineAdaptiveController.Instance?.OnReflectiveButtonPressed(s); 
 
                 if (buttonsToClickCanvas != null)
                 {
@@ -181,6 +185,10 @@ public class FeedbackPrefabController : MonoBehaviour
 
     private void OnReflectiveButtonClicked()
     {
+        // Notifica l'OfflineAdaptiveController PRIMA di consumare gli effetti,
+        // così firstGazeTimestamp è ancora valido nel sender
+        OnReflectiveButtonPressedEvent?.Invoke(sender);  // ← NUOVO
+    
         _reflectiveEffectsConsumed = true;
         styleBehaviour?.OnFeedbackClosed(this);
     }

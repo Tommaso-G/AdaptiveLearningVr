@@ -97,9 +97,10 @@ public class SessionManager : MonoBehaviour
         SessionPersistence.Clear();
         SessionPersistence.SetResetAll(true);
         _isNewSession = true;
+        OfflineAdaptiveController.Instance?.ResetForOnlineSession(); // ← NUOVO
         LoadGameScene();
     }
-
+ 
     public void ContinueSession()
     {
         if (!SessionPersistence.HasSavedSession())
@@ -107,20 +108,16 @@ public class SessionManager : MonoBehaviour
             Debug.LogWarning("[SessionManager] Nessuna sessione salvata!");
             return;
         }
-
+    
         Debug.Log("[SessionManager] Continuazione sessione");
         SelectedOfflineLevel = null;
         SessionPersistence.SetResetAll(false);
         _activeSessionId = SessionPersistence.Load();
         _isNewSession = false;
+        OfflineAdaptiveController.Instance?.ResetForOnlineSession(); // ← NUOVO
         LoadGameScene();
     }
-
-    // ── Sessioni offline ──────────────────────────────────────────────────
-
-    /// <summary>
-    /// Chiamato da MenuUI dopo che l'utente ha scelto livello e stile di apprendimento.
-    /// </summary>
+    
     public void StartOfflineSession(OfflineLevelConfig level)
     {
         if (level == null)
@@ -128,10 +125,11 @@ public class SessionManager : MonoBehaviour
             Debug.LogError("[SessionManager] StartOfflineSession: level è null!");
             return;
         }
-
+    
         Debug.Log($"[SessionManager] Avvio sessione offline: {level.levelName}");
         SelectedOfflineLevel = level;
         _isNewSession = true;
+        OfflineAdaptiveController.Instance?.InitForOfflineSession(); // ← NUOVO
         LoadGameScene();
     }
 
@@ -190,4 +188,5 @@ public class LearningProfileSelection
     public LearningEnums.SensitivoIntuitivo sensitivoIntuitivo = LearningEnums.SensitivoIntuitivo.Sensitivo;
     public LearningEnums.VisivoVerbale visivoVerbale = LearningEnums.VisivoVerbale.Visivo;
     public LearningEnums.SequenzialeGlobale sequenzialeGlobale = LearningEnums.SequenzialeGlobale.Sequenziale;
+    public bool enableLearningFeatures = true; // ← NUOVO
 }

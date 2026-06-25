@@ -58,6 +58,7 @@ MonoBehaviour:
   FinalDataCount: 0
   tempoOsservazionePreStep: 0
   visitHistory: 
+  firstGazeTimestamp: -1
 --- !u!1 &303773344648846481
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -1.5, y: -0.015625}
+  m_AnchoredPosition: {x: -1.5, y: -0.0011444092}
   m_SizeDelta: {x: 543.4, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!223 &8220359391100808663
@@ -1489,7 +1490,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1667874852831791699}
   m_HandleRect: {fileID: 4298046036347282925}
   m_Direction: 2
-  m_Value: 1.000002
+  m_Value: 1.000001
   m_Size: 0.3788203
   m_NumberOfSteps: 0
   m_OnValueChanged:

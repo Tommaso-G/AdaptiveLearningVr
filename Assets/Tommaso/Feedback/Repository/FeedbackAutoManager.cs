@@ -338,22 +338,30 @@ public class FeedbackAutoManager : MonoBehaviour
     private void HandleStepCompletion(string stepName)
     {
         var feedbacksToRemove = new List<FeedbackRepository.FeedbackData>();
-
+    
         foreach (var kvp in activeFeedbackSteps)
         {
-            var feedback = kvp.Key;
+            var feedback      = kvp.Key;
             var remainingSteps = kvp.Value.steps;
-
+    
             if (remainingSteps.Contains(stepName))
                 remainingSteps.Remove(stepName);
-
+    
             if (remainingSteps.Count == 0)
             {
-                // Registra Time.time prima di chiudere i prefab:
-                // è il momento di chiusura del pannello, usato per calcolare tempoDalPrimoSguardo
                 float tempoChiusura = Time.time;
-
+    
                 List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
+    
+                // ← ADATTIVO: valuta il feedback prima di chiuderlo
+                if (OfflineAdaptiveController.Instance != null && prefabs != null && prefabs.Count > 0)
+                {
+                    // Usa il primo prefab valido per leggere le slide figlie
+                    FeedbackPrefabController fpc = prefabs[0];
+                    SlidesDataSender sender      = FindSender(feedback.FeedbackName);
+                    OfflineAdaptiveController.Instance.OnFeedbackCompleted(sender, fpc);
+                }
+    
                 if (prefabs != null)
                 {
                     for (int i = prefabs.Count - 1; i >= 0; i--)
@@ -363,12 +371,11 @@ public class FeedbackAutoManager : MonoBehaviour
                         prefabs[i].CloseFeedback();
                     }
                 }
-
-
+    
                 feedbacksToRemove.Add(feedback);
             }
         }
-
+    
         foreach (var f in feedbacksToRemove)
         {
             activeFeedbackSteps.Remove(f);
