@@ -20755,7 +20755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &256072490
 Transform:
   m_ObjectHideFlags: 0
@@ -26209,6 +26209,10 @@ PrefabInstance:
     - target: {fileID: 1141555845852198424, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_TagString
       value: ObjectStep
+      objectReference: {fileID: 0}
+    - target: {fileID: 1497891297113570933, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
+      propertyPath: m_text
+      value: 'Numero insegnati:'
       objectReference: {fileID: 0}
     - target: {fileID: 1647176799351871115, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -57251,6 +57255,10 @@ PrefabInstance:
     - target: {fileID: 1141555845852198424, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_TagString
       value: ObjectStep
+      objectReference: {fileID: 0}
+    - target: {fileID: 1497891297113570933, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
+      propertyPath: m_text
+      value: 'Numero insegnati:'
       objectReference: {fileID: 0}
     - target: {fileID: 1647176799351871115, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -108733,6 +108741,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a1b679f91bea7343815d8b9abd5c644, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1254099389}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a1b679f91bea7343815d8b9abd5c644, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1254099390}
   m_SourcePrefab: {fileID: 100100000, guid: 6a1b679f91bea7343815d8b9abd5c644, type: 3}
 --- !u!4 &1254099387 stripped
 Transform:
@@ -108762,6 +108773,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1254099390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254099388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64582d436c5a4e84d89ba2d25709ddca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedGuid:
+    serializedGuid: b7d3a0124bb2e544b7ef180921d3209d
+  guids: []
 --- !u!1 &1256543198
 GameObject:
   m_ObjectHideFlags: 0
@@ -122838,6 +122864,10 @@ PrefabInstance:
     - target: {fileID: 1141555845852198424, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_TagString
       value: ObjectStep
+      objectReference: {fileID: 0}
+    - target: {fileID: 1497891297113570933, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
+      propertyPath: m_text
+      value: 'Numero insegnati:'
       objectReference: {fileID: 0}
     - target: {fileID: 1647176799351871115, guid: cb3c96043bdccc648ad3b892f17dd69c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -142318,7 +142348,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Per interrompere l'elettricit\xE0 dell'edificio usa gli interrutori figura."
+  m_text: "Per interrompere l'elettricit\xE0 dell'edificio usa gli interrutori in
+    figura."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -162796,6 +162827,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 574a76668b947a747b422ce1bca08ca5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1978630559}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 574a76668b947a747b422ce1bca08ca5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1978630560}
   m_SourcePrefab: {fileID: 100100000, guid: 574a76668b947a747b422ce1bca08ca5, type: 3}
 --- !u!4 &1978630557 stripped
 Transform:
@@ -162825,6 +162859,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1978630560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978630558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64582d436c5a4e84d89ba2d25709ddca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedGuid:
+    serializedGuid: 998690ca5bb87849bb97d5dbbc5975f8
+  guids: []
 --- !u!1 &1979327108
 GameObject:
   m_ObjectHideFlags: 0
@@ -177851,6 +177900,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3a5099fd3972e4d41a9cf7c3544f73cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2114193145}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3a5099fd3972e4d41a9cf7c3544f73cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2114193146}
   m_SourcePrefab: {fileID: 100100000, guid: 3a5099fd3972e4d41a9cf7c3544f73cc, type: 3}
 --- !u!4 &2114193143 stripped
 Transform:
@@ -177880,6 +177932,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &2114193146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114193144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64582d436c5a4e84d89ba2d25709ddca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedGuid:
+    serializedGuid: 780d9fa26efa79488948d179463e7082
+  guids: []
 --- !u!1 &2116458749
 GameObject:
   m_ObjectHideFlags: 0
