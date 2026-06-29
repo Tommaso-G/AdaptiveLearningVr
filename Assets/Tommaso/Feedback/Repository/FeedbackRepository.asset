@@ -56,7 +56,8 @@ MonoBehaviour:
               aggravi.\n\r\n<color=#00DFA2><b>Procedura</b></color>\r\n<color=#888888>\u2022</color>
               Solleva gli interruttori elettrici giusti per eliminare il rischio
               di cortocircuiti.  \r\n<color=#888888>\u2022</color> Gira la manopola
-              del gas per evitare il rischio di esplosioni."
+              del gas per evitare il rischio di esplosioni. Usa le informazioni che
+              erano presenti nel tuo ufficio"
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Play audio Gas
@@ -1073,11 +1074,11 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b> ruotando
-              la valvola giusta .
+              la valvola giusta secondo le informazioni presenti nel tuo ufficio.
 
 
-              Questo blocca il flusso ed evita
-              possibili fughe pericolose.
+              Questo
+              blocca il flusso ed evita possibili fughe pericolose.
 
 '
           StepForCompletition:
@@ -1094,8 +1095,9 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 0}
             text: "Prima di lasciare l\u2019area, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0
-              dal quadro elettrico</color></b> utilizzando gli interruttori giusti.
-              Questo riduce il rischio di cortocircuiti e ulteriori inneschi dell\u2019incendio.\r\n"
+              dal quadro elettrico</color></b> utilizzando gli interruttori giusti
+              secondo le infomazioni presenti nel tuo ufficio. Questo riduce il rischio
+              di cortocircuiti e ulteriori inneschi dell\u2019incendio.\r\n"
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Attiva feedback gas
@@ -2211,10 +2213,10 @@ MonoBehaviour:
             isIntroductory: 0
             image: {fileID: 0}
             video: {fileID: 32900000, guid: 94678765f47f7db45a15b44f10fc9291, type: 3}
-            text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b>. Questo
-              blocca il flusso ed evita possibili fughe pericolose.
-
-'
+            text: "Inoltre, <b><color=#00DFA2>interrompi il gas</color></b>. Questo
+              blocca il flusso ed evita possibili fughe pericolose. Utilizza solo
+              la valvola del colore inidcato nel tuo ufficio. Quello che vedi nel
+              video \xE8 un esempio.\n"
           StepForCompletition:
           - Attiva feedback gas
           - Play audio Gas
@@ -2229,7 +2231,9 @@ MonoBehaviour:
             image: {fileID: 0}
             video: {fileID: 32900000, guid: 54feed38cc9137345b514e723eb6ddcc, type: 3}
             text: "Ora, <b><color=#00DFA2>interrompi l\u2019elettricit\xE0 dal quadro
-              elettrico</color></b> per ridurre il rischio di cortocircuiti."
+              elettrico</color></b> per ridurre il rischio di cortocircuiti. Utilizza
+              solo gli interruttori che erano indicati nel tuo ufficio, quello che
+              vedi nel video \xE8 un esempio."
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Attiva feedback gas
@@ -2753,12 +2757,14 @@ MonoBehaviour:
             text: 'Inoltre, <b><color=#00DFA2>interrompi il gas</color></b>. Questo
               blocca il flusso ed evita possibili fughe pericolose.
 
-
-              Inoltre,
-              <b><color=#00DFA2>interrompi il gas</color></b>. Questo blocca il flusso
-              ed evita possibili fughe pericolose.
-
 '
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Utilizza solo la valvola del colore inidcato nel tuo ufficio.
+              Quello che vedi nel video \xE8 un esempio."
           StepForCompletition:
           - Attiva feedback gas
           - Play audio Gas
@@ -2777,6 +2783,13 @@ MonoBehaviour:
               e ulteriori inneschi dell\u2019incendio.\n\nDisattivare l\u2019<b><color=#00DFA2>alimentazione
               elettrica</color></b> riduce il rischio di <b><color=#00DFA2>cortocircuiti</color></b>
               e di nuovi inneschi che potrebbero aggravare l\u2019incendio.\r\n"
+          - Sequenzale_Globale: 0
+            Visivo_Verbale: 0
+            isIntroductory: 0
+            image: {fileID: 0}
+            video: {fileID: 0}
+            text: "Utilizza solo gli interruttori che erano indicati nel tuo ufficio,
+              quello che vedi nel video \xE8 un esempio."
           StepForCompletition:
           - "Disattiva elettricit\xE0 e gas"
           - Attiva feedback gas
