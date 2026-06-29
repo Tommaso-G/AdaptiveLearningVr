@@ -58,6 +58,9 @@ public class MenuUI : MonoBehaviour
     private LearningProfileSelection _profile = new LearningProfileSelection();
 
     // ─────────────────────────────────────────────────────────────────────
+    [Header("Score adattivo iniziale")]
+    [SerializeField] private Slider adaptiveScoreSlider;
+    [SerializeField] private TextMeshProUGUI adaptiveScoreLabel;
 
     private void Start()
     {
@@ -104,6 +107,16 @@ public class MenuUI : MonoBehaviour
             learningBackButton.onClick.AddListener(() => ShowPanel(mainPanel));
         if (learningStyleButton != null)
             learningStyleButton.onClick.AddListener(OnLearningStyleSelected);
+
+        if (adaptiveScoreSlider != null)
+        {
+            adaptiveScoreSlider.minValue = 0f;
+            adaptiveScoreSlider.maxValue = 1f;
+            adaptiveScoreSlider.value    = _profile.riflessivoScore >= 0f
+            ? _profile.riflessivoScore : 0.5f;
+            adaptiveScoreSlider.onValueChanged.AddListener(OnAdaptiveScoreChanged);
+            RefreshScoreLabel(_profile.riflessivoScore >= 0f ? _profile.riflessivoScore : 0.5f);
+        }
 
         if (SessionManager.Instance != null)
         {
@@ -210,6 +223,15 @@ public class MenuUI : MonoBehaviour
     private void SetAttivoRiflessivo(LearningEnums.AttivoRiflessivo value)
     {
         _profile.attivoRiflessivo = value;
+    
+        // I bottoni Attivo/Riflessivo portano lo score agli estremi
+        float score = value == LearningEnums.AttivoRiflessivo.Attivo ? 0f : 1f;
+        _profile.riflessivoScore = score;
+    
+        if (adaptiveScoreSlider != null)
+            adaptiveScoreSlider.value = score; // aggiorna lo slider senza rilanciare il listener
+    
+        RefreshScoreLabel(score);
         RefreshPair(attivoButton, riflessivoButton,
             value == LearningEnums.AttivoRiflessivo.Attivo);
     }
@@ -263,6 +285,13 @@ public class MenuUI : MonoBehaviour
             _profile.visivoVerbale == LearningEnums.VisivoVerbale.Visivo);
         RefreshPair(sequenzialeButton, globaleButton,
             _profile.sequenzialeGlobale == LearningEnums.SequenzialeGlobale.Sequenziale);
+
+        if (adaptiveScoreSlider != null)
+            {
+                float score = _profile.riflessivoScore >= 0f ? _profile.riflessivoScore : 0.5f;
+                adaptiveScoreSlider.value = score;
+                RefreshScoreLabel(score);
+            }
     }
 
     private void OnLevelSelected(OfflineLevelConfig level)
@@ -285,6 +314,25 @@ public class MenuUI : MonoBehaviour
         SessionManager.Instance.StartOfflineSession(_pendingLevel);
     }
 
+        private void OnAdaptiveScoreChanged(float value)
+    {
+        _profile.riflessivoScore = value;
+    
+        // Lo score determina l'asse: < 0.5 → Attivo, >= 0.5 → Riflessivo
+        _profile.attivoRiflessivo = value < 0.5f
+            ? LearningEnums.AttivoRiflessivo.Attivo
+            : LearningEnums.AttivoRiflessivo.Riflessivo;
+    
+        RefreshScoreLabel(value);
+        RefreshPair(attivoButton, riflessivoButton,
+            _profile.attivoRiflessivo == LearningEnums.AttivoRiflessivo.Attivo);
+    }
+    
+    private void RefreshScoreLabel(float value)
+    {
+        if (adaptiveScoreLabel == null) return;
+        adaptiveScoreLabel.text = value.ToString("F2");
+    }
     private void OnPrefixChanged(string value)
     {
         SessionManager.Instance.SetUserPrefix(value);

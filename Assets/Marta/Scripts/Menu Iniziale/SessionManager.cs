@@ -51,7 +51,10 @@ public class SessionManager : MonoBehaviour
 
     public void SetLearningProfile(LearningProfileSelection profile)
     {
+        // Lo score arriva già impostato da MenuUI (slider o bottoni Attivo/Riflessivo)
         SelectedLearningProfile = profile ?? new LearningProfileSelection();
+        Debug.Log($"[SessionManager] Profilo impostato: {SelectedLearningProfile.attivoRiflessivo} " +
+                $"score={SelectedLearningProfile.riflessivoScore:F2}");
     }
 
     public void SetUserPrefix(string prefix)
@@ -129,9 +132,10 @@ public class SessionManager : MonoBehaviour
         Debug.Log($"[SessionManager] Avvio sessione offline: {level.levelName}");
         SelectedOfflineLevel = level;
         _isNewSession = true;
-        OfflineAdaptiveController.Instance?.InitForOfflineSession(); // ← NUOVO
+        OfflineAdaptiveController.Instance?.InitForOfflineSession(); // ← INVARIATO
         LoadGameScene();
     }
+ 
 
     // ── Navigazione ───────────────────────────────────────────────────────
 
@@ -181,12 +185,15 @@ public class SessionManager : MonoBehaviour
 /// Semplice contenitore serializzabile con le scelte fatte nel menu.
 /// SessionManager lo porta in scena; LearningProfile lo legge in Awake.
 /// </summary>
-[System.Serializable]
-public class LearningProfileSelection
-{
-    public LearningEnums.AttivoRiflessivo attivoRiflessivo = LearningEnums.AttivoRiflessivo.Attivo;
-    public LearningEnums.SensitivoIntuitivo sensitivoIntuitivo = LearningEnums.SensitivoIntuitivo.Sensitivo;
-    public LearningEnums.VisivoVerbale visivoVerbale = LearningEnums.VisivoVerbale.Visivo;
-    public LearningEnums.SequenzialeGlobale sequenzialeGlobale = LearningEnums.SequenzialeGlobale.Sequenziale;
-    public bool enableLearningFeatures = true; // ← NUOVO
-}
+    [System.Serializable]
+
+    public class LearningProfileSelection
+    {
+        public LearningEnums.AttivoRiflessivo attivoRiflessivo       = LearningEnums.AttivoRiflessivo.Attivo;
+        public LearningEnums.SensitivoIntuitivo sensitivoIntuitivo   = LearningEnums.SensitivoIntuitivo.Sensitivo;
+        public LearningEnums.VisivoVerbale visivoVerbale             = LearningEnums.VisivoVerbale.Visivo;
+        public LearningEnums.SequenzialeGlobale sequenzialeGlobale   = LearningEnums.SequenzialeGlobale.Sequenziale;
+        public bool enableLearningFeatures = true;  // ← NUOVO
+        public float riflessivoScore       = 0.5f;  // ← NUOVO: sovrascritto da MenuUI prima di ogni sessione
+    }
+ 

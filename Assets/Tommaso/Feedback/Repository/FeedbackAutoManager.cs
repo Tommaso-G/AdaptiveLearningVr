@@ -341,25 +341,22 @@ public class FeedbackAutoManager : MonoBehaviour
     
         foreach (var kvp in activeFeedbackSteps)
         {
-            var feedback      = kvp.Key;
+            var feedback       = kvp.Key;
             var remainingSteps = kvp.Value.steps;
+            var chapterName    = kvp.Value.chapterName;
     
             if (remainingSteps.Contains(stepName))
                 remainingSteps.Remove(stepName);
     
             if (remainingSteps.Count == 0)
             {
-                float tempoChiusura = Time.time;
-    
                 List<FeedbackPrefabController> prefabs = FindFeedbackInstance(feedback.FeedbackName);
     
-                // ← ADATTIVO: valuta il feedback prima di chiuderlo
+                // ← ADATTIVO
                 if (OfflineAdaptiveController.Instance != null && prefabs != null && prefabs.Count > 0)
                 {
-                    // Usa il primo prefab valido per leggere le slide figlie
-                    FeedbackPrefabController fpc = prefabs[0];
-                    SlidesDataSender sender      = FindSender(feedback.FeedbackName);
-                    OfflineAdaptiveController.Instance.OnFeedbackCompleted(sender, fpc);
+                    SlidesDataSender sender = FindSender(feedback.FeedbackName);
+                    OfflineAdaptiveController.Instance.OnFeedbackCompleted(sender, prefabs[0], chapterName);
                 }
     
                 if (prefabs != null)
