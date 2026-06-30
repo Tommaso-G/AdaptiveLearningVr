@@ -1,0 +1,157 @@
+{
+    "session_id": "PietroDeMagistris_OFFLINE_20260629_115314",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 129.2291259765625,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Parla con i Vigili del fuoco",
+                    "interactedObjectName": "Telefono",
+                    "message": "Interazione con Telefono",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "5953081b-1751-4e2b-80d4-f585a500e8e5",
+            "chapter_name": "Vie di fuga Optional",
+            "time_seconds": 59.271812438964847,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Seleziona una via di fuga alternativa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 63.07637405395508,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 44.66345977783203,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Blocca il fumo con la felpa",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "0adf93f1-d9af-4c7c-9533-27a931fa4fec",
+            "chapter_name": "Fuoco su liquido Optional",
+            "time_seconds": 28.380083084106447,
+            "errors": []
+        },
+        {
+            "chapter_id": "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+            "chapter_name": "Estintore generico Optional",
+            "time_seconds": 42.13683319091797,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Wrong extinguisher",
+                    "message": "Per questo tipo di fuoco serve un altro estintore. Questo non è adatto, come te.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Wrong extinguisher",
+                    "message": "Per questo tipo di fuoco serve un altro estintore. Questo non è adatto, come te.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "SpawnArea",
+                    "message": "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "SpawnArea",
+                    "message": "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Wrong extinguisher",
+                    "message": "Per questo tipo di fuoco serve un altro estintore. Questo non è adatto, come te.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "SpawnArea",
+                    "message": "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "SpawnArea",
+                    "message": "Hai respirato troppo fumo. \nAvevi promesso che avresti smesso.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 241.44735717773438,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "8338266c-b1c9-4d63-87c8-25f1a5baeb48",
+            "chapter_name": "Primo soccorso Optional",
+            "time_seconds": 84.3172607421875,
+            "errors": []
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 35.729251861572269,
+            "errors": []
+        }
+    ]
+}
