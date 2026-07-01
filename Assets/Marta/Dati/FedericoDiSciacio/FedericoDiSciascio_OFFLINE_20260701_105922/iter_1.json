@@ -1,0 +1,81 @@
+{
+    "session_id": "FedericoDiSciascio_OFFLINE_20260701_105922",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 176.1549072265625,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Chiama i vigili del fuoco",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 113.48975372314453,
+            "errors": []
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 123.076171875,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Non puoi domarli tutti... chiudi la porta e scappa",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Chiudi la porta di Aula 1",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "Non puoi domarli tutti... chiudi la porta e scappa",
+                    "interactedObjectName": "Fuoco",
+                    "message": "Ti sei avvicinato troppo al fuoco e ti sei bruciato, come Icaro.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 156.0155487060547,
+            "errors": []
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 118.37733459472656,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                },
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

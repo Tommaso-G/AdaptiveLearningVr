@@ -1,0 +1,79 @@
+{
+    "session_id": "FedericoDiSciascio_OFFLINE_20260701_113513",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 91.22773742675781,
+            "errors": []
+        },
+        {
+            "chapter_id": "5953081b-1751-4e2b-80d4-f585a500e8e5",
+            "chapter_name": "Vie di fuga Optional",
+            "time_seconds": 23.7945613861084,
+            "errors": []
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 72.01624298095703,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva l'elettricità",
+                    "interactedObjectName": "Aula",
+                    "message": "Interazione con Aula",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 60.64527893066406,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Wait",
+                    "interactedObjectName": "felpa rossa",
+                    "message": "Interazione con felpa rossa",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Blocca il fumo con la felpa",
+                    "interactedObjectName": "Porta",
+                    "message": "Interazione con Porta",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "7e9d3fb1-a0c0-4e9f-b743-ff88fe60d49a",
+            "chapter_name": "Estintore generico Optional",
+            "time_seconds": 11.875991821289063,
+            "errors": []
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 226.95704650878907,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "Perlustra tutta la scuola e chiudi le porte",
+                    "interactedObjectName": "Timmy_uscita",
+                    "message": "L'uscita che hai scelto non era la più vicina, avresti potuto rispariarmiare 1,4 secondi.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 64.94523620605469,
+            "errors": []
+        }
+    ]
+}
