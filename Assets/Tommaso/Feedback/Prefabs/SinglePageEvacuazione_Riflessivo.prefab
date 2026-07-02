@@ -439,7 +439,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &781630661673262141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,7 +3105,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 4938782586539933140}
   slidesDataRecorder: {fileID: 0}
-  visualButtons: []
+  visualButtons:
+  - {fileID: 8802739826113567662}
+  - {fileID: 7883374871642599244}
+  - {fileID: 8275176957118907734}
+  - {fileID: 6752013974984866134}
+  - {fileID: 7598936574147456971}
   FinalDataCount: 0
   tempoOsservazionePreStep: 0
   visitHistory: 

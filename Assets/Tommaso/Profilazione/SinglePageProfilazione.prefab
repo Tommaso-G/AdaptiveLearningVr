@@ -439,7 +439,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &781630661673262141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2417,7 +2417,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3389181289545967291}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.999995
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2551,6 +2551,7 @@ MonoBehaviour:
   FinalDataCount: 0
   tempoOsservazionePreStep: 0
   visitHistory: 
+  firstGazeTimestamp: -1
 --- !u!1 &7274302098674028556
 GameObject:
   m_ObjectHideFlags: 0

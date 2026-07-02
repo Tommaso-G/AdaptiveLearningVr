@@ -1,0 +1,89 @@
+{
+    "session_id": "MatteoTozza_OFFLINE_20260702_102846",
+    "iteration": 1,
+    "chapters": [
+        {
+            "chapter_id": "1c54247c-096c-4388-a1cb-ae0142b56a98",
+            "chapter_name": "Segnalazione incendio",
+            "time_seconds": 113.57405090332031,
+            "errors": []
+        },
+        {
+            "chapter_id": "34a2a547-200c-409c-8f2e-4ea7f6f55d3c",
+            "chapter_name": "Interruzione elettricità+gas",
+            "time_seconds": 136.90985107421876,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Disattiva il Gas",
+                    "interactedObjectName": "Wheel",
+                    "message": "Interazione con Wheel",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "339e78de-8453-4fbd-986f-3c6ff3105f27",
+            "chapter_name": "Isola Incendio",
+            "time_seconds": 153.3268585205078,
+            "errors": [
+                {
+                    "type": 0,
+                    "missedStepName": "Chiudi la porta di Aula 1",
+                    "interactedObjectName": "felpa rossa",
+                    "message": "Interazione con felpa rossa",
+                    "weight": 1
+                },
+                {
+                    "type": 0,
+                    "missedStepName": "Chiudi la porta di Aula 1",
+                    "interactedObjectName": "felpa gialla",
+                    "message": "Interazione con felpa gialla",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "e97f0831-2e19-4aef-a4a8-ebb2a2257752",
+            "chapter_name": "Giro di perlustrazione",
+            "time_seconds": 193.06004333496095,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "verifica porte behaviour",
+                    "interactedObjectName": "VerificaPorte",
+                    "message": "Hai lasciato qualche porta aperta, che disdetta.",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "chapter_id": "4c4e6af7-4ba9-4e2d-8afb-f22f95f240d5",
+            "chapter_name": "Segnalazione assenti",
+            "time_seconds": 178.63111877441407,
+            "errors": [
+                {
+                    "type": 1,
+                    "missedStepName": "segnala assenti",
+                    "interactedObjectName": "ReportManager",
+                    "message": "Hai commesso un errore nella segnalazione. \nTutti possono sbagliare, ma figlio mio, tu te ne approfitti.",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}
